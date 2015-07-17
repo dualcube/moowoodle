@@ -1,0 +1,57 @@
+#dualcube_menu_ico {
+  background: url("../../images/dclogo.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+
+#dc_admin_footer {
+  bottom: 45px;
+  text-align: center;
+}
+
+#dc_admin_footer a {
+  text-decoration: none; 
+}
+
+#dc_admin_footer img {
+  border: none; 
+  margin-right: 5px;
+  vertical-align: bottom;
+}
+
+.required {
+  color: red; 
+}
+
+.img_tip {
+	background: url("../../images/question_mark.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+	display: inline-block;
+	height: 12px;
+	vertical-align: -1px;
+	width: 12px;
+	cursor: help;
+	margin-left: 5px;
+}
+
+.multi_input_block {
+  border: 1px solid #dfdfdf;
+  radius: 10px;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.multi_input_block_manupulate {
+  float: right;
+  margin: 2px !important;
+}
+
+.woodle_options_panel label {
+	float: left;
+  width: 150px;
+  padding: 0;
+}
+
+.woodle_options_panel input[type="text"].short {
+	width: 50%;
+}
