@@ -37,7 +37,7 @@ class DC_Woodle_Posttype {
 			'show_ui'            => true,
 			'query_var'          => true,
 			'rewrite'            => true,
-			'map_meta_cap'       => true,
+			'map_meta_cap'       => false,
 			'has_archive'        => false,
 			'hierarchical'       => false,
 			'menu_position'      => 25,
@@ -45,7 +45,7 @@ class DC_Woodle_Posttype {
 			'supports'           => array( 'title', 'editor' ),
 			'capability_type' 	 => 'post',
 			'capabilities'			 => array( 'create_posts'	=> false,
-																		 'edit_published_posts' => false
+																		 'delete_posts' => false
 																	 )
 		);
 
@@ -62,7 +62,7 @@ class DC_Woodle_Posttype {
 			'add_new_item'       => sprintf( __( 'Add New %s', $DC_Woodle->text_domain ), $singular ),
 			'edit_item'          => sprintf( __( 'Edit %s', $DC_Woodle->text_domain ), $singular ),
 			'new_item'           => sprintf( __( 'New %s', $DC_Woodle->text_domain ), $singular ),
-			'all_items'          => sprintf( __( 'All %s', $DC_Woodle->text_domain ), $plural ),
+			'all_items'          => sprintf( __( '%s', $DC_Woodle->text_domain ), $plural ),
 			'view_item'          => sprintf( __( 'View %s', $DC_Woodle->text_domain ), $singular ),
 			'search_items'       => sprintf( __( 'Search %s', $DC_Woodle->text_domain ), $plural ),
 			'not_found'          => sprintf( __( 'No %s found', $DC_Woodle->text_domain ), strtolower( $plural ) ),
@@ -72,7 +72,7 @@ class DC_Woodle_Posttype {
 		);
 
 		return $labels;
-	} // End create_post_type_labels()
+	}
 
 	public function setup_post_type_messages ( $messages ) {
 		global $post, $post_ID, $DC_Woodle;
@@ -80,7 +80,7 @@ class DC_Woodle_Posttype {
 		$messages['course'] = $this->create_post_type_messages( 'course' );
 
 		return $messages;
-	} // End setup_post_type_messages()
+	}
 
 	private function create_post_type_messages( $post_type ) {
 		global $post, $post_ID, $DC_Woodle;
@@ -90,30 +90,34 @@ class DC_Woodle_Posttype {
 		}
 
 		$messages = array(
-			0  => '', // Unused. Messages start at index 1.
+			0  => '',
 			1  => sprintf( __( '%s updated.' ), esc_attr( $this->labels[ $post_type ]['singular'] ) ),
 			2  => __( 'Custom field updated.', $DC_Woodle->text_domain ),
 			3  => __( 'Custom field deleted.', $DC_Woodle->text_domain ),
 			4  => sprintf( __( '%s updated.', $DC_Woodle->text_domain ), esc_attr( $this->labels[ $post_type ]['singular'] ) ),
-			/* translators: %s: date and time of the revision */
-			5  => isset( $_GET['revision'] ) ? sprintf( __( '%2$s restored to revision from %1$s', $DC_Woodle->text_domain ), wp_post_revision_title( (int) $_GET['revision'], false ), esc_attr( $this->labels[ $post_type ]['singular'] ) ) : false,
+			5  => isset( $_GET['revision'] ) ? sprintf( __( '%2$s restored to revision from %1$s', $DC_Woodle->text_domain ), 
+																											 wp_post_revision_title( (int) $_GET['revision'], false ), 
+																											 esc_attr( $this->labels[ $post_type ]['singular'] ) ) : false,
 			6  => sprintf( __( '%2$s published.' ), esc_url( get_permalink( $post_ID ) ), esc_attr( $this->labels[ $post_type ]['singular'] ) ),
 			7  => sprintf( __( '%s saved.', $DC_Woodle->text_domain ), esc_attr( $this->labels[ $post_type ]['singular'] ) ),
-			8  => sprintf( __( '%2$s submitted.', $DC_Woodle->text_domain ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), esc_attr( $this->labels[ $post_type ]['singular'] ) ),
+			8  => sprintf( __( '%2$s submitted.', $DC_Woodle->text_domain ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), 
+													esc_attr( $this->labels[ $post_type ]['singular'] ) ),
 			9  => sprintf( __( '%s scheduled for: <strong>%1$s</strong>.', $DC_Woodle->text_domain ),
-				// translators: Publish box date format, see http://php.net/date
-				date_i18n( __( ' M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post_ID ) ), strtolower( esc_attr( $this->labels[ $post_type ]['singular'] ) ) ),
+													date_i18n( __( ' M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post_ID ) ), 
+													strtolower( esc_attr( $this->labels[ $post_type ]['singular'] ) ) ),
 			10 => sprintf( __( '%s draft updated.', $DC_Woodle->text_domain ), esc_attr( $this->labels[ $post_type ]['singular'] ) ),
 		);
 
 		return $messages;
-	} // End create_post_type_messages()
+	}
 
 	private function setup_post_type_labels_base() {
 	  global $DC_Woodle;
 	  
-		$this->labels['course'] = array( 'singular' => __( 'Course', $DC_Woodle->text_domain ), 'plural' => __( 'Courses', $DC_Woodle->text_domain ), 'menu' => __( 'Courses', $DC_Woodle->text_domain ) );
-	} // End setup_post_type_labels_base()
+		$this->labels['course'] = array( 'singular' => __( 'Course', $DC_Woodle->text_domain ),
+																		 'plural' => __( 'Courses', $DC_Woodle->text_domain ), 
+																		 'menu' => __( 'Courses', $DC_Woodle->text_domain ) );
+	}
 	
 	/**
 	 * Load class file
@@ -127,6 +131,6 @@ class DC_Woodle_Posttype {
 		
 		if ('' != $class_name && '' != $DC_Woodle->token) {
 			require_once ('posttypes/class-' . esc_attr($DC_Woodle->token) . '-' . esc_attr($class_name) . '.php');
-		} // End If Statement
-	}// End load_class()
+		}
+	}
 }

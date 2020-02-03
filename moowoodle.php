@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: MooWoodle
-Plugin URI: http://dualcube.com
+Plugin Name: moowoodle
+Plugin URI: http://techmonastic.com/
 Description: The MooWoodle plugin is an extention of WooCommerce that acts as a bridge between WordPress/Woocommerce and Moodle.
-Author: Dualcube
-Version: 1.0.0
-Author URI: http://dualcube.com
+Author: Down Town
+Version: 2.0
+Author URI: http://techmonastic.com/
 */
 
 if ( ! class_exists( 'DC_Woodle_Dependencies' ) )
@@ -37,4 +37,3 @@ if(!class_exists('DC_Woodle')) {
 	$DC_Woodle = new DC_Woodle( __FILE__ );
 	$GLOBALS['DC_Woodle'] = $DC_Woodle;
 }
-?>

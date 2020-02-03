@@ -2,7 +2,6 @@
 class DC_Woodle_Emails {
 
 	public function __construct() {
-		add_action( 'woodle_after_create_moodle_user', array( &$this, 'send_moodle_user_credentials' ) );
 		add_action( 'woodle_after_enrol_moodle_user', array( &$this, 'send_moodle_enrollment_confirmation' ) );
 		
 		add_filter( 'woocommerce_email_classes', array( &$this, 'woodle_emails' ) );
@@ -15,10 +14,7 @@ class DC_Woodle_Emails {
 	 * @param array $emails
    * @return array
 	 */
-	public function woodle_emails( $emails ) {
-	  $this->load_class('new-account');
-	  $emails['DC_Woodle_Emails_New_Account'] = new DC_Woodle_Emails_New_Account();
-	  
+	public function woodle_emails( $emails ) {	  
 	  $this->load_class('new-enrollment');
 	  $emails['DC_Woodle_Emails_New_Enrollment'] = new DC_Woodle_Emails_New_Enrollment();
 	  
@@ -43,16 +39,6 @@ class DC_Woodle_Emails {
 		$emails[$email_key]->trigger( $email_data );
 	}
 	
-	/**
-	 * Send moodle account credentials
-	 *
-	 * @access public
-	 * @param array $user_data
-   * @return void
-	 */
-	public function send_moodle_user_credentials( $user_data ) {
-		$this->send_email( 'DC_Woodle_Emails_New_Account', $user_data );
-	}
 	
 	/**
 	 * Send confirmation for enrollment in moodle course
@@ -62,18 +48,35 @@ class DC_Woodle_Emails {
    * @return void
 	 */
 	public function send_moodle_enrollment_confirmation( $enrolments ) {
-		global $DC_Woodle;
+		global $DC_Woodle, $wpdb;
 		
 		$moodle_access_url = woodle_get_settings( 'access_url', 'dc_woodle_general' );
-		$enrollment_data = array();
+		$enrollment_datas = array();
+		$enrollment_datas['email'] = $DC_Woodle->enrollment->wc_order->billing_email;
+		$enrollment_data_arr = array();
 		foreach( $enrolments as $enrolment ) {
 			$post_id = woodle_get_post_by_moodle_id( $enrolment['courseid'], 'course' );
 			$course = get_post( $post_id );
-			$enrollment_data['email'] = $DC_Woodle->enrollment->wc_order->billing_email;
+			$enrollment_data = array();
 			$enrollment_data['course_name'] = $course->post_title;
-			$enrollment_data['course_url'] = "{$moodle_access_url}/course/view.php?id={$enrolment['courseid']}";
+			
+			$course_id_meta = get_post_meta( $post_id , '_course_id', true );
+			$post_id_query = $wpdb->get_results("SELECT post_id FROM $wpdb->postmeta WHERE (meta_key = '_course_id' AND meta_value = '". $course_id_meta ."' )");
+			foreach ($post_id_query as $key => $value) {
+				if(	get_post_type( $value->post_id ) == 'product' ){
+					$post_product_id = $value->post_id;
+				}
+			}
+			$post_product_content = get_post( $post_product_id )->post_content;
+			$post_product_content = substr($post_product_content, 0, strpos($post_product_content, 'activity="0"]'));
+			
+			$enrollment_data['course_url'] = "{$post_product_content}";
+			
+			$enrollment_data_arr[] = $enrollment_data;
 		}
-		$this->send_email( 'DC_Woodle_Emails_New_Enrollment', $enrollment_data );
+		$enrollment_datas['enrolments'] = $enrollment_data_arr;
+		
+		$this->send_email( 'DC_Woodle_Emails_New_Enrollment', $enrollment_datas );
 	}
 	
 	/**

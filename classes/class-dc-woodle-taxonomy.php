@@ -15,7 +15,7 @@ class DC_Woodle_Toxonomy {
     register_taxonomy( 'course_cat', 'course',
       array(
         'labels'        => $this->create_taxonomy_labels( 'course' ),
-        'show_ui'       => true,
+        'show_ui'       => false,
         'show_tagcloud' => false,
         'hierarchical'  => true,
         'query_var' 		=> true

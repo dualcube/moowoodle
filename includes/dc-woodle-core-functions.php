@@ -26,7 +26,10 @@ if( ! function_exists( 'woodle_wc_inactive_notice' ) ) {
   function woodle_wc_inactive_notice() {
   	global $DC_Woodle;
   	
-  	woodle_add_notice( __( '<strong>Woocommerce is inactive.</strong> The <a target="_blank" href="https://wordpress.org/plugins/woocommerce/">Woocommerce plugin</a> must be active for the Woo Moodle Course Purchaser to work. Please <a href="' . admin_url( 'plugins.php' ) . '">install & activate Woocommerce &nbsp;&raquo;</a>', $DC_Woodle->text_domain ) );
+  	woodle_add_notice( __( '<strong>Woocommerce is inactive.</strong> The <a target="_blank" 
+  													href="https://wordpress.org/plugins/woocommerce/">Woocommerce plugin</a> 
+  													must be active for the MooWoodle plugin to work. Please <a href="' . 
+  													admin_url( 'plugins.php' ) . '">install & activate Woocommerce &nbsp;&raquo;</a>', $DC_Woodle->text_domain ) );
   }
 }
 
@@ -76,13 +79,13 @@ if( ! function_exists('woodle_add_notice') ) {
  */
 if( ! function_exists( 'woodle_get_moodle_core_functions' ) ) {
 	function woodle_get_moodle_core_functions( $key = '' ) {
-		$moodle_core_functions = array( 'get_categories' 		 => 'core_course_get_categories',
-																		'get_courses' 	 		 => 'core_course_get_courses',
-																		'get_users_by_field' => 'core_user_get_users_by_field',
-																		'create_users'			 => 'core_user_create_users',
-																		'update_users'			 => 'core_user_update_users',
-																		'enrol_users'				 => 'enrol_manual_enrol_users'
-																	);
+		$moodle_core_functions = array( 'get_categories' => 'core_course_get_categories',
+										'get_courses'	 => 'core_course_get_courses',
+										'get_users' 	 => 'core_user_get_users',
+										'create_users'	 => 'core_user_create_users',
+										'update_users'	 => 'core_user_update_users',
+										'enrol_users'	 => 'enrol_manual_enrol_users'
+									);
 		
 		if( empty( $key ) ) {
 			return $moodle_core_functions;
@@ -95,6 +98,36 @@ if( ! function_exists( 'woodle_get_moodle_core_functions' ) ) {
 }
 
 /**
+ * Sync error messages.
+ *
+ * @param string $key (default: null)
+ * @return array/string
+ */
+if( ! function_exists( 'woodle_get_sync_error_message' ) ) {
+	function woodle_get_sync_error_message( $errorcode = '' ) {
+		$error_messages = array( 'successful'				=> 'Synchronization is complete.',
+														 'accessexception' 	=> '<strong>Error!</strong> Web service in your <a href="' . 
+																									  woodle_get_settings( 'access_url', 'dc_woodle_general' ) . 
+																									  '/admin/settings.php?section=externalservices" target="_blank">moodle site</a> 
+																									  is disabled or not configured properly.',
+														 'invalidtoken' 	 	=> '<strong>Error!</strong> Invalid webservice token. <a href="' . 
+																									  woodle_get_settings( 'access_url', 'dc_woodle_general' ) . 
+																									  '/admin/settings.php?section=webservicetokens" target="_blank">Click here</a> for tokens.',
+														 'mdlnotconfigured'	=> '<strong>Error!</strong> Your <a href="' . 
+																									  woodle_get_settings( 'access_url', 'dc_woodle_general' ) . 
+																									  '" target="_blank">moodle site</a> might not configured properly.',
+														 'invalidparameter' => ''
+													 );
+		
+		if( empty( $errorcode ) || ! array_key_exists( $errorcode, $error_messages ) ) {
+			return null;
+		}
+		
+		return $error_messages[$errorcode];
+	}
+}
+
+/**
  * Call to moodle core functions.
  *
  * @param string $function_name (default: null)
@@ -102,33 +135,44 @@ if( ! function_exists( 'woodle_get_moodle_core_functions' ) ) {
  * @return mixed
  */
 if( ! function_exists( 'woodle_moodle_core_function_callback' ) ) {
-	function woodle_moodle_core_function_callback( $function_name = '', $request_param = null ) {
+	function woodle_moodle_core_function_callback( $function_name = '', $request_param = array() ) {
 		global $DC_Woodle;
 		
 		$response = null;
 		$url = woodle_get_settings( 'access_url', 'dc_woodle_general' );
 		$token = woodle_get_settings( 'ws_token', 'dc_woodle_general' );
-		$request_url = $url . '/webservice/xmlrpc/server.php?wstoken=' . $token;
+		$request_url = $url . '/webservice/rest/server.php?wstoken=' . $token . '&wsfunction=' . $function_name . '&moodlewsrestformat=json';
 		
     if( ! empty( $url )  && ! empty( $token ) && $function_name != '' ) {
-    	$request = xmlrpc_encode_request( $function_name, $request_param );
-      $response = wp_remote_post( $request_url, array( 'body' => $request ) );
+    	$request_query = http_build_query( $request_param );
+      $response = wp_remote_post( $request_url, array( 'body' => $request_query ) );
     } 
     
-    if( ! is_wp_error( $response ) && $response != null ) {
-      $response = xmlrpc_decode( $response['body'] );
-      if( is_string( $response ) ) {
-				$response = json_decode( $response, true );
+    if( ! is_wp_error( $response ) && $response != null && $response['response']['code'] == 200 ) {
+      if( is_string( $response['body'] ) ) {
+				$response_arr = json_decode( $response['body'], true );
+				
+				if( json_last_error() === JSON_ERROR_NONE ) {
+					if( is_null( $response_arr ) || ! array_key_exists( 'exception', $response_arr ) ) {
+						$DC_Woodle->ws_has_error = false;
+						$DC_Woodle->ws_error_msg = woodle_get_sync_error_message( 'successful' );
+						
+						return $response_arr;
+					} else {
+						$DC_Woodle->ws_has_error = true;
+						$DC_Woodle->ws_error_msg = woodle_get_sync_error_message( $response_arr['errorcode'] );
+					}
+				} else {
+					$DC_Woodle->ws_has_error = true;
+					$DC_Woodle->ws_error_msg = woodle_get_sync_error_message( 'mdlnotconfigured' );
+				}
+			} else {
+				$DC_Woodle->ws_has_error = true;
+				$DC_Woodle->ws_error_msg = woodle_get_sync_error_message( 'mdlnotconfigured' );
 			}
-    }
-    
-    if( json_last_error() === JSON_ERROR_NONE ) {
-    	if( empty( $response ) || array_key_exists( 'faultCode', $response ) ) {
-    		$DC_Woodle->sync->has_error = true;
-    	} else {
-    		$DC_Woodle->sync->has_error = false;
-    		return $response;
-    	}
+    } else {
+    	$DC_Woodle->ws_has_error = true;
+    	$DC_Woodle->ws_error_msg = woodle_get_sync_error_message( 'mdlnotconfigured' );
     }
 		
     return null;
@@ -245,7 +289,6 @@ function woodle_get_term_by_moodle_id( $category_id, $taxonomy = '', $meta_key =
 		return 0;
 	}
 	$terms = woodle_get_terms( $taxonomy );
-	//print_r($terms);die;
 	if( $terms ) {
 		foreach( $terms as $term ) {
 			if( apply_filters( "woodle_get_{$meta_key}_meta", $term->term_id, '_category_id', true ) == $category_id ) {
@@ -275,7 +318,6 @@ function woodle_get_terms( $taxonomy = '' ) {
 						ON terms.term_id = term_taxonomy.term_id
 						WHERE term_taxonomy.taxonomy = '$taxonomy'";
 	$terms = $wpdb->get_results( $query );
-	//print_r($terms);die;
 	$terms = ( is_wp_error( $terms ) || empty( $terms ) ) ? false : $terms;
 	return $terms;
 }
@@ -329,4 +371,4 @@ function woodle_get_posts( $args = array() ) {
 	$posts = ( is_wp_error( $posts ) || empty( $posts ) ) ? false : $posts;
 	return $posts;
 }
-?>
+

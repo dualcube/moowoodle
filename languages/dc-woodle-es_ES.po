@@ -1,0 +1,430 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MooWoodle\n"
+"POT-Creation-Date: 2015-07-18 13:09+0530\n"
+"PO-Revision-Date: 2016-02-19 13:19+0100\n"
+"Last-Translator: Adrián <amurciego@desarrollamosideas.es>\n"
+"Language-Team: Desarrollamos Ideas <amurciego@desarrollamosideas.es>\n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: /moowoodle\n"
+
+#: /moowoodle/templates/emails/new-enrollment.php:12
+#: /moowoodle/templates/emails/plain/new-enrollment.php:11
+msgid "You are enrolled in "
+msgstr "Estás matriculado en"
+
+#: /moowoodle/templates/emails/new-enrollment.php:13
+#: /moowoodle/templates/emails/plain/new-enrollment.php:12
+msgid "View Course"
+msgstr "Acceder al curso"
+
+#: /moowoodle/templates/emails/new-account.php:15
+msgid "Email"
+msgstr "Email"
+
+#: /moowoodle/templates/emails/new-account.php:19
+msgid "Username"
+msgstr "Usuario"
+
+#: /moowoodle/templates/emails/new-account.php:23
+msgid "Password"
+msgstr "Contraseña"
+
+#: /moowoodle/templates/emails/new-account.php:27
+#: /moowoodle/templates/emails/plain/new-account.php:14
+msgid "Login Now"
+msgstr "Iniciar sesión"
+
+#: /moowoodle/templates/emails/plain/new-account.php:11
+msgid "Email: "
+msgstr "Email:"
+
+#: /moowoodle/templates/emails/plain/new-account.php:12
+msgid "Username: "
+msgstr "Usuario:"
+
+#: /moowoodle/templates/emails/plain/new-account.php:13
+msgid "Password: "
+msgstr "Contraseña:"
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:28
+msgid "Moodle Settings"
+msgstr "Configuración de moodle"
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:29
+msgid "Access URL"
+msgstr "Dirección URL de acceso"
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:29
+msgid "Enter the moodle site URL you want to integrate."
+msgstr "Introduzca la URL del sitio moodle que desea integrar."
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:29
+msgid "Moodle site URL."
+msgstr "URL del sitio moodle."
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:30
+msgid "Webservice token"
+msgstr "WebService token"
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:30
+msgid "Enter the moodle webservice token."
+msgstr "Introducir el token de webservice de moodle."
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:30
+msgid "Moodle webservice token (Generate from moodle)."
+msgstr "Token de WebService de Moodle (generado en moodle)."
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:34
+msgid "Create products from courses"
+msgstr "Crear cursos como productos"
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:34
+msgid "Checked to create products from moodle courses."
+msgstr "Activar para cursos de Moodle como productos."
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:34
+msgid "If checked products will created while syncing courses from moodle."
+msgstr ""
+"Si activa la opción los cursos de moodle serán creados como productos."
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:38
+msgid "Update user info with order info"
+msgstr ""
+"Actualizar la información del usuario en Moodle con los datos de facturación"
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:38
+msgid "Check to update user info according to billing address."
+msgstr ""
+"Active para actualizar la información del usuario en Moodle con los datos "
+"de facturación"
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:38
+msgid "If chacked user's info will be updated according to billing address."
+msgstr ""
+"Si la opción está activada se actualizará la información del usuario en "
+"Moodle con los datos de facturación."
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:39
+msgid "Moodle user role id in a course"
+msgstr "Id rol a asignar en los cursos"
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:39
+msgid "If role assigned to the enrollees is other than student."
+msgstr "Si el rol ha asignar a los alumnos es diferente a estudiante."
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:39
+msgid "Default role student (Role id: 5)."
+msgstr "Rol estudiante predeterminado (Rol id: 5)."
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:66
+msgid "Moodle access URL should not be empty."
+msgstr "La URL de acceso de Moodle no puede estar vacía."
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:78
+msgid "Moodle webservice token should not be empty."
+msgstr "El WebService token no puede estar vacío."
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:97
+msgid "General settings updated"
+msgstr "Ajustes guardados"
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:111
+msgid "Enter your moodle settings below"
+msgstr "Introduce los datos de tu Moodle"
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:120
+msgid "Enter your WooCommerce settings below"
+msgstr "Introduce los datos de tu WooCommerce"
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_general.php:129
+msgid "Enter user settings below"
+msgstr "Introduce tus datos de usuario"
+
+#: /moowoodle/admin/class-dc-woodle-settings.php:31
+#: /moowoodle/admin/class-dc-woodle-settings.php:32
+msgid "Synchronise"
+msgstr "Sincronizar"
+
+#: /moowoodle/admin/class-dc-woodle-settings.php:40
+#: /moowoodle/admin/class-dc-woodle-settings.php:41
+#: /moowoodle/classes/class-dc-woodle-admin.php:22
+msgid "Settings"
+msgstr "Configuración"
+
+#: /moowoodle/admin/class-dc-woodle-settings.php:55
+msgid "Woodle General"
+msgstr "Woodle General"
+
+#: /moowoodle/admin/class-dc-woodle-settings.php:64
+msgid "Synchronise Courses & categories"
+msgstr "Sincronizar Cursos y Categorías"
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_sync.php:28
+msgid "Synchronise now ?"
+msgstr "¿Sincronizar ahora?"
+
+#: /moowoodle/admin/class-dc-woodle-settings-dc_woodle_sync.php:28
+msgid "Select yes to sync courses and course categories from Moodle."
+msgstr ""
+"Seleccione Sí para sincronizar cursos y categorías de curso de Moodle."
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:62
+#, php-format
+msgid "Add New %s"
+msgstr "Añadir Nuevo %s"
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:63
+#, php-format
+msgid "Edit %s"
+msgstr "Editar %s"
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:64
+#, php-format
+msgid "New %s"
+msgstr "Nuevo %s"
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:65
+#, php-format
+msgid "All %s"
+msgstr "Todos %s"
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:66
+#, php-format
+msgid "View %s"
+msgstr "Ver %s"
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:67
+#, php-format
+msgid "Search %s"
+msgstr "Buscar %s"
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:68
+#, php-format
+msgid "No %s found"
+msgstr "%s no encontrado"
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:69
+#, php-format
+msgid "No %s found in Trash"
+msgstr "No %s encontrados en la basura"
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:71
+#, php-format
+msgid "%s"
+msgstr "%s"
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:94
+#: /moowoodle/classes/class-dc-woodle-posttype.php:97
+#, php-format
+msgid "%s updated."
+msgstr "%s actualizado."
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:95
+msgid "Custom field updated."
+msgstr "Campo personalizado actualizado"
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:96
+msgid "Custom field deleted."
+msgstr "Campo personalizado eliminado."
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:99
+#, php-format
+msgid "%2$s restored to revision from %1$s"
+msgstr "%2$s restaurado a revisión de %1$s"
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:100
+#, php-format
+msgid "%2$s published."
+msgstr "%2$s publicados."
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:101
+#, php-format
+msgid "%s saved."
+msgstr "%s guardado."
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:102
+#, php-format
+msgid "%2$s submitted."
+msgstr "%2$s enviado."
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:103
+#, php-format
+msgid "%s scheduled for: <strong>%1$s</strong>."
+msgstr "Programada para: <strong>%1$s</strong>."
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:105
+msgid " M j, Y @ G:i"
+msgstr ""
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:106
+#, php-format
+msgid "%s draft updated."
+msgstr "Su %s borrador fue actualizado."
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:115
+msgid "Course"
+msgstr "Curso"
+
+#: /moowoodle/classes/class-dc-woodle-posttype.php:115
+msgid "Courses"
+msgstr "Cursos"
+
+#: /moowoodle/classes/class-dc-woodle-admin.php:53
+msgid "Powered by"
+msgstr "Hecho por"
+
+#: /moowoodle/classes/class-dc-woodle-admin.php:53
+msgid "Dualcube"
+msgstr "Dualcube"
+
+#: /moowoodle/classes/posttypes/class-dc-woodle-posttype-product.php:18
+msgid "Related Course"
+msgstr "Curso Relacionado"
+
+#: /moowoodle/classes/posttypes/class-dc-woodle-posttype-product.php:37
+msgid "Course Name"
+msgstr "Nombre del Curso"
+
+#: /moowoodle/classes/posttypes/class-dc-woodle-posttype-product.php:39
+msgid "Select course..."
+msgstr "Seleccionar curso..."
+
+#: /moowoodle/classes/posttypes/class-dc-woodle-posttype-product.php:76
+#: /moowoodle/classes/posttypes/class-dc-woodle-posttype-course.php:47
+msgid "Course Short Name"
+msgstr "Nombre corto del curso"
+
+#: /moowoodle/classes/posttypes/class-dc-woodle-posttype-course.php:23
+msgid "Course Details"
+msgstr "Detalles del curso"
+
+#: /moowoodle/classes/posttypes/class-dc-woodle-posttype-course.php:43
+msgid "Course ID"
+msgstr "ID de Curso"
+
+#: /moowoodle/classes/posttypes/class-dc-woodle-posttype-course.php:51
+msgid "Visibility"
+msgstr "Visibilidad"
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-enrollment.php:14
+msgid "New Moodle Enrollment"
+msgstr "Nueva inscripción de Moodle"
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-enrollment.php:15
+msgid "This is a notification email sent to the enrollees for new enrollment."
+msgstr ""
+"Este será en el email de notificación que se enviará a los usuarios cuando "
+"sean matriculados."
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-enrollment.php:17
+msgid "New Enrollment"
+msgstr "Nueva Inscripción"
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-enrollment.php:18
+msgid "{site_title} New Enrollment"
+msgstr "{site_title} Confirmación Inscripción"
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-enrollment.php:93
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-account.php:93
+msgid "Enable/Disable"
+msgstr "Habilitar/Deshabilitar"
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-enrollment.php:95
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-account.php:95
+msgid "Enable this email notification"
+msgstr "Habilitar notificaciones por correo electrónico"
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-enrollment.php:99
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-account.php:99
+msgid "Subject"
+msgstr "Asunto"
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-enrollment.php:101
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-account.php:101
+#, php-format
+msgid ""
+"This controls the email subject line. Leave blank to use the default "
+"subject: <code>%s</code>."
+msgstr ""
+"Aquí podrás personalizar el asunto del correo electrónico. Déjelo en blanco "
+"para utilizar el predeterminado: <code>%s</code>."
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-enrollment.php:106
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-account.php:106
+msgid "Email Heading"
+msgstr "Encabezado de Correo Electrónico"
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-enrollment.php:108
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-account.php:108
+#, php-format
+msgid ""
+"This controls the main heading contained within the email notification. "
+"Leave blank to use the default heading: <code>%s</code>."
+msgstr ""
+"Aquí podrás personalizar el encabezado del mensaje de notificación. Dejar "
+"en blanco para usar el predeterminado: <code>%s</code>."
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-enrollment.php:113
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-account.php:113
+msgid "Email type"
+msgstr "Tipo de email"
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-enrollment.php:115
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-account.php:115
+msgid "Choose which format of email to send."
+msgstr "Elije el formato en el que se enviarán los emails."
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-enrollment.php:119
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-account.php:119
+msgid "Plain text"
+msgstr "Texto sin formato"
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-enrollment.php:120
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-account.php:120
+msgid "HTML"
+msgstr "HTML"
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-enrollment.php:121
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-account.php:121
+msgid "Multipart"
+msgstr "Multipart"
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-account.php:14
+msgid "New Moodle Account"
+msgstr "Nueva cuenta de Moodle"
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-account.php:15
+msgid ""
+"This is a notification email sent to the enrollees for new moodle account."
+msgstr ""
+"Este será en el email de notificación que se enviará a los usuarios cuando "
+"se le cree una cuenta en Moodle."
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-account.php:17
+msgid "New Account"
+msgstr "Nueva cuenta"
+
+#: /moowoodle/classes/emails/class-dc-woodle-email-new-account.php:18
+msgid "{site_title} New Account"
+msgstr "{site_title} Nueva cuenta"
+
+#: /moowoodle/includes/dc-woodle-core-functions.php:29
+msgid ""
+"<strong>Woocommerce is inactive.</strong> The <a target=\"_blank\" href="
+"\"https://wordpress.org/plugins/woocommerce/\">Woocommerce plugin</a> must "
+"be active for the Woo Moodle Course Purchaser to work. Please <a href=\""
+msgstr ""
+"<strong>Woocommerce está desactivado.</strong> El <a target=\"_blank\" href="
+"\"https://wordpress.org/plugins/woocommerce/\">plugin Woocommerce</a> debe "
+"estar activo para que Woodle funcione. Por favor,<a href=\""
+
+#~ msgid "ID Number"
+#~ msgstr "Identification"

@@ -6,7 +6,21 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; 
 global $DC_Woodle;
-?>
 
-<p><?php _e( 'Your are enrolled in ' . $enrollment['course_name'] . '.', $DC_Woodle->text_domain ) ; ?></p>
-<p><a href="<?php echo $enrollment['course_url']; ?>"><?php _e( 'View Course', $DC_Woodle->text_domain ); ?></a></p>
+$enrollment_list = array();
+foreach( $enrollments['enrolments'] as $enrollment ) {
+
+	$enrollment_list[] = do_shortcode( $enrollment['course_url'] . ' activity="0"]' . $enrollment['course_name'] . '[/moowoodle]' );
+
+}
+?>
+<p>
+	<?php
+		$user_details = get_user_by( 'email', $user_data ); 
+		
+		echo 'Username : ' . $user_details->data->user_login . '<br><br>';
+		echo 'Password : 1Admin@23 <br><br>';
+		echo 'You are enrolled in '.$enrollment_list[0].' <br><br>';
+		echo 'You need to change your password after first login.';
+	?>
+</p>

@@ -9,6 +9,7 @@ class DC_Woodle_Posttype_Course {
 	
 		add_filter( 'manage_edit-course_columns', array( &$this, 'course_column' ) );
 		add_filter( 'manage_edit-course_sortable_columns', array( &$this, 'course_sortable_columns' ) );
+		add_filter( 'bulk_actions-edit-course', array( &$this, 'course_bulk_actions' ) );
 	}
 	
 	/**
@@ -78,14 +79,32 @@ class DC_Woodle_Posttype_Course {
         echo $post_author;
         break;
 			case 'category':
-				$terms = get_the_terms( $post_id, 'course_cat' );
-				$termlist = array();
-				if( ! empty( $terms ) ) {
-					foreach ( $terms as $term ) {
-						$termlist[] = '<a href="' . admin_url( 'edit.php?category=' . $term->slug . '&post_type=course' ) . '">' . $term->name . '</a>';
+				$category_id = get_post_meta( $post_id, '_category_id', true );
+				$term_id = woodle_get_term_by_moodle_id( $category_id, 'course_cat', 'woodle_term' );
+				$course_category_path = get_woodle_term_meta( $term_id, '_category_path', true );
+				$category_ids = explode( '/', $course_category_path );
+				$course_path = array();
+				
+				if( ! empty( $category_ids ) ) {
+					foreach( $category_ids as $cat_id ) {
+						if( ! empty( $cat_id ) ) {
+							$term_id = woodle_get_term_by_moodle_id( intval( $cat_id ), 'course_cat', 'woodle_term' );
+							$term = get_term( $term_id, 'course_cat' );
+							$course_path[] = $term->name;
+						}
 					}
 				}
-				echo implode( ', ', $termlist );
+				
+				if( ! empty( $course_path ) ) {
+					$course_path = implode( ' / ', $course_path );
+				}
+				
+				$term = get_term_by( 'id', $term_id, 'course_cat' );
+				$sort_url = '';
+				if( ! empty( $term ) ) {
+					$sort_url = '<a href="' . admin_url( 'edit.php?course_cat=' . $term->slug . '&post_type=course' ) . '">' . $course_path . '</a>';
+				}
+				echo $sort_url;
 				break;
 			case 'visibility': 
 				$visibility = get_post_meta( $post_id, '_visibility', true );
@@ -151,5 +170,10 @@ class DC_Woodle_Posttype_Course {
 			$product_id = woodle_get_post_by_moodle_id( $course_id, 'product' );
 			wp_delete_post( $product_id, false );
 		}
+	}
+	
+	function course_bulk_actions( $actions ) {
+		unset( $actions[ 'edit' ] );
+		return $actions;
 	}
 }

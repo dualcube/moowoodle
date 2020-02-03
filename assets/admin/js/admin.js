@@ -1,5 +1,5 @@
 jQuery( document ).ready( function( $ ) {
-	$('.img_tip').each(function() {
+	$(".img_tip").each(function() {
 		$(this).qtip({
 			content: $(this).attr('data-desc'),
 			position: {
@@ -21,8 +21,8 @@ jQuery( document ).ready( function( $ ) {
 		});
 	});
 	
-	$( "#courses-select" ).chosen({
-		width: "75%",
-		no_results_text: "No courses found!"
-	});
+	// $("#courses-select").chosen({
+	// 	width: "75%",
+	// 	no_results_text: "No courses found!"
+	// });
 });

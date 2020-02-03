@@ -18,6 +18,7 @@ class DC_Woodle_Settings {
     
     // Settings tabs
     add_action('settings_page_dc_woodle_general_tab_init', array(&$this, 'general_tab_init'), 10, 1);
+    
     add_action('settings_page_dc_woodle_sync_tab_init', array(&$this, 'sync_tab_init'), 10, 1);
   }
   
@@ -52,8 +53,9 @@ class DC_Woodle_Settings {
     global $DC_Woodle;
     
     $tabs = apply_filters('dc_woodle_tabs', array(
-      'dc_woodle_general' => __('Woodle General', $DC_Woodle->text_domain)
-    ));
+      'dc_woodle_general' => __('MooWoodle General', $DC_Woodle->text_domain)
+      ));
+    
     return $tabs;
   }
   
@@ -134,14 +136,13 @@ class DC_Woodle_Settings {
       <?php
       $tab = ( isset( $_GET['tab'] ) ? $_GET['tab'] : 'dc_woodle_general' );
       $this->options = get_option( "dc_{$tab}_settings_name" );
-      //print_r($this->options);
       
       // This prints out all hidden setting errors
       settings_errors("dc_{$tab}_settings_name");
       ?>
       <form method="post" action="options.php">
       <?php
-        // This prints out all hidden setting fields
+        //This prints out all hidden setting fields
         settings_fields( "dc_{$tab}_settings_group" );   
         do_settings_sections( "dc-{$tab}-settings-admin" );
         submit_button(); 
@@ -161,7 +162,6 @@ class DC_Woodle_Settings {
       <?php
       $tab = ( isset( $_GET['tab'] ) ? $_GET['tab'] : 'dc_woodle_sync' );
       $this->options = get_option( "dc_{$tab}_settings_name" );
-      //print_r($this->options);
       
       // This prints out all hidden setting errors
       settings_errors("dc_{$tab}_settings_name");

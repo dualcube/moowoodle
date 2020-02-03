@@ -18,7 +18,7 @@ class DC_Woodle_Install {
 	 * @return void
 	 */
 	public static function check_version() {
-		if ( get_option( 'woodle_version' ) != DC_WOODLE_PLUGIN_VERSION || get_option( 'woodle_db_version' ) != DC_WOODLE_PLUGIN_VERSION ) {
+		if ( get_option( 'woodle_version' ) != DC_WOODLE_PLUGIN_VERSION || get_option( 'woodle_db_version' ) != DC_WOODLE_DB_VERSION ) {
 			self::install();
 			do_action( 'woodle_updated' );
 		}
@@ -43,7 +43,7 @@ class DC_Woodle_Install {
 	 */
 	public static function create_options() {
 		update_option( 'woodle_version', DC_WOODLE_PLUGIN_VERSION );
-		update_option( 'woodle_db_version', DC_WOODLE_PLUGIN_VERSION );
+		update_option( 'woodle_db_version', DC_WOODLE_DB_VERSION );
 		
 		update_option( 'woocommerce_registration_generate_username', 'no' );
 		update_option( 'woocommerce_enable_guest_checkout', 'no' );

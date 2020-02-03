@@ -10,15 +10,14 @@ class DC_Woodle_Emails_New_Enrollment extends WC_Email {
 
     global $DC_Woodle;
 
-    $this->id 				= 'new_moodle_enrollment';
-    $this->title 			= __( 'New Moodle Enrollment', $DC_Woodle->text_domain );
+    $this->id 						= 'new_moodle_enrollment';
+    $this->title 					= __( 'New Moodle Enrollment', $DC_Woodle->text_domain );
     $this->description		= __( 'This is a notification email sent to the enrollees for new enrollment.', $DC_Woodle->text_domain );
-
-    $this->heading 			= __( 'New Enrollment', $DC_Woodle->text_domain );
+    $this->customer_email = true;
+    $this->heading 				= __( 'New Enrollment', $DC_Woodle->text_domain );
     $this->subject      	= __( '{site_title} New Enrollment', $DC_Woodle->text_domain );
-
     $this->template_html 	= 'emails/new-enrollment.php';
-    $this->template_plain 	= 'emails/plain/new-enrollment.php';
+    $this->template_plain = 'emails/plain/new-enrollment.php';
 
     // Call parent constructor
     parent::__construct();
@@ -53,7 +52,8 @@ class DC_Woodle_Emails_New_Enrollment extends WC_Email {
     global $DC_Woodle;
 		ob_start();
 		$DC_Woodle->template->get_template( $this->template_html, array(
-			'enrollment'    => $this->object,
+			'enrollments'    => $this->object,
+      'user_data' => $this->recipient,
 			'email_heading' => $this->get_heading(),
 			'sent_to_admin' => false,
 			'plain_text'    => false
@@ -71,7 +71,7 @@ class DC_Woodle_Emails_New_Enrollment extends WC_Email {
   	global $DC_Woodle;
     ob_start();
     $DC_Woodle->template->get_template( $this->template_plain, array(
-      'enrollment'    => $this->object,
+      'enrollments'    => $this->object,
       'email_heading' => $this->get_heading(),
       'sent_to_admin' => false,
       'plain_text'    => true

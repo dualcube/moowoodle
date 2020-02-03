@@ -4,6 +4,8 @@ class DC_Woodle_Sync {
 	
 	public $has_error;
 	
+	public $error_msg;
+	
 	public function __construct() {
 		add_action( 'wp_loaded', array( &$this, 'sync' ) );
 	}
@@ -39,23 +41,32 @@ class DC_Woodle_Sync {
 			return;
 		}
 		
-		if( empty( woodle_get_settings( 'access_url', 'dc_woodle_general' ) ) ) {
-			woodle_add_notice( '<strong>Synchronization can not be done.</strong> Moodle access url is not set. <a href="'. admin_url( 'admin.php?page=dc-woodle-setting-admin' ) .'"> Set it now &nbsp;&raquo;</a>' );
+		$access_url = woodle_get_settings( 'access_url', 'dc_woodle_general' );
+		
+		if( empty( $access_url ) ) {
+			woodle_add_notice( '<strong>Synchronization can not be done.</strong> Moodle access url is not set. 
+													<a href="'. admin_url( 'admin.php?page=dc-woodle-setting-admin' ) .'"> Set it now &nbsp;&raquo;</a>' );
 			return;
 		}
 		
-		if( empty( woodle_get_settings( 'ws_token', 'dc_woodle_general' ) ) ) {
-			woodle_add_notice( '<strong>Synchronization can not be done.</strong> Moodle web service token is not set.<a href="'. admin_url( 'admin.php?page=dc-woodle-setting-admin' ) .'"> Set it now &nbsp;&raquo;</a>' );
+		$ws_token = woodle_get_settings( 'ws_token', 'dc_woodle_general' );
+		
+		if( empty( $ws_token ) ) {
+			woodle_add_notice( '<strong>Synchronization can not be done.</strong> Moodle web service token is not set.
+													<a href="'. admin_url( 'admin.php?page=dc-woodle-setting-admin' ) .'"> Set it now &nbsp;&raquo;</a>' );
 			return;
 		}
 		
     $this->sync_categories();
-    $this->sync_courses();
     
-    if( ! $this->has_error ) {
-			woodle_add_notice( '<strong>Synchronization is complete.</strong>', 'updated' );
+    if( ! $DC_Woodle->ws_has_error ) {
+    	$this->sync_courses();
+    }
+    
+    if( ! $DC_Woodle->ws_has_error ) {
+			woodle_add_notice( $DC_Woodle->ws_error_msg, 'updated' );
 		} else {
-			woodle_add_notice( '<strong>Error ! Synchronization cannot be done.</strong>', 'error' );
+			woodle_add_notice( $DC_Woodle->ws_error_msg, 'error' );
 		}
 	}
 	
@@ -66,11 +77,11 @@ class DC_Woodle_Sync {
 	 * @return void
 	 */
 	private function sync_categories() {
-		global $wpdb, $DC_Woodle;
+		global $DC_Woodle;
 		
 		$categories = woodle_moodle_core_function_callback( $DC_Woodle->moodle_core_functions['get_categories'] );
 		
-		if( ! $this->has_error ) {
+		if( ! $DC_Woodle->ws_has_error ) {
 			$this->update_categories( $categories, 'course_cat', 'woodle_term' );
 			$this->update_categories( $categories, 'product_cat', 'woocommerce_term' );
 		}
@@ -95,8 +106,10 @@ class DC_Woodle_Sync {
 			foreach( $categories as $category ) {
 				$term_id = woodle_get_term_by_moodle_id( $category['id'], $taxonomy, $meta_key );
 				if( ! $term_id ) {
-					$term = wp_insert_term( $category['name'], $taxonomy,
-																	array( 'description' =>  $category['description'], 'slug' => "{$category['name']} {$category['id']}" ) 
+					$name = $category['name'];
+					$description = $category['description'];
+					$term = wp_insert_term( $name, $taxonomy,
+																	array( 'description' =>  $description, 'slug' => "{$name} {$category['id']}" ) 
 																);
 					if( ! is_wp_error( $term ) ) {
 						apply_filters( "woodle_add_{$meta_key}_meta", $term['term_id'], '_category_id', $category['id'], false );
@@ -138,14 +151,12 @@ class DC_Woodle_Sync {
 	 * @return void
 	 */
 	private function sync_courses() {
-		global $DC_Woodle, $wpdb;
+		global $DC_Woodle;
 		
 		$courses = woodle_moodle_core_function_callback( $DC_Woodle->moodle_core_functions['get_courses'] );
 		
-		if( ! $this->has_error ) {
-			$this->update_posts( $courses, 'course', 'course_cat', 'woodle_term' );
-			$this->update_posts( $courses, 'product', 'product_cat', 'woocommerce_term' );
-		}
+		$this->update_posts( $courses, 'course', 'course_cat', 'woodle_term' );
+		$this->update_posts( $courses, 'product', 'product_cat', 'woocommerce_term' );
 	}
 	
 	/**
@@ -185,19 +196,21 @@ class DC_Woodle_Sync {
 											 'post_content'   => $course['summary'],
 											 'post_status'    => $post_status
 										 );
-				
+				$visibility = '';
+
 				if( $post_id ) {
 					$args['ID'] = $post_id;					
 					$post_id = wp_update_post( $args );
 					
 					if( $post_id ) {
 						if( $post_type != 'product' ) {
-							update_post_meta( $post_id, '_course_short_name', $course['shortname'] );
+							$shortname = $course['shortname'];
+							update_post_meta( $post_id, '_course_short_name', $shortname );
 							update_post_meta( $post_id, '_course_idnumber', $course['idnumber'] );
 						}
 						
 						update_post_meta( $post_id, '_category_id', (int) $course['categoryid'] );
-						update_post_meta( $post_id, '_visibility', ( $course['visible'] ) ? 'visible' : 'hidden' );
+						update_post_meta( $post_id, '_visibility', $visibility = ( $course['visible'] ) ? 'visible' : 'hidden' );
 						
 						if( $post_type == 'product' ) {
 							update_post_meta( $post_id, '_virtual', 'yes' );
@@ -216,7 +229,7 @@ class DC_Woodle_Sync {
 						
 						add_post_meta( $post_id, '_course_id', (int) $course['id'] );
 						add_post_meta( $post_id, '_category_id', (int) $course['categoryid'] );
-						add_post_meta( $post_id, '_visibility', ( $course['visible'] ) ? 'visible' : 'hidden' );
+						add_post_meta( $post_id, '_visibility', $visibility = ( $course['visible'] ) ? 'visible' : 'hidden' );
 						
 						if( $post_type == 'product' ) {
 							add_post_meta( $post_id, '_sku', 'course-' . $course['id']);
@@ -225,6 +238,7 @@ class DC_Woodle_Sync {
 						}
 					}
 				}
+
 				$course_ids[$course['id']] = $course['categoryid'];
 			}
 		}

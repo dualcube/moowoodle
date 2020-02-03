@@ -25,7 +25,7 @@ class DC_Woodle_Settings_Sync {
     $settings_tab_options = array("tab" => "{$this->tab}",
                                   "ref" => &$this,
                                   "sections" => array("sync_section" => array("title" => "Synchronise Courses And Course Categories From Moodle", // Another section
-                                                                                         "fields" => array("sync_now" => array('title' => __('Synchronise now ?', $DC_Woodle->text_domain), 'type' => 'radio', 'id' => 'sync_now', 'label_for' => 'sync_now', 'name' => 'sync_now', 'options' => array('yes' => 'Yes', 'no' => 'No'), 'dfvalue' => 'no', 'desc' => __('Select yes to sync courses and course categories from Moodle.', $DC_Woodle->text_domain)), // Radio
+                                  "fields" => array("sync_now" => array('title' => __('Synchronise now ?', $DC_Woodle->text_domain), 'type' => 'radio', 'id' => 'sync_now', 'label_for' => 'sync_now', 'name' => 'sync_now', 'options' => array('yes' => 'Yes', 'no' => 'No'), 'dfvalue' => 'no', 'desc' => __('Select yes to sync courses and course categories from Moodle.', $DC_Woodle->text_domain)), // Radio
                                                                                          	 								 "action" => array('title' => '', 'type' => 'hidden', 'id' => 'action', 'name' => 'action', 'value' => 'sync_courses_and_categories'), // Hidden
                                                                                                           )
                                                                                          )

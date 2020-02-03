@@ -55,5 +55,6 @@ class DC_Woodle_Library {
 	  
 	  wp_enqueue_script('qtip_js', $this->jquery_lib_url . 'qtip/qtip.js', array('jquery'), $DC_Woodle->version, true);
 		wp_enqueue_style('qtip_css',  $this->jquery_lib_url . 'qtip/qtip.css', array(), $DC_Woodle->version);
+
 	}
 }

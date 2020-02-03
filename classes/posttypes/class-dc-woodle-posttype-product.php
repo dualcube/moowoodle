@@ -46,7 +46,7 @@ class DC_Woodle_Posttype_Product {
 						$course_category_path = get_woodle_term_meta( $term_id, '_category_path', true );
 						$category_ids = explode( '/', $course_category_path );
 						$course_path = array();
-						$x = array();
+						
 						if( ! empty( $category_ids ) ) {
 							foreach( $category_ids as $cat_id ) {
 								if( ! empty( $cat_id ) ) {
@@ -98,11 +98,15 @@ class DC_Woodle_Posttype_Product {
 			if( $product_id == $post_id || ! $product_id ) {
 				$course_id = woodle_get_post_by_moodle_id( $_POST['course_id'], 'course' );
 				if( $_POST['course_id'] == 0 ) {
+					$_course_id = get_post_meta( $post_id, '_course_id', true );
+					$_visibility = get_post_meta( $post_id, '_visibility', true );
+					$_visibility = ( empty( $_course_id ) ) ? $_visibility : 'hidden';
+					
 					delete_post_meta( $post_id, '_course_id' );
 					delete_post_meta( $post_id, '_category_id' );
-					update_post_meta( $post_id, '_visibility', 'hidden' );
+					update_post_meta( $post_id, '_visibility', $_visibility );
 					delete_post_meta( $post_id, '_virtual' );
-					delete_post_meta( $post_id, '_sku');
+					delete_post_meta( $post_id, '_sku' );
 					return;
 				}
 				
@@ -118,7 +122,6 @@ class DC_Woodle_Posttype_Product {
 					update_post_meta( $post_id, '_course_id', (int) $_POST['course_id'] );
 					update_post_meta( $post_id, '_category_id', (int) $categoryid );
 					update_post_meta( $post_id, '_visibility', $visibility );
-					update_post_meta( $post_id, '_virtual', 'yes' );
 					update_post_meta( $post_id, '_sku', 'course-' . $_POST['course_id'] );
 					update_post_meta( $post_id, '_sold_individually', 'yes' );
 				}

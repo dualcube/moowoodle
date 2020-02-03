@@ -36,6 +36,10 @@ class DC_Woodle {
 	public $emails;
 	
 	public $moodle_core_functions;
+	
+	public $ws_has_error;
+	
+	public $ws_error_msg;
 
 	public function __construct($file) {
 
@@ -45,7 +49,6 @@ class DC_Woodle {
 		$this->token = DC_WOODLE_PLUGIN_TOKEN;
 		$this->text_domain = DC_WOODLE_TEXT_DOMAIN;
 		$this->version = DC_WOODLE_PLUGIN_VERSION;
-		
 		
 		add_action('init', array(&$this, 'init'));
 	}
@@ -89,6 +92,9 @@ class DC_Woodle {
 		// init emails
 		$this->load_class('emails');
 		$this->emails = new DC_Woodle_Emails();
+
+		$this->load_class('shortcode');
+		$this->shortcode = new DC_Woodle_shortcode();
 
 		// DC Wp Fields
 		$this->dc_wp_fields = $this->library->load_wp_fields();
