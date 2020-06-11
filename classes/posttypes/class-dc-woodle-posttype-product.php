@@ -16,6 +16,8 @@ class DC_Woodle_Posttype_Product {
   	global $DC_Woodle;
   	
     add_meta_box( 'select_courses', __( 'Related Course', $DC_Woodle->text_domain ), array( &$this, 'add_product_meta_boxes' ), 'product', 'normal' );
+
+    add_meta_box( 'moowoodle_cources_ids', __( 'Moowoodle Enrolment', $DC_Woodle->text_domain ), array( &$this, 'moowoodle_product_meta_box' ), 'product', 'normal' );
   }
 	
   /**
@@ -78,6 +80,27 @@ class DC_Woodle_Posttype_Product {
 		</p>
     <?php
 	}
+
+	public function moowoodle_product_meta_box() {
+		global $DC_Woodle, $post;
+		$product_course_id = !empty(get_post_meta($post->ID, 'product_course_id', true)) ? get_post_meta($post->ID, 'product_course_id', true) : '';
+		$cohert_id = !empty(get_post_meta($post->ID, '_cohert_id', true)) ? get_post_meta($post->ID, '_cohert_id', true) : '';
+		$group_id = !empty(get_post_meta($post->ID, '_group_id', true)) ? get_post_meta($post->ID, '_group_id', true) : '';
+		?>
+		<p>
+		<label for="product_course_id"><?php _e( 'Course ID', $DC_Woodle->text_domain ); ?></label>
+		  <input type="text" id="product_course_id" name="product_course_id" value="<?php echo $product_course_id; ?>">
+		</p>
+		<p>
+		<label for="cohert_id"><?php _e( 'Cohort ID', $DC_Woodle->text_domain ); ?></label>
+		  <input type="text" id="cohert_id" name="cohert_id" value="<?php echo $cohert_id; ?>">
+		</p>
+		<p>
+		<label for="group_id"><?php _e( 'Group ID', $DC_Woodle->text_domain ); ?></label>
+		  <input type="text" id="group_id" name="group_id" value="<?php echo $group_id; ?>">
+		</p>
+		<?php
+	}
 	
 	/**
    * Save product meta.
@@ -97,6 +120,9 @@ class DC_Woodle_Posttype_Product {
 			
 			if( $product_id == $post_id || ! $product_id ) {
 				$course_id = woodle_get_post_by_moodle_id( $_POST['course_id'], 'course' );
+				$product_course_id = $_POST['product_course_id'];
+				$cohert_id = $_POST['cohert_id'];
+				$group_id = $_POST['group_id'];
 				if( $_POST['course_id'] == 0 ) {
 					$_course_id = get_post_meta( $post_id, '_course_id', true );
 					$_visibility = get_post_meta( $post_id, '_visibility', true );
@@ -107,6 +133,9 @@ class DC_Woodle_Posttype_Product {
 					update_post_meta( $post_id, '_visibility', $_visibility );
 					delete_post_meta( $post_id, '_virtual' );
 					delete_post_meta( $post_id, '_sku' );
+					delete_post_meta( $post_id, 'product_course_id' );
+					delete_post_meta( $post_id, '_cohert_id' );
+					delete_post_meta( $post_id, '_group_id' );
 					return;
 				}
 				
@@ -124,6 +153,10 @@ class DC_Woodle_Posttype_Product {
 					update_post_meta( $post_id, '_visibility', $visibility );
 					update_post_meta( $post_id, '_sku', 'course-' . $_POST['course_id'] );
 					update_post_meta( $post_id, '_sold_individually', 'yes' );
+					update_post_meta( $post_id, 'product_course_id', $product_course_id );
+					update_post_meta( $post_id, '_cohert_id', $cohert_id );
+					update_post_meta( $post_id, '_group_id', $group_id ); 
+
 				}
 			}
 		}

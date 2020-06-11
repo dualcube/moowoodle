@@ -4,7 +4,8 @@ Plugin Name: moowoodle
 Plugin URI: http://techmonastic.com/
 Description: The MooWoodle plugin is an extention of WooCommerce that acts as a bridge between WordPress/Woocommerce and Moodle.
 Author: Down Town
-Version: 2.0
+Version: 2.3
+Tested up to: 5.4.1
 Author URI: http://techmonastic.com/
 */
 

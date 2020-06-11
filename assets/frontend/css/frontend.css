@@ -1,0 +1,25 @@
+.instraction-tri {
+    border: 2px solid #ccc !important;
+    width: max-content !important;
+    padding: 10px !important;
+}
+.button-tri {
+    background-color: #eeeeee !important;
+    border-color: #eeeeee !important;
+    color: #333333 !important;
+}
+.button-tri a{
+    text-decoration: none !important;
+}
+.payment-tri {
+	background-color: #eeeeee !important;
+    border-color: #eeeeee !important;
+    color: #333333 !important;
+    padding: 10px 5px !important;
+    border-radius: 5px !important;
+    width: max-content !important;
+}
+/*
+css
+documentation - shortcode - page name url -> my-courses - [enroll]
+*/

@@ -32,7 +32,8 @@ public function settings_page_init() {
                                                                                                            )
     ), 
     "wc_settings_section" => array("title" => "WooCommerce Product Settings", // Another section
-    "fields" => array("create_wc_product" => array('title' => __('Create products from courses', $DC_Woodle->text_domain), 'type' => 'checkbox', 'id' => 'create_wc_product', 'label_for' => 'create_wc_product', 'name' => 'create_wc_product', 'hints' => __('Checked to create products from moodle courses.', $DC_Woodle->text_domain), 'desc' => __('If checked products will created while syncing courses from moodle.', $DC_Woodle->text_domain), 'value' => 'yes')
+    "fields" => array("create_wc_product" => array('title' => __('Create products from courses', $DC_Woodle->text_domain), 'type' => 'checkbox', 'id' => 'create_wc_product', 'label_for' => 'create_wc_product', 'name' => 'create_wc_product', 'hints' => __('Checked to create products from moodle courses.', $DC_Woodle->text_domain), 'desc' => __('If checked products will created while syncing courses from moodle.', $DC_Woodle->text_domain), 'value' => 'yes'),
+     "wc_product_dates_display" => array('title' => __('Display start date and end date in shop page', $DC_Woodle->text_domain), 'type' => 'checkbox', 'id' => 'wc_product_dates_display', 'label_for' => 'wc_product_dates_display', 'name' => 'wc_product_dates_display', 'hints' => __('Checked to display dates in shop page under products.', $DC_Woodle->text_domain), 'desc' => __('If checked display start date and end date in shop page.', $DC_Woodle->text_domain),  'value' => 'yes')
 )
 ),
    
@@ -85,6 +86,8 @@ public function settings_page_init() {
     if( isset( $input['create_wc_product'] ) )
       $new_input['create_wc_product'] = $input['create_wc_product'];
 
+    if( isset( $input['wc_product_dates_display'] ) )
+      $new_input['wc_product_dates_display'] = $input['wc_product_dates_display'];
 
     if( isset( $input['update_existing_users'] ) )
       $new_input['update_existing_users'] = $input['update_existing_users'];

@@ -70,6 +70,7 @@ class DC_Woodle_Posttype_Course {
 	  														'hidden' => 'Hidden'
 	  													);
 	  switch( $column ) {
+	  	// trideep_courseid
 	    case 'courseid' :
 	      $id = get_post_meta( $post_id, '_course_id', true );
 	      echo $id;

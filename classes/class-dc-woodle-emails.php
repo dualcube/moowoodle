@@ -67,11 +67,12 @@ class DC_Woodle_Emails {
 					$post_product_id = $value->post_id;
 				}
 			}
-			$post_product_content = get_post( $post_product_id )->post_content;
-			$post_product_content = substr($post_product_content, 0, strpos($post_product_content, 'activity="0"]'));
+			$product_course_id = !empty(get_post_meta($post_product_id, 'product_course_id', true)) ? get_post_meta($post_product_id, 'product_course_id', true) : '';
+			$cohert_id = !empty(get_post_meta($post_product_id, '_cohert_id', true)) ? get_post_meta($post_product_id, '_cohert_id', true) : '';
+			$group_id = !empty(get_post_meta($post_product_id, '_group_id', true)) ? get_post_meta($post_product_id, '_group_id', true) : '';
 			
-			$enrollment_data['course_url'] = "{$post_product_content}";
-			
+			$enrollment_data['course_url'] = '[moowoodle cohort="'.$cohert_id.'" group="'.$group_id.'" course="'.$product_course_id.'" class="moowoodle" target="_self" authtext="" activity="0"]';
+			//$enrollment_data['userid'] = $enrolment['userid'];
 			$enrollment_data_arr[] = $enrollment_data;
 		}
 		$enrollment_datas['enrolments'] = $enrollment_data_arr;

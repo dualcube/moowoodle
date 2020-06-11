@@ -51,6 +51,7 @@ class DC_Woodle {
 		$this->version = DC_WOODLE_PLUGIN_VERSION;
 		
 		add_action('init', array(&$this, 'init'));
+
 	}
 	
 	/**

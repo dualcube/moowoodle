@@ -29,8 +29,8 @@ class DC_Woodle_Settings {
     global $DC_Woodle;
     
     add_menu_page(
-        __('Synchronise', $DC_Woodle->text_domain), 
-        __('Synchronise', $DC_Woodle->text_domain), 
+        __('MooWoodle', $DC_Woodle->text_domain), 
+        __('MooWoodle', $DC_Woodle->text_domain), 
         'manage_options', 
         'dc-woodle-sync-courses', 
         array( $this, 'create_dc_woodle_sync' ),

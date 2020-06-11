@@ -3,84 +3,35 @@ Contributors: downtown2020, trideep_das_modak
 Tags: wordpress, moodle, wooCommerce, wordpress-moodle, wooCommerce-moodle
 Donate link: https://wc-marketplace.com
 Requires at least: 4.1.1
-Tested up to: 7.1.1
+Tested up to: 5.4
 Requires at least PHP: 5.6
-Stable tag: 2.0
+Stable tag: 2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 The MooWoodle plugin is an extention of WooCommerce that acts as a bridge between WordPress/Woocommerce and Moodle.
+
+
+== This plugin now supports Bulk Purchase ==
 
 == Description ==
 The MooWoodle plugin is an extention of WooCommerce that acts as a bridge between WordPress/Woocommerce and Moodle. It fetches all the courses from your Moodle instance and makes them available for sale, which may be bought by users through WooCommerce. It reduces your effort by synchronising your LMS site with your online store. And when someone purchases a course from the store he/she is automatically gets registered for the course in the LMS site. More over this plugin works with WooCommerce subscription plugin too.
 
 * For details documentation: [Click Here](https://dualcube.com/installation-guide-for-moowoodle/)
 
+For a complete instruction on the MooWoodle set-up, [Click Here](https://dualcube.com/docs/moowoodle-set-up-guide/#3-toc-title)
+
+
 = Compatibility =
 
 * Compatible with the latest version of WordPress, WooCommerce, Moodle 
-* WooCommerce upto 3.8.1
-* WordPress upto 5.3.2
-* Moodle upto 3.8.1
+* WooCommerce upto 4.0.1
+* WordPress upto 5.4
+* Moodle upto 3.8.3
 * Multilingual Support is included with the plugin and is fully compatible with WPML.
 
-= Configurable =
-WP site setup:
-
-To set up the plugin: Synchronise > Settings >
-1. Fill up `Access URL` (site url of your moodle site) and `Webservice Token` (generated from your moodle site; a more detailed guide is given below).
-
-2. Check `Create Products From Courses` checkbox if you want to create product from courses during course sync; otherwise leave it unchecked. In that case the courses will be saved in wordpress site and you can manually add products for courses later.
-
-3. Check `Update user info with order info` checkbox to update user info with new order info.
-
-4. By default, Yes to `Update existing users` for Moodle will update the profile fields in Moodle for existing users.
-
-5. Click on `Save Changes` button.
-
-To Sync the plugin: Synchronise > Synchronise >
-1. Click Yes to `Synchronise now` for Synchronise all moodle courses to woocommerce product.
-
-2. Click on `Synchronise` button.
-
-To Setup products: Product > Course Name >
-1. Click on `Edit` button.
-
-2. Click the `Moowoodle` button on Product Description.
-
-* For paid product, please do this:
-3. Change all feilds like `cohort` , `group` , `course` according to your moodle settings. 
-Ex: [moowoodle cohort="cohortid" group="groupid" course="courseid" class="moowoodle" target="_self" authtext="" activity="0"][/moowoodle]
-
-* For free product, please do this:
-3. Change all feilds like `cohort` , `group` , `course` according to your moodle settings and also write something in the shortcode that appears on the `view product` page. 
-Ex: [moowoodle cohort="cohortid" group="groupid" course="courseid" class="moowoodle" target="_self" authtext="" activity="0"]Click to enrolled and Visit Course[/moowoodle]
-
-Note: If your product is a PAID product then never ever write anything in the shortcode. If you want to add some description about your product write all the stuff below this `[moowoodle][/moowoodle]` shortcode, otherwise this shortcode will not work.
-
-*Select woocommerce email type
-Woocommerce > Settings > Emails > New Moodle Enrollment > Email type > HTML
-
-Moodle site set up:
-Create and setup webservice:
-1. Administration > Site administration > Advanced features > Enable webservice > Save changes.
-
-2. Administration > Site administration > Plugins > Manage protocols > Enable `REST protocol`.
-
-3. Administration > Site administration > Plugins > External services > Add > Give a `Name` and chack `Enabled` > Add service > Add functions > Add the following functions to your webservice:
-	i. core_user_create_users: Create users
-	ii. core_user_get_users: Search for users matching the parameters
-	iii. core_user_update_users: Update users
-	iv. core_course_get_courses: Return course details
-	v. core_course_get_categories: Return category details
-	vi. enrol_manual_enrol_users: Manual enrol users
-
-4. Administration > Site administration > Plugins > Manage tokens > Add > Select user (Admin) from users\' list > Select your service form services\' list > Save changes.
-
-Disable password policy:
-The password policy settings needed to be disabled since the user password will be generated in WordPress end and will not match the password policy of Moodle. The steps to disable password policy are given below.
-
-1. Administration > Site administration > Security > Site policies > Uncheck `Password policy` > Do not forget to save changes.
+== Configurable ==
+*For a complete instruction on the MooWoodle set-up, [Click Here](https://dualcube.com/docs/moowoodle-set-up-guide/#3-toc-title)
 
 == Other Moodle Products From Dualcube ==
 After years of not getting it just right, our excellent design and development team combined craft, care, love and experience to deliver two impeccable Moodle themes i.e "Nalanda" and "University" , blend with a smooth and rich UI.
@@ -108,13 +59,32 @@ It was mostly our clients who inspired us for this venture. Their constant feedb
 All we want is love. We are extremely responsive about support requests - so if you face a problem or find any bugs, shoot us a mail or post it in the support forum, and we will respond within 24 hours(during business days). If you get the impulse to rate the plugin low because it is not working as it should, please do wait for our response because the root cause of the problem may be something else. 
 
 == Installation ==
-NOTE: Woo-Moodle bridge plugin is a extention of WooCommerce, so the WooCommerce plugin must be installed and activated in your WordPress site for this plugin to work properly.
+NOTE: MooWoodle plugin is a extention of WooCommerce, so the WooCommerce plugin must be installed and activated in your WordPress site for this plugin to work properly.
 
 1. Download and install MooWoodle plugin using the built-in WordPress plugin installer.
 If you download MooWoodle plugin manually, make sure it is uploaded to `/wp-content/plugins/moowoodle/`. Or follow the steps below:
 Plugins > Add new > Upload plugin > Upload moowoodle.zip > Install Now.
 
 2. Activate the plugin through the \'Plugins\' menu in WordPress.
+
+
+
+== Workflow ==
+
+After the users receive the order-complete email, they need to click the link of the course or courses that they bought. 
+It will then create and enroll the users in their courses.
+They can then access the courses using the username and password sent via email.
+
+Alternatively, When someone buys a course, after the payment, he/she will be directed to a thank you page which normally contains the link of the my courses page.
+
+On this page you will have all the courses listed that you have bought along with the links to the individual courses.
+
+You will need to click on the links/buttons to get enrolled.
+If you have bought a course and, the course is listed on that page but if the link is not displayed; then the payment is not verified yet. Once it is verified, the link will appear.
+
+Note: You will need to click the purchased courses' links/buttons in the email body or on my course page in order to get enrolled.Then only you can use the ID and password to access your course on Moodle site.
+
+
 
 == Frequently Asked Questions ==
 = Does this plugin work with newest WP version and also older versions? =
@@ -142,6 +112,27 @@ Yes, it works with WooCommerce Subscription.
 
 
 == Changelog ==
+
+= 2.4 =
+* Fix - Firstname and lastname data not store
+
+= 2.3 =
+* Added - Moodle 3.8.3 compatibility
+* Added - Moowoodle Enrolment box
+* Added - Sync through course and categories
+* Added - Display start and end date on shop page
+* Fix - Enrollment through administrative data
+
+= 2.2 =
+* Added - WooCommerce 4.0.1 compatibility added
+* Added - Moodle 3.8.2 compatibility added
+* Added - Show purchased courses' details on My Course page
+* Fix - Enrollment against course id
+* Fix - Some CSS 
+
+= 2.1 =
+* Added - Bulk Purchase 
+
 = 2.0 =
 * Added - WooCommerce 3.8 compatibility added
 * Added - Moodle 3.8 compatibility added
@@ -173,6 +164,12 @@ Yes, it works with WooCommerce Subscription.
 * Initial version
 
 == Upgrade Notice ==
+= 2.3 =
+
+= 2.2 =
+
+= 2.1 =
+
 = 2.0 =
 
 = 1.3.0 =

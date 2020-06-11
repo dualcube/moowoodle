@@ -25,8 +25,10 @@ class DC_Woodle_Settings_Sync {
     $settings_tab_options = array("tab" => "{$this->tab}",
                                   "ref" => &$this,
                                   "sections" => array("sync_section" => array("title" => "Synchronise Courses And Course Categories From Moodle", // Another section
-                                  "fields" => array("sync_now" => array('title' => __('Synchronise now ?', $DC_Woodle->text_domain), 'type' => 'radio', 'id' => 'sync_now', 'label_for' => 'sync_now', 'name' => 'sync_now', 'options' => array('yes' => 'Yes', 'no' => 'No'), 'dfvalue' => 'no', 'desc' => __('Select yes to sync courses and course categories from Moodle.', $DC_Woodle->text_domain)), // Radio
-                                                                                         	 								 "action" => array('title' => '', 'type' => 'hidden', 'id' => 'action', 'name' => 'action', 'value' => 'sync_courses_and_categories'), // Hidden
+                                  "fields" => array("sync_now" => array('title' => __('Synchronise now ?', $DC_Woodle->text_domain), 'type' => 'radio', 'id' => 'sync_now', 'label_for' => 'sync_now', 'name' => 'sync_now', 'options' => array('yes' => 'Yes', 'no' => 'No'), 'dfvalue' => 'no', 'desc' => __('Select yes to sync courses and course categories from Moodle.', $DC_Woodle->text_domain)),// Radio
+                                  "sync_course" => array('title' => __('Synchronise by Courses ?', $DC_Woodle->text_domain), 'type' => 'radio', 'id' => 'sync_course', 'label_for' => 'sync_course', 'name' => 'sync_course', 'options' => array('yes' => 'Yes', 'no' => 'No'), 'dfvalue' => 'yes'),
+                                    "sync_category" => array('title' => __('Synchronise by Categories ?', $DC_Woodle->text_domain), 'type' => 'radio', 'id' => 'sync_category', 'label_for' => 'sync_category', 'name' => 'sync_category', 'options' => array('yes' => 'Yes', 'no' => 'No'), 'dfvalue' => 'yes'), 
+                                    "action" => array('title' => '', 'type' => 'hidden', 'id' => 'action', 'name' => 'action', 'value' => 'sync_courses_and_categories'), // Hidden
                                                                                                           )
                                                                                          )
                                                       )

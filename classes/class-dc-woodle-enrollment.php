@@ -7,6 +7,10 @@ class DC_Woodle_Enrollment {
 	public function __construct() {
 		add_action( 'woocommerce_order_status_completed', array( &$this, 'process_order' ), 10, 1 );		
 		add_action( 'woocommerce_subscription_status_updated', array( &$this, 'update_course_access' ), 10, 3 );
+		add_action( 'wp_enqueue_scripts', array( &$this, 'frontend_styles' ) );
+		add_action( 'woocommerce_thankyou', array( &$this, 'enrollment_modified_details' ) );
+		add_shortcode( 'enroll', array( &$this, 'purchashtri' ) );
+		add_action('woocommerce_after_shop_loop_item_title', array( &$this, 'add_dates_with_product' ));
 	}
 	
 	/**
@@ -52,7 +56,7 @@ class DC_Woodle_Enrollment {
 		$wc_order = $this->wc_order;		
 		$user_id = $wc_order->get_user_id();
 		add_user_meta( $user_id, '_moodle_user_order_id', $wc_order->get_id() );
-		$billing_email = $wc_order->get_billing_email();
+		$billing_email = $wc_order->get_billing_email(); 
 		$moodle_user_id = 0;
 		
 		if( $user_id ) {
@@ -287,40 +291,72 @@ class DC_Woodle_Enrollment {
 		$moodle_user_id = $this->get_moodle_user_id( $create_moodle_user );
 		$this->enrol_moodle_user( $moodle_user_id, $suspend );
 	}
+	
+	public function frontend_styles() {
+	    global $DC_Woodle;
+	    wp_enqueue_style( 'admin_css1',  $DC_Woodle->plugin_url.'assets/frontend/css/frontend.css', array(), $DC_Woodle->version );
+	}
 
 	public function moowoodle_generate_hyperlink($cohort,$group,$course,$activity = 0) {
-	// needs authentication; ensure userinfo globals are populated
-	global $DC_Woodle;
+		// needs authentication; ensure userinfo globals are populated
+		global $DC_Woodle, $current_user;
 
-	$wc_order = $this->wc_order;		
-	$user_id = $wc_order->get_user_id();
-	$order_user = get_user_by('id', $user_id);
-	$dc_dc_woodle_general_settings_name = get_option( 'dc_dc_woodle_general_settings_name', true );
+		$wc_order = $DC_Woodle->enrollment->wc_order;
+		if (isset($wc_order)) {
+			$user_id = $wc_order->get_user_id();
+			$order_user = get_user_by( 'id', $user_id );
+			$order_user_meta = get_user_meta($user_id);
+		} else {
+			$order_user = $current_user;
+			$order_user_meta = get_user_meta($current_user->data->ID);
+		}
 
-    wp_get_current_user();
+		$order_user_firstname = $order_user->data->user_firstname;
+		if (empty($order_user_firstname)) {
+			$order_user_firstname = $order_user_meta['first_name'][0];
+		}
 
-    $enc = array(
-		"offset" => rand(1234,5678),						// just some junk data to mix into the encryption
-		"stamp" => time(),									// unix timestamp so we can check that the link isn't expired
-		"firstname" => $order_user->user_firstname,		// first name
-		"lastname" => $order_user->user_lastname,			// last name
-		"email" => $order_user->user_email,				// email
-		"username" => $order_user->user_login,			// username
-		// "passwordhash" => $order_user->user_pass,			// hash of password (we don't know/care about the raw password)
-		"passwordhash" => '1Admin@23',
-		"idnumber" => $order_user->ID,					// int id of user in this db (for user matching on services, etc)
-		"cohort" => $cohort,								// string containing cohort to enrol this user into
-		"group" => $group,									// string containing group to enrol this user into
-		"course" => $course,								// string containing course id, optional
-		"updatable" => $dc_dc_woodle_general_settings_name['update_existing_users'],								// if user profile fields can be updated in moodle
-		"activity" => $activity						// index of first [visible] activity to go to, if auto-open is enabled in moodle
-	);
+		$order_user_lastname = $order_user->data->user_lastname;
+		if (empty($order_user_lastname)) {
+			$order_user_lastname = $order_user_meta['last_name'][0];
+		}
 
-	// encode array as querystring
-	$details = http_build_query($enc);
+		$order_user_email = $order_user->data->user_email;
+		if (empty($order_user_email)) {
+			$order_user_email = $order_user_meta['billing_email'][0];
+		}
 
-	return rtrim($dc_dc_woodle_general_settings_name['access_url'],"/").DC_WOODLE_MOODLE_PLUGIN_URL.$this->encrypt_string($details, $dc_dc_woodle_general_settings_name['ws_token']);
-}
+		$order_user_username = $order_user->data->user_login;
+		if (empty($order_user_username)) {
+			$order_user_username = $order_user_meta['nickname'][0];
+		}
+		
+		$dc_dc_woodle_general_settings_name = get_option( 'dc_dc_woodle_general_settings_name', true );
+
+	    wp_get_current_user();
+
+	    $enc = array(
+			"offset" => rand(1234,5678),						// just some junk data to mix into the encryption
+			"stamp" => time(),									// unix timestamp so we can check that the link isn't expired
+			"firstname" => $order_user_firstname,		// first name
+			"lastname" => $order_user_lastname,			// last name
+			"email" => $order_user_email,				// email
+			"username" => $order_user_username,			// username
+			// "passwordhash" => $order_user->user_pass,			// hash of password (we don't know/care about the raw password)
+			"passwordhash" => '1Admin@23',
+			"idnumber" => $order_user->data->ID,					// int id of user in this db (for user matching on services, etc)
+			"cohort" => $cohort,								// string containing cohort to enrol this user into
+			"group" => $group,									// string containing group to enrol this user into
+			"course" => $course,								// string containing course id, optional
+			"updatable" => $dc_dc_woodle_general_settings_name['update_existing_users'],								// if user profile fields can be updated in moodle
+			"activity" => $activity						// index of first [visible] activity to go to, if auto-open is enabled in moodle
+		);
+
+		// encode array as querystring
+		$details = http_build_query($enc);
+
+		return rtrim($dc_dc_woodle_general_settings_name['access_url'],"/").DC_WOODLE_MOODLE_PLUGIN_URL.$this->encrypt_string($details, $dc_dc_woodle_general_settings_name['ws_token']);
+	}
 
 	/**
 	 * Given a string and key, return the encrypted version (openssl is "good enough" for this type of data, and comes with modern php)
@@ -346,6 +382,86 @@ class DC_Woodle_Enrollment {
 	    // Encode and compare it to original one
 	    if (base64_encode($decoded) != $string) return false;
 	    return true;
+	}
+
+	public function enrollment_modified_details( $order_id ) {
+		$order = wc_get_order( $order_id );
+		if( $order->get_status() == 'completed' ) {
+			// $my_courses_page = site_url().'/my-courses/';
+			echo 'Please check your mail or go to My Courses page to access your courses.';
+		} else {
+			echo 'Order status is :- '.$order->get_status().'<br>';
+		}
+	}
+
+	public function purchashtri() {
+		global $DC_Woodle, $wpdb;
+		$i = 0;
+		$customer = get_current_user_id();
+	    $customer_orders = get_posts(array(
+	        'numberposts' => -1,
+	        'meta_key' => '_customer_user',
+	        'orderby' => 'date',
+	        'order' => 'DESC',
+	        'meta_value' => $customer,
+	        'post_type' => 'shop_order',
+	        'post_status' => 'any'
+	    ));
+	    if(count($customer_orders)>0) {
+	    	?> <p> <?php
+				global $current_user;
+				echo '<div class="instraction-tri">';
+				echo 'Use this username and password for first time login to your moodle site.<br>';
+				echo 'Username : ' . $current_user->user_login . '<br>';
+				echo 'Password : 1Admin@23 <br>';
+				echo 'To enroll and access your course please click on the course link given below :<br>';
+				echo '</div>';
+			?> </p> <?php
+		    foreach($customer_orders as $customer_order) {
+		    $order = wc_get_order( $customer_order->ID );
+		    foreach( $order->get_items() as $enrolment ) {
+				$course_id = get_post_meta($enrolment->get_product_id(), '_course_id', true );
+				$post_id = woodle_get_post_by_moodle_id( $course_id, 'course' );
+				$course = get_post( $post_id );
+				$enrollment_data = array();
+				$enrollment_data['course_name'] = $course->post_title;
+
+				$course_id_meta = get_post_meta( $post_id , '_course_id', true );
+				$post_id_query = $wpdb->get_results("SELECT post_id FROM $wpdb->postmeta WHERE (meta_key = '_course_id' AND meta_value = '". $course_id_meta ."' )");
+				foreach ($post_id_query as $key => $value) {
+				if(	get_post_type( $value->post_id ) == 'product' ){
+				$post_product_id = $value->post_id;
+				}
+				}
+				
+				$product_course_id = !empty(get_post_meta($post_product_id, 'product_course_id', true)) ? get_post_meta($post_product_id, 'product_course_id', true) : '';
+				$cohert_id = !empty(get_post_meta($post_product_id, '_cohert_id', true)) ? get_post_meta($post_product_id, '_cohert_id', true) : '';
+				$group_id = !empty(get_post_meta($post_product_id, '_group_id', true)) ? get_post_meta($post_product_id, '_group_id', true) : ''; 
+
+				$enrollment_list[] = do_shortcode( '[moowoodle cohort="'.$cohert_id.'" group="'.$group_id.'" course="'.$product_course_id.'" class="moowoodle" target="_self" authtext="" activity="0"]' . $enrollment_data['course_name'] . '[/moowoodle]' );
+
+				if( $order->get_status() == 'completed' ) {
+					?> <p> <?php echo '<button type="button" class="button-tri">'.$enrollment_list[$i].'</button> <br>'; ?> </p> <?php 
+				} else {
+					?> <p> <?php echo '<div class="payment-tri">You can not access your course : '.$enrollment_data['course_name'].' ( Payment '.$order->get_status().' ) </div>'; ?> </p> <?php 
+				}
+				$i++;
+
+				$enrollment_data_arr[] = $enrollment_data;
+				}
+		    }
+		}
+	}
+
+	public function add_dates_with_product() {
+		global $product;
+		$satrtdate = get_post_meta($product->get_id(), '_course_startdate', true);
+		$enddate = get_post_meta($product->get_id(), '_course_enddate', true);
+		if(woodle_get_settings( 'wc_product_dates_display', 'dc_woodle_general' )) {
+			if($satrtdate) echo "Start Date : ".date('Y-m-d', $satrtdate);
+			print_r("<br>");
+			if($enddate) echo "End Date : ".date('Y-m-d', $enddate);
+		}
 	}
 
 }

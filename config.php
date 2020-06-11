@@ -4,9 +4,9 @@ define('DC_WOODLE_PLUGIN_TOKEN', 'dc-woodle');
 
 define('DC_WOODLE_TEXT_DOMAIN', 'woodle');
 
-define('DC_WOODLE_PLUGIN_VERSION', '2.0');
+define('DC_WOODLE_PLUGIN_VERSION', '2.4');
 
-define('DC_WOODLE_DB_VERSION', '2.0');
+define('DC_WOODLE_DB_VERSION', '2.4');
 
 define('DC_WOODLE_PLUGIN_SERVER_URL', 'http://plugins.dualcube.com');
 

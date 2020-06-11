@@ -1,16 +1,20 @@
 <?php
 class DC_Woodle_Admin {
   
-  public $settings;
+  public $settings, $dcw;
 
 	public function __construct() {
 		global $DC_Woodle;
 		
 		//admin script and style
-		add_action('admin_enqueue_scripts', array(&$this, 'enqueue_admin_script'));		
-		add_action('dc_woodle_dualcube_admin_footer', array(&$this, 'dualcube_admin_footer_for_dc_woodle'));
+		add_action('admin_enqueue_scripts', array( &$this, 'enqueue_admin_script'));		
+		add_action('dc_woodle_dualcube_admin_footer', array( &$this, 'dualcube_admin_footer_for_dc_woodle') );
 		
 		add_filter( 'plugin_action_links_' . DC_WOODLE_PLUGIN_BASENAME, array( &$this, 'add_action_links' ) );
+		
+		if( get_option( 'admin_notice_callback' ) != true ) {
+		    add_action( 'admin_notices', array( &$this, 'admin_notice_callback' ) );
+		}
 		
 		$this->load_class('settings');
 		$this->settings = new DC_Woodle_Settings();
@@ -21,7 +25,18 @@ class DC_Woodle_Admin {
 		
 		$links[] = '<a href="' . esc_url( get_admin_url(null, 'admin.php?page=dc-woodle-setting-admin') ) . '">' . __( 'Settings', $DC_Woodle->text_domain ) . '</a>';
 		return $links;
-  }
+  	}
+
+  	function admin_notice_callback() {
+  		$click_here = __( 'Click here', 'woodle' );
+  		?>
+  		<div id="message" class="error settings-error notice is-dismissible">
+  			<p><?php printf(__('You need to update your Moowoodle moodle plugin to the latest version (2020052700). Also this plugin needs to be installed on your Moodle site after installing this MooWoodle plugin to enable the course enrolment feature.&ndash; <a href="%s" target="_blank">%s</a>', 'woodle'
+  				) , esc_url('https://dualcube.com/product/moowoodle-enrolment/') , $click_here ); ?></p>
+		</div>
+		<?php
+		update_option( 'admin_notice_callback', true );
+  	}
 
 	/**
 	 * Load class file

@@ -8,7 +8,6 @@ class DC_Woodle_shortcode {
 
 		if ( current_user_can('edit_posts') &&  current_user_can('edit_pages') ) {
 		    add_filter('mce_external_plugins',array( &$this, 'moowoodle_add_plugin') );
-		    add_filter('mce_buttons',array( &$this ,'moowoodle_register_button') );
 		}
 
 
@@ -45,12 +44,6 @@ class DC_Woodle_shortcode {
 		return $url;
 	}
 
-
-
-	public function moowoodle_register_button($buttons) {
-	   array_push($buttons,"|","moowoodle"); // pipe = break on toolbar
-	   return $buttons;
-	}
 	public function moowoodle_add_plugin($plugin_array) {
 	   $plugin_array['moowoodle'] = plugin_dir_url(__FILE__).'moowoodle.js';
 	   return $plugin_array;

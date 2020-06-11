@@ -56,11 +56,13 @@ class DC_Woodle_Sync {
 													<a href="'. admin_url( 'admin.php?page=dc-woodle-setting-admin' ) .'"> Set it now &nbsp;&raquo;</a>' );
 			return;
 		}
-		
-    $this->sync_categories();
+
+	if($_POST['dc_dc_woodle_sync_settings_name']['sync_category'] == 'yes')
+    		$this->sync_categories();
     
     if( ! $DC_Woodle->ws_has_error ) {
-    	$this->sync_courses();
+    	if($_POST['dc_dc_woodle_sync_settings_name']['sync_course'] == 'yes')
+    		$this->sync_courses();
     }
     
     if( ! $DC_Woodle->ws_has_error ) {
@@ -191,7 +193,7 @@ class DC_Woodle_Sync {
 					$post_status = $product->post_status;
 				}
 				
-				$args = array( 'post_title'     => $course['fullname'],
+				$args = array( 'post_title' => $course['fullname'],
 											 'post_name'      => $course['shortname'],
 											 'post_content'   => $course['summary'],
 											 'post_status'    => $post_status
@@ -215,6 +217,8 @@ class DC_Woodle_Sync {
 						if( $post_type == 'product' ) {
 							update_post_meta( $post_id, '_virtual', 'yes' );
 							update_post_meta( $post_id, '_sold_individually', 'yes' );
+							update_post_meta( $post_id, '_course_startdate', $course['startdate'] );
+							update_post_meta( $post_id, '_course_enddate', $course['enddate'] );
 						}
 					}
 				}	else if( $post_type != 'product' || $create_wc_product == 'yes' ) {
