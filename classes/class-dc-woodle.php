@@ -15,7 +15,7 @@ class DC_Woodle {
 
 	public $admin;
 
-	public $frontend;
+	public $sync;
 
 	public $template;
 
@@ -23,23 +23,19 @@ class DC_Woodle {
 	
 	public $taxonomy;
 
+	public $shortcode;
+
 	private $file;
 	
 	public $settings;
 	
-	public $dc_wp_fields;
-	
 	public $enrollment;
-	
-	public $sync;
 	
 	public $emails;
 	
 	public $moodle_core_functions;
-	
+
 	public $ws_has_error;
-	
-	public $ws_error_msg;
 
 	public function __construct($file) {
 
@@ -50,7 +46,12 @@ class DC_Woodle {
 		$this->text_domain = DC_WOODLE_TEXT_DOMAIN;
 		$this->version = DC_WOODLE_PLUGIN_VERSION;
 		
-		add_action('init', array(&$this, 'init'));
+		// default general setting
+		$this->options_general_settings = get_option('dc_woodle_general_settings');
+		// synchronize settings
+		$this->options_synchronize_settings = get_option('dc_woodle_synchronize_settings');
+		
+		add_action('init', array(&$this, 'init'), 0);
 
 	}
 	
@@ -69,11 +70,12 @@ class DC_Woodle {
 		if (is_admin()) {
 			$this->load_class('admin');
 			$this->admin = new DC_Woodle_Admin();
-			
-			$this->load_class('sync');
-			$this->sync = new DC_Woodle_Sync();
 		}
-		
+
+		$this->load_class('sync');
+		$this->sync = new DC_Woodle_Sync();
+			
+				
 		// init templates
 		$this->load_class('template');
 		$this->template = new DC_Woodle_Template();
@@ -97,10 +99,8 @@ class DC_Woodle {
 		$this->load_class('shortcode');
 		$this->shortcode = new DC_Woodle_shortcode();
 
-		// DC Wp Fields
-		$this->dc_wp_fields = $this->library->load_wp_fields();
-		
 		$this->moodle_core_functions = woodle_get_moodle_core_functions();
+		
 	}
 	
 	/**
@@ -144,4 +144,5 @@ class DC_Woodle {
 			define("DONOTCACHEPAGE", "true");
 		// WP Super Cache constant
 	}
+
 }

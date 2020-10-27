@@ -4,8 +4,10 @@ class DC_Woodle_Posttype_Product {
 	public function __construct() {
 		add_action( 'add_meta_boxes', array( &$this, 'add_meta_boxes' ) );
 		add_action( 'save_post', array( &$this, 'save_product_callback' ) );
+		
 	}
-	
+
+		
 	/**
    * Creates custom meta box for product types.
    *
@@ -15,9 +17,9 @@ class DC_Woodle_Posttype_Product {
   public function add_meta_boxes() {
   	global $DC_Woodle;
   	
-    add_meta_box( 'select_courses', __( 'Related Course', $DC_Woodle->text_domain ), array( &$this, 'add_product_meta_boxes' ), 'product', 'normal' );
+    add_meta_box( 'select_courses', __( 'Related Course', 'dc-woodle' ), array( &$this, 'add_product_meta_boxes' ), 'product', 'normal' );
 
-    add_meta_box( 'moowoodle_cources_ids', __( 'Moowoodle Enrolment', $DC_Woodle->text_domain ), array( &$this, 'moowoodle_product_meta_box' ), 'product', 'normal' );
+    add_meta_box( 'moowoodle_cources_ids', __( 'Moowoodle Enrolment', 'dc-woodle' ), array( &$this, 'moowoodle_product_meta_box' ), 'product', 'normal' );
   }
 	
   /**
@@ -26,6 +28,8 @@ class DC_Woodle_Posttype_Product {
    * @access public
    * @return void
    */ 
+
+
 	public function add_product_meta_boxes() {
 		global $post, $DC_Woodle;
 		
@@ -36,9 +40,9 @@ class DC_Woodle_Posttype_Product {
 		$courses = woodle_get_posts( array( 'post_type' => 'course', 'post_status' => 'publish' ) );
 		?>
 		<p>
-			<label for="courses"><?php _e( 'Course Name', $DC_Woodle->text_domain ); ?></label>
+			<label for="courses"><?php _e( 'Course Name', 'dc-woodle' ); ?></label>
 			<select id="courses-select" name="course_id">
-				<option value="0"><?php _e( 'Select course...', $DC_Woodle->text_domain ); ?></option>
+				<option value="0"><?php _e( 'Select course...', 'dc-woodle' ); ?></option>
 				<?php
 				if( ! empty( $courses ) ) {
 					foreach($courses as $course) {
@@ -75,7 +79,7 @@ class DC_Woodle_Posttype_Product {
 			</select>
 		</p>
     <p>
-		  <label for="course_short_name"><?php _e( 'Course Short Name', $DC_Woodle->text_domain ); ?></label>
+		  <label for="course_short_name"><?php _e( 'Course Short Name', 'dc-woodle' ); ?></label>
 		  <input type="text" id="course_short_name" name="course_short_name" value="<?php if( ! empty( $course_short_name ) ) echo $course_short_name; ?>" readonly>
 		</p>
     <?php
@@ -84,23 +88,18 @@ class DC_Woodle_Posttype_Product {
 	public function moowoodle_product_meta_box() {
 		global $DC_Woodle, $post;
 		$product_course_id = !empty(get_post_meta($post->ID, 'product_course_id', true)) ? get_post_meta($post->ID, 'product_course_id', true) : '';
+		
 		$cohert_id = !empty(get_post_meta($post->ID, '_cohert_id', true)) ? get_post_meta($post->ID, '_cohert_id', true) : '';
 		$group_id = !empty(get_post_meta($post->ID, '_group_id', true)) ? get_post_meta($post->ID, '_group_id', true) : '';
 		?>
 		<p>
-		<label for="product_course_id"><?php _e( 'Course ID', $DC_Woodle->text_domain ); ?></label>
+		<label for="product_course_id"><?php _e( 'Course ID', 'dc-woodle' ); ?></label>
 		  <input type="text" id="product_course_id" name="product_course_id" value="<?php echo $product_course_id; ?>">
 		</p>
-		<p>
-		<label for="cohert_id"><?php _e( 'Cohort ID', $DC_Woodle->text_domain ); ?></label>
-		  <input type="text" id="cohert_id" name="cohert_id" value="<?php echo $cohert_id; ?>">
-		</p>
-		<p>
-		<label for="group_id"><?php _e( 'Group ID', $DC_Woodle->text_domain ); ?></label>
-		  <input type="text" id="group_id" name="group_id" value="<?php echo $group_id; ?>">
-		</p>
+		
 		<?php
 	}
+
 	
 	/**
    * Save product meta.
@@ -148,6 +147,7 @@ class DC_Woodle_Posttype_Product {
 						wp_set_post_terms( $post_id, $term_id, 'product_cat' );
 					}
 					
+					
 					update_post_meta( $post_id, '_course_id', (int) $_POST['course_id'] );
 					update_post_meta( $post_id, '_category_id', (int) $categoryid );
 					update_post_meta( $post_id, '_visibility', $visibility );
@@ -156,7 +156,7 @@ class DC_Woodle_Posttype_Product {
 					update_post_meta( $post_id, 'product_course_id', $product_course_id );
 					update_post_meta( $post_id, '_cohert_id', $cohert_id );
 					update_post_meta( $post_id, '_group_id', $group_id ); 
-
+					
 				}
 			}
 		}

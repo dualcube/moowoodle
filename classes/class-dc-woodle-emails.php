@@ -50,9 +50,14 @@ class DC_Woodle_Emails {
 	public function send_moodle_enrollment_confirmation( $enrolments ) {
 		global $DC_Woodle, $wpdb;
 		
-		$moodle_access_url = woodle_get_settings( 'access_url', 'dc_woodle_general' );
+		$conn_settings = $DC_Woodle->options_general_settings;
+		$moodle_access_url = $conn_settings['moodle_url'];
 		$enrollment_datas = array();
-		$enrollment_datas['email'] = $DC_Woodle->enrollment->wc_order->billing_email;
+
+		$user_id = $DC_Woodle->enrollment->wc_order->get_user_id();
+	    $user = get_userdata( $user_id );
+	    $enrollment_datas['email'] = $user->user_email;
+
 		$enrollment_data_arr = array();
 		foreach( $enrolments as $enrolment ) {
 			$post_id = woodle_get_post_by_moodle_id( $enrolment['courseid'], 'course' );
@@ -72,7 +77,6 @@ class DC_Woodle_Emails {
 			$group_id = !empty(get_post_meta($post_product_id, '_group_id', true)) ? get_post_meta($post_product_id, '_group_id', true) : '';
 			
 			$enrollment_data['course_url'] = '[moowoodle cohort="'.$cohert_id.'" group="'.$group_id.'" course="'.$product_course_id.'" class="moowoodle" target="_self" authtext="" activity="0"]';
-			//$enrollment_data['userid'] = $enrolment['userid'];
 			$enrollment_data_arr[] = $enrollment_data;
 		}
 		$enrollment_datas['enrolments'] = $enrollment_data_arr;

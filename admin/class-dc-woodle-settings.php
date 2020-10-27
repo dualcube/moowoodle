@@ -1,415 +1,378 @@
 <?php
 class DC_Woodle_Settings {
-  
-  private $tabs = array();
-  
-  private $sync_tabs = array();
-  
-  private $options;
-  
-  /**
-   * Start up
-   */
-  public function __construct() {
-    // Admin menu
-    add_action( 'admin_menu', array( $this, 'add_settings_page' ), 100 );
-    add_action( 'admin_init', array( $this, 'settings_page_init' ) );
-    add_action( 'admin_init', array( $this, 'sync_page_init' ) );
-    
-    // Settings tabs
-    add_action('settings_page_dc_woodle_general_tab_init', array(&$this, 'general_tab_init'), 10, 1);
-    
-    add_action('settings_page_dc_woodle_sync_tab_init', array(&$this, 'sync_tab_init'), 10, 1);
-  }
-  
-  /**
-   * Add options page
-   */
-  public function add_settings_page() {
-    global $DC_Woodle;
-    
-    add_menu_page(
-        __('MooWoodle', $DC_Woodle->text_domain), 
-        __('MooWoodle', $DC_Woodle->text_domain), 
-        'manage_options', 
-        'dc-woodle-sync-courses', 
-        array( $this, 'create_dc_woodle_sync' ),
-        $DC_Woodle->plugin_url . 'assets/images/dualcube.png'
-    );
-    
-    add_submenu_page('dc-woodle-sync-courses',
-			__('Settings', $DC_Woodle->text_domain),
-			__('Settings', $DC_Woodle->text_domain),
+
+	private $tabs = array();
+	
+	private $options;
+
+  public $report;
+
+	/*
+	* Start up
+	*/
+	public function __construct() {
+		//Admin menu
+		add_action( 'admin_menu', array( $this, 'add_settings_page' ), 100 );
+		add_action( 'admin_init', array( $this, 'settings_page_init' ) );
+	}
+
+	/**
+	* Add Option page
+	*/
+	public function add_settings_page() {
+
+		global $DC_Woodle;
+		add_menu_page(
+			"MooWoodle",
+			"MooWoodle",
 			'manage_options',
-			'dc-woodle-setting-admin',
-			array( $this, 'create_dc_woodle_settings' )
+			'dc-woodle',
+			array( $this, 'option_page' ),
+			$DC_Woodle->plugin_url . 'assets/images/dualcube.png',
+      50
 		);
-		
-		$this->sync_tabs = $this->get_dc_sync_tabs();
-		$this->tabs = $this->get_dc_settings_tabs();
-  }
-  
-  function get_dc_settings_tabs() {
-    global $DC_Woodle;
-    
-    $tabs = apply_filters('dc_woodle_tabs', array(
-      'dc_woodle_general' => __('MooWoodle General', $DC_Woodle->text_domain)
-      ));
-    
-    return $tabs;
-  }
-  
-  function get_dc_sync_tabs() {
-    global $DC_Woodle;
-    
-    $tabs = array(
-    	'dc_woodle_sync' => __('Synchronise Courses & categories', $DC_Woodle->text_domain)
+
+		add_submenu_page(
+			'dc-woodle',
+			__("Settings", 'dc-woodle'),
+			__("Settings", 'dc-woodle'),
+			'manage_options',
+			'dc-woodle',
+			array( $this, 'option_page' )
 		);
-    return $tabs;
-  }
-  
-  function dc_settings_tabs( $current = 'dc_woodle_general' ) {
-    if ( isset ( $_GET['tab'] ) ) :
-      $current = $_GET['tab'];
-    else:
-      $current = 'dc_woodle_general';
-    endif;
-    
-    $links = array();
-    foreach( $this->tabs as $tab => $name ) :
-      if ( $tab == $current ) :
-        $links[] = "<a class='nav-tab nav-tab-active' href='?page=dc-woodle-setting-admin&tab=$tab'>$name</a>";
-      else :
-        $links[] = "<a class='nav-tab' href='?page=dc-woodle-setting-admin&tab=$tab'>$name</a>";
-      endif;
-    endforeach;
-    echo '<div class="icon32" id="dualcube_menu_ico"><br></div>';
-    echo '<h2 class="nav-tab-wrapper">';
-    foreach ( $links as $link )
-      echo $link;
-    echo '</h2>';
-    
-    foreach( $this->tabs as $tab => $name ) :
-      if ( $tab == $current ) :
-        echo "<h2>$name Settings</h2>";
-      endif;
-    endforeach;
-  }
-  
-  function dc_sync_tabs( $current = 'dc_woodle_sync' ) {
-    if ( isset ( $_GET['tab'] ) ) :
-      $current = $_GET['tab'];
-    else:
-      $current = 'dc_woodle_sync';
-    endif;
-    
-    $links = array();
-    foreach( $this->sync_tabs as $tab => $name ) :
-      if ( $tab == $current ) :
-        $links[] = "<a class='nav-tab nav-tab-active' href='?page=dc-woodle-sync-courses&tab=$tab'>$name</a>";
-      else :
-        $links[] = "<a class='nav-tab' href='?page=dc-woodle-sync-courses&tab=$tab'>$name</a>";
-      endif;
-    endforeach;
-    echo '<div class="icon32" id="dualcube_menu_ico"><br></div>';
-    echo '<h2 class="nav-tab-wrapper">';
-    foreach ( $links as $link )
-      echo $link;
-    echo '</h2>';
-    
-    foreach( $this->sync_tabs as $tab => $name ) :
-      if ( $tab == $current ) :
-        echo "<h2>$name</h2>";
-      endif;
-    endforeach;
+
+    add_submenu_page(
+      'dc-woodle',
+      __("Synchronization", 'dc-woodle'),
+      __("Synchronization", 'dc-woodle'),
+      'manage_options',
+      'dc-woodle-synchronization',
+      array( $this, 'option_page' )
+    );
+
+		if ( apply_filters( 'dc_woodle_menu_hide', true ) ) {
+			add_submenu_page(
+				'dc-woodle',
+				__("Upgrade to Pro", 'dc-woodle'),
+				__("Upgrade to Pro", 'dc-woodle'),
+				'manage_options',
+				'',
+				array( $this, 'option_page' )
+			);
+		}
+
+	}
+
+	 public function option_page() {
+    	global $DC_Woodle;
+    	$menu_slug = null;
+    	$page   = $_REQUEST[ 'page' ];
+    	$layout = $this->dc_woodle_get_page_layout(); ?>
+    	<div class="">
+      		<?php $this->dc_woodle_plugin_options_tabs(); ?>
+      		<div class="dc-woodle-space">
+        		<?php if ($layout == '2-col'): ?>
+          		<div id="poststuff">
+            		<div id="post-body" class="metabox-holder columns-2">
+              			<div id="post-body-content">
+              				<?php endif; ?>
+              				<form action="options.php" method="post">
+                				<?php
+                					$show_submit = false;
+                					foreach ($DC_Woodle->library->dc_woodle_get_options() as $v) {
+                  						if (isset($v[ 'menu_slug' ])) {
+                    						$menu_slug = $v[ 'menu_slug' ];
+                  						}
+                  						if ($menu_slug == $page) {
+                    						switch ($v[ 'type' ]) {
+                      							case 'menu':
+                      								break;
+                      							case 'tab':
+                      								$tab = $v;
+								                    if (empty($default_tab)) {
+								                       $default_tab = $v[ 'id' ];
+								                    }
+                      								break;
+                      							case 'setting':
+								                    $current_tab = isset($_GET[ 'tab' ]) ? $_GET[ 'tab' ] : $default_tab;
+								                    if ($current_tab == $tab[ 'id' ]) {
+								                       settings_fields($v[ 'id' ]);
+								                       $show_submit = true;
+								                    }
+
+                      								break;
+                      							case 'section':
+							                      	$current_tab = isset($_GET[ 'tab' ]) ? $_GET[ 'tab' ] : $default_tab;
+							                      	if ($current_tab == $tab[ 'id' ] or $current_tab === false) {
+							                        	if ($layout == '2-col') {
+							                          		echo '<div id="'.$v[ 'id' ].'" class="postbox">';
+							                          		$this->dc_woodle_do_settings_sections($v[ 'id' ], $show_submit);
+							                          		echo '</div>';
+							                        	} else {
+							                          		$this->dc_woodle_do_settings_sections($v[ 'id' ]);
+							                        	}
+							                      	}
+							                      	break;
+                    						}
+                  						}
+                					} 
+                				?>
+              				</form>
+
+              				<?php if ($layout == '2-col'): ?>
+              			</div> <!-- #post-body-content -->
+              			<div id="postbox-container-1" class="postbox-container">
+                			<div id="side-sortables" class="meta-box-sortables ui-sortable">
+                				<?php if( apply_filters( 'dc_woodle_free_active_side_adv', true ) ) { ?>
+                  					<a class="image-adv" href="https://dualcube.com/shop/" target="_blank">
+                  						<img src="<?php echo plugins_url() .'/moowoodle/'; ?>framework/getting-started-banner.png" />
+                  					</a>
+                  					<br><br>
+
+                  					<a class="image-adv">
+                  						<img src="<?php echo plugins_url() .'/moowoodle/'; ?>framework/coming-soon-pro-sidebar.png" />
+                  					</a>
+	                  				<br><br>
+	                  				<div class="postbox ">
+	                    				<div class="inside">
+	                      					<div class="support-widget">
+	                        					<p class="supt-link">
+		                        					<a href="https://wordpress.org/support/plugin/moowoodle/"
+		                          target="_blank">
+		                          						<?php _e('Got a Support Question', 'dc-woodle') ?>
+		                       						</a> 
+		                       						<i class="fas fa-question-circle"></i>
+	                        					</p>		
+	                      					</div>
+	                    				</div>
+	                  				</div>
+	                		<?php } 
+                			
+                			// Additional banner for pro version
+                			do_action( 'dc_woodle_additional_banner' );
+                		?>
+              		</div>
+            	</div>
+          	</div> <!-- #post-body -->
+        </div> <!-- #poststuff -->
+      <?php endif; ?>
+    </div> <!-- .wrap -->
+  </div>
+
+  <?php
+    // Dualcube admin footer
+    do_action('dualcube_admin_footer_for_dc_woodle');
+
   }
 
-  /**
-   * Options page callback
-   */
-  public function create_dc_woodle_settings() {
+  public function dc_woodle_get_page_layout() {
     global $DC_Woodle;
-    
-    ?>
-    <div class="wrap">
-      <?php $this->dc_settings_tabs(); ?>
-      <?php
-      $tab = ( isset( $_GET['tab'] ) ? $_GET['tab'] : 'dc_woodle_general' );
-      $this->options = get_option( "dc_{$tab}_settings_name" );
-      
-      // This prints out all hidden setting errors
-      settings_errors("dc_{$tab}_settings_name");
-      ?>
-      <form method="post" action="options.php">
-      <?php
-        //This prints out all hidden setting fields
-        settings_fields( "dc_{$tab}_settings_group" );   
-        do_settings_sections( "dc-{$tab}-settings-admin" );
-        submit_button(); 
-      ?>
-      </form>
-    </div>
-    <?php
-    do_action('dc_woodle_dualcube_admin_footer');
+    $layout = 'classic';
+    foreach ($DC_Woodle->library->dc_woodle_get_options() as $v) {
+      switch ($v[ 'type' ]) {
+        case 'menu':
+        $page = $_REQUEST[ 'page' ];
+        if ($page == $v[ 'menu_slug' ]) {
+          if (isset($v[ 'layout' ])) {
+            $layout = $v[ 'layout' ];
+          }
+        }
+        break;
+      }
+    }
+    return $layout;
   }
-  
-  public function create_dc_woodle_sync() {
-  	global $DC_Woodle;
-  	
-    ?>
-    <div class="wrap">
-      <?php $this->dc_sync_tabs(); ?>
-      <?php
-      $tab = ( isset( $_GET['tab'] ) ? $_GET['tab'] : 'dc_woodle_sync' );
-      $this->options = get_option( "dc_{$tab}_settings_name" );
-      
-      // This prints out all hidden setting errors
-      settings_errors("dc_{$tab}_settings_name");
-      ?>
-      <form method="post">
-      <?php
-        // This prints out all hidden setting fields
-        settings_fields( "dc_{$tab}_settings_group" );   
-        do_settings_sections( "dc-{$tab}-settings-admin" );
-        submit_button('Synchronise');
-        wp_nonce_field( 'dc-sync_courses_and_categories' );
-      ?>
-      </form>
-    </div>
-    <?php
-    do_action('dc_woodle_dualcube_admin_footer');
+
+  public function dc_woodle_plugin_options_tabs() {
+    global $DC_Woodle;
+    $menu_slug   = null;
+    $page        = $_REQUEST[ 'page' ];
+    $uses_tabs   = false;
+    $current_tab = isset($_GET[ 'tab' ]) ? $_GET[ 'tab' ] : false;
+
+    //Check if this config uses tabs
+    foreach ($DC_Woodle->library->dc_woodle_get_options() as $v) {
+      if ($v[ 'type' ] == 'tab') {
+        $uses_tabs = true;
+        break;
+      }
+    }
+    // If uses tabs then generate the tabs
+    if ($uses_tabs) {
+      echo '<h2 class="nav-tab-wrapper">';
+      $c = 1;
+      foreach ($DC_Woodle->library->dc_woodle_get_options() as $v) {
+        if (isset($v[ 'menu_slug' ])) {
+          $menu_slug = $v[ 'menu_slug' ];
+        }
+        if ($menu_slug == $page && $v[ 'type' ] == 'tab') {
+          $active = '';
+          if ($current_tab) {
+            $active = $current_tab == $v[ 'id' ] ? 'nav-tab-active' : '';
+          } elseif ($c == 1) {
+            $active = 'nav-tab-active';
+          }
+          if ($v[ 'id' ] == 'dc-woodle-from') {
+            echo '<a id="'.$v[ 'id' ].'" class="nav-tab ' . $active . '" href="admin.php?dc-woodle&tab=dc-woodle-from">';
+          } else {
+            echo '<a id="'.$v[ 'id' ].'" class="nav-tab ' . $active . '" href="?page=' . $menu_slug . '&tab=' . $v[ 'id' ] . '">';
+          }
+
+          if( isset( $v[ 'font_class' ] ) ) {
+            echo '<i class="fas '.$v[ 'font_class' ].'"></i> ';
+          }
+
+          // Add extra tab for pro version
+          do_action( 'dc_woodle_add_additional_tabs', $v );
+
+          echo $v[ 'label' ] . '</a>';
+          $c++;
+        }
+      }
+            
+      // For free version only
+      if( apply_filters( 'dc_woodle_free_active', true ) ){
+        echo '<a class="nav-tab dc-woodle-upgrade" href="https://dualcube.com/shop/" target="_blank" rel="noopener noreferrer"><i class="fas fa-trophy"></i> '.__('Upgrade to Pro for More Features', 'dc-woodle').'</a>';
+      }
+
+      // Add extra tab for pro version
+      do_action( 'dc_woodle_added_extra_tab_after', $v );
+
+      echo '</h2>';
+    }   
+  }
+
+  public function dc_woodle_do_settings_sections($page, $show_submit) {
+      global $wp_settings_sections, $wp_settings_fields, $DC_Woodle;
+      if (!isset($wp_settings_sections) || !isset($wp_settings_sections[ $page ])) {
+        return;
+      }
+      foreach ((array) $wp_settings_sections[ $page ] as $section) {
+        echo '<div class="postbox-header">';
+        echo "<h3 class='hndle'>{$section['title']}</h3>\n";
+        echo '</div>';
+        echo '<div class="inside">';
+        if (!isset($wp_settings_fields) || !isset($wp_settings_fields[ $page ]) || !isset($wp_settings_fields[ $page ][ $section[ 'id' ] ])) {
+          continue;
+        }
+        echo '<table class="form-table">';
+        $this->dc_woodle_do_settings_fields($page, $section[ 'id' ]);
+        echo '</table>';
+        if ($show_submit): ?>
+        <p>
+          <input name="submit" type="submit" value="<?php _e('Save All Changes', 'dc-woodle'); ?>" class="button-primary" />
+        </p>
+      <?php endif;
+      echo '</div>';
+    }
+  }
+
+  function dc_woodle_do_settings_fields($page, $section) {
+    global $wp_settings_fields;
+
+    if (!isset($wp_settings_fields) || !isset($wp_settings_fields[$page]) || !isset($wp_settings_fields[$page][$section])) {
+      return;
+    }
+    foreach ((array) $wp_settings_fields[$page][$section] as $field) {
+      echo '<tr valign="top">';
+      if (!empty($field['args']['label_for'])) {
+        echo '<th scope="row"><label for="' . $field['args']['label_for'] . '">' . $field['title'] . '</label></th>';
+      } else {
+        echo '<th scope="row" class="' . $field['id'] . '"><strong>' . $field['title'] . '</strong><!--<br>'.$field['args']['desc'].'--></th>';
+      }
+      echo '<td>';
+      call_user_func($field['callback'], $field['args']);
+      echo '</td>';
+      echo '</tr>';
+    }
   }
 
   /**
    * Register and add settings
    */
   public function settings_page_init() { 
-    do_action('befor_settings_page_init');
-    
-    // Register each tab settings
-    foreach( $this->tabs as $tab => $name ) :
-      do_action("settings_page_{$tab}_tab_init", $tab);
-    endforeach;
-    
-    foreach( $this->sync_tabs as $tab => $name ) :
-      do_action("settings_page_{$tab}_tab_init", $tab);
-    endforeach;
-    
-    do_action('after_settings_page_init');
-  }
-  
-    /**
-   * Register and add settings
-   */
-  public function sync_page_init() { 
-    foreach( $this->sync_tabs as $tab => $name ) :
-      do_action("settings_page_{$tab}_tab_init", $tab);
-    endforeach;
-  }
-  
-  /**
-   * Register and add settings fields
-   */
-  public function settings_field_init($tab_options) {
     global $DC_Woodle;
-    
-    if(!empty($tab_options) && isset($tab_options['tab']) && isset($tab_options['ref']) && isset($tab_options['sections'])) {
-      // Register tab options
-      register_setting(
-        "dc_{$tab_options['tab']}_settings_group", // Option group
-        "dc_{$tab_options['tab']}_settings_name", // Option name
-        array( $tab_options['ref'], "dc_{$tab_options['tab']}_settings_sanitize" ) // Sanitize
-      );
-      
-      foreach($tab_options['sections'] as $sectionID => $section) {
-        // Register section
-        add_settings_section(
-          $sectionID, // ID
-          $section['title'], // Title
-          array( $tab_options['ref'], "{$sectionID}_info" ), // Callback
-          "dc-{$tab_options['tab']}-settings-admin" // Page
-        );
-        
-        // Register fields
-        if(isset($section['fields'])) {
-          foreach($section['fields'] as $fieldID => $field) {
-            if(isset($field['type'])) {
-              $field = $DC_Woodle->dc_wp_fields->check_field_id_name($fieldID, $field);
-              $field['tab'] = $tab_options['tab'];
-              $callbak = $this->get_field_callback_type($field['type']);
-              if(!empty($callbak)) {
-                add_settings_field(
-                  $fieldID,
-                  $field['title'],
-                  array( $this, $callbak ),
-                  "dc-{$tab_options['tab']}-settings-admin",
-                  $sectionID,
-                  $field
-                );
-              }
-            }
-          }
+    foreach ($DC_Woodle->library->dc_woodle_get_options() as $k => $v) {
+      switch ($v[ 'type' ]) {
+        case 'menu':
+        $menu_slug = $v[ 'menu_slug' ];
+
+        break;
+        case 'setting':
+        if (empty($v[ 'validate_function' ])) {
+          $v[ 'validate_function' ] = array(
+            &$this,
+            'validate_machine'
+            );
+        }
+        register_setting($v[ 'id' ], $v[ 'id' ], $v[ 'validate_function' ]);
+        $setting_id = $v[ 'id' ];
+        break;
+        case 'section':
+        if (empty($v[ 'desc_callback' ])) {
+          $v[ 'desc_callback' ] = array(
+            &$this,
+            'return_empty_string'
+            );
+        } else {
+          $v[ 'desc_callback' ] = $v[ 'desc_callback' ];
+        }
+        add_settings_section($v[ 'id' ], $v[ 'label' ], $v[ 'desc_callback' ], $v[ 'id' ]);
+        $section_id = $v[ 'id' ];
+        break;
+        case 'tab':
+        break;
+        default:
+        if (empty($v[ 'callback' ])) {
+          $v[ 'callback' ] = array($this, 'field_machine');
+        }
+
+        add_settings_field($v[ 'id' ], $v[ 'label' ], $v[ 'callback' ], $section_id, $section_id, apply_filters( 'dc_woodle_add_settings_field', array(
+          'id' => $v[ 'id' ],
+          'name' => (isset($v[ 'name' ]) ? $v[ 'name' ] : ''),
+          'desc' => (isset($v[ 'desc' ]) ? $v[ 'desc' ] : ''),
+          'setting_id' => $setting_id,
+          'class' => (isset($v[ 'class' ]) ? $v[ 'class' ] : ''),
+          'type' => $v[ 'type' ],
+          'default_value' => (isset($v[ 'default_value' ]) ? $v[ 'default_value' ] : ''),
+          'option_values' => (isset($v[ 'option_values' ]) ? $v[ 'option_values' ] : ''),
+          'extra_input' => (isset($v[ 'extra_input' ]) ? $v[ 'extra_input' ] : ''),
+          'font_class' => (isset($v[ 'font_class' ]) ? $v[ 'font_class' ] : '')
+          ), $v ));
+
+      }
+    } 
+  }
+
+  public function field_machine($args) {
+    global $DC_Woodle;
+    extract($args); //$id, $desc, $setting_id, $class, $type, $default_value, $option_values
+    // Load defaults
+    $defaults = array( );
+    foreach ($DC_Woodle->library->dc_woodle_get_options() as $k) {
+      switch ($k[ 'type' ]) {
+        case 'setting':
+        case 'section':
+        case 'tab':
+        break;
+        default:
+        if (isset($k[ 'default_value' ])) {
+          $defaults[ $k[ 'id' ] ] = $k[ 'default_value' ];
         }
       }
     }
-  }
-  
-  function general_tab_init($tab) {
-    global $DC_Woodle;
-    
-    $DC_Woodle->admin->load_class("settings-{$tab}", $DC_Woodle->plugin_path, $DC_Woodle->token);
-    new DC_Woodle_Settings_Gneral($tab);
-  }
-  
-  function sync_tab_init($tab) {
-    global $DC_Woodle;
-    
-    $DC_Woodle->admin->load_class("settings-{$tab}", $DC_Woodle->plugin_path, $DC_Woodle->token);
-    new DC_Woodle_Settings_Sync($tab);
-  }
-  
-  function get_field_callback_type($fieldType) {
-    $callBack = '';
-    switch($fieldType) {
-      case 'input':
-      case 'text':
-      case 'email':
-      case 'number':
-      case 'file':
-      case 'url':
-        $callBack = 'text_field_callback';
-        break;
-        
-      case 'hidden':
-        $callBack = 'hidden_field_callback';
-        break;
-        
-      case 'textarea':
-        $callBack = 'textarea_field_callback';
-        break;
-        
-      case 'wpeditor':
-        $callBack = 'wpeditor_field_callback';
-        break;
-        
-      case 'checkbox':
-        $callBack = 'checkbox_field_callback';
-        break;
-        
-      case 'radio':
-        $callBack = 'radio_field_callback';
-        break;
-        
-      case 'select':
-        $callBack = 'select_field_callback';
-        break;
-        
-      case 'upload':
-        $callBack = 'upload_field_callback';
-        break;
-        
-      default:
-        $callBack = '';
-        break;
+    $options = get_option($setting_id);
+
+    $options = wp_parse_args($options, $defaults);
+    $path = $DC_Woodle->plugin_path . 'framework/field-types/' . $type . '.php';
+    if (file_exists($path)) {
+      // Show Field
+      include($path);
+      // Show description
+      if (!empty($desc)) {
+        echo "<small class='description'>{$desc}</small>";
+      }
     }
-    
-    return $callBack;
   }
-  
-  /** 
-   * Get the hidden field display
-   */
-  public function hidden_field_callback($field) {
-    global $DC_Woodle;
-    
-    $field['value'] = isset( $field['value'] ) ? esc_attr( $field['value'] ) : '';
-    $field['value'] = isset( $this->options[$field['name']] ) ? esc_attr( $this->options[$field['name']] ) : $field['value'];
-    $field['name'] = "dc_{$field['tab']}_settings_name[{$field['name']}]";
-    $DC_Woodle->dc_wp_fields->hidden_input($field);
-  }
-  
-  /** 
-   * Get the text field display
-   */
-  public function text_field_callback($field) {
-    global $DC_Woodle;
-    
-    $field['value'] = isset( $field['value'] ) ? esc_attr( $field['value'] ) : '';
-    $field['value'] = isset( $this->options[$field['name']] ) ? esc_attr( $this->options[$field['name']] ) : $field['value'];
-    $field['name'] = "dc_{$field['tab']}_settings_name[{$field['name']}]";
-    $DC_Woodle->dc_wp_fields->text_input($field);
-  }
-  
-  /** 
-   * Get the text area display
-   */
-  public function textarea_field_callback($field) {
-    global $DC_Woodle;
-    
-    $field['value'] = isset( $field['value'] ) ? esc_textarea( $field['value'] ) : '';
-    $field['value'] = isset( $this->options[$field['name']] ) ? esc_textarea( $this->options[$field['name']] ) : $field['value'];
-    $field['name'] = "dc_{$field['tab']}_settings_name[{$field['name']}]";
-    $DC_Woodle->dc_wp_fields->textarea_input($field);
-  }
-  
-  /** 
-   * Get the wpeditor display
-   */
-  public function wpeditor_field_callback($field) {
-    global $DC_Woodle;
-    
-    $field['value'] = isset( $field['value'] ) ? ( $field['value'] ) : '';
-    $field['value'] = isset( $this->options[$field['name']] ) ? ( $this->options[$field['name']] ) : $field['value'];
-    $field['name'] = "dc_{$field['tab']}_settings_name[{$field['name']}]";
-    $DC_Woodle->dc_wp_fields->wpeditor_input($field);
-  }
-  
-  /** 
-   * Get the checkbox field display
-   */
-  public function checkbox_field_callback($field) {
-    global $DC_Woodle;
-    
-    $field['value'] = isset( $field['value'] ) ? esc_attr( $field['value'] ) : '';
-    $field['value'] = isset( $this->options[$field['name']] ) ? esc_attr( $this->options[$field['name']] ) : $field['value'];
-    $field['dfvalue'] = isset( $this->options[$field['name']] ) ? esc_attr( $this->options[$field['name']] ) : '';
-    $field['name'] = "dc_{$field['tab']}_settings_name[{$field['name']}]";
-    $DC_Woodle->dc_wp_fields->checkbox_input($field);
-  }
-  
-  /** 
-   * Get the checkbox field display
-   */
-  public function radio_field_callback($field) {
-    global $DC_Woodle;
-    
-    $field['value'] = isset( $field['value'] ) ? esc_attr( $field['value'] ) : '';
-    $field['value'] = isset( $this->options[$field['name']] ) ? esc_attr( $this->options[$field['name']] ) : $field['value'];
-    $field['name'] = "dc_{$field['tab']}_settings_name[{$field['name']}]";
-    $DC_Woodle->dc_wp_fields->radio_input($field);
-  }
-  
-  /** 
-   * Get the select field display
-   */
-  public function select_field_callback($field) {
-    global $DC_Woodle;
-    
-    $field['value'] = isset( $field['value'] ) ? esc_textarea( $field['value'] ) : '';
-    $field['value'] = isset( $this->options[$field['name']] ) ? esc_textarea( $this->options[$field['name']] ) : $field['value'];
-    $field['name'] = "dc_{$field['tab']}_settings_name[{$field['name']}]";
-    $DC_Woodle->dc_wp_fields->select_input($field);
-  }
-  
-  /** 
-   * Get the upload field display
-   */
-  public function upload_field_callback($field) {
-    global $DC_Woodle;
-    
-    $field['value'] = isset( $field['value'] ) ? esc_attr( $field['value'] ) : '';
-    $field['value'] = isset( $this->options[$field['name']] ) ? esc_attr( $this->options[$field['name']] ) : $field['value'];
-    $field['name'] = "dc_{$field['tab']}_settings_name[{$field['name']}]";
-    $DC_Woodle->dc_wp_fields->upload_input($field);
-  }
+
 }

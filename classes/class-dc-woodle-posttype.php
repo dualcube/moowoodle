@@ -56,19 +56,19 @@ class DC_Woodle_Posttype {
 	  global $DC_Woodle;
 	  
 		$labels = array(
-			'name'               => sprintf( _x( '%s', 'post type general name', $DC_Woodle->text_domain ), $plural ),
-			'singular_name'      => sprintf( _x( '%s', 'post type singular name', $DC_Woodle->text_domain ), $singular ),
-			'add_new'            => sprintf( _x( 'Add New %s', $token, $DC_Woodle->text_domain ), $singular ),
-			'add_new_item'       => sprintf( __( 'Add New %s', $DC_Woodle->text_domain ), $singular ),
-			'edit_item'          => sprintf( __( 'Edit %s', $DC_Woodle->text_domain ), $singular ),
-			'new_item'           => sprintf( __( 'New %s', $DC_Woodle->text_domain ), $singular ),
-			'all_items'          => sprintf( __( '%s', $DC_Woodle->text_domain ), $plural ),
-			'view_item'          => sprintf( __( 'View %s', $DC_Woodle->text_domain ), $singular ),
-			'search_items'       => sprintf( __( 'Search %s', $DC_Woodle->text_domain ), $plural ),
-			'not_found'          => sprintf( __( 'No %s found', $DC_Woodle->text_domain ), strtolower( $plural ) ),
-			'not_found_in_trash' => sprintf( __( 'No %s found in Trash', $DC_Woodle->text_domain ), strtolower( $plural ) ),
+			'name'               => sprintf( _x( '%s', 'post type general name', 'dc-woodle' ), $plural ),
+			'singular_name'      => sprintf( _x( '%s', 'post type singular name', 'dc-woodle' ), $singular ),
+			'add_new'            => sprintf( _x( 'Add New %s', $token, 'dc-woodle' ), $singular ),
+			'add_new_item'       => sprintf( __( 'Add New %s', 'dc-woodle' ), $singular ),
+			'edit_item'          => sprintf( __( 'Edit %s', 'dc-woodle' ), $singular ),
+			'new_item'           => sprintf( __( 'New %s', 'dc-woodle' ), $singular ),
+			'all_items'          => sprintf( __( '%s', 'dc-woodle' ), $plural ),
+			'view_item'          => sprintf( __( 'View %s', 'dc-woodle' ), $singular ),
+			'search_items'       => sprintf( __( 'Search %s', 'dc-woodle' ), $plural ),
+			'not_found'          => sprintf( __( 'No %s found', 'dc-woodle' ), strtolower( $plural ) ),
+			'not_found_in_trash' => sprintf( __( 'No %s found in Trash', 'dc-woodle' ), strtolower( $plural ) ),
 			'parent_item_colon'  => '',
-			'menu_name'          => sprintf( __( '%s', $DC_Woodle->text_domain ), $menu )
+			'menu_name'          => sprintf( __( '%s', 'dc-woodle' ), $menu )
 		);
 
 		return $labels;
@@ -92,20 +92,20 @@ class DC_Woodle_Posttype {
 		$messages = array(
 			0  => '',
 			1  => sprintf( __( '%s updated.' ), esc_attr( $this->labels[ $post_type ]['singular'] ) ),
-			2  => __( 'Custom field updated.', $DC_Woodle->text_domain ),
-			3  => __( 'Custom field deleted.', $DC_Woodle->text_domain ),
-			4  => sprintf( __( '%s updated.', $DC_Woodle->text_domain ), esc_attr( $this->labels[ $post_type ]['singular'] ) ),
-			5  => isset( $_GET['revision'] ) ? sprintf( __( '%2$s restored to revision from %1$s', $DC_Woodle->text_domain ), 
+			2  => __( 'Custom field updated.', 'dc-woodle' ),
+			3  => __( 'Custom field deleted.', 'dc-woodle' ),
+			4  => sprintf( __( '%s updated.', 'dc-woodle' ), esc_attr( $this->labels[ $post_type ]['singular'] ) ),
+			5  => isset( $_GET['revision'] ) ? sprintf( __( '%2$s restored to revision from %1$s', 'dc-woodle' ), 
 																											 wp_post_revision_title( (int) $_GET['revision'], false ), 
 																											 esc_attr( $this->labels[ $post_type ]['singular'] ) ) : false,
 			6  => sprintf( __( '%2$s published.' ), esc_url( get_permalink( $post_ID ) ), esc_attr( $this->labels[ $post_type ]['singular'] ) ),
-			7  => sprintf( __( '%s saved.', $DC_Woodle->text_domain ), esc_attr( $this->labels[ $post_type ]['singular'] ) ),
-			8  => sprintf( __( '%2$s submitted.', $DC_Woodle->text_domain ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), 
+			7  => sprintf( __( '%s saved.', 'dc-woodle' ), esc_attr( $this->labels[ $post_type ]['singular'] ) ),
+			8  => sprintf( __( '%2$s submitted.', 'dc-woodle' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), 
 													esc_attr( $this->labels[ $post_type ]['singular'] ) ),
-			9  => sprintf( __( '%s scheduled for: <strong>%1$s</strong>.', $DC_Woodle->text_domain ),
+			9  => sprintf( __( '%s scheduled for: <strong>%1$s</strong>.', 'dc-woodle' ),
 													date_i18n( __( ' M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post_ID ) ), 
 													strtolower( esc_attr( $this->labels[ $post_type ]['singular'] ) ) ),
-			10 => sprintf( __( '%s draft updated.', $DC_Woodle->text_domain ), esc_attr( $this->labels[ $post_type ]['singular'] ) ),
+			10 => sprintf( __( '%s draft updated.', 'dc-woodle' ), esc_attr( $this->labels[ $post_type ]['singular'] ) ),
 		);
 
 		return $messages;
@@ -114,9 +114,9 @@ class DC_Woodle_Posttype {
 	private function setup_post_type_labels_base() {
 	  global $DC_Woodle;
 	  
-		$this->labels['course'] = array( 'singular' => __( 'Course', $DC_Woodle->text_domain ),
-																		 'plural' => __( 'Courses', $DC_Woodle->text_domain ), 
-																		 'menu' => __( 'Courses', $DC_Woodle->text_domain ) );
+		$this->labels['course'] = array( 'singular' => __( 'Course', 'dc-woodle' ),
+																		 'plural' => __( 'Courses', 'dc-woodle' ), 
+																		 'menu' => __( 'Courses', 'dc-woodle' ) );
 	}
 	
 	/**

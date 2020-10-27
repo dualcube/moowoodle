@@ -21,7 +21,7 @@ class DC_Woodle_Posttype_Course {
 	public function add_meta_box() {
 	  global $DC_Woodle;
 	  
-		add_meta_box( 'course_details', __( 'Course Details', $DC_Woodle->text_domain ), array( &$this, 'metabox_course_details' ), 'course', 'normal' );
+		add_meta_box( 'course_details', __( 'Course Details', 'dc-woodle' ), array( &$this, 'metabox_course_details' ), 'course', 'normal' );
 	}
 	
 	/**
@@ -41,15 +41,15 @@ class DC_Woodle_Posttype_Course {
 		?>
 		<div class="woodle_options_panel">
 			<p>
-				<label for="course_id"><?php _e( 'Course ID', $DC_Woodle->text_domain ); ?></label>
+				<label for="course_id"><?php _e( 'Course ID', 'dc-woodle' ); ?></label>
 				<input type="text" id="course_id" name="course_id" class="short" value="<?php if( ! empty( $course_id ) ) echo $course_id; ?>" readonly>
 			</p>
 			<p>
-				<label for="course_short_name"><?php _e( 'Course Short Name', $DC_Woodle->text_domain ); ?></label>
+				<label for="course_short_name"><?php _e( 'Course Short Name', 'dc-woodle' ); ?></label>
 				<input type="text" id="course_short_name" name="course_short_name" class="short" value="<?php if( ! empty( $course_short_name ) ) echo $course_short_name; ?>" readonly>
 			</p>
 			<p>
-				<label for="course_visibility"><?php _e( 'Visibility', $DC_Woodle->text_domain ); ?></label>
+				<label for="course_visibility"><?php _e( 'Visibility', 'dc-woodle' ); ?></label>
 				<input type="text" id="course_visibility" name="course_visibility" class="short" value="<?php if( ! empty( $visibility ) ) echo $visibility_status[$visibility]; ?>" readonly>
 			</p>
 		</div>
@@ -115,6 +115,10 @@ class DC_Woodle_Posttype_Course {
 				$idnumber = get_post_meta( $post_id, '_course_idnumber', true );
 				echo $idnumber;
 				break;
+			// case 'content':
+			// 	$content = get_post_meta($post_id, '_content', true );
+			// 	echo $content;
+			// 	break;
 	  }
 	}
 
@@ -133,7 +137,8 @@ class DC_Woodle_Posttype_Course {
 														 'short_name' => 'Short Name',
 														 'category' 	=> 'Category',
 														 'visibility' => 'Visibility',
-														 'idnumber'		=> 'Course ID Number'
+														 'idnumber'		=> 'Course ID Number',
+														 // 'content' => 'Description'
 													 );
 	}
 	
@@ -151,7 +156,8 @@ class DC_Woodle_Posttype_Course {
 			'category'   => 'category',
 			'name'       => 'title',
 			'visibility' => 'visibility',
-			'idnumber'	 => 'idnumber'
+			'idnumber'	 => 'idnumber',
+			// 'content' => 'content'
 		);
 		
 		return wp_parse_args( $custom, $columns );

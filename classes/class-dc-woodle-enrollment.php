@@ -10,7 +10,7 @@ class DC_Woodle_Enrollment {
 		add_action( 'wp_enqueue_scripts', array( &$this, 'frontend_styles' ) );
 		add_action( 'woocommerce_thankyou', array( &$this, 'enrollment_modified_details' ) );
 		add_shortcode( 'enroll', array( &$this, 'purchashtri' ) );
-		add_action('woocommerce_after_shop_loop_item_title', array( &$this, 'add_dates_with_product' ));
+		// add_action('woocommerce_after_shop_loop_item_title', array( &$this, 'add_dates_with_product' ));
 	}
 	
 	/**
@@ -245,8 +245,9 @@ class DC_Woodle_Enrollment {
 		$wc_order = $this->wc_order;
 		$enrolments = array();
 		$items = $wc_order->get_items();
-		$role_id = woodle_get_settings( 'moodle_role_id', 'dc_woodle_general' );
-		$role_id = ( empty( $role_id ) || ! intval( $role_id ) ) ? 5 : intval( $role_id );
+		// $role_id = woodle_get_settings( 'moodle_role_id', 'dc_woodle_general' );
+		// $role_id = ( empty( $role_id ) || ! intval( $role_id ) ) ? 5 : intval( $role_id );
+		$role_id = 5;
 		if( ! empty( $items ) ) {
 			foreach( $items as  $item ) {
 				$course_id = get_post_meta( $item['product_id'], '_course_id', true );
@@ -311,15 +312,18 @@ class DC_Woodle_Enrollment {
 			$order_user_meta = get_user_meta($current_user->data->ID);
 		}
 
-		$order_user_firstname = $order_user->data->user_firstname;
-		if (empty($order_user_firstname)) {
-			$order_user_firstname = $order_user_meta['first_name'][0];
-		}
+		// $order_user_firstname = $order_user->data->user_firstname;
+		// // print_r($order_user_firstname);die;
+		// if (empty($order_user_firstname)) {
+		// 	$order_user_firstname = $order_user_meta['first_name'][0];
+		// }
+		$order_user_firstname = $order_user_meta['first_name'][0];
 
-		$order_user_lastname = $order_user->data->user_lastname;
-		if (empty($order_user_lastname)) {
-			$order_user_lastname = $order_user_meta['last_name'][0];
-		}
+		// $order_user_lastname = $order_user->data->user_lastname;
+		// if (empty($order_user_lastname)) {
+		// 	$order_user_lastname = $order_user_meta['last_name'][0];
+		// }
+		$order_user_lastname = $order_user_meta['last_name'][0];
 
 		$order_user_email = $order_user->data->user_email;
 		if (empty($order_user_email)) {
@@ -331,7 +335,7 @@ class DC_Woodle_Enrollment {
 			$order_user_username = $order_user_meta['nickname'][0];
 		}
 		
-		$dc_dc_woodle_general_settings_name = get_option( 'dc_dc_woodle_general_settings_name', true );
+		// $dc_dc_woodle_general_settings_name = get_option( 'dc_dc_woodle_general_settings_name', true );
 
 	    wp_get_current_user();
 
@@ -348,14 +352,19 @@ class DC_Woodle_Enrollment {
 			"cohort" => $cohort,								// string containing cohort to enrol this user into
 			"group" => $group,									// string containing group to enrol this user into
 			"course" => $course,								// string containing course id, optional
-			"updatable" => $dc_dc_woodle_general_settings_name['update_existing_users'],								// if user profile fields can be updated in moodle
+			// "updatable" => $dc_dc_woodle_general_settings_name['update_existing_users'],								// if user profile fields can be updated in moodle
+			"updatable" => true,
 			"activity" => $activity						// index of first [visible] activity to go to, if auto-open is enabled in moodle
 		);
 
 		// encode array as querystring
 		$details = http_build_query($enc);
 
-		return rtrim($dc_dc_woodle_general_settings_name['access_url'],"/").DC_WOODLE_MOODLE_PLUGIN_URL.$this->encrypt_string($details, $dc_dc_woodle_general_settings_name['ws_token']);
+		// return rtrim($dc_dc_woodle_general_settings_name['access_url'],"/").DC_WOODLE_MOODLE_PLUGIN_URL.$this->encrypt_string($details, $dc_dc_woodle_general_settings_name['ws_token']);
+
+		$conn_settings = $DC_Woodle->options_general_settings;
+
+		return rtrim( $conn_settings['moodle_url'],"/" ).DC_WOODLE_MOODLE_PLUGIN_URL.$this->encrypt_string( $details, $conn_settings['moodle_access_token'] );
 	}
 
 	/**
@@ -429,9 +438,9 @@ class DC_Woodle_Enrollment {
 				$course_id_meta = get_post_meta( $post_id , '_course_id', true );
 				$post_id_query = $wpdb->get_results("SELECT post_id FROM $wpdb->postmeta WHERE (meta_key = '_course_id' AND meta_value = '". $course_id_meta ."' )");
 				foreach ($post_id_query as $key => $value) {
-				if(	get_post_type( $value->post_id ) == 'product' ){
-				$post_product_id = $value->post_id;
-				}
+					if(	get_post_type( $value->post_id ) == 'product' ) {
+						$post_product_id = $value->post_id;
+					}
 				}
 				
 				$product_course_id = !empty(get_post_meta($post_product_id, 'product_course_id', true)) ? get_post_meta($post_product_id, 'product_course_id', true) : '';
@@ -453,15 +462,15 @@ class DC_Woodle_Enrollment {
 		}
 	}
 
-	public function add_dates_with_product() {
-		global $product;
-		$satrtdate = get_post_meta($product->get_id(), '_course_startdate', true);
-		$enddate = get_post_meta($product->get_id(), '_course_enddate', true);
-		if(woodle_get_settings( 'wc_product_dates_display', 'dc_woodle_general' )) {
-			if($satrtdate) echo "Start Date : ".date('Y-m-d', $satrtdate);
-			print_r("<br>");
-			if($enddate) echo "End Date : ".date('Y-m-d', $enddate);
-		}
-	}
+	// public function add_dates_with_product() {
+	// 	global $product;
+	// 	$satrtdate = get_post_meta($product->get_id(), '_course_startdate', true);
+	// 	$enddate = get_post_meta($product->get_id(), '_course_enddate', true);
+	// 	if(woodle_get_settings( 'wc_product_dates_display', 'dc_woodle_general' )) {
+	// 		if($satrtdate) echo "Start Date : ".date('Y-m-d', $satrtdate);
+	// 		print_r("<br>");
+	// 		if($enddate) echo "End Date : ".date('Y-m-d', $enddate);
+	// 	}
+	// }
 
 }

@@ -11,11 +11,11 @@ class DC_Woodle_Emails_New_Enrollment extends WC_Email {
     global $DC_Woodle;
 
     $this->id 						= 'new_moodle_enrollment';
-    $this->title 					= __( 'New Moodle Enrollment', $DC_Woodle->text_domain );
-    $this->description		= __( 'This is a notification email sent to the enrollees for new enrollment.', $DC_Woodle->text_domain );
+    $this->title 					= __( 'New Moodle Enrollment', 'dc-woodle' );
+    $this->description		= __( 'This is a notification email sent to the enrollees for new enrollment.', 'dc-woodle' );
     $this->customer_email = true;
-    $this->heading 				= __( 'New Enrollment', $DC_Woodle->text_domain );
-    $this->subject      	= __( '{site_title} New Enrollment', $DC_Woodle->text_domain );
+    $this->heading 				= __( 'New Enrollment', 'dc-woodle' );
+    $this->subject      	= __( '{site_title} New Enrollment', 'dc-woodle' );
     $this->template_html 	= 'emails/new-enrollment.php';
     $this->template_plain = 'emails/plain/new-enrollment.php';
 
@@ -90,35 +90,35 @@ class DC_Woodle_Emails_New_Enrollment extends WC_Email {
   	
     $this->form_fields = array(
     	'enabled' => array(
-				'title' 		=> __( 'Enable/Disable', $DC_Woodle->text_domain ),
+				'title' 		=> __( 'Enable/Disable', 'dc-woodle' ),
 				'type' 			=> 'checkbox',
-				'label' 		=> __( 'Enable this email notification', $DC_Woodle->text_domain ),
+				'label' 		=> __( 'Enable this email notification', 'dc-woodle' ),
 				'default' 		=> 'yes'
 			),
       'subject' => array(
-        'title' 		=> __( 'Subject', $DC_Woodle->text_domain ),
+        'title' 		=> __( 'Subject', 'dc-woodle' ),
         'type' 			=> 'text',
-        'description' 	=> sprintf( __( 'This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', $DC_Woodle->text_domain ), $this->subject ),
+        'description' 	=> sprintf( __( 'This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', 'dc-woodle' ), $this->subject ),
         'placeholder' 	=> '',
         'default' 		=> ''
       ),
       'heading' => array(
-        'title' 		=> __( 'Email Heading', $DC_Woodle->text_domain ),
+        'title' 		=> __( 'Email Heading', 'dc-woodle' ),
         'type' 			=> 'text',
-        'description' 	=> sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', $DC_Woodle->text_domain ), $this->heading ),
+        'description' 	=> sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', 'dc-woodle' ), $this->heading ),
         'placeholder' 	=> '',
         'default' 		=> ''
       ),
 			'email_type' => array(
-        'title' 		=> __( 'Email type', $DC_Woodle->text_domain ),
+        'title' 		=> __( 'Email type', 'dc-woodle' ),
         'type' 			=> 'select',
-        'description' 	=> __( 'Choose which format of email to send.', $DC_Woodle->text_domain ),
+        'description' 	=> __( 'Choose which format of email to send.', 'dc-woodle' ),
         'default' 		=> 'html',
         'class'			=> 'email_type',
         'options'		=> array(
-          'plain'		 	=> __( 'Plain text', $DC_Woodle->text_domain ),
-          'html' 			=> __( 'HTML', $DC_Woodle->text_domain ),
-          'multipart' 	=> __( 'Multipart', $DC_Woodle->text_domain ),
+          'plain'		 	=> __( 'Plain text', 'dc-woodle' ),
+          'html' 			=> __( 'HTML', 'dc-woodle' ),
+          'multipart' 	=> __( 'Multipart', 'dc-woodle' ),
         )
       )
     );
