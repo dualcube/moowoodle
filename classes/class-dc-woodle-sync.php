@@ -232,6 +232,7 @@ class DC_Woodle_Sync {
 						}
 						
 						add_post_meta( $post_id, '_course_id', (int) $course['id'] );
+						add_post_meta( $post_id, 'product_course_id', (int) $course['id'] );
 						add_post_meta( $post_id, '_category_id', (int) $course['categoryid'] );
 						add_post_meta( $post_id, '_visibility', $visibility = ( $course['visible'] ) ? 'visible' : 'hidden' );
 						
