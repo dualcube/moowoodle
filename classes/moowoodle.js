@@ -6,7 +6,8 @@
                 title : 'moowoodle',
                 image : url+'/dualcube.png',
                 onclick : function() {
-                     ed.selection.setContent('[moowoodle cohort="" group="" course="" class="moowoodle" target="_self" authtext="" activity="0"]' + ed.selection.getContent() + '[/moowoodle]');
+                     // ed.selection.setContent('[moowoodle cohort="" group="" course="" class="moowoodle" target="_self" authtext="" activity="0"]' + ed.selection.getContent() + '[/moowoodle]');
+                     ed.selection.setContent('[moowoodle course="" class="moowoodle" target="_self" authtext="" activity="0"]' + ed.selection.getContent() + '[/moowoodle]');
                 }
             });
         },

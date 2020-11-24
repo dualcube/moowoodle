@@ -1,57 +1,64 @@
-#dualcube_menu_ico {
-  background: url("../../images/dclogo.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
-}
+/*#dc_admin_footer {
+  bottom: 45px;
+  text-align: center;
+  text-decoration: none; 
+  border: none; 
+  margin-right: 5px;
+  vertical-align: bottom;
+}*/
 
-#dc_admin_footer {
+#dc-admin-footer {
   bottom: 45px;
   text-align: center;
 }
 
-#dc_admin_footer a {
+#dc-admin-footer a {
   text-decoration: none; 
 }
 
-#dc_admin_footer img {
+#dc-admin-footer img {
   border: none; 
   margin-right: 5px;
   vertical-align: bottom;
 }
 
+
 .required {
   color: red; 
 }
 
-.img_tip {
-	background: url("../../images/question_mark.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
-	display: inline-block;
-	height: 12px;
-	vertical-align: -1px;
-	width: 12px;
-	cursor: help;
-	margin-left: 5px;
+.image-adv{
+  border:1px solid #ddd;display:inline-block;
+}
+.supt-link{
+  text-align: center;margin-bottom:0;
+}
+/*** From table ***/
+.form-table .details_data {
+  display: none;
 }
 
-.multi_input_block {
-  border: 1px solid #dfdfdf;
-  radius: 10px;
-  border-radius: 10px;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  padding: 10px;
-  margin-bottom: 10px;
+/*.select2-container--default .select2-selection--multiple{
+  width: 25em;
+}*/
+.moowoodle-space{
+  margin: 10px 20px 0 2px;
+}
+.nav-tab-wrapper{
+  padding-left:20px;
+}
+.moowoodle-upgrade {
+  background-color: #04be5b;color: #fff
 }
 
-.multi_input_block_manupulate {
-  float: right;
-  margin: 2px !important;
+.moodle-linked-courses td:first-child {
+  text-align: left;
 }
-
-.woodle_options_panel label {
-	float: left;
-  width: 150px;
-  padding: 0;
-}
-
-.woodle_options_panel input[type="text"].short {
-	width: 50%;
+.moodle-linked-courses th:first-child {
+  text-align: left;
+}   
+.moodle-linked-courses>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+  border: 1px ridge #d3dbe2;
+  text-align: center;
+  padding: 8px 10px;
 }
