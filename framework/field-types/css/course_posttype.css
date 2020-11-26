@@ -1,0 +1,9 @@
+div .auto {
+	/*background-color: lightblue;*/
+  height: 500px;
+  /*width: 200px;  */
+  overflow-y: auto;
+}
+th.course_posttype {
+   width: auto;
+}

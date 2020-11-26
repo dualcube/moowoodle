@@ -1,0 +1,383 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: moowoodle\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-11-24 14:01+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.4.6; wp-5.5.3"
+
+#: classes/class-moowoodle-posttype.php:93
+#, php-format
+msgid "%2$s restored to revision from %1$s"
+msgstr ""
+
+#: classes/class-moowoodle-posttype.php:98
+#, php-format
+msgid "%2$s submitted."
+msgstr ""
+
+#: classes/class-moowoodle-posttype.php:61
+#, php-format
+msgid "%s"
+msgstr ""
+
+#: classes/class-moowoodle-posttype.php:103
+#, php-format
+msgid "%s draft updated."
+msgstr ""
+
+#: classes/class-moowoodle-posttype.php:97
+#, php-format
+msgid "%s saved."
+msgstr ""
+
+#: classes/class-moowoodle-posttype.php:100
+#, php-format
+msgid "%s scheduled for: <strong>%1$s</strong>."
+msgstr ""
+
+#: classes/class-moowoodle-posttype.php:92
+#, php-format
+msgid "%s updated."
+msgstr ""
+
+#: classes/class-moowoodle-posttype.php:57
+#: classes/class-moowoodle-posttype.php:58
+#, php-format
+msgid "Add New %s"
+msgstr ""
+
+#: classes/class-moowoodle-library.php:174
+msgid "Automatically Creates Products From Courses"
+msgstr ""
+
+#: framework/field-types/course_posttype.php:8
+msgid "Category"
+msgstr ""
+
+#: classes/emails/class-moowoodle-email-new-enrollment.php:115
+msgid "Choose which format of email to send."
+msgstr ""
+
+#: classes/class-moowoodle-library.php:51
+msgid "Connection"
+msgstr ""
+
+#: classes/class-moowoodle-posttype.php:112
+msgid "Course"
+msgstr ""
+
+#: framework/field-types/course_posttype.php:5
+msgid "Course ID"
+msgstr ""
+
+#: framework/field-types/course_posttype.php:10
+msgid "Course ID Number"
+msgstr ""
+
+#: framework/field-types/course_posttype.php:6
+msgid "Course Name"
+msgstr ""
+
+#: classes/class-moowoodle-library.php:130
+msgid "Course Synchronization"
+msgstr ""
+
+#: admin/class-moowoodle-settings.php:46 admin/class-moowoodle-settings.php:47
+#: classes/class-moowoodle-library.php:79
+#: classes/class-moowoodle-library.php:99
+#: classes/class-moowoodle-posttype.php:113
+#: classes/class-moowoodle-posttype.php:114
+msgid "Courses"
+msgstr ""
+
+#: classes/class-moowoodle-posttype.php:91
+msgid "Custom field deleted."
+msgstr ""
+
+#: classes/class-moowoodle-posttype.php:90
+msgid "Custom field updated."
+msgstr ""
+
+#. Author of the plugin
+msgid "Down Town"
+msgstr ""
+
+#: classes/class-moowoodle-admin.php:48
+msgid "Dualcube"
+msgstr ""
+
+#: classes/class-moowoodle-posttype.php:59
+#, php-format
+msgid "Edit %s"
+msgstr ""
+
+#: classes/emails/class-moowoodle-email-new-enrollment.php:106
+msgid "Email Heading"
+msgstr ""
+
+#: classes/emails/class-moowoodle-email-new-enrollment.php:113
+msgid "Email type"
+msgstr ""
+
+#: classes/emails/class-moowoodle-email-new-enrollment.php:95
+msgid "Enable this email notification"
+msgstr ""
+
+#: classes/emails/class-moowoodle-email-new-enrollment.php:93
+msgid "Enable/Disable"
+msgstr ""
+
+#: classes/class-moowoodle-library.php:69
+msgid "Enter Moodle Access Token"
+msgstr ""
+
+#: classes/class-moowoodle-library.php:60
+msgid "Enter the Moodle URL"
+msgstr ""
+
+#: classes/class-moowoodle-library.php:37
+msgid "General"
+msgstr ""
+
+#: admin/class-moowoodle-settings.php:151
+msgid "Got a Support Question"
+msgstr ""
+
+#: classes/emails/class-moowoodle-email-new-enrollment.php:120
+msgid "HTML"
+msgstr ""
+
+#. URI of the plugin
+#. Author URI of the plugin
+msgid "http://techmonastic.com/"
+msgstr ""
+
+#: classes/class-moowoodle-library.php:163
+msgid ""
+"If enabled course categories will be synchronized from moodle along with "
+"courses."
+msgstr ""
+
+#: classes/class-moowoodle-library.php:151
+msgid "If enabled courses will be synchronized from moodle."
+msgstr ""
+
+#: classes/class-moowoodle-library.php:175
+msgid "If enabled products will be created while syncing courses from moodle."
+msgstr ""
+
+#: framework/validations/required.php:10
+msgid "is required."
+msgstr ""
+
+#: classes/posttypes/class-moowoodle-posttype-product.php:42
+msgid "Linked Course"
+msgstr ""
+
+#: classes/class-moowoodle-library.php:68
+msgid "Moodle Access Token"
+msgstr ""
+
+#: classes/class-moowoodle-library.php:87
+msgid "Moodle Courses"
+msgstr ""
+
+#: classes/posttypes/class-moowoodle-posttype-product.php:20
+msgid "Moodle Linked Course"
+msgstr ""
+
+#: classes/class-moowoodle-library.php:59
+msgid "Moodle URL"
+msgstr ""
+
+#: classes/class-moowoodle-library.php:26
+msgid "MooWoodle"
+msgstr ""
+
+#. Name of the plugin
+msgid "moowoodle"
+msgstr ""
+
+#: classes/emails/class-moowoodle-email-new-enrollment.php:121
+msgid "Multipart"
+msgstr ""
+
+#: classes/class-moowoodle-posttype.php:60
+#, php-format
+msgid "New %s"
+msgstr ""
+
+#: classes/emails/class-moowoodle-email-new-enrollment.php:17
+msgid "New Enrollment"
+msgstr ""
+
+#: classes/emails/class-moowoodle-email-new-enrollment.php:14
+msgid "New Moodle Enrollment"
+msgstr ""
+
+#: classes/class-moowoodle-posttype.php:64
+#, php-format
+msgid "No %s found"
+msgstr ""
+
+#: classes/class-moowoodle-posttype.php:65
+#, php-format
+msgid "No %s found in Trash"
+msgstr ""
+
+#: templates/emails/new-enrollment.php:16
+msgid "Password : 1Admin@23 <br><br>"
+msgstr ""
+
+#: classes/emails/class-moowoodle-email-new-enrollment.php:119
+msgid "Plain text"
+msgstr ""
+
+#: framework/validations/email.php:10 framework/validations/escurlraw.php:11
+msgid "Please enter a valid email."
+msgstr ""
+
+#: framework/validations/number.php:11
+msgid "Please enter a valid number."
+msgstr ""
+
+#: classes/class-moowoodle-posttype.php:55
+#, php-format
+msgctxt "post type general name"
+msgid "%s"
+msgstr ""
+
+#: classes/class-moowoodle-posttype.php:56
+#, php-format
+msgctxt "post type singular name"
+msgid "%s"
+msgstr ""
+
+#: classes/class-moowoodle-admin.php:48
+msgid "Powered by"
+msgstr ""
+
+#: admin/class-moowoodle-settings.php:286
+msgid "Save All Changes"
+msgstr ""
+
+#: classes/class-moowoodle-posttype.php:63
+#, php-format
+msgid "Search %s"
+msgstr ""
+
+#: classes/posttypes/class-moowoodle-posttype-product.php:44
+msgid "Select course..."
+msgstr ""
+
+#: admin/class-moowoodle-settings.php:37 admin/class-moowoodle-settings.php:38
+#: classes/class-moowoodle-admin.php:23
+msgid "Settings"
+msgstr ""
+
+#: framework/field-types/course_posttype.php:7
+msgid "Short Name"
+msgstr ""
+
+#: classes/emails/class-moowoodle-email-new-enrollment.php:99
+msgid "Subject"
+msgstr ""
+
+#: admin/class-moowoodle-settings.php:276
+msgid "Sync Now"
+msgstr ""
+
+#: admin/class-moowoodle-settings.php:55 admin/class-moowoodle-settings.php:56
+#: classes/class-moowoodle-library.php:122
+msgid "Synchronization"
+msgstr ""
+
+#: classes/class-moowoodle-library.php:142
+msgid "Synchronization Settings"
+msgstr ""
+
+#: classes/class-moowoodle-library.php:162
+msgid "Synchronize Course Categories"
+msgstr ""
+
+#: classes/class-moowoodle-library.php:150
+msgid "Synchronize Courses"
+msgstr ""
+
+#: admin/class-moowoodle-settings.php:281
+#: classes/posttypes/class-moowoodle-posttype-product.php:86
+msgid "Synchronize Moodle Courses from here."
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"The MooWoodle plugin is an extention of WooCommerce that acts as a bridge "
+"between WordPress/Woocommerce and Moodle."
+msgstr ""
+
+#: classes/emails/class-moowoodle-email-new-enrollment.php:101
+#, php-format
+msgid ""
+"This controls the email subject line. Leave blank to use the default subject:"
+" <code>%s</code>."
+msgstr ""
+
+#: classes/emails/class-moowoodle-email-new-enrollment.php:108
+#, php-format
+msgid ""
+"This controls the main heading contained within the email notification. "
+"Leave blank to use the default heading: <code>%s</code>."
+msgstr ""
+
+#: classes/emails/class-moowoodle-email-new-enrollment.php:15
+msgid "This is a notification email sent to the enrollees for new enrollment."
+msgstr ""
+
+#: templates/emails/new-enrollment.php:22
+msgid "To access your course "
+msgstr ""
+
+#: templates/emails/new-enrollment.php:17
+msgid ""
+"To enroll and access your course please click on the course link given below "
+":<br><br>"
+msgstr ""
+
+#: admin/class-moowoodle-settings.php:65 admin/class-moowoodle-settings.php:66
+msgid "Upgrade to Pro"
+msgstr ""
+
+#: admin/class-moowoodle-settings.php:244
+msgid "Upgrade to Pro for More Features"
+msgstr ""
+
+#: templates/emails/new-enrollment.php:15
+msgid "Username : "
+msgstr ""
+
+#: classes/class-moowoodle-posttype.php:62
+#, php-format
+msgid "View %s"
+msgstr ""
+
+#: framework/field-types/course_posttype.php:9
+msgid "Visibility"
+msgstr ""
+
+#: templates/emails/new-enrollment.php:26
+msgid "You need to change your password after first login. <br><br>"
+msgstr ""
+
+#: classes/emails/class-moowoodle-email-new-enrollment.php:18
+msgid "{site_title} New Enrollment"
+msgstr ""

@@ -1,23 +1,23 @@
 .instraction-tri {
-    border: 2px solid #ccc !important;
-    width: max-content !important;
-    padding: 10px !important;
+    border: 2px solid #ccc;
+    width: max-content;
+    padding: 10px;
 }
 .button-tri {
-    background-color: #eeeeee !important;
-    border-color: #eeeeee !important;
-    color: #333333 !important;
+    background-color: #eeeeee;
+    border-color: #eeeeee;
+    color: #333333;
 }
 .button-tri a{
-    text-decoration: none !important;
+    text-decoration: none;
 }
 .payment-tri {
-	background-color: #eeeeee !important;
-    border-color: #eeeeee !important;
-    color: #333333 !important;
-    padding: 10px 5px !important;
-    border-radius: 5px !important;
-    width: max-content !important;
+    background-color: #eeeeee;
+    border-color: #eeeeee;
+    color: #333333;
+    padding: 10px 5px;
+    border-radius: 5px;
+    width: max-content;
 }
 /*
 css
