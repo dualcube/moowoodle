@@ -6,26 +6,20 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; 
 
-global $DC_Woodle;
 $i = 0;
 
 $enrollment_list = array();
 
-?> <p> <?php
-
 	$user_details = get_user_by( 'email', $user_data ); 
-	echo 'Username : ' . $user_details->data->user_login . '<br><br>';
-	echo 'Password : 1Admin@23 <br><br>';
-	echo 'To enroll and access your course please click on the course link given below :<br><br>';
+	echo esc_html( 'Username : ' ) . esc_html( $user_details->data->user_login ) . '\n\n';
+	echo esc_html( 'Password : 1Admin@23' ) . '\n\n';
+	echo esc_html( 'To enroll and access your course please click on the course link given below :') . '\n\n';
 
-?> </p> <?php
+foreach ( $enrollments[ 'enrolments' ] as $enrollment ) {
 
-foreach( $enrollments['enrolments'] as $enrollment ) {
-
-	$enrollment_list[] = do_shortcode( $enrollment['course_url'] . '' . $enrollment['course_name'] . '[/moowoodle]' );
-	
-	?> <p> <?php echo 'You are enrolled in '.$enrollment_list[$i].' <br><br>'; ?> </p> <?php
+	$enrollment_list[] = do_shortcode( $enrollment[ 'course_url' ] . '' . $enrollment[ 'course_name' ] . '[/moowoodle]' );
+	echo esc_html( 'You are enrolled in '.$enrollment_list[ $i ] ).' \n\n';
 	$i++;
 }
 
-?> <p> <?php echo 'You need to change your password after first login. <br><br>'; ?> </p>
+echo esc_html( 'You need to change your password after first login.') . '\n\n' ;
