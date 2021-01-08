@@ -6,26 +6,20 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; 
 
-global $DC_Woodle;
 $i = 0;
 
 $enrollment_list = array();
 
-?> <p> <?php
-
 	$user_details = get_user_by( 'email', $user_data ); 
-	echo 'Username : ' . $user_details->data->user_login . '<br><br>';
-	echo 'Password : 1Admin@23 <br><br>';
-	echo 'To enroll and access your course please click on the course link given below :<br><br>';
+	$pwd = get_user_meta( $user_details->data->ID , '_moodle_user_pwd', true );
+	echo esc_html( 'Username : ', 'moowoodle' ) . esc_html( $user_details->data->user_login ) . '\n\n';
+	echo esc_html( 'Password : ', 'moowoodle' ) .esc_html( $pwd ) . '\n\n';
+	echo esc_html( 'To enroll and access your course please click on the course link given below :', 'moowoodle' ) . '\n\n';
 
-?> </p> <?php
-
-foreach( $enrollments['enrolments'] as $enrollment ) {
-
-	$enrollment_list[] = do_shortcode( $enrollment['course_url'] . '' . $enrollment['course_name'] . '[/moowoodle]' );
-	
-	?> <p> <?php echo 'You are enrolled in '.$enrollment_list[$i].' <br><br>'; ?> </p> <?php
+foreach ( $enrollments[ 'enrolments' ] as $enrollment ) {
+	$enrollment_list[] = get_moowoodle_course_url( $enrollment[ 'linked_course_id' ], $enrollment[ 'course_name' ] );
+	echo esc_html( 'You are enrolled in '.$enrollment_list[ $i ] ).' \n\n';
 	$i++;
 }
 
-?> <p> <?php echo 'You need to change your password after first login. <br><br>'; ?> </p>
+echo esc_html( 'You need to change your password after first login.', 'moowoodle' ) . '\n\n' ;
