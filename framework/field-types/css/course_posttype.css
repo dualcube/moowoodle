@@ -1,0 +1,7 @@
+div .auto {
+	height: 500px;
+  	overflow-y: auto;
+}
+th.course_posttype {
+   	width: auto;
+}

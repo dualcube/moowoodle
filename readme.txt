@@ -3,7 +3,7 @@ Contributors: downtown2020, trideep_das_modak
 Tags: wordpress, moodle, wooCommerce, wordpress-moodle, wooCommerce-moodle
 Donate link: https://wc-marketplace.com
 Requires at least: 4.1.1
-Tested up to: 5.4.1
+Tested up to: 5.4.2
 Requires at least PHP: 5.6
 Stable tag: 2.4
 License: GPLv2 or later
