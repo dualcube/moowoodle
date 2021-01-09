@@ -1,11 +1,11 @@
 === MooWoodle ===
-Contributors: downtown2020, trideep_das_modak
+Contributors: dualcube
 Tags: wordpress, moodle, wooCommerce, wordpress-moodle, wooCommerce-moodle
-Donate link: https://wc-marketplace.com
-Requires at least: 4.1.1
-Tested up to: 5.4.2
+Donate link: https://dualcube.com/
+Requires at least: 5.0.0
+Tested up to: 5.6.0
 Requires at least PHP: 5.6
-Stable tag: 2.4
+Stable tag: 2.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,9 +25,9 @@ For a complete instruction on the MooWoodle set-up, [Click Here](https://dualcub
 = Compatibility =
 
 * Compatible with the latest version of WordPress, WooCommerce, Moodle 
-* WooCommerce upto 4.0.1
-* WordPress upto 5.4.1
-* Moodle upto 3.8.3
+* WooCommerce upto 4.8.0
+* WordPress upto 5.6.0
+* Moodle upto 3.9.0
 * Multilingual Support is included with the plugin and is fully compatible with WPML.
 
 == Configurable ==
