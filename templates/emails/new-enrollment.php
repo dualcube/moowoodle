@@ -5,23 +5,36 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; 
-global $DC_Woodle;
+
 $i = 0;
 
-do_action('woocommerce_email_header', $email_heading);  
+do_action( 'woocommerce_email_header', $email_heading );  
 $enrollment_list = array();
-?> <p> <?php
+?>
+<p>
+	<?php
 		$user_details = get_user_by( 'email', $user_data );
-		echo 'Username : ' . $user_details->data->user_login . '<br><br>';
-		echo 'Password : 1Admin@23 <br><br>';
-		echo 'To enroll and access your course please click on the course link given below :<br><br>';
-?> </p> <?php
+		$pwd = get_user_meta( $user_details->data->ID , 'moowoodle_moodle_user_pwd', true );
+		echo esc_html__( 'Username : ', 'moowoodle' ) . esc_html__( $user_details->data->user_login ) . '<br><br>';
+		echo esc_html__( 'Password : ', 'moowoodle' ) . esc_html__( $pwd ) . '<br><br>';
+		echo esc_html__( 'To access your course please click on the course link given below :', 'moowoodle' ) . '<br><br>';
+	?> 
+</p>
+<?php
 
-foreach( $enrollments['enrolments'] as $enrollment ) {
-	$enrollment_list[] = do_shortcode( $enrollment['course_url'] . '' . $enrollment['course_name'] . '[/moowoodle]' );
-	?> <p> <?php echo 'To access your course '.$enrollment_list[$i].' <br><br>'; ?> </p> <?php 
+foreach( $enrollments[ 'enrolments' ] as $enrollment ) {
+	$enrollment_list[] = get_moowoodle_course_url( $enrollment[ 'linked_course_id' ], $enrollment[ 'course_name' ] );
+?> 
+	<p> 
+		<?php echo esc_html__( 'To access your course ', 'moowoodle' ) . $enrollment_list[ $i ].' <br><br>'; ?> 
+	</p> 
+<?php 
 	$i++;
 }
 
-?> <p> <?php echo 'You need to change your password after first login. <br><br>'; ?> </p> <?php
+?> 
+<p> 
+	<?php echo esc_html__( 'You need to change your password after first login.', 'moowoodle' ) . '<br><br>'; ?> 
+</p> 
+<?php
 do_action( 'woocommerce_email_footer' ); 
