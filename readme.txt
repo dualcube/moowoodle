@@ -1,6 +1,6 @@
 === MooWoodle ===
 Contributors: dualcube
-Tags: wordpress, moodle, wooCommerce, wordpress-moodle, wooCommerce-moodle
+Tags: wordpress, moodle, woocommerce, wordpress-moodle, woocommerce-moodle
 Donate link: https://dualcube.com/
 Requires at least: 5.0.0
 Tested up to: 5.6.0
