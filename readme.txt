@@ -83,18 +83,20 @@ Yes, this plugin works really fine with Moodle 3.9! It is also compatible with M
 This plugin is compatible with the latest version of WooCommerce, that is, Version 4.9.
 
 == Screenshots ==
-1. Fill up `Access URL`, `Webservice token` and other settings fields.
-2. Select `Yes` and click on `Synchronise` to sync courses and course categories from your moodle site.
-3. In advanced features check `Enable web service` check box and save changes to enable web service for your moodle site.
-4. Enable REST protocol from manage protocol of your moodle site.
-5. In `External services` click on `Add` to add your external service.
-6. Give a `Name` to your external service and check `Enabled` then `Add service` to add your external service.
-7. Click on `Add functions` to add functions to your service.
-8. Add above mentioned functions mentioned to your service.
-9. In `Manage tokens` click on `Add` to generate new webservice token for your service.
-10. Select the admin user from the `User` list and your service form `Service` list the save changes.
-11. The token generated for your service. (Copy this token and pest it in `Webservice token` field in our WordPress plugin settings.)
-12. Uncheck `Password policy` then save changes to disable Moodle's default password policy checking.
+1. Fill up the Moodle Site URL, Moodle Access Token and the other setting field. 
+2. Fill up the display settings according to your need.
+3. Enable the settings and click sync now to sync all your courses and categories from your moodle site.
+4. In advanced features check Enable web service check box and save changes to enable web service for your moodle site.
+5. Enable REST protocol from manage protocol of your moodle site.
+6. In External services click on Add to add your external service.
+7. Give a Name to your external service and check Enabled then Add service to add your external service.
+8. Click on Add functions to add functions to your service.
+9. Add above mentioned functions mentioned to your service.
+10. In Manage tokens click on Add to generate new webservice token for your service.
+11.Select your admin user from the User list and your service form Service list and then click save changes.
+12. The token generated for your service. (Copy this token and paste it in Webservice token field in our WordPress plugin settings.)
+13. Paste the token generated for your service in the Webservice token and fill up the other settings.
+14.  List of Courses after sync.
 
 
 == Changelog ==
