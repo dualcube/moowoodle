@@ -5,14 +5,11 @@ Donate link: https://dualcube.com/
 Requires at least: 5.0.0
 Tested up to: 5.6.0
 Requires at least PHP: 5.6
-Stable tag: 2.5
+Stable tag: 3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 The MooWoodle plugin is an extention of WooCommerce that acts as a bridge between WordPress/Woocommerce and Moodle.
-
-
-== This plugin now supports Bulk Purchase ==
 
 == Description ==
 The MooWoodle plugin is an extention of WooCommerce that acts as a bridge between WordPress/Woocommerce and Moodle. It fetches all the courses from your Moodle instance and makes them available for sale, which may be bought by users through WooCommerce. It reduces your effort by synchronising your LMS site with your online store. And when someone purchases a course from the store he/she is automatically gets registered for the course in the LMS site. More over this plugin works with WooCommerce subscription plugin too.
@@ -25,7 +22,7 @@ For a complete instruction on the MooWoodle set-up, [Click Here](https://dualcub
 = Compatibility =
 
 * Compatible with the latest version of WordPress, WooCommerce, Moodle 
-* WooCommerce upto 4.8.0
+* WooCommerce upto 4.9.0
 * WordPress upto 5.6.0
 * Moodle upto 3.9.0
 * Multilingual Support is included with the plugin and is fully compatible with WPML.
@@ -44,13 +41,6 @@ It was mostly our clients who inspired us for this venture. Their constant feedb
 * Login ID: student
 * Password: 1Admin@23
 
-* You can view the demo of University here [Click Here](https://gladguys.com/demo/moodle/universitydemo/)
-
-* Student Access: 
-* Login ID: student1
-* Password: 1Admin@23
-
-
 * We also have a premium version of the plugin on Dualcube with Single Sign-On feature.  
 * This is to be installed in Moodle. 
 * To get any of these themes: [Click Here](https://dualcube.com/shop/)
@@ -66,8 +56,6 @@ If you download MooWoodle plugin manually, make sure it is uploaded to `/wp-cont
 Plugins > Add new > Upload plugin > Upload moowoodle.zip > Install Now.
 
 2. Activate the plugin through the \'Plugins\' menu in WordPress.
-
-
 
 == Workflow ==
 
@@ -88,13 +76,11 @@ Note: You will need to click the purchased courses' links/buttons in the email b
 
 == Frequently Asked Questions ==
 = Does this plugin work with newest WP version and also older versions? =
-Yes, this plugin works really fine with WordPress 4.9! It is also compatible for older WordPress versions upto 4.1.1.
+Yes, this plugin works really fine with WordPress 5.6! It is also compatible for older WordPress versions upto 4.1.1.
 = Does this plugin work with latest version of Moodle? =
-Yes, this plugin works really fine with WordPress 4.9! It is also compatible with Moodle version 3.4+.
+Yes, this plugin works really fine with Moodle 3.9! It is also compatible with Moodle version 3.4+.
 = Up to which version of WooCommerce this plugin compatible with? =
-This plugin is compatible with the latest version of WooCommerce, that is, Version 3.2.6.
-= Does this plugin work with WooCommerce Subscription? =
-Yes, it works with WooCommerce Subscription.
+This plugin is compatible with the latest version of WooCommerce, that is, Version 4.9.
 
 == Screenshots ==
 1. Fill up `Access URL`, `Webservice token` and other settings fields.
@@ -113,8 +99,11 @@ Yes, it works with WooCommerce Subscription.
 
 == Changelog ==
 
+= 3.0 – 2021-01-20 =
+* Fix - Major revamp of the plugin structure and flow. 
+
 = 2.4 =
-* Fix - Firstname and lastname data not store
+* Fix - Firstname and lastname data not store.
 
 = 2.3 =
 * Added - Moodle 3.8.3 compatibility
