@@ -156,7 +156,7 @@ class MooWoodle_Sync {
 
 				if ( $post_id > 0 ) {
 					$args[ 'ID' ] = $post_id;
-					wp_update_post( $args );				
+					$new_post_id = wp_update_post( $args );				
 				} else {
 					$new_post_id = wp_insert_post( $args );
 				}
