@@ -3,9 +3,9 @@ Contributors: dualcube
 Tags: wordpress, moodle, woocommerce, wordpress-moodle, woocommerce-moodle
 Donate link: https://dualcube.com/
 Requires at least: 5.0.0
-Tested up to: 5.6.0
+Tested up to: 5.8.2
 Requires at least PHP: 5.6
-Stable tag: 3.0
+Stable tag: 3.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,6 +100,12 @@ This plugin is compatible with the latest version of WooCommerce, that is, Versi
 
 
 == Changelog ==
+
+= 3.0.1 – 2021-11-18 =
+* Added - Compatibility of Wordpress 5.8.2.
+* Added - Compatibility of WooCommerce 5.9.0.
+* Added - Compatibility of PHP 8.0.4.
+* Fix - Seperate username and password #30.
 
 = 3.0 – 2021-01-20 =
 * Fix - Major revamp of the plugin structure and flow. 
