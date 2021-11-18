@@ -228,3 +228,40 @@ if( ! function_exists( 'get_account_menu_items' ) ) {
     return $menu_array;
   }
 }
+
+if( ! function_exists( 'moodle_customer_created_orders_count' ) ) {
+  function moodle_customer_created_orders_count($customer_id) {
+    $count = 0;
+    $customer_orders = get_posts( array(
+      'numberposts' => -1,
+      'meta_key' => '_customer_user',
+      'orderby' => 'date',
+      'order' => 'DESC',
+      'meta_value' => $customer_id,
+      'post_type' => 'shop_order',
+      'post_status' => 'wc-completed'
+    ) );
+    if ( !empty($customer_orders) ) {
+      foreach ( $customer_orders as $customer_order ) {
+        $course_exist_in_order_product = moodle_course_exist_in_order_items($customer_order->ID);
+        if ($course_exist_in_order_product) $count++;
+      }
+    }
+    return $count;
+  }
+}
+
+if( ! function_exists( 'moodle_course_exist_in_order_items' ) ) {
+  function moodle_course_exist_in_order_items($order_id) {
+    $order = wc_get_order( $order_id );
+    if ($order) {
+      foreach ( $order->get_items() as $enrolment ) {
+        $linked_course_id = get_post_meta( $enrolment->get_product_id(), 'linked_course_id', true ) ? get_post_meta( $enrolment->get_product_id(), 'linked_course_id', true ) : '';
+        if ($linked_course_id) {
+         return true; 
+       } else {}
+      }
+    }
+    return false;
+  }
+}
