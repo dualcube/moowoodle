@@ -54,10 +54,12 @@ if ( ! defined( 'MOOWOODLE_PLUGIN_BASENAME' ) )
 require_once trailingslashit( dirname( __FILE__ ) ) . 'includes/class-moowoodle-install.php';
 register_activation_hook( __FILE__, array( 'MooWoodle_Install', 'init' ) );
 
-if ( session_status() == PHP_SESSION_NONE ) {
-	session_start(
-		array( 'read_and_close' => true )
-	);
+if (!is_admin()) {
+	if ( session_status() == PHP_SESSION_NONE ) {
+		session_start(
+			array( 'read_and_close' => true )
+		);
+	}
 }
 
 if ( ! class_exists( 'MooWoodle' ) ) {
