@@ -54,7 +54,7 @@ class MooWoodle_Library {
             "id" => "moodle-access-token",
             "name" => "moodle_access_token",
             "label" => __( "Moodle Access Token", 'moowoodle' ),
-            "desc" => __('Enter Moodle Access Token. You can generate the Access Token from - Dashboard => Site administration => Plugins => Web services => Manage tokens', 'moowoodle' ),
+            "desc" => __('Enter Moodle Access Token. You can generate the Access Token from - Dashboard => Site administration => Server => Web services => Manage tokens', 'moowoodle' ),
         );
 
         //Connection Settings
