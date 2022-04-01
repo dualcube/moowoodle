@@ -1,5 +1,5 @@
 === MooWoodle ===
-Contributors: dualcube
+Contributors: dualcube, rajsekharchatterjee11
 Tags: wordpress, moodle, woocommerce, wordpress-moodle, woocommerce-moodle
 Donate link: https://dualcube.com/
 Requires at least: 5.0.0
@@ -101,7 +101,7 @@ This plugin is compatible with the latest version of WooCommerce, that is, Versi
 
 == Changelog ==
 
-= 3.0.2 – 2022-03-25 =
+= 3.0.2 – 2022-04-01 =
 * Added - Compatibility of Wordpress 5.9.2.
 * Added - Compatibility of WooCommerce 6.3.1.
 * Added - Compatibility of PHP 8.0.6.
