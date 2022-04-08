@@ -4,7 +4,7 @@ class MooWoodle_Enrollment {
 	public $wc_order;
 
 	public function __construct() {
-		//add_action( 'woocommerce_order_status_completed', array( &$this, 'process_order' ), 10, 1 );		
+		add_action( 'woocommerce_order_status_completed', array( &$this, 'process_order' ), 10, 1 );		
 		add_action( 'woocommerce_subscription_status_updated', array( &$this, 'update_course_access' ), 10, 3 );
 		add_action( 'woocommerce_thankyou', array( &$this, 'enrollment_modified_details' ) );
 		add_action( 'woocommerce_after_shop_loop_item_title', array( &$this, 'add_dates_with_product' ) );
@@ -257,7 +257,6 @@ class MooWoodle_Enrollment {
 	public function enrollment_modified_details( $order_id ) {
 		$order = wc_get_order( $order_id );
 		if ( $order->get_status() == 'completed' ) {
-			$this->process_order($order_id);
 			echo esc_html_e( 'Please check your mail or go to My Courses page to access your courses.', 'moowoodle' );
 		} else {
 			echo esc_html_e( 'Order status is :- ', 'moowoodle' ) . $order->get_status() . '<br>';
