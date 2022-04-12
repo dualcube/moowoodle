@@ -101,7 +101,7 @@ This plugin is compatible with the latest version of WooCommerce, that is, Versi
 
 == Changelog ==
 
-= 3.0.3 – 2022-04-01 =
+= 3.0.3 – 2022-04-12 =
 * Added - Compatibility of Wordpress 5.9.3.
 * Fix 	- Enrollment of users doesnt work #44.
 * Updated - Language file.
