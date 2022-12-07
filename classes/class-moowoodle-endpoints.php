@@ -89,7 +89,7 @@ class MooWoodle_Endpoints {
                   $course_link = get_moowoodle_course_url( $linked_course_id, 'View' );
                   $enrolment_date = get_post_meta( $order->get_id(), 'moodle_user_enrolment_date', true );
                   $product = wc_get_product($enrolment->get_product_id());
-                  if ($product) continue;
+                  if (!$product) continue;
                   ?>
                   <tr>
                     <td>
