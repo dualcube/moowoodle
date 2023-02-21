@@ -22,9 +22,9 @@ For a complete instruction on the MooWoodle set-up, [Click Here](https://dualcub
 = Compatibility =
 
 * Compatible with the latest version of WordPress, WooCommerce, Moodle 
-* WooCommerce upto 4.9.0
-* WordPress upto 5.6.0
-* Moodle upto 3.9.0
+* WooCommerce upto 7.4.0
+* WordPress upto 6.1.1
+* Moodle upto 4.2
 * Multilingual Support is included with the plugin and is fully compatible with WPML.
 
 == Configurable ==
@@ -100,6 +100,11 @@ This plugin is compatible with the latest version of WooCommerce, that is, Versi
 
 
 == Changelog ==
+
+= 3.0.4 – 2023-02-21 =
+* Added - Compatibility of Wordpress 6.1.1.
+* Added - Compatibility of WooCommerce 7.4.0.
+* Added - Compatibility of Moodle 4.2.
 
 = 3.0.3 – 2022-04-12 =
 * Added - Compatibility of Wordpress 5.9.3.
