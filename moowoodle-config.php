@@ -4,7 +4,7 @@ define( 'MOOWOODLE_PLUGIN_TOKEN', 'moowoodle' );
 
 define( 'MOOWOODLE_TEXT_DOMAIN', 'moowoodle' );
 
-define( 'MOOWOODLE_PLUGIN_VERSION', '3.0.3' );
+define( 'MOOWOODLE_PLUGIN_VERSION', '3.0.4' );
 
 define( 'MOOWOODLE_PLUGIN_SERVER_URL', 'http://plugins.dualcube.com' );
 
