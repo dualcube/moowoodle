@@ -55,10 +55,15 @@ require_once trailingslashit( dirname( __FILE__ ) ) . 'includes/class-moowoodle-
 register_activation_hook( __FILE__, array( 'MooWoodle_Install', 'init' ) );
 
 if (!is_admin()) {
-	if ( !headers_sent() && session_status() == PHP_SESSION_NONE ) {
-		session_start(
-			array( 'read_and_close' => true )
-		);
+	if ( session_status() == PHP_SESSION_NONE ) {
+		if(!headers_sent()){
+			session_start([
+				'read_and_close' => true ,
+			]);
+		}
+		else{
+			$_SESSION['read_and_close'] = true;
+		}
 	}
 }
 
