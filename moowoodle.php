@@ -56,9 +56,14 @@ register_activation_hook( __FILE__, array( 'MooWoodle_Install', 'init' ) );
 
 if (!is_admin()) {
 	if ( session_status() == PHP_SESSION_NONE ) {
-		session_start(
-			array( 'read_and_close' => true )
-		);
+		if(!headers_sent()){
+			session_start([
+				'read_and_close' => true ,
+			]);
+		}
+		else{
+			$_SESSION['read_and_close'] = true;
+		}
 	}
 }
 

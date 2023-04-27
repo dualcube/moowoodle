@@ -102,6 +102,7 @@ This plugin is compatible with the latest version of WooCommerce, that is, Versi
 * Added - Compatibility of Wordpress 6.1.1.
 * Added - Compatibility of WooCommerce 7.4.0.
 * Added - Compatibility of Moodle 4.2.
+* Fix   - PHP Warning: session_start() #50.
 
 = 3.0.3 – 2022-04-12 =
 * Added - Compatibility of Wordpress 5.9.3.
