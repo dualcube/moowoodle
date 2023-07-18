@@ -45,10 +45,8 @@ if ( ! function_exists( 'moowoodle_moodle_core_function_callback' ) ) {
         
     if ( ! empty( $url )  && ! empty( $token ) && $function_name != '' ) {
       $request_query = http_build_query( $request_param );
-
-      $response = wp_remote_post( $request_url, array( 'body' => $request_query ) );
+      $response = wp_remote_post( $request_url, array(  'body' => $request_query , 'timeout' => $MooWoodle->options_timeout_settings['moodle_timeout']));
     } 
-    
     if ( ! is_wp_error( $response ) && $response != null && $response[ 'response' ][ 'code' ] == 200 ) {
       if ( is_string( $response[ 'body' ] ) ) {
         $response_arr = json_decode( $response[ 'body' ], true );        

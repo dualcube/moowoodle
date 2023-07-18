@@ -75,6 +75,25 @@ class MooWoodle_Library {
                  'Enable' => __( '', 'moowoodle' ),
             )
         );
+
+        $moowoodle_options[ ] = array(
+            "type" => "setting",
+            "id" => "moowoodle_timeout_settings"
+        );
+
+        $moowoodle_options[ ] = array(
+            "type" => "section",
+            "id" => "moowoodle-system-settings",
+            "label" => __( "System Settings", 'moowoodle' ),
+        );
+
+        $moowoodle_options[ ] = array(
+            "type" => "textbox",
+            "id" => "moodle-timeout",
+            'name' => "moodle_timeout",
+            "label" => __( "Moodle Site timeout", 'moowoodle' ),
+            "desc" => __('Enter the Moodle Site timeout', 'moowoodle' ),
+        );
         
         $moowoodle_options[ ] = array(
             "type" => "tab",

@@ -59,7 +59,6 @@ class MooWoodle_Endpoints {
       'post_status' => 'wc-completed'
     ) );
     $pwd = get_user_meta( $customer->ID , 'moowoodle_moodle_user_pwd', true );
-    
     if ( count( $customer_orders ) > 0 ) {
       ?> 
       <p> 
@@ -110,7 +109,7 @@ class MooWoodle_Endpoints {
                     </td>
                     <td>
                       <?php 
-                      echo '<button type="button" class="button-tri">' . $course_link . '<i class="fas fa-eye"></i>' . '</button>';
+                      echo '<button type="button" class="button-tri">' . apply_filters('moodle_course_view_url', $course_link , $linked_course_id)  . '<i class="fas fa-eye"></i>' . '</button>';
                       ?>
                     </td>
                   </tr>              

@@ -50,6 +50,17 @@ class MooWoodle {
 		$this->options_display_settings = get_option( 'moowoodle_display_settings' );
 		// synchronize settings
 		$this->options_synchronize_settings = get_option( 'moowoodle_synchronize_settings' );
+		// moodle timeout settings
+			$timeout = get_option( 'moowoodle_timeout_settings' );
+		if($timeout != null && is_int((int)$timeout['moodle_timeout']) && (int)$timeout['moodle_timeout']>5){
+			$this->options_timeout_settings = $timeout;
+		}
+		else{
+			$timeout['moodle_timeout'] = 5;
+			$this->options_timeout_settings['moodle_timeout'] = 5;
+			update_option('moowoodle_timeout_settings', $timeout);
+		}
+
 		
 		add_action( 'init', array( &$this, 'init' ), 0 );
 	}
