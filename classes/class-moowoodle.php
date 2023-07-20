@@ -51,14 +51,14 @@ class MooWoodle {
 		// synchronize settings
 		$this->options_synchronize_settings = get_option( 'moowoodle_synchronize_settings' );
 		// moodle timeout settings
-			$timeout = get_option( 'moowoodle_timeout_settings' );
+			$timeout = get_option( 'moowoodle_general_settings' );
 		if($timeout != null && is_int((int)$timeout['moodle_timeout']) && (int)$timeout['moodle_timeout']>5){
 			$this->options_timeout_settings = $timeout;
 		}
 		else{
 			$timeout['moodle_timeout'] = 5;
 			$this->options_timeout_settings['moodle_timeout'] = 5;
-			update_option('moowoodle_timeout_settings', $timeout);
+			update_option('moowoodle_general_settings', $timeout);
 		}
 
 		
@@ -107,7 +107,12 @@ class MooWoodle {
 		//init endpoints
 		$this->load_class( 'endpoints' );
 		$this->endpoints = new MooWoodle_Endpoints();
-		
+
+		//log folder
+		if(!file_exists(MW_LOGS . "/error.log")){
+			wp_mkdir_p( MW_LOGS );
+			 echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "MooWoodle Log file Created\n", FILE_APPEND );
+		}
 	}
 	
 	/**

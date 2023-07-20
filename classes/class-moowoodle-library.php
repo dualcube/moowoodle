@@ -2,8 +2,8 @@
 class MooWoodle_Library {
 
     
-	
-	public function moowoodle_get_options() {
+    
+    public function moowoodle_get_options() {
 
         /**
          * Create new menus
@@ -77,11 +77,6 @@ class MooWoodle_Library {
         );
 
         $moowoodle_options[ ] = array(
-            "type" => "setting",
-            "id" => "moowoodle_timeout_settings"
-        );
-
-        $moowoodle_options[ ] = array(
             "type" => "section",
             "id" => "moowoodle-system-settings",
             "label" => __( "System Settings", 'moowoodle' ),
@@ -136,6 +131,65 @@ class MooWoodle_Library {
             "desc" => __('Select below which menu the My Courses Menu will be displayed', 'moowoodle'),
             "option_values" => get_account_menu_items()
 
+        );
+        // status
+        $moowoodle_options[ ] = array(
+            "type" => "tab",
+            "id" => "moowoodle-status",
+            "label" => __( "status", 'moowoodle' ),
+            "font_class" => "dashicons-dashboard"
+        );
+
+        $moowoodle_options[ ] = array(
+            "type" => "setting",
+            "id" => "moowoodle_status_settings"
+        );
+     
+        $moowoodle_options[ ] = array(
+            "type" => "section",
+            "id" => "moowoodle-status-table",
+            "label" => __( "status", 'moowoodle' )
+        );
+        
+        // synchronize courses categories
+        $moowoodle_options[ ] = array(
+            "type" => "status_posttype",
+            "id" => "status_posttype",
+            "label" => __( "", 'moowoodle' ),
+            "desc" => __("", '' ),
+            "option_values" => array(
+                 'Enable' => __( '', 'moowoodle' ),
+            )
+        );
+
+        // log
+        $moowoodle_options[ ] = array(
+        "type" => "tab",
+        "id" => "moowoodle-log",
+        "label" => __( "log", 'moowoodle' ),
+        "font_class" => "dashicons-welcome-write-blog"
+        );
+
+        $moowoodle_options[ ] = array(
+            "type" => "setting",
+            "id" => "moowoodle_log"
+        );
+     
+        $moowoodle_options[ ] = array(
+            "type" => "section",
+            "id" => "moowoodle-log-table",
+            "label" => __( "Log", 'moowoodle' )
+        );
+        
+        // synchronize courses categories
+        $moowoodle_options[ ] = array(
+            "type" => "log_posttype",
+            "id" => "log_posttype",
+            "label" => __( "", 'moowoodle' ),
+            "desc" => __("", '' ),
+            "option_values" => array(
+                 'Enable' => __( '', 'moowoodle' ),
+            )
         );
 
         /**
@@ -243,6 +297,6 @@ class MooWoodle_Library {
             )
         );
 
-      	return apply_filters( 'moowoodle_fileds_options', $moowoodle_options);
+        return apply_filters( 'moowoodle_fileds_options', $moowoodle_options);
     }
 }

@@ -49,21 +49,25 @@ if ( ! function_exists( 'moowoodle_moodle_core_function_callback' ) ) {
     } 
     if ( ! is_wp_error( $response ) && $response != null && $response[ 'response' ][ 'code' ] == 200 ) {
       if ( is_string( $response[ 'body' ] ) ) {
-        $response_arr = json_decode( $response[ 'body' ], true );        
+        $response_arr = json_decode( $response[ 'body' ], true ); 
         if ( json_last_error() === JSON_ERROR_NONE ) {
           if ( is_null( $response_arr ) || ! array_key_exists( 'exception', $response_arr ) ) {
             $MooWoodle->ws_has_error = false;
             return $response_arr;
           } else {
+            echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "response: " . $response['response']['message'] , FILE_APPEND );
             $MooWoodle->ws_has_error = true;
           }
         } else {
+          echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "response: " . $response['response']['message'] , FILE_APPEND );
           $MooWoodle->ws_has_error = true;
         }
       } else {
+        echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "response: " . $response['response']['message'] , FILE_APPEND );
         $MooWoodle->ws_has_error = true;
       }
     } else {
+      echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "response: " . $response['response']['message'] , FILE_APPEND );
       $MooWoodle->ws_has_error = true;
     }    
     return null;

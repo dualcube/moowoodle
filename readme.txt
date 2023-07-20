@@ -14,10 +14,7 @@ The MooWoodle plugin is an extention of WooCommerce that acts as a bridge betwee
 == Description ==
 The MooWoodle plugin is an extention of WooCommerce that acts as a bridge between WordPress/Woocommerce and Moodle. It fetches all the courses from your Moodle instance and makes them available for sale, which may be bought by users through WooCommerce. It reduces your effort by synchronising your LMS site with your online store. And when someone purchases a course from the store he/she is automatically gets registered for the course in the LMS site. More over this plugin works with WooCommerce subscription plugin too.
 
-* For details documentation: [Click Here](https://dualcube.com/installation-guide-for-moowoodle/)
-
-For a complete instruction on the MooWoodle set-up, [Click Here](https://dualcube.com/docs/moowoodle-set-up-guide/#3-toc-title)
-
+* For details documentation: [Click Here](https://dualcube.com/docs-category/moowoodle/)
 
 = Compatibility =
 
@@ -28,7 +25,7 @@ For a complete instruction on the MooWoodle set-up, [Click Here](https://dualcub
 * Multilingual Support is included with the plugin and is fully compatible with WPML.
 
 == Configurable ==
-*For a complete instruction on the MooWoodle set-up, [Click Here](https://dualcube.com/docs/moowoodle-set-up-guide/#3-toc-title)
+*For a complete instruction on the MooWoodle set-up, [Click Here](https://dualcube.com/docs-category/moowoodle/)
 
 == Other Moodle Products From Dualcube ==
 After years of not getting it just right, our excellent design and development team combined craft, care, love and experience to deliver two impeccable Moodle themes i.e "Nalanda" and "University" , blend with a smooth and rich UI.
@@ -105,7 +102,6 @@ This plugin is compatible with the latest version of WooCommerce, that is, Versi
 * Added - Compatibility of Wordpress 6.1.1.
 * Added - Compatibility of WooCommerce 7.4.0.
 * Added - Compatibility of Moodle 4.2.
-* Fix   - PHP Warning: session_start() #50.
 
 = 3.0.3 – 2022-04-12 =
 * Added - Compatibility of Wordpress 5.9.3.
@@ -201,4 +197,3 @@ This plugin is compatible with the latest version of WooCommerce, that is, Versi
 = 1.1.0 =
 
 = 1.0.0 =
-

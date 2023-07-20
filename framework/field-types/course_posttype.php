@@ -3,7 +3,7 @@
 // from heading
 $from_heading = apply_filters( 'moowoodle_courses_heading', 
                                     array( __( "Course ID", 'moowoodle' ),
-                                           __( "Course Name", 'moowoodle' ),
+                                           __( "Moodle Course Name", 'moowoodle' ),
                                            __( "Short Name", 'moowoodle' ),
                                            __( "Category", 'moowoodle' ),
                                            __( "Visibility", 'moowoodle' ),
@@ -35,6 +35,7 @@ $from_heading = apply_filters( 'moowoodle_courses_heading',
 
         <tbody>
         <?php
+        global $MooWoodle;
          $courses = get_posts( array( 'post_type' => 'course', 'numberposts' => -1, 'post_status' => 'publish' ) );
         
             if ( ! empty( $courses ) ) {
@@ -70,6 +71,11 @@ $from_heading = apply_filters( 'moowoodle_courses_heading',
     				if ( ! empty( $term ) ) {
     					$sort_url = '<a href="' . admin_url( 'edit.php?course_cat=' . $term->slug . '&post_type=course' ) . '">' . $course_path . '</a>';
     				}
+                    $moodle_url = '';
+                    if($id){
+                        $moodle_url = '<a href="' . $MooWoodle->options_general_settings[ "moodle_url" ]. 'course/edit.php?id=' . $id . '">' . $course_name . '</a>';
+                        // $moodle_url = '<a href="' . admin_url( 'edit.php?course_cat=' . $term->slug . '&post_type=course' ) . '">' . $course_path . '</a>';
+                    }
     				
                ?>
                 <tr>
@@ -77,7 +83,7 @@ $from_heading = apply_filters( 'moowoodle_courses_heading',
                         <?php echo $id; ?>
                     </td>
                     <td>
-                        <?php echo $course_name; ?>
+                        <?php echo $moodle_url; ?>
                     </td>
                     <td>
                         <?php echo $course_short_name; ?> 
