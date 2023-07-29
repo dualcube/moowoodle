@@ -23,12 +23,14 @@ if ( ! function_exists( 'moowoodle_moodle_core_function_callback' ) ) {
     
     $response = null;
     $function_name = "";
-    $moodle_core_functions = array( 'get_categories' => 'core_course_get_categories',
-                                    'get_courses'  => 'core_course_get_courses',
-                                    'get_moodle_users'    => 'core_user_get_users',
-                                    'create_users'   => 'core_user_create_users',
-                                    'update_users'   => 'core_user_update_users',
-                                    'enrol_users'  => 'enrol_manual_enrol_users'
+    $moodle_core_functions = array( 'get_categories'  => 'core_course_get_categories',
+                                    'get_courses'     => 'core_course_get_courses',
+                                    'get_moodle_users'=> 'core_user_get_users',
+                                    'create_users'    => 'core_user_create_users',
+                                    'update_users'    => 'core_user_update_users',
+                                    'enrol_users'     => 'enrol_manual_enrol_users',
+                                    'get_course_image'=>  'core_course_get_courses_by_field',
+                                    'unenrol_users'   => 'enrol_manual_unenrol_users',
                                   );
     if ( array_key_exists( $key, $moodle_core_functions ) ) {
       $function_name = $moodle_core_functions[ $key ];
@@ -46,6 +48,7 @@ if ( ! function_exists( 'moowoodle_moodle_core_function_callback' ) ) {
     if ( ! empty( $url )  && ! empty( $token ) && $function_name != '' ) {
       $request_query = http_build_query( $request_param );
       $response = wp_remote_post( $request_url, array(  'body' => $request_query , 'timeout' => $MooWoodle->options_timeout_settings['moodle_timeout']));
+      file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " ."\n        request_url:" . $request_url . "\n        request_query:" . $request_query ."\n        response: " . $response['body'] ."\n", FILE_APPEND );
     } 
     if ( ! is_wp_error( $response ) && $response != null && $response[ 'response' ][ 'code' ] == 200 ) {
       if ( is_string( $response[ 'body' ] ) ) {
@@ -55,19 +58,19 @@ if ( ! function_exists( 'moowoodle_moodle_core_function_callback' ) ) {
             $MooWoodle->ws_has_error = false;
             return $response_arr;
           } else {
-            echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "response: " . $response['response']['message'] , FILE_APPEND );
+            echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "response: " . $response['response']['message'] ."\n", FILE_APPEND );
             $MooWoodle->ws_has_error = true;
           }
         } else {
-          echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "response: " . $response['response']['message'] , FILE_APPEND );
+          echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "response: " . $response['response']['message'] ."\n", FILE_APPEND );
           $MooWoodle->ws_has_error = true;
         }
       } else {
-        echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "response: " . $response['response']['message'] , FILE_APPEND );
+        echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "response: " . $response['response']['message'] ."\n", FILE_APPEND );
         $MooWoodle->ws_has_error = true;
       }
     } else {
-      echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "response: " . $response['response']['message'] , FILE_APPEND );
+      echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "response: " . $response['response']['message'] ."\n", FILE_APPEND );
       $MooWoodle->ws_has_error = true;
     }    
     return null;

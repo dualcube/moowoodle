@@ -57,6 +57,16 @@ class MooWoodle_Library {
             "desc" => __('Enter Moodle Access Token. You can generate the Access Token from - Dashboard => Site administration => Server => Web services => Manage tokens', 'moowoodle' ),
         );
 
+        $moowoodle_options[ ] = array(
+            "type" => "test_connect_posttype",
+            "id" => "test_connect_posttype",
+            "label" => __( "", 'moowoodle' ),
+            "desc" => __("", '' ),
+            "option_values" => array(
+                 'Enable' => __( '', 'moowoodle' ),
+            )
+        );
+
         //Connection Settings
         $moowoodle_options[ ] = array(
             "type" => "section",
@@ -288,6 +298,18 @@ class MooWoodle_Library {
         // synchronize products
         $moowoodle_options[ ] = array(
             "type" => "checkbox",
+            "id" => "sync-image",
+            "name" => "sync_image",
+            "label" => __( "Synchronize Courses Image", 'moowoodle' ),
+            "desc" => __('If enabled products will be created while syncing courses from moodle.', 'moowoodle' ),
+            "option_values" => array(
+                 'Enable' => __( '', 'moowoodle' ),
+            )
+        );
+
+        // synchronize products
+        $moowoodle_options[ ] = array(
+            "type" => "checkbox",
             "id" => "sync-products",
             "name" => "sync_products",
             "label" => __( "Automatically Creates Products From Courses", 'moowoodle' ),
@@ -297,6 +319,44 @@ class MooWoodle_Library {
             )
         );
 
+        /**
+         * Create new menus
+         */
+        $moowoodle_options[ ] = array(
+            "type" => "menu",
+            "menu_type" => "add_menu_page",
+            "page_name" => __( "MooWoodle", 'moowoodle' ),
+            "menu_slug" => "moowoodle-manage-enrolment",
+            "layout" => "2-col"
+        );
+        $moowoodle_options[ ] = array(
+            "type" => "tab",
+            "id" => "moowoodle-manage-enrolment",
+            "label" => __( "Enrolment", 'moowoodle' ),
+            "font_class" => "dashicons-admin-generic"
+        );
+         $moowoodle_options[ ] = array(
+            "type" => "setting",
+            "id" => "manage_enrolmente_settings"
+        );
+     
+        $moowoodle_options[ ] = array(
+            "type" => "section",
+            "id" => "moowoodle-manage-enrolment",
+            "label" => __( "All Enrolments", 'moowoodle' )
+        );
+        
+        // synchronize courses categories
+        $moowoodle_options[ ] = array(
+            "type" => "manage_enrolment_posttype",
+            "id" => "manage_enrolment_posttype",
+            "label" => __( "", 'moowoodle' ),
+            "desc" => __("", '' ),
+            "option_values" => array(
+                 'Enable' => __( '', 'moowoodle' ),
+            )
+        );
+        
         return apply_filters( 'moowoodle_fileds_options', $moowoodle_options);
     }
 }

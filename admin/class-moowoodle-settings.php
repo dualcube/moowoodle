@@ -56,6 +56,15 @@ class MooWoodle_Settings {
       array( $this, 'option_page' )
     );
 
+    add_submenu_page(
+      'moowoodle',
+      __( "Manage Enrolment", 'moowoodle' ),
+      __( "Manage Enrolment", 'moowoodle' ),
+      'manage_options',
+      'moowoodle-manage-enrolment',
+      array( $this, 'option_page' )
+    );
+
 		if ( apply_filters( 'moowoodle_menu_hide', true ) ) {
 			add_submenu_page(
 				'moowoodle',
@@ -274,7 +283,16 @@ class MooWoodle_Settings {
               <a href="<?php echo esc_url( get_site_url() ); ?>/wp-admin/admin.php?page=moowoodle-synchronization" ><?php esc_html_e('Synchronize Moodle Courses from here.', 'moowoodle'); ?></a>
                              
           <?php
+            } elseif ($page == "moowoodle-connection" ){
+            ?>
+              <input name="submit" type="submit" value="<?php esc_html_e('Save All Changes', 'moowoodle'); ?>" class="button-primary" />
+              <input name="test_connection" type="submit" value="<?php esc_html_e( 'Test Connection', 'moowoodle' ); ?>" class="button-primary" />
+            <?php
+            } elseif ($page == "moowoodle-manage-enrolment" ){
+            ?>
+            <?php
             } else {
+              // echo $page;
           ?>
               <input name="submit" type="submit" value="<?php esc_html_e('Save All Changes', 'moowoodle'); ?>" class="button-primary" />
           <?php

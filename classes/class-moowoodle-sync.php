@@ -25,6 +25,10 @@ class MooWoodle_Sync {
 		if ( isset( $sync_settings[ 'sync_courses' ] ) && $sync_settings[ 'sync_courses' ] == "Enable" ) {
 			$this->sync_courses();
 		}
+		if ( isset( $sync_settings[ 'sync_image' ] ) && $sync_settings[ 'sync_image' ] == "Enable" ) {
+			$this->sync_image();
+		}
+		do_action('moowoodle_after_sync');
 	}
 
 	/**
@@ -120,6 +124,61 @@ class MooWoodle_Sync {
 	}
 
 	/**
+	 * Sync course images from moodle.
+	 *
+	 * @access private
+	 * @return void
+	*/
+	private function sync_image() {
+		global $MooWoodle;
+		$courses = moowoodle_moodle_core_function_callback( 'get_course_image' );
+		$conn_settings = $MooWoodle->options_general_settings;
+	    $token = $conn_settings[ 'moodle_access_token' ];
+		$courses = $courses['courses'];
+		if ( ! empty( $courses ) ){
+			foreach ( $courses as $course ) {
+				$course_id = $course['id'];	
+				if ( isset( $course['overviewfiles'] ) && ! empty( $course['overviewfiles'] ) ) {
+					$course_image = $course['overviewfiles'][0];
+					if( strpos( $course_image['fileurl'], '?file=' ) !== false ) {
+						$file_url = $course_image['fileurl'] . '&token=' . $token;
+					}
+					else {
+						$file_url = $course_image['fileurl'] . '?token=' . $token;
+					}
+		 			print_r(file_get_contents( $file_url ));die;
+					$upload_file = wp_upload_bits( $course_image['filename'], null, file_get_contents( $file_url ) );
+
+					if ( ! $upload_file['error'] ) {
+						$wp_filetype = wp_check_filetype($course_image['filename'], null );
+					  
+						$attachment = array(
+						  'post_mime_type' => $wp_filetype['type'],
+						  'post_parent'    => $course_id,
+						  'post_title'     => preg_replace( '/\.[^.]+$/', '', $course_image['filename'] ),
+						  'post_content'   => '',
+						  'post_status'    => 'inherit'
+						);
+					  
+						$attachment_id = wp_insert_attachment( $attachment, $upload_file['file'], $course_id );
+					  
+						if ( ! is_wp_error( $attachment_id ) ) {
+						   // if attachment post was successfully created, insert it as a thumbnail to the post $course_id.
+						   require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+					  
+						   $attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload_file['file'] );
+					  
+						   wp_update_attachment_metadata( $attachment_id,  $attachment_data );
+						   set_post_thumbnail( $course_id, $attachment_id );
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	/**
 	 * Update moodle courses in Wordpress site.
 	 *
 	 * @access private
@@ -167,13 +226,13 @@ class MooWoodle_Sync {
 						update_post_meta( $new_post_id, '_sku', 'course-' . (int) $course[ 'id' ]);
 						update_post_meta( $new_post_id, '_virtual', 'yes' );
 						update_post_meta( $new_post_id, '_sold_individually', 'yes' );
-						update_post_meta( $new_post_id, '_course_startdate', $course[ 'startdate' ] );
-						update_post_meta( $new_post_id, '_course_enddate', $course[ 'enddate' ] );
 					} else {
 						$shortname = $course[ 'shortname' ];
 						update_post_meta( $new_post_id, '_course_short_name', sanitize_text_field( $shortname ) );
 						update_post_meta( $new_post_id, '_course_idnumber', sanitize_text_field( $course[ 'idnumber' ] ) );
 					}
+					update_post_meta( $new_post_id, '_course_startdate', $course[ 'startdate' ] );
+					update_post_meta( $new_post_id, '_course_enddate', $course[ 'enddate' ] );
 					update_post_meta( $new_post_id, 'moodle_course_id', (int) $course[ 'id' ] );	
 					update_post_meta( $new_post_id, '_category_id', (int) $course[ 'categoryid' ] );
 					update_post_meta( $new_post_id, '_visibility', $visibility = ( $course[ 'visible' ] ) ? 'visible' : 'hidden' );					

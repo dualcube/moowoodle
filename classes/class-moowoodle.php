@@ -82,6 +82,10 @@ class MooWoodle {
 			$this->admin = new MooWoodle_Admin();
 			$this->load_class( 'sync' );
 			$this->sync = new MooWoodle_Sync();
+			$this->load_class( 'testconnection' );
+			$this->testconnection = new MooWoodle_testconnection();
+			$this->load_class( 'manage-enrolment' );
+			$this->sync = new MooWoodle_Manage_Enrolment();
 		}
 		
 		// init templates
