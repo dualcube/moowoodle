@@ -14,6 +14,7 @@ $from_heading = apply_filters( 'moowoodle_courses_heading',
 
 ?>
 <div class="auto">
+
     <table class="table table-bordered responsive-table moodle-linked-courses widefat">
         <thead>
             <tr>
@@ -100,8 +101,16 @@ $from_heading = apply_filters( 'moowoodle_courses_heading',
                       'post_type' => 'shop_order',
                       'post_status' => 'wc-completed'
                     ) );
+                    $count_enrolment = 0;
+                    foreach ( $customer_orders as $customer_order ) {
+                        $order = wc_get_order( $customer_order->ID );
+                        foreach ( $order->get_items() as $enrolment ) {
+                            $linked_course_id = get_post_meta( $enrolment->get_product_id(), 'linked_course_id', true );
+                            if($linked_course_id == $id) $count_enrolment++;
+                        }
+                    }
 
-
+                    $enroled_user= $count_enrolment;
                     $date = 'Start Date- ' . wp_date('F j, Y g: i a',$course_startdate);
                     if($course_enddate){
                         $date .= 'End Date- ' . wp_date('F j, Y g: i a',$course_enddate);
@@ -129,7 +138,7 @@ $from_heading = apply_filters( 'moowoodle_courses_heading',
                         <?php echo $date; ?>
                     </td>
                     <?php echo apply_filters('moowoodle_courses_body', $table_body , $course, $product); ?>
-                </tr>$
+                </tr>
                  <?php
                 }
             }

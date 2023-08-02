@@ -288,7 +288,7 @@ class MooWoodle_Settings {
               <input name="submit" type="submit" value="<?php esc_html_e('Save All Changes', 'moowoodle'); ?>" class="button-primary" />
               <input name="test_connection" type="submit" value="<?php esc_html_e( 'Test Connection', 'moowoodle' ); ?>" class="button-primary" />
             <?php
-            } elseif ($page == "moowoodle-manage-enrolment" ){
+            } elseif ($page == "moowoodle-manage-enrolment" || $page == "moowoodle-log-table"){
             ?>
             <?php
             } else {

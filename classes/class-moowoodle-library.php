@@ -56,7 +56,7 @@ class MooWoodle_Library {
             "label" => __( "Moodle Access Token", 'moowoodle' ),
             "desc" => __('Enter Moodle Access Token. You can generate the Access Token from - Dashboard => Site administration => Server => Web services => Manage tokens', 'moowoodle' ),
         );
-
+        //test connection massage page
         $moowoodle_options[ ] = array(
             "type" => "test_connect_posttype",
             "id" => "test_connect_posttype",
@@ -91,7 +91,7 @@ class MooWoodle_Library {
             "id" => "moowoodle-system-settings",
             "label" => __( "System Settings", 'moowoodle' ),
         );
-
+        // moodle time out
         $moowoodle_options[ ] = array(
             "type" => "textbox",
             "id" => "moodle-timeout",
@@ -100,6 +100,7 @@ class MooWoodle_Library {
             "desc" => __('Enter the Moodle Site timeout', 'moowoodle' ),
         );
         
+        //display settings
         $moowoodle_options[ ] = array(
             "type" => "tab",
             "id" => "moowoodle-display",
@@ -132,7 +133,7 @@ class MooWoodle_Library {
             )
         );
 
-        //my-courses
+        //my-courses display
         $moowoodle_options[ ] = array(
             "type" => "select",
             "id" => "my-courses-priority",
@@ -142,36 +143,7 @@ class MooWoodle_Library {
             "option_values" => get_account_menu_items()
 
         );
-        // status
-        $moowoodle_options[ ] = array(
-            "type" => "tab",
-            "id" => "moowoodle-status",
-            "label" => __( "status", 'moowoodle' ),
-            "font_class" => "dashicons-dashboard"
-        );
-
-        $moowoodle_options[ ] = array(
-            "type" => "setting",
-            "id" => "moowoodle_status_settings"
-        );
-     
-        $moowoodle_options[ ] = array(
-            "type" => "section",
-            "id" => "moowoodle-status-table",
-            "label" => __( "status", 'moowoodle' )
-        );
         
-        // synchronize courses categories
-        $moowoodle_options[ ] = array(
-            "type" => "status_posttype",
-            "id" => "status_posttype",
-            "label" => __( "", 'moowoodle' ),
-            "desc" => __("", '' ),
-            "option_values" => array(
-                 'Enable' => __( '', 'moowoodle' ),
-            )
-        );
-
         // log
         $moowoodle_options[ ] = array(
         "type" => "tab",
@@ -191,7 +163,7 @@ class MooWoodle_Library {
             "label" => __( "Log", 'moowoodle' )
         );
         
-        // synchronize courses categories
+        // log page
         $moowoodle_options[ ] = array(
             "type" => "log_posttype",
             "id" => "log_posttype",
@@ -231,7 +203,7 @@ class MooWoodle_Library {
             "label" => __( "Courses", 'moowoodle' )
         );
         
-        // synchronize courses categories
+        // courses page
         $moowoodle_options[ ] = array(
             "type" => "course_posttype",
             "id" => "course_posttype",
@@ -295,7 +267,7 @@ class MooWoodle_Library {
             )
         );
 
-        // synchronize products
+        // synchronize image
         $moowoodle_options[ ] = array(
             "type" => "checkbox",
             "id" => "sync-image",
@@ -346,7 +318,7 @@ class MooWoodle_Library {
             "label" => __( "All Enrolments", 'moowoodle' )
         );
         
-        // synchronize courses categories
+        // manage enrolment page
         $moowoodle_options[ ] = array(
             "type" => "manage_enrolment_posttype",
             "id" => "manage_enrolment_posttype",

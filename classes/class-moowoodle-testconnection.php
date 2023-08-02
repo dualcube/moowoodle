@@ -1,10 +1,10 @@
 <?php
-// require_once( ABSPATH  . '/wp-content/plugins/moowoodle/includes/moowoodle-core-functions.php');
 class MooWoodle_testconnection {
 	function __construct() {		
 		add_action( 'admin_init', array( &$this, 'testconnection') );
 	}
 
+	// test connection with moodle server from connection settings
 	public function testconnection() {
 		// echo get_post_meta(get_posts(array(	'post_title' => 'moowoodle_test_connection', 'post_name' => 'moowoodle_test_connection', 'post_content' => 'MooWoodle_testconnection', 'post_status' => 'private', 'post_type' => 'test', 'numberposts' => -1	))[0]->ID,'_test_connect_submit',true);die;
 		// echo $_POST['moowoodle_general_settings[moodle_url]'];die;
@@ -37,7 +37,16 @@ class MooWoodle_testconnection {
 			update_post_meta( $new_post_id, '_test_connect_get_courses', $this->check_connection($response));
 			if($this->check_connection($response) == 'success'){
 				$response_arr = json_decode( $response[ 'body' ], true );
-				$course_id = $response_arr[0][ 'id' ];
+				if ( ! empty( $response_arr ) ){
+					foreach ( $response_arr as $course ) {
+						if ( $course[ 'format' ] == 'topics' ) {
+							$course_id = $course[ 'id' ];
+							$empty_course_id = '';
+							break;
+						}
+						$empty_course_id = 'create a course on moodle for test connection';
+					}
+				}
 
 			}
 		}
@@ -81,33 +90,29 @@ class MooWoodle_testconnection {
 					if($response != null){
 						update_post_meta( $new_post_id, '_test_connect_update_users', $this->check_connection($response));
 					}
-					if($this->check_connection($response) == 'success'){
-						// $enrolment = array();
-						$enrolment['courseid'] =  $course_id;
-						$enrolment['userid'] = 20;
-						$enrolment['roleid'] =  '5';
-						// $enrolment['suspend'] =  '0';
-						// $enrolments[] = $enrolment;
-						// $enrolments[0] = $enrolment;
-						// enrolments[0][courseid]=4&enrolments[0][userid]=4 &enrolments[0][roleid]=5&enrolments[0][suspend]=0
-						// enrolments[0][courseid]=1&enrolments[0][userid]=37&enrolments[0][roleid]=5&enrolments[0][suspend]=0
-						$response = $this->moowoodle_moodle_test_connection_callback( 'enrol_users', array( 'enrolments' => array($enrolment) ) );
-						if($response != null){
-							update_post_meta( $new_post_id, '_test_connect_enrol_users', $this->check_connection($response));
-						}
-						if($this->check_connection($response) == 'success'){
-							unset($enrolment['suspend']);
-							unset($enrolment['roleid']);
-							$response = $this->moowoodle_moodle_test_connection_callback( 'unenrol_users', array( 'enrolments' => $enrolments )  );
+					if(empty($empty_course_id)){
+						if($this->check_connection($response) == 'success' && !empty($course_id)){
+							$enrolment['courseid'] =  $course_id;
+							$enrolment['userid'] = $user_data['id'];
+							$enrolment['roleid'] =  '5';
+							$response = $this->moowoodle_moodle_test_connection_callback( 'enrol_users', array( 'enrolments' => array($enrolment) ) );
 							if($response != null){
-								update_post_meta( $new_post_id, '_test_connect_unenrol_users', $this->check_connection($response));
+								update_post_meta( $new_post_id, '_test_connect_enrol_users', $this->check_connection($response));
+							}
+							if($this->check_connection($response) == 'success'){
+								unset($enrolment['roleid']);
+								$response = $this->moowoodle_moodle_test_connection_callback( 'unenrol_users', array( 'enrolments' => $enrolments )  );
+								if($response != null){
+									update_post_meta( $new_post_id, '_test_connect_unenrol_users', $this->check_connection($response));
+								}
 							}
 						}
+					}else{
+						update_post_meta( $new_post_id, '_test_connect_enrol_users', $this->check_connection($empty_course_id));
 					}
 					$response = $this->moowoodle_moodle_test_connection_callback( 'delete_users' , array( 'userids' =>   array($user_data['id']) ) );
 					if($response != null){
 						update_post_meta( $new_post_id, '_test_connect_delete_users', $this->check_connection($response));
-						// print_r($enrolment);die;
 					}
 				}
 			}
@@ -115,7 +120,14 @@ class MooWoodle_testconnection {
 		// }
 
 	}
-
+	/**
+	 * get server resposne from moodle with externel service.
+	 *
+	 * @access private
+	 * @param string $function_name (default: null)
+	 * @param string $request_param (default: null)
+	 * @return mixed
+	 */
 	private function moowoodle_moodle_test_connection_callback( $key = '', $request_param = array() ) {
 		global $MooWoodle;
 
@@ -147,10 +159,17 @@ class MooWoodle_testconnection {
 		if ( ! empty( $url )  && ! empty( $token ) && $function_name != '' ) {
 		  $request_query = http_build_query( $request_param );
 		  $response = wp_remote_post( $request_url, array(  'body' => $request_query , 'timeout' => $MooWoodle->options_timeout_settings['moodle_timeout']));
-		  file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " ."\n        request_url:" . $request_url."\n        body:" . $request_query. "\n        response: " . json_encode($response) ."\n", FILE_APPEND );
+		//   file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " ."\n        request_url:" . $request_url."\n        body:" . $request_query. "\n        response: " . json_encode($response) ."\n", FILE_APPEND );
 		} 
 		return $response;
 	}
+	/**
+	 * check server resposne result .
+	 *
+	 * @access private
+	 * @param string $response (default: null)
+	 * @return string
+	 */
 	private function check_connection($response){
 		$conn_settings = get_option( 'moowoodle_general_settings' );
 		$url_check = '';

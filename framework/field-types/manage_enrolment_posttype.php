@@ -14,7 +14,11 @@ $from_heading = apply_filters( 'moowoodle_enrolment_heading',
                                 );
 
 ?>
+<script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+    </script>
 <div class="auto">
+    <input id="searchInput" type="text" placeholder="Search here">
     <table class="table table-bordered responsive-table moowoodle-manage-enrollment widefat">
         <thead>
             <tr>
@@ -34,6 +38,7 @@ $from_heading = apply_filters( 'moowoodle_enrolment_heading',
             ?>        
             </tr>
         </thead>
+        <tbody id="moowoodle-manage-enrollment-tablebody">
 <?php
 $customer_orders = get_posts( array(
       'numberposts' => -1,
@@ -98,6 +103,19 @@ foreach ( $customer_orders as $customer_order ) {
 </tbody>
 </table>
 </div>
-</p> 
+
+<script>
+$(document).ready(function() {
+    var $rows = $('#moowoodle-manage-enrollment-tablebody tr');
+    $('#searchInput').keyup(function() {
+        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+        $rows.show().filter(function() {
+            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+            return !~text.indexOf(val);
+        }).hide();
+    });
+});
+</script>
 <?php 
 

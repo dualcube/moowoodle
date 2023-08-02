@@ -34,6 +34,16 @@ class MooWoodle {
 	public $endpoints;
 	
 	public $ws_has_error;
+	
+	public $options_general_settings;
+	
+	public $options_display_settings;
+	
+	public $options_synchronize_settings;
+	
+	public $options_timeout_settings;
+	
+	public $testconnection;
 
 	public function __construct( $file ) {
 

@@ -137,8 +137,8 @@ class MooWoodle_Sync {
 		$courses = $courses['courses'];
 		if ( ! empty( $courses ) ){
 			foreach ( $courses as $course ) {
-				$course_id = $course['id'];	
 				if ( isset( $course['overviewfiles'] ) && ! empty( $course['overviewfiles'] ) ) {
+					
 					$course_image = $course['overviewfiles'][0];
 					if( strpos( $course_image['fileurl'], '?file=' ) !== false ) {
 						$file_url = $course_image['fileurl'] . '&token=' . $token;
@@ -146,22 +146,24 @@ class MooWoodle_Sync {
 					else {
 						$file_url = $course_image['fileurl'] . '?token=' . $token;
 					}
-		 			print_r(file_get_contents( $file_url ));die;
 					$upload_file = wp_upload_bits( $course_image['filename'], null, file_get_contents( $file_url ) );
 
 					if ( ! $upload_file['error'] ) {
 						$wp_filetype = wp_check_filetype($course_image['filename'], null );
-					  
+					  	$product_id = moowoodle_get_post_by_moodle_id( $course['id'], 'product' );
 						$attachment = array(
-						  'post_mime_type' => $wp_filetype['type'],
-						  'post_parent'    => $course_id,
-						  'post_title'     => preg_replace( '/\.[^.]+$/', '', $course_image['filename'] ),
+						  'post_parent'    => $product_id,
 						  'post_content'   => '',
-						  'post_status'    => 'inherit'
+						  'post_status'    => 'inherit',
+						  'post_type'	   => 'attachment',
 						);
-					  
-						$attachment_id = wp_insert_attachment( $attachment, $upload_file['file'], $course_id );
-					  
+						$posts = get_posts( $attachment )[0];
+						if ( $posts->ID > 0 ) {
+							$attachment[ 'ID' ] = $post_id;
+						}
+						$attachment['post_mime_type'] = $wp_filetype['type'];
+						$attachment['post_title']     = preg_replace( '/\.[^.]+$/', '', $course_image['filename'] );
+						$attachment_id = wp_insert_attachment( $attachment, $upload_file['file'], $product_id );
 						if ( ! is_wp_error( $attachment_id ) ) {
 						   // if attachment post was successfully created, insert it as a thumbnail to the post $course_id.
 						   require_once(ABSPATH . "wp-admin" . '/includes/image.php');
@@ -169,7 +171,7 @@ class MooWoodle_Sync {
 						   $attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload_file['file'] );
 					  
 						   wp_update_attachment_metadata( $attachment_id,  $attachment_data );
-						   set_post_thumbnail( $course_id, $attachment_id );
+						   set_post_thumbnail( $product_id, $attachment_id );
 						}
 					}
 				}

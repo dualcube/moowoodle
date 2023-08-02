@@ -7,7 +7,7 @@ class MooWoodle_Manage_Enrolment {
 	}
 
 	/**
-	 * Initiate sync process.
+	 * manual Unenroll user from manage-enrollment page.
 	 *
 	 * @access public
 	 * @return void
@@ -17,7 +17,6 @@ class MooWoodle_Manage_Enrolment {
 		if ( ! isset( $_POST[ 'unenroll' ] ) ) {
 			return;
 		}
-		    // echo $_POST['user_id'] . '  ' . $_POST['course_id'];die;
 		$order_id =  $_POST['order_id'];
 	    $enrolment['courseid'] =  $_POST['course_id'];
 		$enrolment['userid'] =  $_POST['user_id'];
