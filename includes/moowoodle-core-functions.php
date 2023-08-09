@@ -48,8 +48,8 @@ if ( ! function_exists( 'moowoodle_moodle_core_function_callback' ) ) {
     if ( ! empty( $url )  && ! empty( $token ) && $function_name != '' ) {
       $request_query = http_build_query( $request_param );
       $response = wp_remote_post( $request_url, array(  'body' => $request_query , 'timeout' => $MooWoodle->options_timeout_settings['moodle_timeout']));
-      // file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " ."\n        request_url:" . $request_url . "\n        request_query:" . $request_query ."\n        response: " . $response['body'] ."\n", FILE_APPEND );
     } 
+    $url_check = $error_massage = '';
     if ( ! is_wp_error( $response ) && $response != null && $response[ 'response' ][ 'code' ] == 200 ) {
       if ( is_string( $response[ 'body' ] ) ) {
         $response_arr = json_decode( $response[ 'body' ], true ); 
@@ -58,21 +58,31 @@ if ( ! function_exists( 'moowoodle_moodle_core_function_callback' ) ) {
             $MooWoodle->ws_has_error = false;
             return $response_arr;
           } else {
-            echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "response: " . $response['response']['message'] ."\n", FILE_APPEND );
+            if(str_contains($response_arr['message'],'Access control exception')){
+              $url_check = '<a href="'.$conn_settings[ 'moodle_url' ] . '/admin/settings.php?section=externalservices">Link</a>'; 
+            }
+            if(str_contains($response_arr['message'],'Invalid token')){
+              $url_check = '<a href="'.$conn_settings[ 'moodle_url' ] . '/admin/webservice/tokens.php">Link</a>'; 
+            }
+            $error_massage = $response_arr['message'] . ' ' . $url_check;
             $MooWoodle->ws_has_error = true;
           }
         } else {
-          echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "response: " . $response['response']['message'] ."\n", FILE_APPEND );
+          $error_massage = __('Response is not JSON decodeable', 'moowoodle' );
           $MooWoodle->ws_has_error = true;
         }
       } else {
-        echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "response: " . $response['response']['message'] ."\n", FILE_APPEND );
+        $error_massage = __('Not String response', 'moowoodle' );
         $MooWoodle->ws_has_error = true;
       }
     } else {
-      echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "response: " . $response['response']['message'] ."\n", FILE_APPEND );
+      if($response[ 'response' ][ 'code' ] == 404){
+        $url_check = __('Please check "Moodle Site URL" ||', 'moowoodle' );
+      }
+      $error_massage = $url_check. __(' error code: ', 'moowoodle' ) . $response[ 'response' ][ 'code' ]. " " . $response['response']['message'];
       $MooWoodle->ws_has_error = true;
     }    
+    file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " ."\n        moowoodle error:" . $error_massage."\n", FILE_APPEND );
     return null;
   }
 }

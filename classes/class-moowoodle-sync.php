@@ -25,9 +25,6 @@ class MooWoodle_Sync {
 		if ( isset( $sync_settings[ 'sync_courses' ] ) && $sync_settings[ 'sync_courses' ] == "Enable" ) {
 			$this->sync_courses();
 		}
-		if ( isset( $sync_settings[ 'sync_image' ] ) && $sync_settings[ 'sync_image' ] == "Enable" ) {
-			$this->sync_image();
-		}
 		do_action('moowoodle_after_sync');
 	}
 
@@ -121,63 +118,6 @@ class MooWoodle_Sync {
 		if ( isset( $sync_settings[ 'sync_products' ] ) && $sync_settings[ 'sync_products' ] == "Enable" ) {
 			$this->update_posts( $courses, 'product', 'product_cat', 'woocommerce_term' );
 		}
-	}
-
-	/**
-	 * Sync course images from moodle.
-	 *
-	 * @access private
-	 * @return void
-	*/
-	private function sync_image() {
-		global $MooWoodle;
-		$courses = moowoodle_moodle_core_function_callback( 'get_course_image' );
-		$conn_settings = $MooWoodle->options_general_settings;
-	    $token = $conn_settings[ 'moodle_access_token' ];
-		$courses = $courses['courses'];
-		if ( ! empty( $courses ) ){
-			foreach ( $courses as $course ) {
-				if ( isset( $course['overviewfiles'] ) && ! empty( $course['overviewfiles'] ) ) {
-					
-					$course_image = $course['overviewfiles'][0];
-					if( strpos( $course_image['fileurl'], '?file=' ) !== false ) {
-						$file_url = $course_image['fileurl'] . '&token=' . $token;
-					}
-					else {
-						$file_url = $course_image['fileurl'] . '?token=' . $token;
-					}
-					$upload_file = wp_upload_bits( $course_image['filename'], null, file_get_contents( $file_url ) );
-
-					if ( ! $upload_file['error'] ) {
-						$wp_filetype = wp_check_filetype($course_image['filename'], null );
-					  	$product_id = moowoodle_get_post_by_moodle_id( $course['id'], 'product' );
-						$attachment = array(
-						  'post_parent'    => $product_id,
-						  'post_content'   => '',
-						  'post_status'    => 'inherit',
-						  'post_type'	   => 'attachment',
-						);
-						$posts = get_posts( $attachment )[0];
-						if ( $posts->ID > 0 ) {
-							$attachment[ 'ID' ] = $post_id;
-						}
-						$attachment['post_mime_type'] = $wp_filetype['type'];
-						$attachment['post_title']     = preg_replace( '/\.[^.]+$/', '', $course_image['filename'] );
-						$attachment_id = wp_insert_attachment( $attachment, $upload_file['file'], $product_id );
-						if ( ! is_wp_error( $attachment_id ) ) {
-						   // if attachment post was successfully created, insert it as a thumbnail to the post $course_id.
-						   require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-					  
-						   $attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload_file['file'] );
-					  
-						   wp_update_attachment_metadata( $attachment_id,  $attachment_data );
-						   set_post_thumbnail( $product_id, $attachment_id );
-						}
-					}
-				}
-			}
-		}
-
 	}
 
 	/**

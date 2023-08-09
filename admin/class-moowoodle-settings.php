@@ -40,10 +40,10 @@ class MooWoodle_Settings {
 
     add_submenu_page(
       'moowoodle',
-      __( "Settings", 'moowoodle' ),
-      __( "Settings", 'moowoodle' ),
+      __( "Manage Enrolment", 'moowoodle' ) . apply_filters('moowoodle_pro_sticker','<img src="'. plugins_url() .'/moowoodle/framework/lock.png" /> pro'),
+      __( "Manage Enrolment", 'moowoodle' ) . apply_filters('moowoodle_pro_sticker','<img src="'. plugins_url() .'/moowoodle/framework/lock.png" /> pro'),
       'manage_options',
-      'moowoodle-settings',
+      'moowoodle-manage-enrolment',
       array( $this, 'option_page' )
     );
 
@@ -58,10 +58,10 @@ class MooWoodle_Settings {
 
     add_submenu_page(
       'moowoodle',
-      __( "Manage Enrolment", 'moowoodle' ),
-      __( "Manage Enrolment", 'moowoodle' ),
+      __( "Settings", 'moowoodle' ),
+      __( "Settings", 'moowoodle' ),
       'manage_options',
-      'moowoodle-manage-enrolment',
+      'moowoodle-settings',
       array( $this, 'option_page' )
     );
 
@@ -286,7 +286,8 @@ class MooWoodle_Settings {
             } elseif ($page == "moowoodle-connection" ){
             ?>
               <input name="submit" type="submit" value="<?php esc_html_e('Save All Changes', 'moowoodle'); ?>" class="button-primary" />
-              <input name="test_connection" type="submit" value="<?php esc_html_e( 'Test Connection', 'moowoodle' ); ?>" class="button-primary" />
+              <!-- <input name="test_connection" type="button" value="<?php //esc_html_e( 'Test Connection', 'moowoodle' ); ?>" class="button-primary" /> -->
+              <button class="test-connection button-primary" type="button"><?php esc_html_e( 'Test Connection', 'moowoodle' ); ?></button>
             <?php
             } elseif ($page == "moowoodle-manage-enrolment" || $page == "moowoodle-log-table"){
             ?>
@@ -404,7 +405,8 @@ class MooWoodle_Settings {
 
     $options = get_option( $setting_id );
     $options = wp_parse_args( $options, $defaults );
-    $path = $MooWoodle->plugin_path . 'framework/field-types/' . $type . '.php';
+    $path = apply_filters('mooewoodle_field_types_posttype_path' ,$MooWoodle->plugin_path . 'framework/field-types/' . $type . '.php',$type);
+    // echo $path;
     if ( file_exists( $path ) ) {
       // Show Field
       include( $path );

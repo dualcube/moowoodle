@@ -5,6 +5,174 @@ class MooWoodle_Library {
     
     public function moowoodle_get_options() {
 
+   
+//=============================
+        /**
+         * Create new menus
+        */
+        $moowoodle_options[ ] = array(
+            "type" => "menu",
+            "menu_type" => "add_menu_page",
+            "page_name" => __( "Courses", 'moowoodle' ),
+            "menu_slug" => "moowoodle",
+            "layout" => "2-col"
+        );
+
+        $moowoodle_options[ ] = array(
+            "type" => "tab",
+            "id" => "moowoodle-linked-courses",
+            "label" => __( "Moodle Courses", 'moowoodle' ),
+            "font_class" => "dashicons-welcome-learn-more"
+        );
+
+        $moowoodle_options[ ] = array(
+            "type" => "setting",
+            "id" => "moowoodle_course_settings"
+        );
+     
+        $moowoodle_options[ ] = array(
+            "type" => "section",
+            "id" => "moowoodle-link-course-table",
+            "label" => __( "Courses", 'moowoodle' )
+        );
+        
+        // courses page
+        $moowoodle_options[ ] = array(
+            "type" => "course_posttype",
+            "id" => "course_posttype",
+            "label" => __( "", 'moowoodle' ),
+            "desc" => __("", '' ),
+            "option_values" => array(
+                 'Enable' => __( '', 'moowoodle' ),
+            )
+        );
+//=============================
+        /**
+         * Create new menus
+        */
+        $moowoodle_options[ ] = array(
+            "type" => "menu",
+            "menu_type" => "add_menu_page",
+            "page_name" => __( "Synchronization", 'moowoodle' ),
+            "menu_slug" => "moowoodle-synchronization",
+            "layout" => "2-col"
+        );
+
+        $moowoodle_options[ ] = array(
+            "type" => "tab",
+            "id" => "moowoodle-courses",
+            "label" => __( "Course Synchronization", 'moowoodle' ),
+            "font_class" => "dashicons-admin-links"
+        );
+
+        $moowoodle_options[ ] = array(
+            "type" => "setting",
+            "id" => "moowoodle_synchronize_settings"
+        );
+     
+        $moowoodle_options[ ] = array(
+            "type" => "section",
+            "id" => "moowoodle-sync-courses",
+            "label" => __( "Synchronization Settings", 'moowoodle' )
+        );
+        
+        //synchonise courses 
+        $moowoodle_options[ ] = array(
+            "type" => "checkbox",
+            "id" => "sync-courses",
+            "name" => "sync_courses",
+            "label" => __( "Synchronize Courses", 'moowoodle' ),
+            "desc" => __('If enabled courses will be synchronized from moodle.', 'moowoodle' ),
+            "option_values" => array(
+                 'Enable' => __( '', 'moowoodle' ),
+            )
+        );
+
+        // synchronize courses categories
+        $moowoodle_options[ ] = array(
+            "type" => "checkbox",
+            "id" => "sync-course-category",
+            "name" => "sync_courses_category",
+            "label" => __( "Synchronize Course Categories", 'moowoodle' ),
+            "desc" => __('If enabled course categories will be synchronized from moodle along with courses.', 'moowoodle' ),
+            "option_values" => array(
+                 'Enable' => __( '', 'moowoodle' ),
+            )
+        );
+
+        // synchronize image
+        $moowoodle_options[ ] = array(
+            "type" => "checkbox",
+            "id" => "sync-image",
+            "name" => "sync_image",
+            "label" => __( "Synchronize Courses Image", 'moowoodle' ) . apply_filters('moowoodle_pro_sticker','<img src="'. plugins_url() .'/moowoodle/framework/lock.png" /> pro'),
+            "desc" => __('If enabled sync the image of thumbnail from moodle to products.', 'moowoodle' ),
+            "option_values" => array(
+                 'Enable' => __( '', 'moowoodle' ),
+            )
+        );
+
+        //Update previously synchronized courses to product
+        $moowoodle_options[ ] = array(
+            "type" => "checkbox",
+            "id" => "sync-prev-courses",
+            "name" => "sync_prev_courses",
+            "label" => __( "Update previously synchronized courses", 'moowoodle' ) . apply_filters('moowoodle_pro_sticker','<img src="'. plugins_url() .'/moowoodle/framework/lock.png" /> pro'),
+            "desc" => __('If enabled products will be synchronized whith previously synchronized courses.', 'moowoodle' ),
+            "option_values" => array(
+              'Enable' => __( '', 'moowoodle' ),
+            )
+        );
+        // synchronize products
+        $moowoodle_options[ ] = array(
+            "type" => "checkbox",
+            "id" => "sync-products",
+            "name" => "sync_products",
+            "label" => __( "Automatically Creates Products From Courses", 'moowoodle' ),
+            "desc" => __('If enabled products will be created while syncing courses from moodle.', 'moowoodle' ),
+            "option_values" => array(
+                 'Enable' => __( '', 'moowoodle' ),
+            )
+        );
+//=============================
+        /**
+         * Create new menus
+         */
+        $moowoodle_options[ ] = array(
+            "type" => "menu",
+            "menu_type" => "add_menu_page",
+            "page_name" => __( "MooWoodle", 'moowoodle' ),
+            "menu_slug" => "moowoodle-manage-enrolment",
+            "layout" => "2-col"
+        );
+        $moowoodle_options[ ] = array(
+            "type" => "tab",
+            "id" => "moowoodle-manage-enrolment",
+            "label" => __( "Enrolment", 'moowoodle' ),
+            "font_class" => "dashicons-admin-generic"
+        );
+         $moowoodle_options[ ] = array(
+            "type" => "setting",
+            "id" => "manage_enrolmente_settings"
+        );
+     
+        $moowoodle_options[ ] = array(
+            "type" => "section",
+            "id" => "moowoodle-manage-enrolment",
+            "label" => __( "All Enrolments", 'moowoodle' )
+        );
+        
+        // manage enrolment page
+        $moowoodle_options[ ] = array(
+            "type" => "manage_enrolment_posttype",
+            "id" => "manage_enrolment_posttype",
+            "label" => __( "", 'moowoodle' ),
+            "desc" => __("", '' ),
+            "option_values" => array(
+                 'Enable' => __( '', 'moowoodle' ),
+            )
+        );
+//=============================
         /**
          * Create new menus
          */
@@ -79,8 +247,8 @@ class MooWoodle_Library {
             "type" => "checkbox",
             "id" => "update-moodle-user",
             'name' => "update_moodle_user",
-            "label" => __( "Overwrite Moodle User Data By WordPress Data", 'moowoodle' ),
-            "desc" => __('If enabled Moodle user\'s personal Information will be updated by WordPress user' , 'moowoodle' ),
+            "label" => __( "Update Profile Data", 'moowoodle' ),
+            "desc" => __('If enabled Moodle user\'s personal Information will be updated by WordPress user data' , 'moowoodle' ),
             "option_values" => array(
                  'Enable' => __( '', 'moowoodle' ),
             )
@@ -96,8 +264,8 @@ class MooWoodle_Library {
             "type" => "textbox",
             "id" => "moodle-timeout",
             'name' => "moodle_timeout",
-            "label" => __( "Moodle Site timeout", 'moowoodle' ),
-            "desc" => __('Enter the Moodle Site timeout', 'moowoodle' ),
+            "label" => __( "Timeout", 'moowoodle' ),
+            "desc" => __('Enter the CURL request timeout in sec. Default: 5 (in Sec).', 'moowoodle' ),
         );
         
         //display settings
@@ -143,13 +311,37 @@ class MooWoodle_Library {
             "option_values" => get_account_menu_items()
 
         );
-        
+        $moowoodle_options[ ] = array(
+            "type" => "tab",
+            "id" => "moowoodle-SSO",
+            "label" => __( "SSO ", 'moowoodle' ) . apply_filters('moowoodle_pro_sticker',' pro'),
+            "font_class" => "dashicons-admin-multisite"
+        );
+        $moowoodle_options[ ] = array(
+            "type" => "setting",
+            "id" => "moowoodle_sso_settings",
+        );
+        $moowoodle_options[ ] = array(
+            "type" => "section",
+            "id" => "moowoodlepro-sso",
+            "label" => __( "Single Sing On Settings", 'moowoodlepro' ),
+        );
+        // log page
+        $moowoodle_options[ ] = array(
+            "type" => "sso_posttype",
+            "id" => "sso_posttype",
+            "label" => __( "", 'moowoodle' ),
+            "desc" => __("", '' ),
+            "option_values" => array(
+                 'Enable' => __( '', 'moowoodle' ),
+            )
+        );
         // log
         $moowoodle_options[ ] = array(
-        "type" => "tab",
-        "id" => "moowoodle-log",
-        "label" => __( "log", 'moowoodle' ),
-        "font_class" => "dashicons-welcome-write-blog"
+            "type" => "tab",
+            "id" => "moowoodle-log",
+            "label" => __( "log", 'moowoodle' ),
+            "font_class" => "dashicons-welcome-write-blog"
         );
 
         $moowoodle_options[ ] = array(
@@ -167,161 +359,6 @@ class MooWoodle_Library {
         $moowoodle_options[ ] = array(
             "type" => "log_posttype",
             "id" => "log_posttype",
-            "label" => __( "", 'moowoodle' ),
-            "desc" => __("", '' ),
-            "option_values" => array(
-                 'Enable' => __( '', 'moowoodle' ),
-            )
-        );
-
-        /**
-         * Create new menus
-        */
-        $moowoodle_options[ ] = array(
-            "type" => "menu",
-            "menu_type" => "add_menu_page",
-            "page_name" => __( "Courses", 'moowoodle' ),
-            "menu_slug" => "moowoodle",
-            "layout" => "2-col"
-        );
-
-        $moowoodle_options[ ] = array(
-            "type" => "tab",
-            "id" => "moowoodle-linked-courses",
-            "label" => __( "Moodle Courses", 'moowoodle' ),
-            "font_class" => "dashicons-welcome-learn-more"
-        );
-
-        $moowoodle_options[ ] = array(
-            "type" => "setting",
-            "id" => "moowoodle_course_settings"
-        );
-     
-        $moowoodle_options[ ] = array(
-            "type" => "section",
-            "id" => "moowoodle-link-course-table",
-            "label" => __( "Courses", 'moowoodle' )
-        );
-        
-        // courses page
-        $moowoodle_options[ ] = array(
-            "type" => "course_posttype",
-            "id" => "course_posttype",
-            "label" => __( "", 'moowoodle' ),
-            "desc" => __("", '' ),
-            "option_values" => array(
-                 'Enable' => __( '', 'moowoodle' ),
-            )
-        );
-
-        /**
-         * Create new menus
-        */
-        $moowoodle_options[ ] = array(
-            "type" => "menu",
-            "menu_type" => "add_menu_page",
-            "page_name" => __( "Synchronization", 'moowoodle' ),
-            "menu_slug" => "moowoodle-synchronization",
-            "layout" => "2-col"
-        );
-
-        $moowoodle_options[ ] = array(
-            "type" => "tab",
-            "id" => "moowoodle-courses",
-            "label" => __( "Course Synchronization", 'moowoodle' ),
-            "font_class" => "dashicons-admin-links"
-        );
-
-        $moowoodle_options[ ] = array(
-            "type" => "setting",
-            "id" => "moowoodle_synchronize_settings"
-        );
-     
-        $moowoodle_options[ ] = array(
-            "type" => "section",
-            "id" => "moowoodle-sync-courses",
-            "label" => __( "Synchronization Settings", 'moowoodle' )
-        );
-        
-        //synchonise courses 
-        $moowoodle_options[ ] = array(
-            "type" => "checkbox",
-            "id" => "sync-courses",
-            "name" => "sync_courses",
-            "label" => __( "Synchronize Courses", 'moowoodle' ),
-            "desc" => __('If enabled courses will be synchronized from moodle.', 'moowoodle' ),
-            "option_values" => array(
-                 'Enable' => __( '', 'moowoodle' ),
-            )
-        );
-
-        // synchronize courses categories
-        $moowoodle_options[ ] = array(
-            "type" => "checkbox",
-            "id" => "sync-course-category",
-            "name" => "sync_courses_category",
-            "label" => __( "Synchronize Course Categories", 'moowoodle' ),
-            "desc" => __('If enabled course categories will be synchronized from moodle along with courses.', 'moowoodle' ),
-            "option_values" => array(
-                 'Enable' => __( '', 'moowoodle' ),
-            )
-        );
-
-        // synchronize image
-        $moowoodle_options[ ] = array(
-            "type" => "checkbox",
-            "id" => "sync-image",
-            "name" => "sync_image",
-            "label" => __( "Synchronize Courses Image", 'moowoodle' ),
-            "desc" => __('If enabled products will be created while syncing courses from moodle.', 'moowoodle' ),
-            "option_values" => array(
-                 'Enable' => __( '', 'moowoodle' ),
-            )
-        );
-
-        // synchronize products
-        $moowoodle_options[ ] = array(
-            "type" => "checkbox",
-            "id" => "sync-products",
-            "name" => "sync_products",
-            "label" => __( "Automatically Creates Products From Courses", 'moowoodle' ),
-            "desc" => __('If enabled products will be created while syncing courses from moodle.', 'moowoodle' ),
-            "option_values" => array(
-                 'Enable' => __( '', 'moowoodle' ),
-            )
-        );
-
-        /**
-         * Create new menus
-         */
-        $moowoodle_options[ ] = array(
-            "type" => "menu",
-            "menu_type" => "add_menu_page",
-            "page_name" => __( "MooWoodle", 'moowoodle' ),
-            "menu_slug" => "moowoodle-manage-enrolment",
-            "layout" => "2-col"
-        );
-        $moowoodle_options[ ] = array(
-            "type" => "tab",
-            "id" => "moowoodle-manage-enrolment",
-            "label" => __( "Enrolment", 'moowoodle' ),
-            "font_class" => "dashicons-admin-generic"
-        );
-         $moowoodle_options[ ] = array(
-            "type" => "setting",
-            "id" => "manage_enrolmente_settings"
-        );
-     
-        $moowoodle_options[ ] = array(
-            "type" => "section",
-            "id" => "moowoodle-manage-enrolment",
-            "label" => __( "All Enrolments", 'moowoodle' )
-        );
-        
-        // manage enrolment page
-        $moowoodle_options[ ] = array(
-            "type" => "manage_enrolment_posttype",
-            "id" => "manage_enrolment_posttype",
             "label" => __( "", 'moowoodle' ),
             "desc" => __("", '' ),
             "option_values" => array(

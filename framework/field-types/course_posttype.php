@@ -9,13 +9,16 @@ $from_heading = apply_filters( 'moowoodle_courses_heading',
                                            __( "Category", 'moowoodle' ),
                                            __( "Number of Enrolled User", 'moowoodle' ),
                                            __( "Date", 'moowoodle' ),  
+                                           __( "Actions", 'moowoodlepro' ) . apply_filters('moowoodle_pro_sticker',' pro'),
                                         )
                                 );
 
 ?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <div class="auto">
 
-    <table class="table table-bordered responsive-table moodle-linked-courses widefat">
+    <table id="moowoodle_table" class="table table-bordered responsive-table moodle-linked-courses widefat">
         <thead>
             <tr>
             <?php
@@ -47,7 +50,6 @@ $from_heading = apply_filters( 'moowoodle_courses_heading',
                     $product = get_posts( array( 'post_type' => 'product', 'numberposts' => -1, 'post_status' => 'publish' , 'name' => $course_short_name) );
                     $course_startdate = get_post_meta( $course->ID, '_course_startdate', true );
                     $course_enddate = get_post_meta( $course->ID, '_course_enddate', true );
-                    // $course_short_name = get_post_meta( $course->ID, '_course_short_name', true );
 
                     $course_name = $course->post_title;
                     $visibility = get_post_meta( $course->ID, '_visibility', true );
@@ -111,11 +113,11 @@ $from_heading = apply_filters( 'moowoodle_courses_heading',
                     }
 
                     $enroled_user= $count_enrolment;
-                    $date = 'Start Date- ' . wp_date('F j, Y g: i a',$course_startdate);
+                    $date = 'Start Date- ' . wp_date('F j, Y  ',$course_startdate);
                     if($course_enddate){
-                        $date .= 'End Date- ' . wp_date('F j, Y g: i a',$course_enddate);
+                        $date .= 'End Date- ' . wp_date('F j, Y  ',$course_enddate);
                     }
-                   $table_body = ''; 
+                   $table_body = '<td>use pro to access</td>'; 
 
                ?>
                 <tr>
@@ -148,6 +150,57 @@ $from_heading = apply_filters( 'moowoodle_courses_heading',
 </div>
 <br>
 
+<script>
+    //moowoodle_table
+$(document).ready(function() {
+        var myTable = $("#moowoodle_table").DataTable({
+          paging: false,
+          searching: true,
+          info: false,
+        });
+        myTable
+          .columns()
+          .flatten()
+          .each(function (colID) {
+            //Manage column is not filterable
+            if(colID == 4 || colID == 6) return;
+            // Create the select list in the
+            // header column header
+            // On change of the list values,
+            // perform search operation
+            var mySelectList = $("<select />")
+              .appendTo(myTable.column(colID).header())
+              .on("change", function () {
+                myTable.column(colID).search($(this).val());
+ 
+                // update the changes using draw() method
+                myTable.column(colID).draw();
+              });
+ 
+            // Get the search cached data for the
+            // first column add to the select list
+            // using append() method
+            // sort the data to display to user
+            // all steps are done for EACH column
+          mySelectList.append(
+              $('<option value="">select</option>')
+            );
+            myTable
+              .column(colID)
+              .cache("search")
+              .unique()
+              .sort()
+              .each(function (param) {
+                mySelectList.append(
+                  $('<option value="' + param + '">'
+                    + param + "</option>")
+                );
+              });
+          });
+    
+    
+});
+</script>
 <?php
 $suffix = defined( 'MOOWOODLE_SCRIPT_DEBUG' ) && MOOWOODLE_SCRIPT_DEBUG ? '' : '.min';
 wp_enqueue_style( 'woocommerce_course_css', $MooWoodle->plugin_url . 'framework/field-types/css/course_posttype' . $suffix . '.css', array(), $MooWoodle->version );

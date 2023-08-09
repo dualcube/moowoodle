@@ -1,5 +1,15 @@
+<div class="test-connection-status">
+	
+
+</div>
+
+
 <?php 
 	global $MooWoodle_test_connection,$MooWoodle;
+	if(isset($_POST['get_courses'])){
+		echo 'hi';
+	}
+
 	$conn_settings = $MooWoodle->options_general_settings;
 	    $url = $conn_settings[ 'moodle_url' ];
 
@@ -14,20 +24,32 @@
 						'post_type'    => 'test'					
 					);
 			$posts = get_posts($args);
-			
+			$errormsg = '';
 			$post_metas = get_post_meta( $posts[0]->ID);
-			$no_error = true;
-			foreach($post_metas as $key=>$val)
-			{
-				if($val[0] != 'success'){
-					echo $val[0] . '<br/>';
-					$no_error = false;
+			if($post_metas){
+				// print_r($post_metas['_test_connect_submit']);die;
+				if($post_metas['_test_connect_submit'][0] == 'success'){
+					update_post_meta( $posts[0]->ID, '_test_connect_submit', '');
+					foreach($post_metas as $key=>$val)
+					{
+						if($val[0] != 'success'){
+							if(!str_contains($errormsg,$val[0])){
+								$errormsg .= '* ' . $val[0] . '<br/>';
+							}
+						}
+					    
+					}
+					if(empty($errormsg)){
+						echo 'Connection Tested : OK';
+					}else{
+						echo $errormsg;
+					}
 				}
-			    
+			} else {
+				echo 'complete setup and test connection';
 			}
-			if($no_error){
-				echo "Connection Tested Success : OK";
-			}
+			
+			
 		}
-	
+
  ?>

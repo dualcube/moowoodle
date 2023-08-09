@@ -45,6 +45,8 @@ class MooWoodle {
 	
 	public $testconnection;
 
+	private static $active_plugins;
+
 	public function __construct( $file ) {
 
 		$this->file = $file;
@@ -72,6 +74,8 @@ class MooWoodle {
 		}
 
 		
+
+		add_filter( 'woocommerce_product_class',array($this, 'product_type_subcription_warning'), 10, 2 );
 		add_action( 'init', array( &$this, 'init' ), 0 );
 	}
 	
@@ -94,8 +98,6 @@ class MooWoodle {
 			$this->sync = new MooWoodle_Sync();
 			$this->load_class( 'testconnection' );
 			$this->testconnection = new MooWoodle_testconnection();
-			$this->load_class( 'manage-enrolment' );
-			$this->sync = new MooWoodle_Manage_Enrolment();
 		}
 		
 		// init templates
@@ -126,6 +128,10 @@ class MooWoodle {
 		if(!file_exists(MW_LOGS . "/error.log")){
 			wp_mkdir_p( MW_LOGS );
 			 echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "MooWoodle Log file Created\n", FILE_APPEND );
+		}
+		//clear log file
+		if(isset($_POST['clearlog'])){
+			file_put_contents(MW_LOGS . "/error.log" ,  date("d/m/Y h:i:s a",time()). ": " . "MooWoodle Log file Cleared\n");
 		}
 	}
 	
@@ -173,5 +179,23 @@ class MooWoodle {
 		if ( ! defined( 'DONOTCACHEPAGE' ) )
 			define( "DONOTCACHEPAGE", "true" );
 		// WP Super Cache constant
+	}
+
+	public function product_type_subcription_warning($php_classname, $product_type)
+	{
+		self::$active_plugins = (array) get_option( 'active_plugins', array() );
+		if ( is_multisite() )
+			self::$active_plugins = array_merge( self::$active_plugins, get_site_option( 'active_sitewide_plugins', array() ) );
+		if(in_array( 'woocommerce-subscriptions/woocommerce-subscriptions.php', self::$active_plugins ) || array_key_exists( 'woocommerce-subscriptions/woocommerce-subscriptions.php', self::$active_plugins )){
+		// if ( 'WC_Product_Subscription' === $product_type || 'WC_Product_Variable_Subscription' === $product_type ){
+			add_action( 'admin_notices', array( $this, 'product_type_subcription_notice' ) );
+			
+		}
+	}
+	/**
+	* Displays an inactive notice when the software is inactive.
+	*/
+	public function product_type_subcription_notice() { 
+		echo apply_filters('moowoodle_pro_sticker','<div class="notice notice-error"><p>'. __('Woocomerce subbcription is supported only with moowoodle pro') .'</p></div>');
 	}
 }
