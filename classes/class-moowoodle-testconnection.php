@@ -14,7 +14,7 @@ class MooWoodle_testconnection {
 		$a=get_locale();
 		$b=strtolower($a);
 		$this->user_data['lang'] = substr($b,0,2);
-		$this->user_data['firstname'] = 'moowoodle';
+		$this->user_data['firstname'] = MOOWOODLE_TEXT_DOMAIN;
 		$this->user_data['lastname'] = 'testuser';
 		$this->user_data['city'] = 'moowoodlecity';
 		$this->user_data['country'] = 'IN';
@@ -256,16 +256,16 @@ class MooWoodle_testconnection {
 						$error_massage = $response_arr['message'] . ' ' . $url_check;
 					}
 				} else {
-					$error_massage = __('Response is not JSON decodeable', 'moowoodle' );
+					$error_massage = __('Response is not JSON decodeable', MOOWOODLE_TEXT_DOMAIN );
 				}
 			} else {
-				$error_massage = __('Not String response', 'moowoodle' );
+				$error_massage = __('Not String response', MOOWOODLE_TEXT_DOMAIN );
 			}
 		} else {
 			if($response[ 'response' ][ 'code' ] == 404){
-				$url_check = __('Please check "Moodle Site URL" ||', 'moowoodle' );
+				$url_check = __('Please check "Moodle Site URL" ||', MOOWOODLE_TEXT_DOMAIN );
 			}
-			$error_massage = $url_check. __(' error code: ', 'moowoodle' ) . $response[ 'response' ][ 'code' ]. " " . $response['response']['message'];
+			$error_massage = $url_check. __(' error code: ', MOOWOODLE_TEXT_DOMAIN ) . $response[ 'response' ][ 'code' ]. " " . $response['response']['message'];
 		}
 		file_put_contents(MW_LOGS . "/error.log",date("d/m/Y H:i:s",time()). ": " ."\n        moowoodle error:" . $error_massage."\n", FILE_APPEND );
 		return $error_massage;

@@ -4,7 +4,6 @@ class MooWoodle_Settings {
   private $tabs = array();
   private $options;
   public $report;
-  // public $current_tab;
 
   /*
 	* Start up
@@ -13,6 +12,7 @@ class MooWoodle_Settings {
     //Admin menu
     add_action('admin_menu', array($this, 'add_settings_page'), 100);
     add_action('admin_init', array($this, 'settings_page_init'));
+    
   }
 
   /**
@@ -24,58 +24,33 @@ class MooWoodle_Settings {
       "MooWoodle",
       "MooWoodle",
       'manage_options',
-      'moowoodle',
+      MOOWOODLE_TEXT_DOMAIN,
       array($this, 'option_page'),
       esc_url($MooWoodle->plugin_url) . 'assets/images/moowoodle.png',
       50
     );
-
-    add_submenu_page(
-      'moowoodle',
-      __("All Courses", 'moowoodle'),
-      __("All Courses", 'moowoodle'),
-      'manage_options',
-      'moowoodle',
-      array($this, 'option_page')
-    );
-
-    add_submenu_page(
-      'moowoodle',
-      __("Manage Enrolment", 'moowoodle') . apply_filters('moowoodle_pro_sticker', '<span class="mw-pro-tag">Pro</span>'),
-      __("Manage Enrolment", 'moowoodle') . apply_filters('moowoodle_pro_sticker', '<span class="mw-pro-tag">Pro</span>'),
-      'manage_options',
-      'moowoodle-manage-enrolment',
-      array($this, 'option_page')
-    );
-
-    add_submenu_page(
-      'moowoodle',
-      __("Synchronization", 'moowoodle'),
-      __("Synchronization", 'moowoodle'),
-      'manage_options',
-      'moowoodle-synchronization',
-      array($this, 'option_page')
-    );
-
-    add_submenu_page(
-      'moowoodle',
-      __("Settings", 'moowoodle'),
-      __("Settings", 'moowoodle'),
-      'manage_options',
-      'moowoodle-settings',
-      array($this, 'option_page')
-    );
-
+    foreach ($MooWoodle->library->moowoodle_get_options() as $v) {
+      if($v['type'] == 'menu')
+        add_submenu_page(
+            MOOWOODLE_TEXT_DOMAIN,
+            $v['name'],
+            $v['name'],
+            'manage_options',
+            $v['menu_slug'],
+            array($this, 'option_page')
+        );
+    }
     if (apply_filters('moowoodle_menu_hide', true)) {
       add_submenu_page(
-        'moowoodle',
-        __("Upgrade to Pro", 'moowoodle'),
-        '<div class="upgrade-to-pro"><i class="dashicons dashicons-awards"></i>' .  esc_html__("Upgrade to Pro", 'moowoodle') . '</div> ',
+        MOOWOODLE_TEXT_DOMAIN,
+        __("Upgrade to Pro", MOOWOODLE_TEXT_DOMAIN),
+        '<div class="upgrade-to-pro"><i class="dashicons dashicons-awards"></i>' .  esc_html__("Upgrade to Pro", MOOWOODLE_TEXT_DOMAIN) . '</div> ',
         'manage_options',
         '',
         array($this, 'handle_external_redirects')
       );
     }
+    
   }
 
   // Upgrade to pro link
@@ -91,7 +66,7 @@ class MooWoodle_Settings {
     $layout = $this->moowoodle_get_page_layout(); ?>
     <div class="mw-admin-dashbord <?php echo $page; ?>">
       <div class="mw-general-wrapper">
-        <div class="mw-header-wapper"><?php echo __('MooWoodle', 'moowoodle'); ?></div>
+        <div class="mw-header-wapper"><?php echo __('MooWoodle', MOOWOODLE_TEXT_DOMAIN); ?></div>
         <div class="mw-container">
           <div class="mw-middle-container-wrapper mw-horizontal-tabs">
             <div class="mw-middle-child-container">
@@ -103,7 +78,6 @@ class MooWoodle_Settings {
                   <form class="mw-dynamic-form" action="options.php" method="post">
                     <?php
                     $show_submit = false;
-                    // $page = '';
                     foreach ($MooWoodle->library->moowoodle_get_options() as $v) {
 
                       if (isset($v['menu_slug'])) {
@@ -112,7 +86,7 @@ class MooWoodle_Settings {
                       if ($menu_slug == $page) {
                         switch ($v['type']) {
                           case 'menu':
-                            break;
+                           break;
                           case 'tab':
                             $tab = $v;
                             if (empty($default_tab)) {
@@ -124,6 +98,8 @@ class MooWoodle_Settings {
                             if ($current_tab == $tab['id']) {
                               settings_fields($v['id']);
                               $show_submit = true;
+                              $submit_btn_value = isset($tab['submit_btn_value']) ? $tab['submit_btn_value'] : '' ;
+                              $submit_btn_name = isset($tab['submit_btn_name']) ? $tab['submit_btn_name'] : 'submit' ;
                             }
                             break;
                           case 'section':
@@ -141,27 +117,9 @@ class MooWoodle_Settings {
                         }
                       }
                     }
-                    if ($show_submit) : ?>
+                    if ($show_submit && $submit_btn_value != null) : ?>
                       <p class="mw-save-changes">
-                        <?php
-                        if ($current_tab == "moowoodle-courses-sync") {
-                        ?>
-                          <input name="syncnow" type="submit" value="<?php esc_html_e('Sync Now', 'moowoodle'); ?>" class="button-primary" />
-                        <?php
-                        } elseif ($current_tab == "moowoodle-connection") {
-                        ?>
-                          <input name="submit" type="submit" value="<?php esc_html_e('Save All Changes', 'moowoodle'); ?>" class="button-primary" />
-                        <?php
-                        } elseif ($current_tab == "moowoodle-linked-courses" || $current_tab == "moowoodle-manage-enrolment" || $current_tab == "moowoodle-log") {
-                        ?>
-                        <?php
-                        } else {
-                          // echo $page;
-                        ?>
-                          <input name="submit" type="submit" value="<?php esc_html_e('Save All Changes', 'moowoodle'); ?>" class="button-primary" />
-                        <?php
-                        }
-                        ?>
+                        <input name="<?php esc_html_e($submit_btn_name); ?>" type="submit" value="<?php esc_html_e($submit_btn_value); ?>" class="button-primary" />
                       </p>
                     <?php endif; ?>
                   </form>
@@ -183,7 +141,7 @@ class MooWoodle_Settings {
                   <div class="support-widget">
                     <p class="supt-link">
                       <a href="https://wordpress.org/support/plugin/moowoodle/" target="_blank">
-                        <?php esc_html_e('Got a Support Question', 'moowoodle') ?>
+                        <?php esc_html_e('Got a Support Question', MOOWOODLE_TEXT_DOMAIN) ?>
                       </a>
                       <i class="fas fa-question-circle"></i>
                     </p>
@@ -278,7 +236,7 @@ class MooWoodle_Settings {
 
         // For free version only
         if (apply_filters('moowoodle_free_active', true)) {
-          echo '<a class="nav-tab moowoodle-upgrade" href="https://dualcube.com/shop/" target="_blank" rel="noopener noreferrer"><i class="dashicons dashicons-awards"></i> ' . esc_html__('Upgrade to Pro for More Features', 'moowoodle') . '</a>';
+          echo '<a class="nav-tab moowoodle-upgrade" href="https://dualcube.com/shop/" target="_blank" rel="noopener noreferrer"><i class="dashicons dashicons-awards"></i> ' . esc_html__('Upgrade to Pro for More Features', MOOWOODLE_TEXT_DOMAIN) . '</a>';
         }
 
         // Add extra tab for pro version
@@ -303,18 +261,7 @@ class MooWoodle_Settings {
         }
 
         $this->moowoodle_do_settings_fields($page, $section['id']);
-
-        if ($show_submit) : ?>
-          <p>
-            <?php
-            if ($page == "moowoodle-connection") {
-            ?>
-
-            <?php
-            }
-            ?>
-          </p>
-        <?php endif; ?>
+?>
     </div>
     </div>
 <?php
@@ -338,7 +285,6 @@ class MooWoodle_Settings {
         return;
       }
       foreach ((array) $wp_settings_fields[$page][$section] as $field) {
-        // echo json_encode($field);
 
         if (str_contains($field['id'], 'posttype')){
           if (isset($field['id']) && $field['id'] == 'test_connect_posttype') {
@@ -347,7 +293,7 @@ class MooWoodle_Settings {
               echo apply_filters('moowoodle_pro_sticker', ' mw-pro-popup-overlay ');
             }
             echo '">';
-            echo '<label class="mw-form-label " for=""><p>' .  __('Mooowoodle Test Connection', 'moowoodle') . '</p></label>';
+            echo '<label class="mw-form-label " for=""><p>' .  __('Mooowoodle Test Connection', MOOWOODLE_TEXT_DOMAIN) . '</p></label>';
           }
           call_user_func($field['callback'], $field['args']);
         }else{
@@ -430,8 +376,8 @@ class MooWoodle_Settings {
                   'extra_input'   => (isset($v['extra_input']) ? $v['extra_input'] : ''),
                   'font_class'    => (isset($v['font_class']) ? $v['font_class'] : ''),
                   'disabled'      => (isset($v['disabled']) ? $v['disabled'] : ''),
-                  'is_pro'        => (isset($v['is_pro']) ? $v['is_pro'] : '')
-
+                  'is_pro'        => (isset($v['is_pro']) ? $v['is_pro'] : ''),
+                  'copy_text'     =>  (isset($v['copy_text']) ? $v['copy_text'] : '')
                 ),
                 $v
               )
@@ -461,7 +407,6 @@ class MooWoodle_Settings {
       $options = get_option($setting_id);
       $options = wp_parse_args($options, $defaults);
       $path = apply_filters('mooewoodle_field_types_posttype_path', $MooWoodle->plugin_path . 'framework/field-types/' . $type . '.php', $type);
-      // echo $path;
       if (file_exists($path)) {
         // Show Field
         include($path);

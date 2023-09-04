@@ -9,12 +9,12 @@
 // from heading
 $from_heading = apply_filters( 'moowoodle_courses_heading', 
                                     array(
-                                           __( "Course", 'moowoodle' ),
-                                           __( "Short Name", 'moowoodle' ),
-                                           __( "Product", 'moowoodle' ),
-                                           __( "Category", 'moowoodle' ),
-                                           __( "Enrolled", 'moowoodle' ),
-                                           __( "Date", 'moowoodle' ),  
+                                           __( "Course", MOOWOODLE_TEXT_DOMAIN ),
+                                           __( "Short Name", MOOWOODLE_TEXT_DOMAIN ),
+                                           __( "Product", MOOWOODLE_TEXT_DOMAIN ),
+                                           __( "Category", MOOWOODLE_TEXT_DOMAIN ),
+                                           __( "Enrolled", MOOWOODLE_TEXT_DOMAIN ),
+                                           __( "Date", MOOWOODLE_TEXT_DOMAIN ),  
                                            __( "Actions", 'moowoodlepro' ) . apply_filters('moowoodle_pro_sticker','<span class="mw-pro-tag">Pro</span>'),
                                         )
                                 );
@@ -176,6 +176,6 @@ $from_heading = apply_filters( 'moowoodle_courses_heading',
 </div>
 <br>
 <p class="mw-sync-paragraph">
-<?php echo esc_html_e("Cannot find your course in this list?", 'moowoodle');?>
-<a href="<?php echo esc_url(get_site_url()); ?>/wp-admin/admin.php?page=moowoodle-synchronization"><?php esc_html_e('Synchronize Moodle Courses from here.', 'moowoodle'); ?></a></p>
+<?php echo esc_html_e("Cannot find your course in this list?", MOOWOODLE_TEXT_DOMAIN);?>
+<a href="<?php echo esc_url(get_site_url()); ?>/wp-admin/admin.php?page=moowoodle-synchronization"><?php esc_html_e('Synchronize Moodle Courses from here.', MOOWOODLE_TEXT_DOMAIN); ?></a></p>
 </div>

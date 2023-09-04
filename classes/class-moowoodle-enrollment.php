@@ -257,9 +257,9 @@ class MooWoodle_Enrollment {
 	public function enrollment_modified_details( $order_id ) {
 		$order = wc_get_order( $order_id );
 		if ( $order->get_status() == 'completed' ) {
-			echo esc_html_e( 'Please check your mail or go to My Courses page to access your courses.', 'moowoodle' );
+			echo esc_html_e( 'Please check your mail or go to My Courses page to access your courses.', MOOWOODLE_TEXT_DOMAIN );
 		} else {
-			echo esc_html_e( 'Order status is :- ', 'moowoodle' ) . $order->get_status() . '<br>';
+			echo esc_html_e( 'Order status is :- ', MOOWOODLE_TEXT_DOMAIN ) . $order->get_status() . '<br>';
 		}
 	}
 
@@ -270,11 +270,11 @@ class MooWoodle_Enrollment {
 		$display_settings = $MooWoodle->options_display_settings;
 		if ( isset( $display_settings[ 'start_end_date' ] ) && $display_settings[ 'start_end_date' ] == "Enable" ) {
 			if ( $startdate ) {
-				echo esc_html_e( "Start Date : ", 'moowoodle' ) . esc_html_e( date( 'Y-m-d', $startdate ), 'moowoodle' );
+				echo esc_html_e( "Start Date : ", MOOWOODLE_TEXT_DOMAIN ) . esc_html_e( date( 'Y-m-d', $startdate ), MOOWOODLE_TEXT_DOMAIN );
 			}
 			print_r( "<br>" );
 			if ( $enddate ) {
-				echo esc_html_e( "End Date : ", 'moowoodle' ) . esc_html_e( date( 'Y-m-d', $enddate ), 'moowoodle' );
+				echo esc_html_e( "End Date : ", MOOWOODLE_TEXT_DOMAIN ) . esc_html_e( date( 'Y-m-d', $enddate ), MOOWOODLE_TEXT_DOMAIN );
 			}
 		}
 	}

@@ -153,8 +153,8 @@ class MooWoodle {
     load_textdomain( $this->text_domain, $this->plugin_path . "/languages/moowoodle-$locale.mo" );
  
     $locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
-    $locale = apply_filters( 'moowoodle_plugin_locale', $locale, 'moowoodle' );
-    load_plugin_textdomain( 'moowoodle', false, plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/languages' );
+    $locale = apply_filters( 'moowoodle_plugin_locale', $locale, MOOWOODLE_TEXT_DOMAIN );
+    load_plugin_textdomain( MOOWOODLE_TEXT_DOMAIN, false, plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/languages' );
   }
 
   /**

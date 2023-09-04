@@ -11,11 +11,11 @@ class MooWoodle_Emails_New_Enrollment extends WC_Email {
     global $MooWoodle;
 
     $this->id 						= 'new_moodle_enrollment';
-    $this->title 					= __( 'New Moodle Enrollment', 'moowoodle' );
-    $this->description		= __( 'This is a notification email sent to the enrollees for new enrollment.', 'moowoodle' );
+    $this->title 					= __( 'New Moodle Enrollment', MOOWOODLE_TEXT_DOMAIN );
+    $this->description		= __( 'This is a notification email sent to the enrollees for new enrollment.', MOOWOODLE_TEXT_DOMAIN );
     $this->customer_email = true;
-    $this->heading 				= __( 'New Enrollment', 'moowoodle' );
-    $this->subject      	= __( '{site_title} New Enrollment', 'moowoodle' );
+    $this->heading 				= __( 'New Enrollment', MOOWOODLE_TEXT_DOMAIN );
+    $this->subject      	= __( '{site_title} New Enrollment', MOOWOODLE_TEXT_DOMAIN );
     $this->template_html 	= 'emails/new-enrollment.php';
     $this->template_plain = 'emails/plain/new-enrollment.php';
 
@@ -93,35 +93,35 @@ class MooWoodle_Emails_New_Enrollment extends WC_Email {
   	
     $this->form_fields = array(
     	'enabled' => array(
-				'title' 		=> __( 'Enable/Disable', 'moowoodle' ),
+				'title' 		=> __( 'Enable/Disable', MOOWOODLE_TEXT_DOMAIN ),
 				'type' 			=> 'checkbox',
-				'label' 		=> __( 'Enable this email notification', 'moowoodle' ),
+				'label' 		=> __( 'Enable this email notification', MOOWOODLE_TEXT_DOMAIN ),
 				'default' 		=> 'yes'
 			),
       'subject' => array(
-        'title' 		=> __( 'Subject', 'moowoodle' ),
+        'title' 		=> __( 'Subject', MOOWOODLE_TEXT_DOMAIN ),
         'type' 			=> 'text',
-        'description' 	=> sprintf( __( 'This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', 'moowoodle' ), $this->subject ),
+        'description' 	=> sprintf( __( 'This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', MOOWOODLE_TEXT_DOMAIN ), $this->subject ),
         'placeholder' 	=> '',
         'default' 		=> ''
       ),
       'heading' => array(
-        'title' 		=> __( 'Email Heading', 'moowoodle' ),
+        'title' 		=> __( 'Email Heading', MOOWOODLE_TEXT_DOMAIN ),
         'type' 			=> 'text',
-        'description' 	=> sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', 'moowoodle' ), $this->heading ),
+        'description' 	=> sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', MOOWOODLE_TEXT_DOMAIN ), $this->heading ),
         'placeholder' 	=> '',
         'default' 		=> ''
       ),
 			'email_type' => array(
-        'title' 		=> __( 'Email type', 'moowoodle' ),
+        'title' 		=> __( 'Email type', MOOWOODLE_TEXT_DOMAIN ),
         'type' 			=> 'select',
-        'description' 	=> __( 'Choose which format of email to send.', 'moowoodle' ),
+        'description' 	=> __( 'Choose which format of email to send.', MOOWOODLE_TEXT_DOMAIN ),
         'default' 		=> 'html',
         'class'			=> 'email_type',
         'options'		=> array(
-          'plain'		 	=> __( 'Plain text', 'moowoodle' ),
-          'html' 			=> __( 'HTML', 'moowoodle' ),
-          'multipart' 	=> __( 'Multipart', 'moowoodle' ),
+          'plain'		 	=> __( 'Plain text', MOOWOODLE_TEXT_DOMAIN ),
+          'html' 			=> __( 'HTML', MOOWOODLE_TEXT_DOMAIN ),
+          'multipart' 	=> __( 'Multipart', MOOWOODLE_TEXT_DOMAIN ),
         )
       )
     );

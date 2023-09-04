@@ -4,7 +4,7 @@ if(!function_exists('moowoodle_alert_notice')) {
    function moowoodle_alert_notice() {
     ?>
     <div id="message" class="error">
-      <p><?php printf( __( '%sMooWoodle is inactive.%s The %sWooCommerce plugin%s must be active for the MooWoodle to work. Please %sinstall & activate WooCommerce%s', 'moowoodle' ), '<strong>', '</strong>', '<a target="_blank" href="http://wordpress.org/extend/plugins/woocommerce/">', '</a>', '<a href="' . admin_url( 'plugins.php' ) . '">', '&nbsp;&raquo;</a>' ); ?></p>
+      <p><?php printf( __( '%sMooWoodle is inactive.%s The %sWooCommerce plugin%s must be active for the MooWoodle to work. Please %sinstall & activate WooCommerce%s', MOOWOODLE_TEXT_DOMAIN ), '<strong>', '</strong>', '<a target="_blank" href="http://wordpress.org/extend/plugins/woocommerce/">', '</a>', '<a href="' . admin_url( 'plugins.php' ) . '">', '&nbsp;&raquo;</a>' ); ?></p>
     </div>
     <?php
   }
@@ -68,18 +68,18 @@ if ( ! function_exists( 'moowoodle_moodle_core_function_callback' ) ) {
             $MooWoodle->ws_has_error = true;
           }
         } else {
-          $error_massage = __('Response is not JSON decodeable', 'moowoodle' );
+          $error_massage = __('Response is not JSON decodeable', MOOWOODLE_TEXT_DOMAIN );
           $MooWoodle->ws_has_error = true;
         }
       } else {
-        $error_massage = __('Not String response', 'moowoodle' );
+        $error_massage = __('Not String response', MOOWOODLE_TEXT_DOMAIN );
         $MooWoodle->ws_has_error = true;
       }
     } else {
       if($response[ 'response' ][ 'code' ] == 404){
-        $url_check = __('Please check "Moodle Site URL" ||', 'moowoodle' );
+        $url_check = __('Please check "Moodle Site URL" ||', MOOWOODLE_TEXT_DOMAIN );
       }
-      $error_massage = $url_check. __(' error code: ', 'moowoodle' ) . $response[ 'response' ][ 'code' ]. " " . $response['response']['message'];
+      $error_massage = $url_check. __(' error code: ', MOOWOODLE_TEXT_DOMAIN ) . $response[ 'response' ][ 'code' ]. " " . $response['response']['message'];
       $MooWoodle->ws_has_error = true;
     }    
     file_put_contents(MW_LOGS . "/error.log",date("d/m/Y H:i:s",time()). ": " ."\n        moowoodle error:" . $error_massage."\n", FILE_APPEND );
@@ -219,7 +219,7 @@ if( ! function_exists( 'get_moowoodle_course_url' ) ) {
   function get_moowoodle_course_url( $linked_course_id, $course_name ) {
     global $MooWoodle;
     $course = $linked_course_id;
-    $class = 'moowoodle';
+    $class = MOOWOODLE_TEXT_DOMAIN;
     $target = '_blank';
     $authtext = '';
     $activity = 0;

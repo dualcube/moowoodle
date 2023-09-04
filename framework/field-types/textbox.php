@@ -6,4 +6,12 @@
 if ( empty( $options[ $name ] ) ) {
 	$options[ $name ] = '';
 }
-echo "<div class='mw-textbox-input-wraper " . ' ' . ( ($is_pro == 'pro') ? apply_filters('moowoodle_pro_sticker',' disabled ') : '' ) . ( empty( $class ) ? 'regular-text' : $class ) . "'><input id='$id' class='mw-setting-form-input " . ' ' . ( ($is_pro == 'pro') ? apply_filters('moowoodle_pro_sticker',' disabled ') : '' ) . ( empty( $class ) ? 'regular-text' : $class ) . "' name='{$setting_id}[$name]' type='text' value='" . esc_attr( $options[ $name ] ) . "' /><button class='mw-copytoclip button-secondary' type='button'>Copy</button></div>";
+echo "
+	<div class='mw-textbox-input-wraper " . ' ' . ( ($is_pro == 'pro') ? apply_filters('moowoodle_pro_sticker',' disabled ') : '' ) . ( empty( $class ) ? 'regular-text' : $class ) . "'>
+		<input id='$id' class='mw-setting-form-input " . ' ' . ( ($is_pro == 'pro') ? apply_filters('moowoodle_pro_sticker',' disabled ') : '' ) . ( empty( $class ) ? 'regular-text' : $class ) . "' name='{$setting_id}[$name]' type='text' value='" . esc_attr( $options[ $name ] ) . "' />";
+		if($copy_text == 'copy'){
+			echo "<button class='mw-copytoclip button-secondary' type='button'>Copy</button>";
+		}
+
+
+echo "</div>";
