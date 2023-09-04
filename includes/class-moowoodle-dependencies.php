@@ -33,6 +33,6 @@ class MooWoodle_Dependencies {
 	public static function  moowoodle_pro_active_check(){
 		if ( ! self::$active_plugins ) self::init();
 
-		return in_array( 'moowoodle-pro/moowoodle-pro.php', self::$active_plugins ) || array_key_exists( 'moowoodle-pro/moowoodle-pro.php', self::$active_plugins );
+		return in_array( 'moowoodlepro/moowoodlepro.php', self::$active_plugins ) || array_key_exists( 'moowoodlepro/moowoodlepro.php', self::$active_plugins );
 	}
 }

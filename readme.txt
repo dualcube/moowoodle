@@ -197,4 +197,3 @@ This plugin is compatible with the latest version of WooCommerce, that is, Versi
 = 1.1.0 =
 
 = 1.0.0 =
-

@@ -25,6 +25,7 @@ class MooWoodle_Sync {
 		if ( isset( $sync_settings[ 'sync_courses' ] ) && $sync_settings[ 'sync_courses' ] == "Enable" ) {
 			$this->sync_courses();
 		}
+		do_action('moowoodle_after_sync');
 	}
 
 	/**
@@ -167,13 +168,13 @@ class MooWoodle_Sync {
 						update_post_meta( $new_post_id, '_sku', 'course-' . (int) $course[ 'id' ]);
 						update_post_meta( $new_post_id, '_virtual', 'yes' );
 						update_post_meta( $new_post_id, '_sold_individually', 'yes' );
-						update_post_meta( $new_post_id, '_course_startdate', $course[ 'startdate' ] );
-						update_post_meta( $new_post_id, '_course_enddate', $course[ 'enddate' ] );
 					} else {
 						$shortname = $course[ 'shortname' ];
 						update_post_meta( $new_post_id, '_course_short_name', sanitize_text_field( $shortname ) );
 						update_post_meta( $new_post_id, '_course_idnumber', sanitize_text_field( $course[ 'idnumber' ] ) );
 					}
+					update_post_meta( $new_post_id, '_course_startdate', $course[ 'startdate' ] );
+					update_post_meta( $new_post_id, '_course_enddate', $course[ 'enddate' ] );
 					update_post_meta( $new_post_id, 'moodle_course_id', (int) $course[ 'id' ] );	
 					update_post_meta( $new_post_id, '_category_id', (int) $course[ 'categoryid' ] );
 					update_post_meta( $new_post_id, '_visibility', $visibility = ( $course[ 'visible' ] ) ? 'visible' : 'hidden' );					

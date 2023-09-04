@@ -34,7 +34,7 @@ class MooWoodle_Admin {
 
 		?>
 	    <div style="clear: both"></div>
-	    <div id="dualcube-admin-footer">
+	    <div class="dualcube-admin-footer" id="dualcube-admin-footer">
       		<?php esc_html_e( 'Powered by', 'moowoodle' ); ?> <a href="<?php echo esc_url( 'http://dualcube.com' );?>" target="_blank"><img src="<?php echo esc_url( $MooWoodle->plugin_url ) ?>/assets/images/dualcube.png"></a><?php esc_html_e( 'DualCube', 'moowoodle' ); ?> &copy; <?php echo esc_html( date( 'Y' ) );?>
     	</div>
     	<?php
@@ -45,11 +45,7 @@ class MooWoodle_Admin {
    */
     public function enqueue_admin_script() {
         global $MooWoodle;
-        $screen = get_current_screen();
-        // Enqueue admin script and stylesheet from here
-        if ( $screen->id == 'toplevel_page_moowoodle' ) :
-        	$suffix = defined( 'MOOWOODLE_SCRIPT_DEBUG' ) && MOOWOODLE_SCRIPT_DEBUG ? '' : '.min';
-        	wp_enqueue_style( 'moowoodle_admin_css', $MooWoodle->plugin_url . 'assets/admin/css/admin' . $suffix . '.css', array(), $MooWoodle->version );
-        endif;        
+        wp_enqueue_style( 'moowoodle_admin_css', $MooWoodle->plugin_url . 'assets/admin/css/admin.css', array(), $MooWoodle->version );
+               
     }	
 }

@@ -127,7 +127,7 @@ class MooWoodle_Enrollment {
 		$username = strtolower( $username );
 		$moodle_pwd_meta = get_user_meta( $user_id, 'moowoodle_moodle_user_pwd', true );
 		$pwd = '';
-		if ( empty( $moodle_pwd_meta ) )  {
+		if ( empty( $moodle_pwd_meta ) || $moodle_pwd_meta == null )  {
 			$pwd = $this->password_generator();
 			add_user_meta( $user_id, 'moowoodle_moodle_user_pwd', $pwd );
 		} else {
