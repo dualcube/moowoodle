@@ -12,7 +12,7 @@
                 <input id="<?php echo $v['id'] ;?>" class="mw-toggle-checkbox <?php echo $v['id'] ;?>" value="Enable" type="checkbox" name="<?php echo $setting_id .'['. $v['name'] .']';?>" value="general" <?php echo ( ( isset( $options[ $v['name'] ] ) ? $options[ $v['name'] ] == "Enable" : '' ) ? 'checked' : '' ) . ' ' . ( isset($v['is_pro'])&&($v['is_pro'] == 'pro') ? apply_filters('moowoodle_pro_sticker',' disabled ') : '' )  ;?>>
             </div>
             <div class="mw-normal-checkbox-label">
-                <p class="mw-settings-checkbox-description pt-0"><?php echo $k. ( isset($v['is_pro'])&&($v['is_pro'] == 'pro') ? apply_filters('moowoodle_pro_sticker', '<span class="mw-pro-tag">Pro</span>') : '' )  ; ?></p>
+                <p class="mw-settings-checkbox-description pt-0"><?php echo $k. ( isset($v['is_pro'])&&($v['is_pro'] == 'pro') ? apply_filters('moowoodle_pro_sticker', '<span class="mw-pro-tag"> ' . esc_html('Pro', MOOWOODLE_TEXT_DOMAIN) .'</span>') : '' )  ; ?></p>
             </div>
         </div>
     </div>

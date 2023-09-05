@@ -2,6 +2,7 @@
 class MooWoodle_Settings {
 
   private $tabs = array();
+  public $settings_library = array();
   private $options;
   public $report;
 
@@ -10,6 +11,8 @@ class MooWoodle_Settings {
 	*/
   public function __construct() {
     //Admin menu
+    global $MooWoodle;
+    $this->settings_library = $MooWoodle->library->moowoodle_get_options();
     add_action('admin_menu', array($this, 'add_settings_page'), 100);
     add_action('admin_init', array($this, 'settings_page_init'));
     
@@ -29,18 +32,17 @@ class MooWoodle_Settings {
       esc_url($MooWoodle->plugin_url) . 'assets/images/moowoodle.png',
       50
     );
-    foreach ($MooWoodle->library->moowoodle_get_options() as $v) {
-      if($v['type'] == 'menu')
+    foreach ($this->settings_library["menu"] as $k => $v) {
         add_submenu_page(
             MOOWOODLE_TEXT_DOMAIN,
             $v['name'],
             $v['name'],
             'manage_options',
-            $v['menu_slug'],
+            $k,
             array($this, 'option_page')
         );
     }
-    if (apply_filters('moowoodle_menu_hide', true)) {
+    if (apply_filters('moowoodle_upgrade_to_pro_admin_menu_hide', true)) {
       add_submenu_page(
         MOOWOODLE_TEXT_DOMAIN,
         __("Upgrade to Pro", MOOWOODLE_TEXT_DOMAIN),
@@ -78,42 +80,23 @@ class MooWoodle_Settings {
                   <form class="mw-dynamic-form" action="options.php" method="post">
                     <?php
                     $show_submit = false;
-                    foreach ($MooWoodle->library->moowoodle_get_options() as $v) {
 
-                      if (isset($v['menu_slug'])) {
-                        $menu_slug = $v['menu_slug'];
-                      }
-                      if ($menu_slug == $page) {
-                        switch ($v['type']) {
-                          case 'menu':
-                           break;
-                          case 'tab':
-                            $tab = $v;
-                            if (empty($default_tab)) {
-                              $default_tab = $v['id'];
-                            }
-                            break;
-                          case 'setting':
-                            $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $default_tab;
-                            if ($current_tab == $tab['id']) {
-                              settings_fields($v['id']);
-                              $show_submit = true;
-                              $submit_btn_value = isset($tab['submit_btn_value']) ? $tab['submit_btn_value'] : '' ;
-                              $submit_btn_name = isset($tab['submit_btn_name']) ? $tab['submit_btn_name'] : 'submit' ;
-                            }
-                            break;
-                          case 'section':
-                            $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $default_tab;
-                            if ($current_tab == $tab['id'] or $current_tab === false) {
-                              if ($layout == '2-col') {
-                                echo '<div id="' . esc_attr($v['id']) . '" class="mw-section-wraper">';
-                                $this->moowoodle_do_settings_sections($v['id'], $show_submit);
-                                echo '</div>';
-                              } else {
-                                $this->moowoodle_do_settings_sections($v['id']);
-                              }
-                            }
-                            break;
+                    if(isset($this->settings_library['menu'][$page])){
+                      $current_tab = isset($_GET['tab']) ? $_GET['tab'] : array_key_first($this->settings_library['menu'][$page]['tabs']);
+                      if(isset($this->settings_library['menu'][$page]['tabs'][$current_tab])){
+                        $tab = $this->settings_library['menu'][$page]['tabs'][$current_tab];
+                        settings_fields($tab['setting']);
+                        $show_submit = true;
+                        $submit_btn_value = isset($tab['submit_btn_value']) ? $tab['submit_btn_value'] : '' ;
+                        $submit_btn_name = isset($tab['submit_btn_name']) ? $tab['submit_btn_name'] : 'submit' ;
+                        foreach ($this->settings_library['menu'][$page]['tabs'][$current_tab]['section'] as $section_id => $section){
+                          if ($layout == '2-col') {
+                            echo '<div id="' . esc_attr($section_id) . '" class="mw-section-wraper">';
+                            $this->moowoodle_do_settings_sections($section_id);
+                            echo '</div>';
+                          } else {
+                            $this->moowoodle_do_settings_sections($section_id);
+                          }
                         }
                       }
                     }
@@ -150,7 +133,7 @@ class MooWoodle_Settings {
                 }
 
                 // Additional banner for pro version
-                do_action('moowoodle_additional_banner');
+                do_action('moowoodle_pro_right_side_bar');
                 ?>
               </div>
             <?php endif; ?>
@@ -168,85 +151,64 @@ class MooWoodle_Settings {
     {
       global $MooWoodle;
       $layout = 'classic';
-      foreach ($MooWoodle->library->moowoodle_get_options() as $v) {
-        switch ($v['type']) {
-          case 'menu':
-            $page = $_REQUEST['page'];
-            if ($page == $v['menu_slug']) {
-              if (isset($v['layout'])) {
-                $layout = $v['layout'];
-              }
-            }
-            break;
+      foreach ($this->settings_library["menu"] as $k => $v) {
+        $page = $_REQUEST['page'];
+        if ($page == $k) {
+          if (isset($v['layout'])) {
+            $layout = $v['layout'];
+          }
         }
       }
       return $layout;
     }
 
     //tab 
-    public function moowoodle_plugin_options_tabs()
-    {
+    public function moowoodle_plugin_options_tabs() {
       global $MooWoodle;
       $menu_slug   = null;
       $page        = $_REQUEST['page'];
       $uses_tabs   = false;
       $current_tab = isset($_GET['tab']) ? $_GET['tab'] : false;
-
-      //Check if this config uses tabs
-      foreach ($MooWoodle->library->moowoodle_get_options() as $v) {
-        if ($v['type'] == 'tab') {
-          $uses_tabs = true;
-          break;
-        }
-      }
-      // If uses tabs then generate the tabs
-      if ($uses_tabs) {
+      $tab_count   = 1; 
+      if(isset($this->settings_library['menu'][$page])){
         echo '<div class="mw-current-tab-lists">';
-        $c = 1;
-        foreach ($MooWoodle->library->moowoodle_get_options() as $v) {
-          if (isset($v['menu_slug'])) {
-            $menu_slug = $v['menu_slug'];
+        if(isset($this->settings_library['menu'][$page]['tabs']))
+        foreach($this->settings_library['menu'][$page]['tabs'] as $tab_id => $tab){
+          $active = '';
+          if ($current_tab) {
+            $active = $current_tab == $tab_id ? 'nav-tab-active' : '';
+          } elseif ($tab_count == 1) {
+            $active = 'nav-tab-active';
           }
-          if ($menu_slug == $page && $v['type'] == 'tab') {
-            $active = '';
-            if ($current_tab) {
-              $active = $current_tab == $v['id'] ? 'nav-tab-active' : '';
-            } elseif ($c == 1) {
-              $active = 'nav-tab-active';
-            }
-            if ($v['id'] == 'moowoodle-from') {
-              echo '<a id="' . esc_attr($v['id']) . '" class="nav-tab ' . $active . '" href="admin.php?moowoodle&tab=moowoodle-from">';
-            } else {
-              echo '<a id="' . esc_attr($v['id']) . '" class="nav-tab ' . $active . '" href="?page=' . $menu_slug . '&tab=' . $v['id'] . '">';
-            }
-            if (isset($v['font_class'])) {
-              echo '<i class="dashicons ' . esc_attr($v['font_class']) . '"></i> ';
-            }
+          if ($tab_id == 'moowoodle-from') {
+            echo '<a id="' . esc_attr($tab_id) . '" class="nav-tab ' . $active . '" href="admin.php?moowoodle&tab=moowoodle-from">';
+          } else {
+            echo '<a id="' . esc_attr($tab_id) . '" class="nav-tab ' . $active . '" href="?page=' . $menu_slug . '&tab=' . $tab_id . '">';
+          }
+          if (isset($tab['font_class'])) {
+            echo '<i class="dashicons ' . esc_attr($tab['font_class']) . '"></i> ';
+          }
 
-            // Add extra tab for pro version
-            do_action('moowoodle_add_additional_tabs', $v);
-            echo esc_html($v['label']);
-            if (isset($v['is_pro'])) {
-              echo apply_filters('moowoodle_pro_sticker', '<span class="mw-pro-tag">Pro</span>');
-            }
-            echo '</a>';
-            $c++;
+          // Add extra tab for pro version
+          do_action('moowoodle_pro_tabs_adv', $tab);
+          echo esc_html($tab['label']);
+          if (isset($tab['is_pro'])) {
+            echo apply_filters('moowoodle_pro_sticker', '<span class="mw-pro-tag">Pro</span>');
           }
+          echo '</a>';
+          $tab_count++;
         }
-
         // For free version only
         if (apply_filters('moowoodle_free_active', true)) {
           echo '<a class="nav-tab moowoodle-upgrade" href="https://dualcube.com/shop/" target="_blank" rel="noopener noreferrer"><i class="dashicons dashicons-awards"></i> ' . esc_html__('Upgrade to Pro for More Features', MOOWOODLE_TEXT_DOMAIN) . '</a>';
         }
-
-        // Add extra tab for pro version
-        do_action('moowoodle_added_extra_tab_after', $v);
         echo '</div>';
       }
+
+
     }
 
-    public function moowoodle_do_settings_sections($page, $show_submit)
-    {
+    public function moowoodle_do_settings_sections($page) {
       global $wp_settings_sections, $wp_settings_fields;
       if (!isset($wp_settings_sections) || !isset($wp_settings_sections[$page])) {
         return;
@@ -267,12 +229,12 @@ class MooWoodle_Settings {
 <?php
         echo apply_filters('moowoodle_pro_sticker', '<div class="mw-image-overlay">
         <div class="mw-overlay-content">
-        <h3>This is not accessable.</h3>
-        <p>I want to know more.</p>
+        <h3>' . esc_html__('This is not accessable.', MOOWOODLE_TEXT_DOMAIN) . '</h3>
+        <p>' . esc_html__('I want to know more.', MOOWOODLE_TEXT_DOMAIN) . '</p>
         <div class="mw-img-overlay-arrow">
           <span class="dashicons dashicons-arrow-down-alt"></span>
         </div>
-        <a class="mw-go-pro-btn" target="_blank" href="https://dualstg.wpengine.com/product/wordpress-moowoodle-pro/">Available in MooWoodle Pro</a>
+        <a class="mw-go-pro-btn" target="_blank" href="https://dualstg.wpengine.com/product/wordpress-moowoodle-pro/">' . esc_html__('Available in MooWoodle Pro', MOOWOODLE_TEXT_DOMAIN) . '</a>
       </div>
        </div>');
       }
@@ -322,88 +284,81 @@ class MooWoodle_Settings {
      */
     public function settings_page_init() {
       global $MooWoodle;
-      foreach ($MooWoodle->library->moowoodle_get_options() as $k => $v) {
-        switch ($v['type']) {
-          case 'menu':
-            $menu_slug = $v['menu_slug'];
-            break;
-          case 'setting':
-            if (empty($v['validate_function'])) {
-              $v['validate_function'] = array(
-                &$this,
-                'validate_machine'
-              );
-            }
-            register_setting($v['id'], $v['id'], $v['validate_function']);
-            $setting_id = $v['id'];
-            break;
-          case 'section':
-            if (empty($v['desc_callback'])) {
-              $v['desc_callback'] = array(
+      $settingValues = array();
+      foreach ($this->settings_library['menu'] as $menuItem) {
+        foreach ($menuItem['tabs'] as $tab) {
+          if (empty($tab['validate_function'])) {
+              $validate_function = array(
+              &$this,
+              'validate_machine'
+            );
+            $setting_id = $tab['setting'];
+            register_setting($tab['setting'], $tab['setting'], $validate_function);
+          }
+          foreach($tab['section'] as $section_id => $section){
+            if (empty($section['desc_callback'])) {
+              $section['desc_callback'] = array(
                 &$this,
                 'return_empty_string'
               );
-            } else {
-              $v['desc_callback'] = $v['desc_callback'];
             }
-            add_settings_section($v['id'], $v['label'], $v['desc_callback'], $v['id']);
-            $section_id = $v['id'];
-            break;
-          case 'tab':
-            break;
-          default:
-            if (empty($v['callback'])) {
-              $v['callback'] = array($this, 'field_machine');
-            }
+            add_settings_section($section_id, $section['label'], $section['desc_callback'], $section_id);
+            if (is_array($section['field_types']))
+            foreach($section['field_types'] as $field_type_key => $field_type){
+              if (is_array($field_type)) {
+                $field_type['id'] = $field_type_key;
 
-            add_settings_field(
-              $v['id'],
-              $v['label'],
-              $v['callback'],
-              $section_id,
-              $section_id,
-              apply_filters(
-                'moowoodle_add_settings_field',
-                array(
-                  'id'            => $v['id'],
-                  'name'          => (isset($v['name']) ? $v['name'] : ''),
-                  'desc'          => (isset($v['desc']) ? $v['desc'] : ''),
-                  'setting_id'    => $setting_id,
-                  'class'         => (isset($v['class']) ? $v['class'] : ''),
-                  'type'          => $v['type'],
-                  'default_value' => (isset($v['default_value']) ? $v['default_value'] : ''),
-                  'option_values' => (isset($v['option_values']) ? $v['option_values'] : ''),
-                  'extra_input'   => (isset($v['extra_input']) ? $v['extra_input'] : ''),
-                  'font_class'    => (isset($v['font_class']) ? $v['font_class'] : ''),
-                  'disabled'      => (isset($v['disabled']) ? $v['disabled'] : ''),
-                  'is_pro'        => (isset($v['is_pro']) ? $v['is_pro'] : ''),
-                  'copy_text'     =>  (isset($v['copy_text']) ? $v['copy_text'] : '')
-                ),
-                $v
-              )
-            );
+                add_settings_field(
+                  $field_type['id'],
+                  (isset($field_type['label']) ? $field_type['label'] : ''),
+                  array($this, 'field_machine'),
+                  $section_id,
+                  $section_id,
+                  apply_filters(
+                    'moowoodle_add_settings_field',
+                    array(
+                      'id'            => $field_type['id'],
+                      'name'          => (isset($field_type['name']) ? $field_type['name'] : ''),
+                      'desc'          => (isset($field_type['desc']) ? $field_type['desc'] : ''),
+                      'setting_id'    => $setting_id,
+                      'class'         => (isset($field_type['class']) ? $field_type['class'] : ''),
+                      'type'          => $field_type_key,
+                      'default_value' => (isset($field_type['default_value']) ? $field_type['default_value'] : ''),
+                      'option_values' => (isset($field_type['option_values']) ? $field_type['option_values'] : ''),
+                      'extra_input'   => (isset($field_type['extra_input']) ? $field_type['extra_input'] : ''),
+                      'font_class'    => (isset($field_type['font_class']) ? $field_type['font_class'] : ''),
+                      'disabled'      => (isset($field_type['disabled']) ? $field_type['disabled'] : ''),
+                      'is_pro'        => (isset($field_type['is_pro']) ? $field_type['is_pro'] : ''),
+                      'copy_text'     => (isset($field_type['copy_text']) ? $field_type['copy_text'] : '')
+                    ),
+                    $field_type
+                  )
+                );
+              }
+            }
+          }
         }
       }
-    }
+  }
 
     public function field_machine($args) {
       global $MooWoodle;
       extract($args); //$id, $desc, $setting_id, $class, $type, $default_value, $option_values
       // Load defaults
+
       $defaults = array();
-      foreach ($MooWoodle->library->moowoodle_get_options() as $k) {
-        switch ($k['type']) {
-          case 'setting':
-          case 'section':
-          case 'tab':
-            break;
-          default:
-            if (isset($k['default_value'])) {
-              $defaults[$k['id']] = $k['default_value'];
+      foreach ($this->settings_library['menu'] as $menu => $menuData) {
+        foreach ($menuData['tabs'] as $tab => $tabData) {
+          foreach ($tabData['section'] as $section => $sectionData) {
+            foreach ($sectionData['field_types'] as $fieldType) {
+              // Check if 'id' exists in the field type and add it to the result array
+              if (isset($fieldType['default_value'])) {
+                  $defaults[$fieldType['id']] = $fieldType['default_value'];
+              }
             }
+          }
         }
       }
-
       $options = get_option($setting_id);
       $options = wp_parse_args($options, $defaults);
       $path = apply_filters('mooewoodle_field_types_posttype_path', $MooWoodle->plugin_path . 'framework/field-types/' . $type . '.php', $type);

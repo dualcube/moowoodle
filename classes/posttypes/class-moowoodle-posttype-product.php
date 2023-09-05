@@ -3,7 +3,7 @@ class MooWoodle_PostType_Product {
 
 	public function __construct() {
 		// add_action( 'add_meta_boxes', array( &$this, 'add_meta_boxes' ) );
-		add_action( 'save_post_product', array( &$this, 'save_product_callback' ) );
+		add_action( 'woocommerce_process_product_meta', array( &$this, 'save_product_callback' ) );
 		add_filter( 'woocommerce_product_data_tabs', array( &$this,'moowoodle_add_custom_product_data_tab' ),99,1);
 		add_action( 'woocommerce_product_data_panels', array( &$this,'add_product_meta_boxes_tab_containte'));
 		// add_filter( 'woocommerce_product_class',array($this, 'product_type_subcription_warning'), 10, 2 );
@@ -114,11 +114,6 @@ class MooWoodle_PostType_Product {
 
 	    //Verify that the nonce is valid.
 	    if ( ! wp_verify_nonce( $_POST[ 'product_meta_nonce' ] ) ) {
-	        return $post_id;
-	    }
-
-	    // If this is an autosave, our form has not been submitted, so we don't want to do anything.
-	    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 	        return $post_id;
 	    }
 

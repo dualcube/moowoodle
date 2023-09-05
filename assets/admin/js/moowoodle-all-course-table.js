@@ -57,7 +57,7 @@
           });
       });
     // set custom search section
-    $('<div class="mw-header-search-section"><label class="moowoodle-course-search"><i class="dashicons dashicons-search"></i></label><input type="search" class="moowoodle-search-input" placeholder="Search Course" aria-controls="moowoodle_table"></div>')
+    $('<div class="mw-header-search-section"><label class="moowoodle-course-search"><i class="dashicons dashicons-search"></i></label><input type="search" class="moowoodle-search-input" placeholder="' + table_args.lang.Search_Course + '" aria-controls="moowoodle_table"></div>')
     .appendTo($('.mw-header-search-wrap'));
     // fuilter by custom search
     $('.moowoodle-search-input').keyup(function(){

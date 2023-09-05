@@ -1,12 +1,10 @@
 <?php
-class MooWoodle_testconnection {
+class MooWoodle_Testconnection {
 
 	//user data for test
 	public $user_data = array();
 
 	function __construct() {
-		// Include the JavaScript above in your plugin
-		wp_enqueue_script('testconnection', plugins_url('../assets/admin/js/moowoodle-test-connection.js', __FILE__), array('jquery'), '', true);
 		$this->user_data['email'] = 'moowoodletestuser@gmail.com';
 		$this->user_data['username'] = 'moowoodletestuser';
 		$this->user_data['password'] = 'moowoodletestuser';
@@ -93,7 +91,7 @@ class MooWoodle_testconnection {
 		
 		
 		$response = $this->moowoodle_moodle_test_connection_callback( 'create_users' , array( 'users' => array( $this->user_data ) ) );
-		$response_data['message'] = 'Failed, please check the <a href="'. admin_url("admin.php?page=moowoodle-settings&tab=moowoodle-log") .'"> error log </a>';
+		$response_data['message'] = esc_html(__('Failed, please check the',MOOWOODLE_TEXT_DOMAIN)) . ' <a href="'. admin_url("admin.php?page=moowoodle-settings&tab=moowoodle-log") .'"> '.esc_html(__('error log',MOOWOODLE_TEXT_DOMAIN)) . ' </a>';
 		if($response != null && ($this->check_connection($response) == 'success' || strpos($this->check_connection($response),'Username already exists'))){
 			$response_data['message'] = 'success';
 		}

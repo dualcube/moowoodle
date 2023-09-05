@@ -2,7 +2,7 @@
 <div class="mw-input-content">
 <div class='mw-log-content '>
 <form method="post">
-    <button type="submit" onclick="return confirm('Are you sure?')" name="clearlog" class="button-secondary">Clear Log</button>
+    <button type="submit" onclick="return confirm('Are you sure?')" name="clearlog" class="button-secondary"><?php esc_html(__('Clear Log', MOOWOODLE_TEXT_DOMAIN));?></button>
 </form>
 <div class="mw-log-status">
 <?php

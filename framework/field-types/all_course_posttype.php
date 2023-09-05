@@ -1,11 +1,18 @@
 <?php
 // Include the JavaScript above in your plugin
-        wp_enqueue_script('moowoodle_tables', plugins_url('../../assets/admin/js/moowoodle-course-table.js', __FILE__), array('jquery'), '', true);
+        wp_enqueue_script('moowoodle_all_course_tables', plugins_url('../../assets/admin/js/moowoodle-all-course-table.js', __FILE__), array('jquery'), '', true);
         wp_enqueue_style( 'woocommerce_course_css', $MooWoodle->plugin_url . 'assets/admin/css/dataTables.min.css', array(), $MooWoodle->version );
         $args = array(
-            'non_filterable_column' => array('Actions','Enrolled','Date'),
+            'non_filterable_column' => array(
+                __('Actions', MOOWOODLE_TEXT_DOMAIN ),
+                __('Enrolled', MOOWOODLE_TEXT_DOMAIN ),
+                __('Date', MOOWOODLE_TEXT_DOMAIN )
+            ),
+            'lang' => array(
+                'Search_Course' => __( "Search Course", MOOWOODLE_TEXT_DOMAIN ),
+            )
         );
-        wp_localize_script('moowoodle_tables','table_args',$args);
+        wp_localize_script('moowoodle_all_course_tables','table_args',$args);
 // from heading
 $from_heading = apply_filters( 'moowoodle_courses_heading', 
                                     array(
@@ -86,9 +93,9 @@ $from_heading = apply_filters( 'moowoodle_courses_heading',
                     }
                     
                     $term = get_term_by( 'id', $term_id, 'course_cat' );
-                    $sort_url = '';
+                    $catagory_name = '';
                     if ( ! empty( $term ) ) {
-                        $sort_url = '<a href="' . admin_url( 'edit.php?course_cat=' . $term->slug . '&post_type=course' ) . '">' . $course_path . '</a>';
+                        $catagory_name = '<a href="' . esc_url(admin_url( 'edit.php?course_cat=' . $term->slug . '&post_type=course' )) . '">' . esc_html($course_path) . '</a>';
                     }
 
 
@@ -97,12 +104,11 @@ $from_heading = apply_filters( 'moowoodle_courses_heading',
 
                     $moodle_url = '';
                     if($id){
-                        $moodle_url = '<a href="' . $MooWoodle->options_general_settings[ "moodle_url" ]. 'course/edit.php?id=' . $id . '">' . $course_name . '</a>';
-                        // $moodle_url = '<a href="' . admin_url( 'edit.php?course_cat=' . $term->slug . '&post_type=course' ) . '">' . $course_path . '</a>';
+                        $moodle_url = '<a href="' . esc_url($MooWoodle->options_general_settings[ "moodle_url" ]). 'course/edit.php?id=' . $id . '">' . esc_html($course_name) . '</a>';
                     }
                     $product_name = '';
                     if($product){
-                        $product_name = '<a href="' . admin_url(). 'post.php?post=' . $product[0]->ID . '&action=edit">' . $product[0]->post_title . '</a>';
+                        $product_name = '<a href="' . esc_url(admin_url(). 'post.php?post=' . $product[0]->ID . '&action=edit') .'">' . esc_html($product[0]->post_title) . '</a>';
                     }
 
                     $enroled_user = '';
@@ -128,16 +134,16 @@ $from_heading = apply_filters( 'moowoodle_courses_heading',
                         $date .= ' - ' . wp_date('M j, Y  ',$course_enddate);
                     }
                     $actions = '';
-                    $actions .= '<div class="moowoodle-course-actions ' . apply_filters('moowoodle_pro_sticker',' mw-pro-popup-overlay ') . '"><form method="post"><input type="hidden" name="course_id" value=" ' . $course->ID . '"/><button name="sync_course" type="submit"  class=" button-primary" title="'. __( 'Sync Couse Data', 'moowoodlepro' ) .'" ><i class="dashicons dashicons-update"></i></button></form>';
+                    $actions .= '<div class="moowoodle-course-actions ' . apply_filters('moowoodle_pro_sticker',' mw-pro-popup-overlay ') . '"><form method="post"><input type="hidden" name="course_id" value=" ' . $course->ID . '"/><button name="sync_course" type="submit"  class=" button-primary" title="'. esc_attr( 'Sync Couse Data', 'moowoodlepro' ) .'" ><i class="dashicons dashicons-update"></i></button></form>';
                     if( $product){
                       $actions .= '<form method="post">
                             <input type="hidden" name="course_id" value=" ' . $course->ID . '"/>
-                            <button type="submit" name="update_product" class="button-secondary" title="' . __( 'Sync Course Data & Update Product', 'moowoodlepro' ) . '"><i class="dashicons dashicons-admin-links"></i></button>
+                            <button type="submit" name="update_product" class="button-secondary" title="' . esc_attr( 'Sync Course Data & Update Product', 'moowoodlepro' ) . '"><i class="dashicons dashicons-admin-links"></i></button>
                         </form>';
                     }else{
                       $actions .= '<form method="post">
                             <input type="hidden" name="course_id" value=" ' . $course->ID . '"/>
-                            <button type="submit" name="create_product" class="button-secondary" title="' . __( 'Create Product', 'moowoodlepro' ) . '"><i class="dashicons dashicons-cloud-upload"></i></button>
+                            <button type="submit" name="create_product" class="button-secondary" title="' . esc_attr( 'Create Product', 'moowoodlepro' ) . '"><i class="dashicons dashicons-cloud-upload"></i></button>
                         </form>';
                     }
                     $table_body = ''; 
@@ -148,19 +154,19 @@ $from_heading = apply_filters( 'moowoodle_courses_heading',
                         <?php echo $moodle_url; ?>
                     </td>
                     <td>
-                        <?php echo $course_short_name; ?>
+                        <?php echo esc_html($course_short_name); ?>
                     </td>
                     <td>
                         <?php echo $product_name; ?> 
                     </td>
                     <td>
-                        <?php echo $sort_url; ?>
+                        <?php echo $catagory_name; ?>
                     </td>
                     <td>
-                        <?php echo $enroled_user; ?>
+                        <?php echo esc_html($enroled_user); ?>
                     </td>
                     <td>
-                        <?php echo $date; ?>
+                        <?php echo esc_html($date); ?>
                     </td>
                     <td >
                         <?php echo $actions; ?>
@@ -177,5 +183,5 @@ $from_heading = apply_filters( 'moowoodle_courses_heading',
 <br>
 <p class="mw-sync-paragraph">
 <?php echo esc_html_e("Cannot find your course in this list?", MOOWOODLE_TEXT_DOMAIN);?>
-<a href="<?php echo esc_url(get_site_url()); ?>/wp-admin/admin.php?page=moowoodle-synchronization"><?php esc_html_e('Synchronize Moodle Courses from here.', MOOWOODLE_TEXT_DOMAIN); ?></a></p>
+<a href="<?php echo esc_url(get_site_url() . '/wp-admin/admin.php?page=moowoodle-synchronization'); ?>"><?php esc_html_e('Synchronize Moodle Courses from here.', MOOWOODLE_TEXT_DOMAIN); ?></a></p>
 </div>

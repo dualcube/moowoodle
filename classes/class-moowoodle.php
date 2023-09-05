@@ -97,10 +97,31 @@ class MooWoodle {
 			$this->load_class( 'sync' );
 			$this->sync = new MooWoodle_Sync();
 			$this->load_class( 'testconnection' );
-			$this->testconnection = new MooWoodle_testconnection();
+			$this->testconnection = new MooWoodle_Testconnection();
 
 			//frontend js file
+
+			$args = array(
+				'testconnection_actions' => array(
+					'get_catagory' => __('Course Category Sync',MOOWOODLE_TEXT_DOMAIN),
+	        'get_course_by_fuild'=> __('Course Data Sync',MOOWOODLE_TEXT_DOMAIN),
+	        'get_course'=> __('Course Sync',MOOWOODLE_TEXT_DOMAIN),
+	        'create_user'=> __('User Creation',MOOWOODLE_TEXT_DOMAIN),
+	        'get_user'=> __('User Data Sync',MOOWOODLE_TEXT_DOMAIN),
+	        'update_user'=> __('User Data Update',MOOWOODLE_TEXT_DOMAIN),
+	        'enrol_users'=> __('User Enrolment',MOOWOODLE_TEXT_DOMAIN),
+	        'unenrol_users'=> __('User Unenrolment',MOOWOODLE_TEXT_DOMAIN),
+	        'delete_users'=> __('All Test',MOOWOODLE_TEXT_DOMAIN)
+				),
+				'lang' => array(
+					'warning_to_save' => esc_html__('Remember to save your recent changes to ensure they\'re preserved.',MOOWOODLE_TEXT_DOMAIN),
+					'Copy' => 'Copy',
+					'Copied' => 'Copied',
+				)
+        
+      );
 			wp_enqueue_script('moowoodle_admin_frontend', plugins_url('../assets/admin/js/moowoodle-admin-frontend.js', __FILE__), array('jquery'), '', true);
+			wp_localize_script('moowoodle_admin_frontend','admin_frontend_args',$args);
 		}
 		
 		// init templates
@@ -153,8 +174,8 @@ class MooWoodle {
     load_textdomain( $this->text_domain, $this->plugin_path . "/languages/moowoodle-$locale.mo" );
  
     $locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
-    $locale = apply_filters( 'moowoodle_plugin_locale', $locale, MOOWOODLE_TEXT_DOMAIN );
-    load_plugin_textdomain( MOOWOODLE_TEXT_DOMAIN, false, plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/languages' );
+    $locale = apply_filters( 'moowoodle_plugin_locale', $locale, 'moowoodle' );
+    load_plugin_textdomain( 'moowoodle', false, plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/languages' );
   }
 
   /**
