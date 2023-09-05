@@ -83,9 +83,13 @@ class MooWoodle_Settings {
 
 
                     foreach ($this->settings_library['menu'] as $menuItem) {
+
                       foreach ($menuItem['tabs'] as $tab_id => $tab) {
                             if (empty($default_tab)) {
-                              $default_tab = $tab_id;
+                              foreach ($this->settings_library['menu'][$page]['tabs'] as $tabKey => $tabValue) {
+                                $default_tab = $tabKey;
+                                break;
+                              }
                             }
                         $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $default_tab;
                           if ($current_tab == $tab_id) {
