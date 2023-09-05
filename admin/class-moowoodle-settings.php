@@ -13,7 +13,7 @@ class MooWoodle_Settings {
     //Admin menu
     global $MooWoodle;
     $this->settings_library = $MooWoodle->library->moowoodle_get_options();
-    add_action('admin_menu', array($this, 'add_settings_page'), 100);
+    add_action('admin_menu', array($this, 'add_settings_page'));
     add_action('admin_init', array($this, 'settings_page_init'));
     
   }
@@ -32,13 +32,13 @@ class MooWoodle_Settings {
       esc_url($MooWoodle->plugin_url) . 'assets/images/moowoodle.png',
       50
     );
-    foreach ($this->settings_library["menu"] as $k => $v) {
+    foreach ($this->settings_library["menu"] as $menu_slug => $menu) {
         add_submenu_page(
             MOOWOODLE_TEXT_DOMAIN,
-            $v['name'],
-            $v['name'],
+            $menu['name'],
+            $menu['name'],
             'manage_options',
-            $k,
+            $menu_slug,
             array($this, 'option_page')
         );
     }
@@ -57,7 +57,7 @@ class MooWoodle_Settings {
 
   // Upgrade to pro link
   public function handle_external_redirects() {
-    wp_redirect(esc_url('https://dualcube.com/shop/'));
+    wp_redirect(esc_url(MOOWOODLE_PRO_SHOP_URL));
     die;
   }
 
@@ -81,22 +81,31 @@ class MooWoodle_Settings {
                     <?php
                     $show_submit = false;
 
-                    if(isset($this->settings_library['menu'][$page])){
-                      $current_tab = isset($_GET['tab']) ? $_GET['tab'] : array_key_first($this->settings_library['menu'][$page]['tabs']);
-                      if(isset($this->settings_library['menu'][$page]['tabs'][$current_tab])){
-                        $tab = $this->settings_library['menu'][$page]['tabs'][$current_tab];
-                        settings_fields($tab['setting']);
-                        $show_submit = true;
-                        $submit_btn_value = isset($tab['submit_btn_value']) ? $tab['submit_btn_value'] : '' ;
-                        $submit_btn_name = isset($tab['submit_btn_name']) ? $tab['submit_btn_name'] : 'submit' ;
-                        foreach ($this->settings_library['menu'][$page]['tabs'][$current_tab]['section'] as $section_id => $section){
-                          if ($layout == '2-col') {
-                            echo '<div id="' . esc_attr($section_id) . '" class="mw-section-wraper">';
-                            $this->moowoodle_do_settings_sections($section_id);
-                            echo '</div>';
-                          } else {
-                            $this->moowoodle_do_settings_sections($section_id);
+
+                    foreach ($this->settings_library['menu'] as $menuItem) {
+                      foreach ($menuItem['tabs'] as $tab_id => $tab) {
+                            if (empty($default_tab)) {
+                              $default_tab = $tab_id;
+                            }
+                        $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $default_tab;
+                          if ($current_tab == $tab_id) {
+                            settings_fields($tab['setting']);
+                            $show_submit = true;
+                            $submit_btn_value = isset($tab['submit_btn_value']) ? $tab['submit_btn_value'] : '' ;
+                            $submit_btn_name = isset($tab['submit_btn_name']) ? $tab['submit_btn_name'] : 'submit' ;
                           }
+
+                        foreach($tab['section'] as $section_id => $section){
+                          $current_tab = isset($_GET['tab']) ? $_GET['tab'] : $default_tab;
+                            if ($current_tab == $tab_id or $current_tab === false) {
+                              if ($layout == '2-col') {
+                                echo '<div id="' . esc_attr($section_id) . '" class="mw-section-wraper">';
+                                $this->moowoodle_do_settings_sections($section_id, $show_submit);
+                                echo '</div>';
+                              } else {
+                                $this->moowoodle_do_settings_sections($section_id);
+                              }
+                            }
                         }
                       }
                     }
@@ -170,39 +179,51 @@ class MooWoodle_Settings {
       $uses_tabs   = false;
       $current_tab = isset($_GET['tab']) ? $_GET['tab'] : false;
       $tab_count   = 1; 
-      if(isset($this->settings_library['menu'][$page])){
-        echo '<div class="mw-current-tab-lists">';
-        if(isset($this->settings_library['menu'][$page]['tabs']))
-        foreach($this->settings_library['menu'][$page]['tabs'] as $tab_id => $tab){
-          $active = '';
-          if ($current_tab) {
-            $active = $current_tab == $tab_id ? 'nav-tab-active' : '';
-          } elseif ($tab_count == 1) {
-            $active = 'nav-tab-active';
-          }
-          if ($tab_id == 'moowoodle-from') {
-            echo '<a id="' . esc_attr($tab_id) . '" class="nav-tab ' . $active . '" href="admin.php?moowoodle&tab=moowoodle-from">';
-          } else {
-            echo '<a id="' . esc_attr($tab_id) . '" class="nav-tab ' . $active . '" href="?page=' . $menu_slug . '&tab=' . $tab_id . '">';
-          }
-          if (isset($tab['font_class'])) {
-            echo '<i class="dashicons ' . esc_attr($tab['font_class']) . '"></i> ';
-          }
+      //Check if this config uses tabs
+      foreach ($this->settings_library['menu'] as $menuItem) {
+        if (isset($menuItem['tabs'])) {
+          $uses_tabs = true;
+          break;
+        }
+      }
 
-          // Add extra tab for pro version
-          do_action('moowoodle_pro_tabs_adv', $tab);
-          echo esc_html($tab['label']);
-          if (isset($tab['is_pro'])) {
-            echo apply_filters('moowoodle_pro_sticker', '<span class="mw-pro-tag">Pro</span>');
+
+      // If uses tabs then generate the tabs
+      if ($uses_tabs) {
+        if(isset($this->settings_library['menu'][$page])){
+          echo '<div class="mw-current-tab-lists">';
+          if(isset($this->settings_library['menu'][$page]['tabs']))
+          foreach($this->settings_library['menu'][$page]['tabs'] as $tab_id => $tab){
+            $active = '';
+            if ($current_tab) {
+              $active = $current_tab == $tab_id ? 'nav-tab-active' : '';
+            } elseif ($tab_count == 1) {
+              $active = 'nav-tab-active';
+            }
+            if ($tab_id == 'moowoodle-from') {
+              echo '<a id="' . esc_attr($tab_id) . '" class="nav-tab ' . $active . '" href="admin.php?moowoodle&tab=moowoodle-from">';
+            } else {
+              echo '<a id="' . esc_attr($tab_id) . '" class="nav-tab ' . $active . '" href="?page=' . $page . '&tab=' . $tab_id . '">';
+            }
+            if (isset($tab['font_class'])) {
+              echo '<i class="dashicons ' . esc_attr($tab['font_class']) . '"></i> ';
+            }
+
+            // Add extra tab for pro version
+            do_action('moowoodle_pro_tabs_adv', $tab);
+            echo esc_html($tab['label']);
+            if (isset($tab['is_pro'])) {
+              echo apply_filters('moowoodle_pro_sticker', '<span class="mw-pro-tag">Pro</span>');
+            }
+            echo '</a>';
+            $tab_count++;
           }
-          echo '</a>';
-          $tab_count++;
+          // For free version only
+          if (apply_filters('moowoodle_free_active', true)) {
+            echo '<a class="nav-tab moowoodle-upgrade" href="' . MOOWOODLE_PRO_SHOP_URL . '" target="_blank" rel="noopener noreferrer"><i class="dashicons dashicons-awards"></i> ' . esc_html__('Upgrade to Pro for More Features', MOOWOODLE_TEXT_DOMAIN) . '</a>';
+          }
+          echo '</div>';
         }
-        // For free version only
-        if (apply_filters('moowoodle_free_active', true)) {
-          echo '<a class="nav-tab moowoodle-upgrade" href="https://dualcube.com/shop/" target="_blank" rel="noopener noreferrer"><i class="dashicons dashicons-awards"></i> ' . esc_html__('Upgrade to Pro for More Features', MOOWOODLE_TEXT_DOMAIN) . '</a>';
-        }
-        echo '</div>';
       }
 
 
@@ -234,7 +255,7 @@ class MooWoodle_Settings {
         <div class="mw-img-overlay-arrow">
           <span class="dashicons dashicons-arrow-down-alt"></span>
         </div>
-        <a class="mw-go-pro-btn" target="_blank" href="https://dualstg.wpengine.com/product/wordpress-moowoodle-pro/">' . esc_html__('Available in MooWoodle Pro', MOOWOODLE_TEXT_DOMAIN) . '</a>
+        <a class="mw-go-pro-btn" target="_blank" href="' . MOOWOODLE_PRO_SHOP_URL . '">' . esc_html__('Available in MooWoodle Pro', MOOWOODLE_TEXT_DOMAIN) . '</a>
       </div>
        </div>');
       }
