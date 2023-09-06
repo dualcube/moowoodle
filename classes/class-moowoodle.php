@@ -1,6 +1,8 @@
 <?php
 class MooWoodle {
 
+	public $moowoodle_pro_adv;
+
 	public $plugin_url;
 
 	public $plugin_path;
@@ -48,7 +50,7 @@ class MooWoodle {
 	private static $active_plugins;
 
 	public function __construct( $file ) {
-
+		$this->moowoodle_pro_adv = apply_filters('moowoodle_pro_active',MOOWOODLE_PROP_ADVERTISEMENT);
 		$this->file = $file;
 		$this->plugin_url = trailingslashit( plugins_url( '', $plugin = $file ) );
 		$this->plugin_path = trailingslashit( dirname( $file ) );

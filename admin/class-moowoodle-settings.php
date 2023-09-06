@@ -5,6 +5,7 @@ class MooWoodle_Settings {
   public $settings_library = array();
   private $options;
   public $report;
+  public $pro_sticker = '';
 
   /*
 	* Start up
@@ -42,7 +43,7 @@ class MooWoodle_Settings {
             array($this, 'option_page')
         );
     }
-    if (apply_filters('moowoodle_upgrade_to_pro_admin_menu_hide', true)) {
+    if ($MooWoodle->moowoodle_pro_adv) {
       add_submenu_page(
         MOOWOODLE_TEXT_DOMAIN,
         __("Upgrade to Pro", MOOWOODLE_TEXT_DOMAIN),
@@ -127,7 +128,7 @@ class MooWoodle_Settings {
             <?php if ($layout == '2-col') : ?>
               <div class="mw-sidebar">
                 <?php
-                if (apply_filters('moowoodle_free_active_side_adv', true)) {
+                if($MooWoodle->moowoodle_pro_adv) {
                 ?>
                   <div class="mw-banner-right">
                     <a class="mw-image-adv">
@@ -183,6 +184,7 @@ class MooWoodle_Settings {
       $uses_tabs   = false;
       $current_tab = isset($_GET['tab']) ? $_GET['tab'] : false;
       $tab_count   = 1; 
+      $pro_sticker = $MooWoodle->moowoodle_pro_adv ? '<span class="mw-pro-tag">Pro</span>' : '';
       //Check if this config uses tabs
       foreach ($this->settings_library['menu'] as $menuItem) {
         if (isset($menuItem['tabs'])) {
@@ -217,13 +219,13 @@ class MooWoodle_Settings {
             do_action('moowoodle_pro_tabs_adv', $tab);
             echo esc_html($tab['label']);
             if (isset($tab['is_pro'])) {
-              echo apply_filters('moowoodle_pro_sticker', '<span class="mw-pro-tag">Pro</span>');
+              echo $pro_sticker;
             }
             echo '</a>';
             $tab_count++;
           }
           // For free version only
-          if (apply_filters('moowoodle_free_active', true)) {
+          if($MooWoodle->moowoodle_pro_adv){
             echo '<a class="nav-tab moowoodle-upgrade" href="' . MOOWOODLE_PRO_SHOP_URL . '" target="_blank" rel="noopener noreferrer"><i class="dashicons dashicons-awards"></i> ' . esc_html__('Upgrade to Pro for More Features', MOOWOODLE_TEXT_DOMAIN) . '</a>';
           }
           echo '</div>';
@@ -234,7 +236,7 @@ class MooWoodle_Settings {
     }
 
     public function moowoodle_do_settings_sections($page) {
-      global $wp_settings_sections, $wp_settings_fields;
+      global $wp_settings_sections, $wp_settings_fields,$MooWoodle;
       if (!isset($wp_settings_sections) || !isset($wp_settings_sections[$page])) {
         return;
       }
@@ -248,20 +250,22 @@ class MooWoodle_Settings {
         }
 
         $this->moowoodle_do_settings_fields($page, $section['id']);
-?>
-    </div>
-    </div>
-<?php
-        echo apply_filters('moowoodle_pro_sticker', '<div class="mw-image-overlay">
-        <div class="mw-overlay-content">
-        <h3>' . esc_html__('This is not accessable.', MOOWOODLE_TEXT_DOMAIN) . '</h3>
-        <p>' . esc_html__('I want to know more.', MOOWOODLE_TEXT_DOMAIN) . '</p>
-        <div class="mw-img-overlay-arrow">
-          <span class="dashicons dashicons-arrow-down-alt"></span>
-        </div>
-        <a class="mw-go-pro-btn" target="_blank" href="' . MOOWOODLE_PRO_SHOP_URL . '">' . esc_html__('Available in MooWoodle Pro', MOOWOODLE_TEXT_DOMAIN) . '</a>
-      </div>
-       </div>');
+        ?>
+            </div>
+            </div>
+        <?php
+        if($MooWoodle->moowoodle_pro_adv){
+          echo '<div class="mw-image-overlay">
+          <div class="mw-overlay-content">
+          <h3>' . esc_html__('This is not accessable.', MOOWOODLE_TEXT_DOMAIN) . '</h3>
+          <p>' . esc_html__('I want to know more.', MOOWOODLE_TEXT_DOMAIN) . '</p>
+          <div class="mw-img-overlay-arrow">
+            <span class="dashicons dashicons-arrow-down-alt"></span>
+          </div>
+          <a class="mw-go-pro-btn" target="_blank" href="' . MOOWOODLE_PRO_SHOP_URL . '">' . esc_html__('Available in MooWoodle Pro', MOOWOODLE_TEXT_DOMAIN) . '</a>
+          </div>
+          </div>';
+        }
       }
     }
 
@@ -271,13 +275,13 @@ class MooWoodle_Settings {
       if (!isset($wp_settings_fields) || !isset($wp_settings_fields[$page]) || !isset($wp_settings_fields[$page][$section])) {
         return;
       }
-      foreach ((array) $wp_settings_fields[$page][$section] as $field) {
+      foreach ((array) $wp_settings_fields[$page][$section] as $field_id => $field) {
 
-        if (str_contains($field['id'], 'posttype')){
-          if (isset($field['id']) && $field['id'] == 'test_connect_posttype') {
+        if (str_contains($field_id, 'posttype')){
+          if (isset($field_id) && $field_id == 'test_connect_posttype') {
             echo '<div class="mw-form-group';
-            if (isset($field['args']['is_pro']) && $field['args']['is_pro'] == 'pro') {
-              echo apply_filters('moowoodle_pro_sticker', ' mw-pro-popup-overlay ');
+            if (isset($field['args']['is_pro']) && $field['args']['is_pro'] == 'pro' && $MooWoodle->moowoodle_pro_adv) {
+              echo ' mw-pro-popup-overlay ';
             }
             echo '">';
             echo '<label class="mw-form-label " for=""><p>' .  __('Mooowoodle Test Connection', MOOWOODLE_TEXT_DOMAIN) . '</p></label>';
@@ -285,16 +289,16 @@ class MooWoodle_Settings {
           call_user_func($field['callback'], $field['args']);
         }else{
           echo '<div class="mw-form-group';
-          if (isset($field['args']['is_pro']) && $field['args']['is_pro'] == 'pro') {
-            echo apply_filters('moowoodle_pro_sticker', ' mw-pro-popup-overlay ');
+          if (isset($field['args']['is_pro']) && $field['args']['is_pro'] == 'pro' && $MooWoodle->moowoodle_pro_adv) {
+            echo ' mw-pro-popup-overlay ';
           }
           echo '">';
           if (!empty($field['args']['label_for'])) {
             echo '<label class="mw-form-label " for="' . esc_attr($field['args']['label_for']) . '"><p>' . $field['title'] . '</p></label>';
-          } elseif (str_contains($field['id'], 'posttype')) {
+          } elseif (str_contains($field_id, 'posttype')) {
             //no white space for posttype
           } else {
-            echo '<label scope="row" class="mw-form-label ' . esc_attr($field['id']) . '"><p>' . $field['title'] . '</p></label>';
+            echo '<label scope="row" class="mw-form-label ' . esc_attr($field_id) . '"><p>' . $field['title'] . '</p></label>';
           }
           echo '<div class="mw-input-content">';
           call_user_func($field['callback'], $field['args']);
@@ -329,34 +333,37 @@ class MooWoodle_Settings {
             }
             add_settings_section($section_id, $section['label'], $section['desc_callback'], $section_id);
             if (is_array($section['field_types']))
-            foreach($section['field_types'] as $field_type_key => $field_type){
-              if (is_array($field_type)) {
-                $field_type['id'] = $field_type_key;
+            foreach($section['field_types'] as $field_id => $field){
+              if (is_array($field)) {
+                $field_id = $field['type'];
+                if (empty($field['callback'])) {
+                  $field['callback'] = array($this, 'field_machine');
+                }
 
                 add_settings_field(
-                  $field_type['id'],
-                  (isset($field_type['label']) ? $field_type['label'] : ''),
-                  array($this, 'field_machine'),
+                  $field_id,
+                  (isset($field['label']) ? $field['label'] : ''),
+                  $field['callback'],
                   $section_id,
                   $section_id,
                   apply_filters(
                     'moowoodle_add_settings_field',
                     array(
-                      'id'            => $field_type['id'],
-                      'name'          => (isset($field_type['name']) ? $field_type['name'] : ''),
-                      'desc'          => (isset($field_type['desc']) ? $field_type['desc'] : ''),
+                      'id'            => $field_id,
+                      'name'          => (isset($field['name']) ? $field['name'] : ''),
+                      'desc'          => (isset($field['desc']) ? $field['desc'] : ''),
                       'setting_id'    => $setting_id,
-                      'class'         => (isset($field_type['class']) ? $field_type['class'] : ''),
-                      'type'          => $field_type_key,
-                      'default_value' => (isset($field_type['default_value']) ? $field_type['default_value'] : ''),
-                      'option_values' => (isset($field_type['option_values']) ? $field_type['option_values'] : ''),
-                      'extra_input'   => (isset($field_type['extra_input']) ? $field_type['extra_input'] : ''),
-                      'font_class'    => (isset($field_type['font_class']) ? $field_type['font_class'] : ''),
-                      'disabled'      => (isset($field_type['disabled']) ? $field_type['disabled'] : ''),
-                      'is_pro'        => (isset($field_type['is_pro']) ? $field_type['is_pro'] : ''),
-                      'copy_text'     => (isset($field_type['copy_text']) ? $field_type['copy_text'] : '')
+                      'class'         => (isset($field['class']) ? $field['class'] : ''),
+                      'type'          => (isset($field['type']) ? $field['type'] : ''),
+                      'default_value' => (isset($field['default_value']) ? $field['default_value'] : ''),
+                      'option_values' => (isset($field['option_values']) ? $field['option_values'] : ''),
+                      'extra_input'   => (isset($field['extra_input']) ? $field['extra_input'] : ''),
+                      'font_class'    => (isset($field['font_class']) ? $field['font_class'] : ''),
+                      'disabled'      => (isset($field['disabled']) ? $field['disabled'] : ''),
+                      'is_pro'        => (isset($field['is_pro']) ? $field['is_pro'] : ''),
+                      'copy_text'     => (isset($field['copy_text']) ? $field['copy_text'] : '')
                     ),
-                    $field_type
+                    $field
                   )
                 );
               }
