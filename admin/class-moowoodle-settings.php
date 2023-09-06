@@ -38,6 +38,7 @@ class MooWoodle_Settings
         array($this, 'option_page')
       );
     }
+    do_action('moowoodle_upgrade_to_pro_admin_menu_hide');
     if ($MooWoodle->moowoodle_pro_adv) {
       add_submenu_page(
         MOOWOODLE_TEXT_DOMAIN,
