@@ -43,10 +43,6 @@ $from_heading = apply_filters(
                 <thead>
                     <tr>
                         <?php
-                        $visibility_status = array(
-                            'visible' => 'Visible',
-                            'hidden' => 'Hidden'
-                        );
                         foreach ($from_heading as $key_heading => $value_heading) {
                         ?>
                             <th>
@@ -59,7 +55,6 @@ $from_heading = apply_filters(
                 </thead>
                 <tbody>
                     <?php
-                    global $MooWoodle;
                     $courses = get_posts(array('post_type' => 'course', 'numberposts' => -1, 'post_status' => 'publish'));
                     if (!empty($courses)) {
                         foreach ($courses as $course) {
@@ -69,8 +64,6 @@ $from_heading = apply_filters(
                             $course_startdate = get_post_meta($course->ID, '_course_startdate', true);
                             $course_enddate = get_post_meta($course->ID, '_course_enddate', true);
                             $course_name = $course->post_title;
-                            $visibility = get_post_meta($course->ID, '_visibility', true);
-                            $course_idnumber = get_post_meta($course->ID, '_course_idnumber', true);
                             $category_id = get_post_meta($course->ID, '_category_id', true);
                             $term_id = moowoodle_get_term_by_moodle_id($category_id, 'course_cat', 'moowoodle_term');
                             $course_category_path = get_term_meta($term_id, '_category_path', true);

@@ -1,5 +1,5 @@
 <?php
-class MooWoodle_PostType {
+class MooWoodle_Posttype_Course_Registration {
   	private $labels = array();
 	public $course;
 	public function __construct() {

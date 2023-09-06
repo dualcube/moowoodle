@@ -2,7 +2,7 @@
 class MooWoodle_Testconnection {
 	//user data for test
 	public $user_data = array();
-	public $this->response_data = array();
+	public $response_data = array();
 	function __construct() {
 		$this->response_data['message'] = __('Failed, please check the', MOOWOODLE_TEXT_DOMAIN) .'<a href="'. admin_url("admin.php?page=moowoodle-settings&tab=moowoodle-log") .'"> '.__('error log', MOOWOODLE_TEXT_DOMAIN).' </a>';
 		$this->user_data['email'] = 'moowoodletestuser@gmail.com';
@@ -212,10 +212,10 @@ class MooWoodle_Testconnection {
 						return 'success';
 					} else {
 						if(str_contains($response_arr['message'],'Access control exception')){
-							$url_check = '<a href="'.$conn_settings[ 'moodle_url' ] . '/admin/settings.php?section=externalservices">Link</a>'; 
+							$url_check = '<a href="'.$conn_settings[ 'moodle_url' ] . '/admin/settings.php?section=externalservices">'.__('Link',MOOWOODLE_TEXT_DOMAIN).'</a>'; 
 						}
 						if(str_contains($response_arr['message'],'Invalid token')){
-							$url_check = '<a href="'.$conn_settings[ 'moodle_url' ] . '/admin/webservice/tokens.php">Link</a>'; 
+							$url_check = '<a href="'.$conn_settings[ 'moodle_url' ] . '/admin/webservice/tokens.php">'.__('Link',MOOWOODLE_TEXT_DOMAIN).'</a>'; 
 						}
 						$error_massage = $response_arr['message'] . ' ' . $url_check;
 					}

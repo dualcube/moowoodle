@@ -169,6 +169,6 @@ class MooWoodle {
 	* Displays an inactive notice when the software is inactive.
 	*/
 	public function product_type_subcription_notice() { 
-		echo apply_filters('moowoodle_pro_sticker','<div class="notice notice-warning is-dismissible"><p>'. __('WooComerce Subbcription is supported only with ') .'<a href="'.MOOWOODLE_PRO_SHOP_URL.'">'.__('MooWoodle Pro',MOOWOODLE_TEXT_DOMAIN).'</></p></div>');
+		echo apply_filters('moowoodle_pro_sticker','<div class="notice notice-warning is-dismissible"><p>'. __('WooComerce Subbcription is supported only with ',MOOWOODLE_TEXT_DOMAIN) .'<a href="'.MOOWOODLE_PRO_SHOP_URL.'">'.__('MooWoodle Pro',MOOWOODLE_TEXT_DOMAIN).'</></p></div>');
 	}
 }
