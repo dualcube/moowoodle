@@ -1,9 +1,9 @@
 <?php
 class MooWoodle_Product_Data_Tabs {
 	public function __construct() {
-		add_action('woocommerce_process_product_meta', array(&$this, 'save_product_callback'));
-		add_filter('woocommerce_product_data_tabs', array(&$this, 'moowoodle_add_custom_product_data_tab'), 99, 1);
-		add_action('woocommerce_product_data_panels', array(&$this, 'add_product_meta_boxes_tab_containte'));
+		add_action('woocommerce_process_product_meta', array(&$this, 'save_product_meta_data'));
+		add_filter('woocommerce_product_data_tabs', array(&$this, 'moowoodle_linked_course_tab'), 99, 1);
+		add_action('woocommerce_product_data_panels', array(&$this, 'moowoodle_linked_course_panals'));
 	}
 	/**
 	 * Creates custom tab for product types.
@@ -11,7 +11,7 @@ class MooWoodle_Product_Data_Tabs {
 	 * @access public
 	 * @return void
 	 */
-	public function moowoodle_add_custom_product_data_tab($product_data_tabs) {
+	public function moowoodle_linked_course_tab($product_data_tabs) {
 		$product_data_tabs[MOOWOODLE_TEXT_DOMAIN] = array(
 			'label' => __('Moodle Linked Course', MOOWOODLE_TEXT_DOMAIN), // translatable
 			'target' => 'moowoodle_course_link_tab', // translatable
@@ -19,13 +19,13 @@ class MooWoodle_Product_Data_Tabs {
 		return $product_data_tabs;
 	}
 	/**
-	 * Add meta box content.
+	 * Add meta box panal.
 	 *
 	 * @access public
 	 * @param array $product_data_tabs
 	 * @return void
 	 */
-	public function add_product_meta_boxes_tab_containte() {
+	public function moowoodle_linked_course_panals() {
 		echo '<div id="moowoodle_course_link_tab" class="panel woocommerce_options_panel">';
 		global $post;
 		$course_id = get_post_meta($post->ID, 'moodle_course_id', true);
@@ -89,7 +89,7 @@ class MooWoodle_Product_Data_Tabs {
 	 * @param int $post_id
 	 * @return void
 	 */
-	public function save_product_callback($post_id) {
+	public function save_product_meta_data($post_id) {
 		// Security check
 		if (!isset($_POST['product_meta_nonce'])) {
 			return $post_id;

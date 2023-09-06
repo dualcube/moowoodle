@@ -8,9 +8,10 @@ class MooWoodle_PostType {
 			'plural' 	=> __( 'Courses', MOOWOODLE_TEXT_DOMAIN ), 
 			'menu' 	=> __( 'Courses', MOOWOODLE_TEXT_DOMAIN ) 
 		);
-		$this->setup_course_post_type();
+		$this->register_course_post_type();
+		$this->register_course_cat_taxonomy();
 	}
-	public function setup_course_post_type() {
+	public function register_course_post_type() {
 		$args = array(
 			'labels'             => array(
 				'name'               => sprintf( _x( '%s', 'post type general name', MOOWOODLE_TEXT_DOMAIN ), $this->labels[ 'course' ][ 'plural' ] ),
@@ -42,7 +43,27 @@ class MooWoodle_PostType {
 		);
 		register_post_type( 'course', $args );
 	}
-	private function setup_post_type_labels_base() {
-	  	
-	}
+	function register_course_cat_taxonomy() {
+    	register_taxonomy( 'course_cat', 'course',
+      						array(
+						        'labels'        => array(
+									'name'              => sprintf( _x( '%s category', MOOWOODLE_TEXT_DOMAIN ), ucfirst( 'course' ) ),
+									'singular_name'   	=> sprintf( _x( '%s category', MOOWOODLE_TEXT_DOMAIN ), ucfirst( 'course' ) ),
+									'add_new_item'      => sprintf( _x( 'Add new %s category', MOOWOODLE_TEXT_DOMAIN ), 'course' ),
+									'new_item_name'     => sprintf( _x( 'New %s category', MOOWOODLE_TEXT_DOMAIN ), 'course' ),
+									'menu_name'			=> sprintf( _x( '%s category', MOOWOODLE_TEXT_DOMAIN ), ucfirst( 'course' ) ),//'Categories',
+									'search_items' 	  	=> sprintf( _x( 'Search %s categories', MOOWOODLE_TEXT_DOMAIN ), 'course' ),//'Search Course Categories',
+									'all_items' 	    => sprintf( _x( 'All %s categories', MOOWOODLE_TEXT_DOMAIN ), 'course' ),//'All Course Categories',
+									'parent_item' 		=> sprintf( _x( 'Parent %s category', MOOWOODLE_TEXT_DOMAIN ), 'course' ),//'Parent Course Category',
+									'parent_item_colon' => sprintf( _x( 'Parent %s category', MOOWOODLE_TEXT_DOMAIN ), 'course' ),//'Parent Course Category:',
+									'edit_item' 		=> sprintf( _x( 'Edit %s category', MOOWOODLE_TEXT_DOMAIN ), 'course' ),//'Edit Course Category',
+									'update_item' 	   	=> sprintf( _x( 'New %s category name', MOOWOODLE_TEXT_DOMAIN ), 'course' ),//'New Course Category Name'
+								),
+						        'show_ui'       => false,
+						        'show_tagcloud' => false,
+						        'hierarchical'  => true,
+						        'query_var' 		=> true
+      						)
+    					);
+ 	}
 }

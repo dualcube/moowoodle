@@ -95,11 +95,8 @@ class MooWoodle {
 		$this->load_class( 'template' );
 		$this->template = new MooWoodle_Template();
 		// init posttype
-		$this->load_class( 'posttype' );
-		$this->posttype = new MooWoodle_PostType();
-		// init taxonomy
-		$this->load_class( 'taxonomy' );
-		$this->taxonomy = new MooWoodle_Toxonomy();
+		$this->load_class( 'posttype-course-register' );
+		$this->posttype = new MooWoodle_Posttype_Course_Registration();
 		// init enrollment
 		$this->load_class( 'enrollment' );
 		$this->enrollment = new MooWoodle_Enrollment();
@@ -172,6 +169,6 @@ class MooWoodle {
 	* Displays an inactive notice when the software is inactive.
 	*/
 	public function product_type_subcription_notice() { 
-		echo apply_filters('moowoodle_pro_sticker','<div class="notice notice-warning is-dismissible"><p>'. __('Woocomerce subbcription is supported only with moowoodle pro') .'</p></div>');
+		echo apply_filters('moowoodle_pro_sticker','<div class="notice notice-warning is-dismissible"><p>'. __('WooComerce Subbcription is supported only with ') .'<a href="'.MOOWOODLE_PRO_SHOP_URL.'">'.__('MooWoodle Pro',MOOWOODLE_TEXT_DOMAIN).'</></p></div>');
 	}
 }
