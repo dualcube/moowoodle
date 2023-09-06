@@ -33,11 +33,11 @@ if ( ! MooWoodle_Dependencies::woocommerce_active_check() )
 function moowoodle_plugin_links( $links ) {	
 	$plugin_links = array(
 		'<a href="' . admin_url( 'admin.php?page=moowoodle-settings' ) . '">' . __( 'Settings', MOOWOODLE_TEXT_DOMAIN ) . '</a>',
-		'<a href="https://wordpress.org/support/plugin/moowoodle/">' . __( 'Support', MOOWOODLE_TEXT_DOMAIN ) . '</a>',			
+		'<a href="' . MOOWOODLE_SUPPORT_URL . '">' . __( 'Support', MOOWOODLE_TEXT_DOMAIN ) . '</a>',			
 	);	
 	$links = array_merge( $plugin_links, $links );
 	if ( apply_filters( 'moowoodle_free_active', true ) ) {
-        $links[] = '<a href="https://dualcube.com/shop/" target="_blank">' . __( 'Upgrade to Pro', MOOWOODLE_TEXT_DOMAIN ) . '</a>';
+        $links[] = '<a href="' . MOOWOODLE_PRO_SHOP_URL . '" target="_blank">' . __( 'Upgrade to Pro', MOOWOODLE_TEXT_DOMAIN ) . '</a>';
     }
     return $links;
 }

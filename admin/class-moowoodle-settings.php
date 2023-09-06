@@ -137,7 +137,7 @@ class MooWoodle_Settings {
                   </div>
                   <div class="support-widget">
                     <p class="supt-link">
-                      <a href="https://wordpress.org/support/plugin/moowoodle/" target="_blank">
+                      <a href="<?php echo esc_url(MOOWOODLE_SUPPORT_URL)?>" target="_blank">
                         <?php esc_html_e('Got a Support Question', MOOWOODLE_TEXT_DOMAIN) ?>
                       </a>
                       <i class="fas fa-question-circle"></i>

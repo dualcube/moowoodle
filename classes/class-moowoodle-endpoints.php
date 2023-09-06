@@ -7,11 +7,11 @@ class MooWoodle_Endpoints {
   function __construct() {	
     $this->endpoint_slug = 'my-courses';
 
-    $this->table_heading = array( __( "Course Name", 'moowoodle' ),
-                                  __( "Moodle User Name", 'moowoodle' ),
-                                  __( "Password (First Time use Only)", 'moowoodle' ),
-                                  __( "Enrolment Date", 'moowoodle' ),
-                                  __( "Course Link", 'moowoodle' )    
+    $this->table_heading = array( __( "Course Name", MOOWOODLE_TEXT_DOMAIN ),
+                                  __( "Moodle User Name", MOOWOODLE_TEXT_DOMAIN ),
+                                  __( "Password (First Time use Only)", MOOWOODLE_TEXT_DOMAIN ),
+                                  __( "Enrolment Date", MOOWOODLE_TEXT_DOMAIN ),
+                                  __( "Course Link", MOOWOODLE_TEXT_DOMAIN )    
                                 );
 
 
@@ -31,7 +31,7 @@ class MooWoodle_Endpoints {
   //Adds the menu item to my-account WooCommerce menu 
   function my_courses_page_link( $menu_links ){ 
     global $MooWoodle;
-    $name = __( 'My Courses', 'moowoodle' );
+    $name = __( 'My Courses', MOOWOODLE_TEXT_DOMAIN );
     $new = array( $this->endpoint_slug => $name );
     $display_settings = $MooWoodle->options_display_settings;
     if ( isset( $display_settings[ 'my_courses_priority' ] ) ) {
@@ -130,8 +130,8 @@ class MooWoodle_Endpoints {
       <?php        
       } else {
         ?>
-        <h3><?php _e( 'You have no Course.', 'moowoodle') ?></h3>
-        <h3><?php _e( 'Kindly purchase a Course and come back here to see your course.', 'moowoodle') ?></h3>
+        <h3><?php _e( 'You have no Course.', MOOWOODLE_TEXT_DOMAIN) ?></h3>
+        <h3><?php _e( 'Kindly purchase a Course and come back here to see your course.', MOOWOODLE_TEXT_DOMAIN) ?></h3>
         <?php
       }
   }

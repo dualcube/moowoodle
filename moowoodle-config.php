@@ -19,3 +19,9 @@ define( 'MW_LOGS', $upload_dir = wp_upload_dir( null, false )['basedir'] . '/mw-
 define( 'MOOWOODLE_PRO_SHOP_URL', 'https://dualstg.wpengine.com/product/wordpress-moowoodle-pro/' );
 
 define('MOOWOODLE_PRO_ADVERTISEMENT', true);
+
+define( 'MOOWOODLE_SETUP_URL', 'https://dualcube.com/docs/moowoodle-set-up-guide/' );
+
+define( 'MOOWOODLE_SUPPORT_URL', 'https://wordpress.org/support/plugin/moowoodle/' );
+
+define( 'MOOWOODLE_DUALCUBE_URL', 'http://dualcube.com' );
