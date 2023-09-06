@@ -4,7 +4,7 @@ class MooWoodle_Library {
     public function moowoodle_get_options() {
         global $MooWoodle;
         $conn_settings = get_option( 'moowoodle_general_settings' );
-        $url = $conn_settings[ 'moodle_url' ];
+        $url = isset($conn_settings[ 'moodle_url' ])? $conn_settings[ 'moodle_url' ] : '';
         $pro_sticker = '';
         if($url != null){
             $moodle_tokens_url = '<a href="'.$url.'admin/webservice/tokens.php"> Manage tokens</a>';

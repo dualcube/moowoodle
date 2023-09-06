@@ -257,7 +257,7 @@ class MooWoodle_Settings {
         if($MooWoodle->moowoodle_pro_adv){
           echo '<div class="mw-image-overlay">
           <div class="mw-overlay-content">
-          <h3>' . esc_html__('This is not accessable.', MOOWOODLE_TEXT_DOMAIN) . '</h3>
+          <h3>' . esc_html__('This is not accessible.', MOOWOODLE_TEXT_DOMAIN) . '</h3>
           <p>' . esc_html__('I want to know more.', MOOWOODLE_TEXT_DOMAIN) . '</p>
           <div class="mw-img-overlay-arrow">
             <span class="dashicons dashicons-arrow-down-alt"></span>
