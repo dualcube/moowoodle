@@ -1,20 +1,14 @@
 <?php
-
 class MooWoodle_PostType {
-
   	private $labels = array();
 	public $course;
-
 	public function __construct() {
-		
 		$this->setup_post_type_labels_base();
 		$this->setup_course_post_type();
-
 		if ( is_admin() ) {
 			$this->load_class( 'posttype-product' );
 			$this->course = new MooWoodle_PostType_Product();
 		}
-		
 		if ( is_admin() ) {
 			global $pagenow;
 			if ( ( $pagenow == 'post.php' || $pagenow == 'post-new.php' ) ) {
@@ -22,9 +16,7 @@ class MooWoodle_PostType {
 			}
 		}
 	}
-
 	public function setup_course_post_type() {
-		
 		$args = array(
 			'labels'             => $this->create_post_type_labels( 'course', $this->labels[ 'course' ][ 'singular' ], $this->labels[ 'course' ][ 'plural' ], $this->labels[ 'course' ][ 'menu' ] ),
 			'public'             => false,
@@ -44,9 +36,7 @@ class MooWoodle_PostType {
 		);
 		register_post_type( 'course', $args );
 	}
-	
 	private function create_post_type_labels( $token, $singular, $plural, $menu ) {
-	  
 		$labels = array(
 			'name'               => sprintf( _x( '%s', 'post type general name', MOOWOODLE_TEXT_DOMAIN ), $plural ),
 			'singular_name'      => sprintf( _x( '%s', 'post type singular name', MOOWOODLE_TEXT_DOMAIN ), $singular ),
@@ -63,20 +53,15 @@ class MooWoodle_PostType {
 		);
 		return $labels;
 	}
-
 	public function setup_post_type_messages ( $messages ) {
-		
 		$messages[ 'course'] = $this->create_post_type_messages( 'course' );
 		return $messages;
 	}
-
 	private function create_post_type_messages( $post_type ) {
 		global $post, $post_ID;
-
 		if ( ! isset( $this->labels[ $post_type ] ) ) {
 			return array();
 		}
-
 		$messages = array(
 			0  => '',
 			1  => sprintf( __( '%s updated.' ), esc_attr( $this->labels[ $post_type ]['singular'] ) ),
@@ -97,14 +82,12 @@ class MooWoodle_PostType {
 		);
 		return $messages;
 	}
-
 	private function setup_post_type_labels_base() {
 	  	$this->labels['course'] = array( 'singular' => __( 'Course', MOOWOODLE_TEXT_DOMAIN ),
 										 'plural' 	=> __( 'Courses', MOOWOODLE_TEXT_DOMAIN ), 
 										 'menu' 	=> __( 'Courses', MOOWOODLE_TEXT_DOMAIN ) 
 										);
 	}
-	
 	/**
 	 * Load class file
 	 *
@@ -114,7 +97,6 @@ class MooWoodle_PostType {
 	 */
 	public function load_class( $class_name = '' ) {
 		global $MooWoodle;
-		
 		if ( '' != $class_name && '' != $MooWoodle->token ) {
 			require_once ( 'posttypes/class-' . $MooWoodle->token . '-' . $class_name . '.php' );
 		}

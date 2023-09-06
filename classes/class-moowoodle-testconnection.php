@@ -1,9 +1,7 @@
 <?php
 class MooWoodle_Testconnection {
-
 	//user data for test
 	public $user_data = array();
-
 	function __construct() {
 		$this->user_data['email'] = 'moowoodletestuser@gmail.com';
 		$this->user_data['username'] = 'moowoodletestuser';
@@ -19,9 +17,7 @@ class MooWoodle_Testconnection {
 		$this->user_data['preferences'][0]['type'] = "auth_forcepasswordchange";
 		$this->user_data['preferences'][0]['value'] = 1;
 		$this->testconnection();
-
 	}
-
 	// test connection with moodle server from connection settings
 	public function testconnection() {
 		add_action('wp_ajax_get_course', array($this, 'get_course'));
@@ -35,8 +31,7 @@ class MooWoodle_Testconnection {
 		add_action('wp_ajax_delete_users', array($this, 'delete_users'));
 	}
 	//test get course 
-	public function get_course()
-	{
+	public function get_course() {
 		$response = $this->moowoodle_moodle_test_connection_callback( 'get_courses' );
 		$response_data['message'] = 'Failed, please check the <a href="'. admin_url("admin.php?page=moowoodle-settings&tab=moowoodle-log") .'"> error log </a>';
 		if($response != null){
@@ -53,15 +48,13 @@ class MooWoodle_Testconnection {
 						$response_data['course_empty'] = 'create a course on moodle for complet test connection';
 					}
 				}
-
 			}
 		}
 		$response_data['user_id'] = $_POST['user_id'];
 		wp_send_json($response_data);
 	}
 	// test get category
-	public function get_catagory()
-	{
+	public function get_catagory() {
 		$response = $this->moowoodle_moodle_test_connection_callback( 'get_categories' );
 		$response_data['message'] = 'Failed, please check the <a href="'. admin_url("admin.php?page=moowoodle-settings&tab=moowoodle-log") .'"> error log </a>';
 		if($response != null && $this->check_connection($response) == 'success'){
@@ -73,8 +66,7 @@ class MooWoodle_Testconnection {
 		wp_send_json($response_data);
 	}
 	//  test get course by fuild
-	public function get_course_by_fuild()
-	{
+	public function get_course_by_fuild() {
 		$response = $this->moowoodle_moodle_test_connection_callback( 'get_course_by_fuild' );
 		$response_data['message'] = 'Failed, please check the <a href="'. admin_url("admin.php?page=moowoodle-settings&tab=moowoodle-log") .'"> error log </a>';
 		if($response != null && $this->check_connection($response) == 'success'){
@@ -85,11 +77,7 @@ class MooWoodle_Testconnection {
 		$response_data['user_id'] = $_POST['user_id'];
 		wp_send_json($response_data);
 	}
-
-	public function create_user()
-	{
-		
-		
+	public function create_user() {
 		$response = $this->moowoodle_moodle_test_connection_callback( 'create_users' , array( 'users' => array( $this->user_data ) ) );
 		$response_data['message'] = esc_html(__('Failed, please check the',MOOWOODLE_TEXT_DOMAIN)) . ' <a href="'. admin_url("admin.php?page=moowoodle-settings&tab=moowoodle-log") .'"> '.esc_html(__('error log',MOOWOODLE_TEXT_DOMAIN)) . ' </a>';
 		if($response != null && ($this->check_connection($response) == 'success' || strpos($this->check_connection($response),'Username already exists'))){
@@ -100,10 +88,8 @@ class MooWoodle_Testconnection {
 		$response_data['user_id'] = $_POST['user_id'];
 		wp_send_json($response_data);
 	}
-
 	// test get user
-	public function get_user()
-	{
+	public function get_user() {
 		$response = $this->moowoodle_moodle_test_connection_callback( 'get_moodle_users',array( 'criteria' => array( array( 'key' => 'email', 'value' => 'moowoodletestuser@gmail.com' ) ) ) );
 		if($response != null && $this->check_connection($response) == 'success'){
 			$response_arr = json_decode( $response[ 'body' ], true );
@@ -113,12 +99,9 @@ class MooWoodle_Testconnection {
 		$response_data['course_empty'] = $_POST['course_empty'];
 		$response_data['course_id'] = $_POST['course_id'];
 		wp_send_json($response_data);
-		
 	}
-
 	// test user update
-	public function update_user()
-	{
+	public function update_user() {
 		$this->user_data['id'] = $_POST['user_id'];
 		$this->user_data['city'] = 'citymoowoodle';
 		$response = $this->moowoodle_moodle_test_connection_callback( 'update_users', array( 'users' => array( $this->user_data ) ) );
@@ -130,12 +113,9 @@ class MooWoodle_Testconnection {
 		$response_data['course_id'] = $_POST['course_id'];
 		$response_data['user_id'] = $_POST['user_id'];
 		wp_send_json($response_data);
-		
 	}
-
 	// test enrol users
-	public function enrol_users()
-	{
+	public function enrol_users() {
 		$enrolment['courseid'] = $_POST['course_id'];
 		$enrolment['userid'] = $_POST['user_id'];
 		$enrolment['roleid'] =  '5';
@@ -149,10 +129,8 @@ class MooWoodle_Testconnection {
 		$response_data['user_id'] = $_POST['user_id'];
 		wp_send_json($response_data);
 	}
-
 	// test unenrol users
-	public function unenrol_users()
-	{
+	public function unenrol_users() {
 		$enrolment['courseid'] = $_POST['course_id'];
 		$enrolment['userid'] = $_POST['user_id'];
 		$response = $this->moowoodle_moodle_test_connection_callback( 'unenrol_users', array( 'enrolments' => array($enrolment) )  );
@@ -165,10 +143,8 @@ class MooWoodle_Testconnection {
 		$response_data['user_id'] = $_POST['user_id'];
 		wp_send_json($response_data);
 	}
-
 	// test delete users
-	public function delete_users()
-	{
+	public function delete_users() {
 		$this->user_data['id'] = $_POST['user_id'];
 		$response = $this->moowoodle_moodle_test_connection_callback( 'delete_users' , array( 'userids' =>   array($this->user_data['id']) ) );
 		$response_data['message'] = 'Failed, please check the <a href="'. admin_url("admin.php?page=moowoodle-settings&tab=moowoodle-log") .'"> error log </a>';
@@ -180,10 +156,6 @@ class MooWoodle_Testconnection {
 		$response_data['user_id'] = $_POST['user_id'];
 		wp_send_json($response_data);
 	}
-
-
-
-
 	/**
 	 * get server resposne from moodle with externel service.
 	 *
@@ -194,7 +166,6 @@ class MooWoodle_Testconnection {
 	 */
 	private function moowoodle_moodle_test_connection_callback( $key = '', $request_param = array() ) {
 		global $MooWoodle;
-
 		$response = null;
 		$function_name = "";
 		$moodle_core_functions = array( 'get_categories'	=> 'core_course_get_categories',
@@ -210,16 +181,13 @@ class MooWoodle_Testconnection {
 		if ( array_key_exists( $key, $moodle_core_functions ) ) {
 		  $function_name = $moodle_core_functions[ $key ];
 		}
-
 		$conn_settings = get_option( 'moowoodle_general_settings' );
 		$url = $conn_settings[ 'moodle_url' ];
 		$token = $conn_settings[ 'moodle_access_token' ];
 		$request_url = $url . '/webservice/rest/server.php?wstoken=' . $token . '&wsfunction=' . $function_name . '&moodlewsrestformat=json';
-
 		if ( $function_name == 'core_user_get_users' ) {
 		  $request_url = $request_url . '&criteria[0][key]=email&criteria[0][value]=%%';
 		} 
-		    
 		if ( ! empty( $url )  && ! empty( $token ) && $function_name != '' ) {
 		  $request_query = http_build_query( $request_param );
 		  $response = wp_remote_post( $request_url, array(  'body' => $request_query , 'timeout' => $MooWoodle->options_timeout_settings['moodle_timeout']));
@@ -244,7 +212,6 @@ class MooWoodle_Testconnection {
 					if ( is_null( $response_arr ) || ! array_key_exists( 'exception', $response_arr ) ) {
 						return 'success';
 					} else {
-						
 						if(str_contains($response_arr['message'],'Access control exception')){
 							$url_check = '<a href="'.$conn_settings[ 'moodle_url' ] . '/admin/settings.php?section=externalservices">Link</a>'; 
 						}
@@ -268,5 +235,4 @@ class MooWoodle_Testconnection {
 		file_put_contents(MW_LOGS . "/error.log",date("d/m/Y H:i:s",time()). ": " ."\n        moowoodle error:" . $error_massage."\n", FILE_APPEND );
 		return $error_massage;
 	}
-
 }

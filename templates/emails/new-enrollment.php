@@ -3,14 +3,10 @@
  * New enrollment email (html)
  *
  */
-
 if ( ! defined( 'ABSPATH' ) ) exit; 
-
 $i = 0;
-
 do_action( 'woocommerce_email_header', $email_heading );  
 $enrollment_list = array();
-
 ?>
 <p>
 	<?php
@@ -25,7 +21,6 @@ $enrollment_list = array();
 	?> 
 </p>
 <?php
-
 foreach( $enrollments[ 'enrolments' ] as $enrollment ) {
 	$enrollment_list[] = get_moowoodle_course_url( $enrollment[ 'linked_course_id' ], $enrollment[ 'course_name' ] );
 ?> 
@@ -35,7 +30,6 @@ foreach( $enrollments[ 'enrolments' ] as $enrollment ) {
 <?php 
 	$i++;
 }
-
 ?> 
 <p> <?php if ($count_course_order && $count_course_order < 2) { ?>
 		<?php echo esc_html__( 'You need to change your password after first login.', MOOWOODLE_TEXT_DOMAIN ) . '<br><br>'; ?>

@@ -1,16 +1,12 @@
 <?php
-
 class MooWoodle_Toxonomy {
-	
 	public function __construct() {
 		$this->register_course_cat_taxonomy();
 	}
-	
 	/**
 	 * course_cat Taxonomy
 	**/
  	function register_course_cat_taxonomy() {
-    	
     	register_taxonomy( 'course_cat', 'course',
       						array(
 						        'labels'        => $this->create_taxonomy_labels( 'course' ),
@@ -21,9 +17,7 @@ class MooWoodle_Toxonomy {
       						)
     					);
  	}
-  
 	private function create_taxonomy_labels( $post_type_name = '' ) {
-		
 		$labels = array(
 					'name'              => sprintf( _x( '%s category', MOOWOODLE_TEXT_DOMAIN ), ucfirst( $post_type_name ) ),
 					'singular_name'   	=> sprintf( _x( '%s category', MOOWOODLE_TEXT_DOMAIN ), ucfirst( $post_type_name ) ),
