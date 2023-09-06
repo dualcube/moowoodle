@@ -1,11 +1,9 @@
 <?php
-class MooWoodle_PostType_Product {
+class MooWoodle_Product_Data_Tabs {
 	public function __construct() {
-		// add_action( 'add_meta_boxes', array( &$this, 'add_meta_boxes' ) );
 		add_action('woocommerce_process_product_meta', array(&$this, 'save_product_callback'));
 		add_filter('woocommerce_product_data_tabs', array(&$this, 'moowoodle_add_custom_product_data_tab'), 99, 1);
 		add_action('woocommerce_product_data_panels', array(&$this, 'add_product_meta_boxes_tab_containte'));
-		// add_filter( 'woocommerce_product_class',array($this, 'product_type_subcription_warning'), 10, 2 );
 	}
 	/**
 	 * Creates custom tab for product types.
@@ -14,8 +12,8 @@ class MooWoodle_PostType_Product {
 	 * @return void
 	 */
 	public function moowoodle_add_custom_product_data_tab($product_data_tabs) {
-		$product_data_tabs['moowoodle'] = array(
-			'label' => __('Moodle Linked Course', 'moowoodle'), // translatable
+		$product_data_tabs[MOOWOODLE_TEXT_DOMAIN] = array(
+			'label' => __('Moodle Linked Course', MOOWOODLE_TEXT_DOMAIN), // translatable
 			'target' => 'moowoodle_course_link_tab', // translatable
 		);
 		return $product_data_tabs;
@@ -36,9 +34,9 @@ class MooWoodle_PostType_Product {
 		$courses = get_posts(array('post_type' => 'course', 'numberposts' => -1, 'post_status' => 'publish'));
 ?>
 		<p>
-			<label for="courses"><?php esc_html_e('Linked Course', 'moowoodle'); ?></label>
+			<label for="courses"><?php esc_html_e('Linked Course', MOOWOODLE_TEXT_DOMAIN); ?></label>
 			<select id="courses-select" name="course_id">
-				<option value="0"><?php esc_html_e('Select course...', 'moowoodle'); ?></option>
+				<option value="0"><?php esc_html_e('Select course...', MOOWOODLE_TEXT_DOMAIN); ?></option>
 				<?php
 				if (!empty($courses)) {
 					foreach ($courses as $course) {
@@ -67,7 +65,7 @@ class MooWoodle_PostType_Product {
 						if (!empty($id)) {
 				?>
 							<option value="<?php echo esc_attr($id); ?>" <?php if (!empty($linked_course_id) && $id == $linked_course_id) echo 'selected="selected"'; ?>><?php echo $course_name;
-																																												if (!empty($course_short_name)) echo " ( " . esc_html($course_short_name) . " )"; ?></option>
+						if (!empty($course_short_name)) echo " ( " . esc_html($course_short_name) . " )"; ?></option>
 				<?php
 						}
 					}
@@ -78,7 +76,7 @@ class MooWoodle_PostType_Product {
 		<?php
 		echo esc_html_e("Cannot find your course in this list?", "moowoodle");
 		?>
-		<a href="<?php echo esc_url(get_site_url()) ?>/wp-admin/admin.php?page=moowoodle-synchronization" target="_blank"><?php esc_html_e('Synchronize Moodle Courses from here.', 'moowoodle'); ?></a>
+		<a href="<?php echo esc_url(get_site_url()) ?>/wp-admin/admin.php?page=moowoodle-synchronization" target="_blank"><?php esc_html_e('Synchronize Moodle Courses from here.', MOOWOODLE_TEXT_DOMAIN); ?></a>
 <?php
 		// Nonce field (for security)
 		echo '<input type="hidden" name="product_meta_nonce" value="' . wp_create_nonce() . '">';

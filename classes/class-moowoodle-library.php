@@ -7,11 +7,11 @@ class MooWoodle_Library {
         $url = isset($conn_settings['moodle_url']) ? $conn_settings['moodle_url'] : '';
         $pro_sticker = '';
         if ($url != null) {
-            $moodle_tokens_url = '<a href="' . $url . 'admin/webservice/tokens.php"> Manage tokens</a>';
-            $moodle_sso_url = '<a href="' . $url . 'admin/settings.php?section=auth_moowoodleconnect"> Moodle</a>';
+            $moodle_tokens_url = '<a href="' . $url . 'admin/webservice/tokens.php"> ' . __('Manage tokens', MOOWOODLE_TEXT_DOMAIN) . '</a>';
+            $moodle_sso_url = '<a href="' . $url . 'admin/settings.php?section=auth_moowoodleconnect"> ' . __('Moodle', MOOWOODLE_TEXT_DOMAIN) . '</a>';
         } else {
-            $moodle_tokens_url = 'Manage tokens';
-            $moodle_sso_url = 'Moodle';
+            $moodle_tokens_url = __('Manage tokens', MOOWOODLE_TEXT_DOMAIN);
+            $moodle_sso_url = __('Moodle', MOOWOODLE_TEXT_DOMAIN);
         }
         if ($MooWoodle->moowoodle_pro_adv) {
             $pro_sticker = '<span class="mw-pro-tag">Pro</span>';

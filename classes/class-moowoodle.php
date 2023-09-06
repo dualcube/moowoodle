@@ -23,6 +23,7 @@ class MooWoodle {
 	public $options_synchronize_settings;
 	public $options_timeout_settings;
 	public $testconnection;
+	public $product_data_tab;
 	private static $active_plugins;
 	public function __construct( $file ) {
 		$this->file = $file;
@@ -66,6 +67,8 @@ class MooWoodle {
 			$this->sync = new MooWoodle_Sync();
 			$this->load_class( 'testconnection' );
 			$this->testconnection = new MooWoodle_Testconnection();
+			$this->load_class( 'product-data-tabs' );
+			$this->product_data_tab = new MooWoodle_Product_Data_Tabs();
 			//frontend js file
 			$args = array(
 				'testconnection_actions' => array(

@@ -1,6 +1,5 @@
 <?php
-class MooWoodle_Settings
-{
+class MooWoodle_Settings {
   public $settings_library = array();
   private $options;
   public $pro_sticker = '';
@@ -120,7 +119,7 @@ class MooWoodle_Settings
                 ?>
                   <div class="mw-banner-right">
                     <a class="mw-image-adv">
-                      <img src="<?php echo esc_url(plugins_url()) ?>/moowoodle/framework/coming-soon-pro-sidebar.jpg" />
+                      <img src="<?php echo esc_url(plugins_url()) ?>/moowoodle/assets/images/coming-soon-pro-sidebar.jpg" />
                     </a>
                   </div>
                   <div class="support-widget">
@@ -250,33 +249,25 @@ class MooWoodle_Settings
         return;
       }
       foreach ((array) $wp_settings_fields[$page][$section] as $field_id => $field) {
-        if (str_contains($field_id, 'posttype')) {
-          if (isset($field_id) && $field_id == 'test_connect_posttype') {
-            echo '<div class="mw-form-group';
-            if (isset($field['args']['is_pro']) && $field['args']['is_pro'] == 'pro' && $MooWoodle->moowoodle_pro_adv) {
-              echo ' mw-pro-popup-overlay ';
-            }
-            echo '">';
-            echo '<label class="mw-form-label " for=""><p>' .  __('Mooowoodle Test Connection', MOOWOODLE_TEXT_DOMAIN) . '</p></label>';
-          }
-          call_user_func($field['callback'], $field['args']);
-        } else {
-          echo '<div class="mw-form-group';
-          if (isset($field['args']['is_pro']) && $field['args']['is_pro'] == 'pro' && $MooWoodle->moowoodle_pro_adv) {
-            echo ' mw-pro-popup-overlay ';
-          }
-          echo '">';
-          if (!empty($field['args']['label_for'])) {
-            echo '<label class="mw-form-label " for="' . esc_attr($field['args']['label_for']) . '"><p>' . $field['title'] . '</p></label>';
-          } elseif (str_contains($field_id, 'posttype')) {
-            //no white space for posttype
-          } else {
-            echo '<label scope="row" class="mw-form-label ' . esc_attr($field_id) . '"><p>' . $field['title'] . '</p></label>';
-          }
-          echo '<div class="mw-input-content">';
-          call_user_func($field['callback'], $field['args']);
-          echo '</div>';
+        echo '<div class="mw-form-group';
+        if (isset($field['args']['is_pro']) && $field['args']['is_pro'] == 'pro' && $MooWoodle->moowoodle_pro_adv) {
+          echo ' mw-pro-popup-overlay ';
         }
+        echo '">';
+        if (!empty($field['args']['label_for'])) {
+          echo '<label class="mw-form-label " for="' . esc_attr($field['args']['label_for']) . '"><p>' . $field['title'] . '</p></label>';
+        } elseif (str_contains($field_id, 'posttype')) {
+          //no white space for posttype
+        } else {
+          echo '<label scope="row" class="mw-form-label ' . esc_attr($field_id) . '"><p>' . $field['title'] . '</p></label>';
+        }
+        if (isset($field_id) && $field_id == 'test_connect_posttype') {
+          echo '<label class="mw-form-label " for=""><p>' .  __('Mooowoodle Test Connection', MOOWOODLE_TEXT_DOMAIN) . '</p></label>';
+        }
+        
+        if (!str_contains($field_id, 'posttype')) echo '<div class="mw-input-content">';
+        call_user_func($field['callback'], $field['args']);
+        if (!str_contains($field_id, 'posttype')) echo '</div>';
         echo '</div>'; //middle-child-container  end
       }
     }
@@ -304,7 +295,7 @@ class MooWoodle_Settings
               );
             }
             add_settings_section($section_id, $section['label'], $section['desc_callback'], $section_id);
-            if (is_array($section['field_types']))
+            if (is_array($section['field_types'])) {
               foreach ($section['field_types'] as $field_id => $field) {
                 if (is_array($field)) {
                   if (empty($field['callback'])) {
@@ -338,6 +329,7 @@ class MooWoodle_Settings
                   );
                 }
               }
+            }
           }
         }
       }
