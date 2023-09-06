@@ -1,4 +1,6 @@
 <?php
+global $MooWoodle;
+$pro_sticker = '';
 // Include the JavaScript above in your plugin
         wp_enqueue_script('moowoodle_all_course_tables', plugins_url('../../assets/admin/js/moowoodle-all-course-table.js', __FILE__), array('jquery'), '', true);
         wp_enqueue_style( 'woocommerce_course_css', $MooWoodle->plugin_url . 'assets/admin/css/dataTables.min.css', array(), $MooWoodle->version );
@@ -13,6 +15,9 @@
             )
         );
         wp_localize_script('moowoodle_all_course_tables','table_args',$args);
+        if($MooWoodle->moowoodle_pro_adv){
+            $pro_sticker = '<span class="mw-pro-tag">Pro</span>';
+        }
 // from heading
 $from_heading = apply_filters( 'moowoodle_courses_heading', 
                                     array(
@@ -22,7 +27,7 @@ $from_heading = apply_filters( 'moowoodle_courses_heading',
                                            __( "Category", MOOWOODLE_TEXT_DOMAIN ),
                                            __( "Enrolled", MOOWOODLE_TEXT_DOMAIN ),
                                            __( "Date", MOOWOODLE_TEXT_DOMAIN ),  
-                                           __( "Actions", 'moowoodlepro' ) . apply_filters('moowoodle_pro_sticker','<span class="mw-pro-tag">Pro</span>'),
+                                           __( "Actions", 'moowoodlepro' ) . $pro_sticker,
                                         )
                                 );
 

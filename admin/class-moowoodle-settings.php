@@ -13,7 +13,6 @@ class MooWoodle_Settings {
   public function __construct() {
     //Admin menu
     global $MooWoodle;
-    $MooWoodle->moowoodle_pro_adv = apply_filters('moowoodle_pro_advertisement',MOOWOODLE_PRO_ADVERTISEMENT);
     $this->settings_library = $MooWoodle->library->moowoodle_get_options();
     add_action('admin_menu', array($this, 'add_settings_page'));
     add_action('admin_init', array($this, 'settings_page_init'));

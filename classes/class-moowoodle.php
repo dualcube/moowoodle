@@ -1,7 +1,7 @@
 <?php
 class MooWoodle {
 
-	public $moowoodle_pro_adv;
+	public $moowoodle_pro_adv = true;
 
 	public $plugin_url;
 
@@ -77,7 +77,7 @@ class MooWoodle {
 		
 
 		add_filter( 'woocommerce_product_class',array($this, 'product_type_subcription_warning'), 10, 2 );
-		add_action( 'init', array( &$this, 'init' ), 0 );
+		add_action( 'init', array( &$this, 'init' ), 1 );
 	}
 	
 	/**
