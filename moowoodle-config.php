@@ -18,4 +18,4 @@ define( 'MW_LOGS', $upload_dir = wp_upload_dir( null, false )['basedir'] . '/mw-
 
 define( 'MOOWOODLE_PRO_SHOP_URL', 'https://dualstg.wpengine.com/product/wordpress-moowoodle-pro/' );
 
-define('MOOWOODLE_PROP_ADVERTISEMENT', false);
+define('MOOWOODLE_PRO_ADVERTISEMENT', true);

@@ -8,11 +8,12 @@ class MooWoodle_Settings {
   public $pro_sticker = '';
 
   /*
-	* Start up
-	*/
+  * Start up
+  */
   public function __construct() {
     //Admin menu
     global $MooWoodle;
+    $MooWoodle->moowoodle_pro_adv = apply_filters('moowoodle_pro_advertisement',MOOWOODLE_PRO_ADVERTISEMENT);
     $this->settings_library = $MooWoodle->library->moowoodle_get_options();
     add_action('admin_menu', array($this, 'add_settings_page'));
     add_action('admin_init', array($this, 'settings_page_init'));
@@ -270,7 +271,7 @@ class MooWoodle_Settings {
     }
 
     function moowoodle_do_settings_fields($page, $section) {
-      global $wp_settings_fields;
+      global $wp_settings_fields,$MooWoodle;
 
       if (!isset($wp_settings_fields) || !isset($wp_settings_fields[$page]) || !isset($wp_settings_fields[$page][$section])) {
         return;
@@ -335,7 +336,6 @@ class MooWoodle_Settings {
             if (is_array($section['field_types']))
             foreach($section['field_types'] as $field_id => $field){
               if (is_array($field)) {
-                $field_id = $field['type'];
                 if (empty($field['callback'])) {
                   $field['callback'] = array($this, 'field_machine');
                 }
