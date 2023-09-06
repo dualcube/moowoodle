@@ -16,7 +16,7 @@ class MooWoodle_Install {
 	 * @return void
 	 */
 	public static function check_version() {
-		if ( get_option( 'woodle_version' ) != MOOWOODLE_PLUGIN_VERSION ) {
+		if ( get_option( 'moowoodle_version' ) != MOOWOODLE_PLUGIN_VERSION ) {
 			self::install();
 			do_action( 'moowoodle_updated' );
 		}

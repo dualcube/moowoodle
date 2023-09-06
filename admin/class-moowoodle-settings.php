@@ -256,18 +256,18 @@ class MooWoodle_Settings {
         echo '">';
         if (!empty($field['args']['label_for'])) {
           echo '<label class="mw-form-label " for="' . esc_attr($field['args']['label_for']) . '"><p>' . $field['title'] . '</p></label>';
-        } elseif (str_contains($field_id, 'posttype')) {
-          //no white space for posttype
+        } elseif (str_contains($field_id, 'noleble')) {
+          //no white space for noleble
         } else {
           echo '<label scope="row" class="mw-form-label ' . esc_attr($field_id) . '"><p>' . $field['title'] . '</p></label>';
         }
-        if (isset($field_id) && $field_id == 'test_connect_posttype') {
+        if (isset($field_id) && $field_id == 'test_connect_noleble') {
           echo '<label class="mw-form-label " for=""><p>' .  __('Mooowoodle Test Connection', MOOWOODLE_TEXT_DOMAIN) . '</p></label>';
         }
         
-        if (!str_contains($field_id, 'posttype')) echo '<div class="mw-input-content">';
+        if (!str_contains($field_id, 'noleble')) echo '<div class="mw-input-content">';
         call_user_func($field['callback'], $field['args']);
-        if (!str_contains($field_id, 'posttype')) echo '</div>';
+        if (!str_contains($field_id, 'noleble')) echo '</div>';
         echo '</div>'; //middle-child-container  end
       }
     }

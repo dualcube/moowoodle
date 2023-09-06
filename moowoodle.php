@@ -38,10 +38,6 @@ function moowoodle_plugin_links( $links ) {
     return $links;
 }
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'moowoodle_plugin_links' );
-// Migration at activation hook
-register_activation_hook( __FILE__, 'moowoodle_option_migration_2_to_3' );
-// Update time migration
-add_action( 'upgrader_process_complete', 'moowoodle_option_migration_2_to_3' );
 if ( ! defined( 'MOOWOODLE_PLUGIN_BASENAME' ) ) 
 	define( 'MOOWOODLE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 require_once trailingslashit( dirname( __FILE__ ) ) . 'includes/class-moowoodle-install.php';

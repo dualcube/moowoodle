@@ -32,8 +32,8 @@ class MooWoodle_Library {
                                 "moowoodle-link-course-table" => array(
                                     "label" => __("Courses", MOOWOODLE_TEXT_DOMAIN),
                                     "field_types" => array(
-                                        "all_course_posttype" => array(
-                                            "type" => "all_course_posttype",
+                                        "all_course_nolabel" => array(
+                                            "type" => "all-course-nolabel",
                                             "label" => __("", MOOWOODLE_TEXT_DOMAIN),
                                             "desc" => __("", ''),
                                             "option_values" => array(
@@ -60,8 +60,8 @@ class MooWoodle_Library {
                                 "moowoodle-manage-enrolment" => array(
                                     "label" => __("All Enrolments", MOOWOODLE_TEXT_DOMAIN),
                                     "field_types" => array(
-                                        "manage_enrolment_posttype" => array(
-                                            "type" => "manage_enrolment_posttype",
+                                        "manage_enrolment_nolabel" => array(
+                                            "type" => "manage-enrolment-nolabel",
                                             "is_pro" => "pro",
                                             "label" => __("", MOOWOODLE_TEXT_DOMAIN),
                                             "desc" => __("", ''),
@@ -92,7 +92,7 @@ class MooWoodle_Library {
                                     "label" => __("Synchronization Settings", MOOWOODLE_TEXT_DOMAIN),
                                     "field_types" => array(
                                         "sync-options" => array(
-                                            "type" => "multiple_checkboxs",
+                                            "type" => "multiple-checkboxs",
                                             "label" => __("Synchronize Options", MOOWOODLE_TEXT_DOMAIN),
                                             "desc" => __("Choose the category you wish to synchronize from Moodle to your WordPress site. During synchronization, if a course is found deleted in Moodle, it will likewise remove the corresponding course and product data from WordPress.", ''),
                                             "option_values" => array(
@@ -153,8 +153,8 @@ class MooWoodle_Library {
                                             "label" => __("Moodle Access Token", MOOWOODLE_TEXT_DOMAIN),
                                             "desc" => __('Enter Moodle Access Token. You can generate the Access Token from - Dashboard => Site administration => Server => Web services => ' . $moodle_tokens_url, MOOWOODLE_TEXT_DOMAIN),
                                         ),
-                                        "test_connect_posttype" => array(
-                                            "type" => "test_connect_posttype",
+                                        "test_connect_nolabel" => array(
+                                            "type" => "test-connect-nolabel",
                                             "label" => __("", MOOWOODLE_TEXT_DOMAIN),
                                             "desc" => __("", ''),
                                             "option_values" => array(
@@ -167,7 +167,7 @@ class MooWoodle_Library {
                                     "label" => __("User Information Settings", MOOWOODLE_TEXT_DOMAIN),
                                     "field_types" => array(
                                         "update-moodle-user" => array(
-                                            "type" => "toggle_checkbox",
+                                            "type" => "toggle-checkbox",
                                             "name" => "update_moodle_user",
                                             "label" => __("Update Profile Data", MOOWOODLE_TEXT_DOMAIN),
                                             "desc" => __('If activated, the personal information of Moodle users will be automatically refreshed to match the data of the corresponding WordPress users.', MOOWOODLE_TEXT_DOMAIN),
@@ -201,7 +201,7 @@ class MooWoodle_Library {
                                     "label" => __("Display Settings", MOOWOODLE_TEXT_DOMAIN),
                                     "field_types" => array(
                                         "start-end-date" => array(
-                                            "type" => "toggle_checkbox",
+                                            "type" => "toggle-checkbox",
                                             "name" => "start_end_date",
                                             "label" => __("Display Start Date and End Date in Shop Page", MOOWOODLE_TEXT_DOMAIN),
                                             "desc" => __('If enabled display start date and end date in shop page.', MOOWOODLE_TEXT_DOMAIN),
@@ -231,7 +231,7 @@ class MooWoodle_Library {
                                     "label" => __("Single Sing On Settings", 'moowoodle'),
                                     "field_types" => array(
                                         "moowoodlepro-sso-eneble" => array(
-                                            "type" => "toggle_checkbox",
+                                            "type" => "toggle-checkbox",
                                             'name' => "moowoodlepro_sso_eneble",
                                             "is_pro" => "pro",
                                             "label" => __("Single Sing On", 'moowoodle'),
@@ -261,8 +261,8 @@ class MooWoodle_Library {
                                 "moowoodle-log-table" => array(
                                     "label" => __("Log", MOOWOODLE_TEXT_DOMAIN),
                                     "field_types" => array(
-                                        "log_posttype" => array(
-                                            "type" => "log_posttype",
+                                        "log_nolabel" => array(
+                                            "type" => "log-nolabel",
                                             "label" => __("", MOOWOODLE_TEXT_DOMAIN),
                                             "desc" => __("", ''),
                                             "option_values" => array(

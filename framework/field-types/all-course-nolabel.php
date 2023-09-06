@@ -28,7 +28,7 @@ $from_heading = apply_filters(
         __("Category", MOOWOODLE_TEXT_DOMAIN),
         __("Enrolled", MOOWOODLE_TEXT_DOMAIN),
         __("Date", MOOWOODLE_TEXT_DOMAIN),
-        __("Actions", 'moowoodlepro') . $pro_sticker,
+        __("Actions", MOOWOODLE_TEXT_DOMAIN) . $pro_sticker,
     )
 );
 ?>
@@ -116,16 +116,16 @@ $from_heading = apply_filters(
                                 $date .= ' - ' . wp_date('M j, Y  ', $course_enddate);
                             }
                             $actions = '';
-                            $actions .= '<div class="moowoodle-course-actions ' . apply_filters('moowoodle_pro_sticker', ' mw-pro-popup-overlay ') . '"><form method="post"><input type="hidden" name="course_id" value=" ' . $course->ID . '"/><button name="sync_course" type="submit"  class=" button-primary" title="' . esc_attr('Sync Couse Data', 'moowoodlepro') . '" ><i class="dashicons dashicons-update"></i></button></form>';
+                            $actions .= '<div class="moowoodle-course-actions ' . apply_filters('moowoodle_pro_sticker', ' mw-pro-popup-overlay ') . '"><form method="post"><input type="hidden" name="course_id" value=" ' . $course->ID . '"/><button name="sync_course" type="submit"  class=" button-primary" title="' . esc_attr('Sync Couse Data', MOOWOODLE_TEXT_DOMAIN) . '" ><i class="dashicons dashicons-update"></i></button></form>';
                             if ($product) {
                                 $actions .= '<form method="post">
                             <input type="hidden" name="course_id" value=" ' . $course->ID . '"/>
-                            <button type="submit" name="update_product" class="button-secondary" title="' . esc_attr('Sync Course Data & Update Product', 'moowoodlepro') . '"><i class="dashicons dashicons-admin-links"></i></button>
+                            <button type="submit" name="update_product" class="button-secondary" title="' . esc_attr('Sync Course Data & Update Product', MOOWOODLE_TEXT_DOMAIN) . '"><i class="dashicons dashicons-admin-links"></i></button>
                         </form>';
                             } else {
                                 $actions .= '<form method="post">
                             <input type="hidden" name="course_id" value=" ' . $course->ID . '"/>
-                            <button type="submit" name="create_product" class="button-secondary" title="' . esc_attr('Create Product', 'moowoodlepro') . '"><i class="dashicons dashicons-cloud-upload"></i></button>
+                            <button type="submit" name="create_product" class="button-secondary" title="' . esc_attr('Create Product', MOOWOODLE_TEXT_DOMAIN) . '"><i class="dashicons dashicons-cloud-upload"></i></button>
                         </form>';
                             }
                             $table_body = '';

@@ -47,17 +47,17 @@ class MooWoodle_Posttype_Course_Registration {
     	register_taxonomy( 'course_cat', 'course',
       						array(
 						        'labels'        => array(
-									'name'              => sprintf( _x( '%s category', MOOWOODLE_TEXT_DOMAIN ), ucfirst( 'course' ) ),
-									'singular_name'   	=> sprintf( _x( '%s category', MOOWOODLE_TEXT_DOMAIN ), ucfirst( 'course' ) ),
-									'add_new_item'      => sprintf( _x( 'Add new %s category', MOOWOODLE_TEXT_DOMAIN ), 'course' ),
-									'new_item_name'     => sprintf( _x( 'New %s category', MOOWOODLE_TEXT_DOMAIN ), 'course' ),
-									'menu_name'			=> sprintf( _x( '%s category', MOOWOODLE_TEXT_DOMAIN ), ucfirst( 'course' ) ),//'Categories',
-									'search_items' 	  	=> sprintf( _x( 'Search %s categories', MOOWOODLE_TEXT_DOMAIN ), 'course' ),//'Search Course Categories',
-									'all_items' 	    => sprintf( _x( 'All %s categories', MOOWOODLE_TEXT_DOMAIN ), 'course' ),//'All Course Categories',
-									'parent_item' 		=> sprintf( _x( 'Parent %s category', MOOWOODLE_TEXT_DOMAIN ), 'course' ),//'Parent Course Category',
-									'parent_item_colon' => sprintf( _x( 'Parent %s category', MOOWOODLE_TEXT_DOMAIN ), 'course' ),//'Parent Course Category:',
-									'edit_item' 		=> sprintf( _x( 'Edit %s category', MOOWOODLE_TEXT_DOMAIN ), 'course' ),//'Edit Course Category',
-									'update_item' 	   	=> sprintf( _x( 'New %s category name', MOOWOODLE_TEXT_DOMAIN ), 'course' ),//'New Course Category Name'
+									'name'              => sprintf( _x( '%s category', MOOWOODLE_TEXT_DOMAIN ), $this->labels[ 'course' ][ 'singular' ] ),
+									'singular_name'   	=> sprintf( _x( '%s category', MOOWOODLE_TEXT_DOMAIN ), $this->labels[ 'course' ][ 'singular' ] ),
+									'add_new_item'      => sprintf( _x( 'Add new %s category', MOOWOODLE_TEXT_DOMAIN ), $this->labels[ 'course' ][ 'singular' ] ),
+									'new_item_name'     => sprintf( _x( 'New %s category', MOOWOODLE_TEXT_DOMAIN ), $this->labels[ 'course' ][ 'singular' ] ),
+									'menu_name'			=> sprintf( _x( '%s category', MOOWOODLE_TEXT_DOMAIN ), $this->labels[ 'course' ][ 'singular' ] ),//'Categories',
+									'search_items' 	  	=> sprintf( _x( 'Search %s categories', MOOWOODLE_TEXT_DOMAIN ), $this->labels[ 'course' ][ 'singular' ] ),//'Search Course Categories',
+									'all_items' 	    => sprintf( _x( 'All %s categories', MOOWOODLE_TEXT_DOMAIN ), $this->labels[ 'course' ][ 'singular' ] ),//'All Course Categories',
+									'parent_item' 		=> sprintf( _x( 'Parent %s category', MOOWOODLE_TEXT_DOMAIN ), $this->labels[ 'course' ][ 'singular' ] ),//'Parent Course Category',
+									'parent_item_colon' => sprintf( _x( 'Parent %s category', MOOWOODLE_TEXT_DOMAIN ), $this->labels[ 'course' ][ 'singular' ] ),//'Parent Course Category:',
+									'edit_item' 		=> sprintf( _x( 'Edit %s category', MOOWOODLE_TEXT_DOMAIN ), $this->labels[ 'course' ][ 'singular' ] ),//'Edit Course Category',
+									'update_item' 	   	=> sprintf( _x( 'New %s category name', MOOWOODLE_TEXT_DOMAIN ), $this->labels[ 'course' ][ 'singular' ] ),//'New Course Category Name'
 								),
 						        'show_ui'       => false,
 						        'show_tagcloud' => false,
