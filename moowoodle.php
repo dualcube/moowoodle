@@ -7,9 +7,9 @@
 * Version: 3.0.4
 * Author URI: https://dualcube.com/
 * Requires at least: 5.0
-* Tested up to: 6.1.1
+* Tested up to: 6.3.1
 * WC requires at least: 4.0
-* WC tested up to: 7.4.0
+* WC tested up to: 8.0.3
 *
 * Text Domain: moowoodle
 * Domain Path: /languages/
