@@ -1,9 +1,10 @@
 <?php
 global $MooWoodle;
-$pro_sticker = $pro_popup_overlay = '';
+$pro_sticker = $pro_popup_overlay = $button_disabled = '';
 if ($MooWoodle->moowoodle_pro_adv) {
     $pro_sticker = '<span class="mw-pro-tag">Pro</span>';
     $pro_popup_overlay = ' mw-pro-popup-overlay ';
+    $button_disabled = 'disabled';
 }
 // Include the JavaScript above in your plugin
 wp_enqueue_script('moowoodle_all_course_tables', plugins_url('../../assets/admin/js/moowoodle-all-course-table.js', __FILE__), array('jquery'), '', true);
@@ -116,16 +117,16 @@ $from_heading = apply_filters(
                             $date .= ' - ' . wp_date('M j, Y  ', $course_enddate);
                         }
                         $actions = '';
-                        $actions .= '<div class="moowoodle-course-actions ' .  $pro_popup_overlay . '"><form method="post"><input type="hidden" name="course_id" value=" ' . $course->ID . '"/><button name="sync_course" type="submit"  class=" button-primary" title="' . esc_attr('Sync Couse Data', MOOWOODLE_TEXT_DOMAIN) . '" ><i class="dashicons dashicons-update"></i></button></form>';
+                        $actions .= '<div class="moowoodle-course-actions ' .  $pro_popup_overlay . '"><form method="post"><input type="hidden" name="course_id" value=" ' . $course->ID . '"/><button name="sync_course" type="submit"  class=" button-primary" title="' . esc_attr('Sync Couse Data', MOOWOODLE_TEXT_DOMAIN) . '" ' . $button_disabled . ' ><i class="dashicons dashicons-update"></i></button></form>';
                         if ($product) {
                             $actions .= '<form method="post">
                         <input type="hidden" name="course_id" value=" ' . $course->ID . '"/>
-                        <button type="submit" name="update_product" class="button-secondary" title="' . esc_attr('Sync Course Data & Update Product', MOOWOODLE_TEXT_DOMAIN) . '"><i class="dashicons dashicons-admin-links"></i></button>
+                        <button type="submit" name="update_product" class="button-secondary" title="' . esc_attr('Sync Course Data & Update Product', MOOWOODLE_TEXT_DOMAIN) . '" ' . $button_disabled . '><i class="dashicons dashicons-admin-links"></i></button>
                     </form>';
                         } else {
                             $actions .= '<form method="post">
                         <input type="hidden" name="course_id" value=" ' . $course->ID . '"/>
-                        <button type="submit" name="create_product" class="button-secondary" title="' . esc_attr('Create Product', MOOWOODLE_TEXT_DOMAIN) . '"><i class="dashicons dashicons-cloud-upload"></i></button>
+                        <button type="submit" name="create_product" class="button-secondary" title="' . esc_attr('Create Product', MOOWOODLE_TEXT_DOMAIN) . '" ' . $button_disabled . '><i class="dashicons dashicons-cloud-upload"></i></button>
                     </form>';
                         }
                         $table_body = '';
