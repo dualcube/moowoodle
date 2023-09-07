@@ -32,6 +32,7 @@
             var $button = $inputField.siblings('.mw-copytoclip');
             $button.prop('disabled', false).text(admin_frontend_args.lang.Copy);
         });
+
         function copyToClipboard(text) {
             var tempInput = document.createElement("textarea");
             tempInput.style.position = 'absolute';
@@ -95,6 +96,7 @@
             var actions = Object.keys(actions_desc);
             callajax(actions, actions_desc);
         });
+
         function callajax(actions, actions_desc) {
             // display the number
             // decrease the number value
@@ -125,6 +127,42 @@
                     }
                 }
             });
+        }
+        const inputDiv = document.querySelector(".mw-textbox-input-wraper");
+        const ssKeyInput = document.getElementById("moowoodlepro-sso-sskey");
+        if (ssKeyInput != null) {
+            const generatButton = document.createElement("div");
+            generatButton.innerHTML = '<button class="generat-key button-secondary" label="Generot Key" type="button">Generate</button>';
+            inputDiv.appendChild(generatButton);
+            let warningMessage = null;
+            $(".generat-key").on("click", function() {
+                const randomKey = generateRandomKey(8);
+                ssKeyInput.value = randomKey;
+                if (!warningMessage) {
+                    warningMessage = document.createElement("div");
+                    warningMessage.id = "warningMessage";
+                    warningMessage.className = "mw-warning-massage";
+                    warningMessage.style.color = "red";
+                    warningMessage.innerText = "Remember to save your recent changes to ensure they're preserved.";
+                    ssKeyInput.insertAdjacentElement("afterend", warningMessage);
+                }
+            });
+            ssKeyInput.addEventListener("input", function() {
+                if (warningMessage) {
+                    warningMessage.remove();
+                    warningMessage = null;
+                }
+            });
+
+            function generateRandomKey(length) {
+                const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                let key = "";
+                for (let i = 0; i < length; i++) {
+                    const randomIndex = Math.floor(Math.random() * characters.length);
+                    key += characters.charAt(randomIndex);
+                }
+                return key;
+            }
         }
     });
 })(jQuery);

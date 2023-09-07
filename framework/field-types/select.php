@@ -3,7 +3,11 @@
 // $class - optional class value
 // $id - setting id
 // $options[$id] value from the db
-echo "<select id='$id' class='mw-setting-form-select" . ' ' . (($is_pro == 'pro') ? apply_filters('moowoodle_pro_sticker', ' disabled ') : '') . (empty($class) ? '' : $class) . "' name='{$setting_id}[$name]'>";
+global $MooWoodle;
+if ($MooWoodle->moowoodle_pro_adv) {
+    $pro_popup_overlay = ' mw-pro-popup-overlay ';
+}
+echo "<select id='$id' class='mw-setting-form-select" . ' ' . (($is_pro == 'pro') ? $MooWoodle->moowoodle_pro_adv ? ' disabled ': '' : '') . (empty($class) ? '' : $class) . "' name='{$setting_id}[$name]'>";
 foreach ($option_values as $k => $v) {
 	if (is_array($v)) {
 		echo '<optgroup label="' . ucwords($k) . '">';

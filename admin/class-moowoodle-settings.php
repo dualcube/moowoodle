@@ -256,18 +256,18 @@ class MooWoodle_Settings {
         echo '">';
         if (!empty($field['args']['label_for'])) {
           echo '<label class="mw-form-label " for="' . esc_attr($field['args']['label_for']) . '"><p>' . $field['title'] . '</p></label>';
-        } elseif (str_contains($field_id, 'noleble')) {
-          //no white space for noleble
+        } elseif (str_contains($field_id, 'nolabel')) {
+          //no white space for nolabel
         } else {
           echo '<label scope="row" class="mw-form-label ' . esc_attr($field_id) . '"><p>' . $field['title'] . '</p></label>';
         }
-        if (isset($field_id) && $field_id == 'test_connect_noleble') {
+        if (isset($field_id) && $field_id == 'test_connect_nolabel') {
           echo '<label class="mw-form-label " for=""><p>' .  __('Mooowoodle Test Connection', MOOWOODLE_TEXT_DOMAIN) . '</p></label>';
         }
         
-        if (!str_contains($field_id, 'noleble')) echo '<div class="mw-input-content">';
+        if (!str_contains($field_id, 'nolabel')) echo '<div class="mw-input-content">';
         call_user_func($field['callback'], $field['args']);
-        if (!str_contains($field_id, 'noleble')) echo '</div>';
+        if (!str_contains($field_id, 'nolabel')) echo '</div>';
         echo '</div>'; //middle-child-container  end
       }
     }
@@ -353,7 +353,7 @@ class MooWoodle_Settings {
       }
       $options = get_option($setting_id);
       $options = wp_parse_args($options, $defaults);
-      $path = apply_filters('mooewoodle_field_types_posttype_path', $MooWoodle->plugin_path . 'framework/field-types/' . $type . '.php', $type);
+      $path = apply_filters('mooewoodle_field_types_path', $MooWoodle->plugin_path . 'framework/field-types/' . $type . '.php', $type);
       if (file_exists($path)) {
         // Show Field
         include($path);

@@ -109,11 +109,11 @@ class MooWoodle {
 		//log folder
 		if(!file_exists(MW_LOGS . "/error.log")){
 			wp_mkdir_p( MW_LOGS );
-			 echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y h:i:s a",time()). ": " . "MooWoodle Log file Created\n", FILE_APPEND );
+			 echo file_put_contents(MW_LOGS . "/error.log",date("d/m/Y H:i:s",time()). ": " . "MooWoodle Log file Created\n", FILE_APPEND );
 		}
 		//clear log file
 		if(isset($_POST['clearlog'])){
-			file_put_contents(MW_LOGS . "/error.log" ,  date("d/m/Y h:i:s a",time()). ": " . "MooWoodle Log file Cleared\n");
+			file_put_contents(MW_LOGS . "/error.log" ,  date("d/m/Y H:i:s",time()). ": " . "MooWoodle Log file Cleared\n");
 		}
 	}
 	/**
@@ -169,6 +169,7 @@ class MooWoodle {
 	* Displays an inactive notice when the software is inactive.
 	*/
 	public function product_type_subcription_notice() { 
-		echo apply_filters('moowoodle_pro_sticker','<div class="notice notice-warning is-dismissible"><p>'. __('WooComerce Subbcription is supported only with ',MOOWOODLE_TEXT_DOMAIN) .'<a href="'.MOOWOODLE_PRO_SHOP_URL.'">'.__('MooWoodle Pro',MOOWOODLE_TEXT_DOMAIN).'</></p></div>');
+		if($this->moowoodle_pro_adv)
+		echo '<div class="notice notice-warning is-dismissible"><p>'. __('WooComerce Subbcription is supported only with ',MOOWOODLE_TEXT_DOMAIN) .'<a href="'.MOOWOODLE_PRO_SHOP_URL.'">'.__('MooWoodle Pro',MOOWOODLE_TEXT_DOMAIN).'</></p></div>';
 	}
 }

@@ -15,7 +15,7 @@
 * Domain Path: /languages/
 */
 if ( ! class_exists( 'MooWoodle_Dependencies' ) )
-	require_once trailingslashit( dirname( __FILE__ ) ) . 'includes/class-moowoodle-dependencies.php';
+require_once trailingslashit( dirname( __FILE__ ) ) . 'includes/class-moowoodle-dependencies.php';
 require_once trailingslashit( dirname( __FILE__ ) ) . 'includes/moowoodle-core-functions.php';
 require_once trailingslashit( dirname( __FILE__ ) ) . 'moowoodle-config.php';
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly

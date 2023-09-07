@@ -155,7 +155,7 @@ class MooWoodle_Library {
                                         ),
                                         "test_connect_nolabel" => array(
                                             "type" => "test-connect-nolabel",
-                                            "label" => __("", MOOWOODLE_TEXT_DOMAIN),
+                                            "label" => __("Mooowoodle Test Connection", MOOWOODLE_TEXT_DOMAIN),
                                             "desc" => __("", ''),
                                             "option_values" => array(
                                                 'Enable' => __('', MOOWOODLE_TEXT_DOMAIN),
