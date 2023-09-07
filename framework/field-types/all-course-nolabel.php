@@ -13,7 +13,7 @@ $args = array(
     'non_filterable_column' => array(
         __('Actions', MOOWOODLE_TEXT_DOMAIN),
         __('Enrolled', MOOWOODLE_TEXT_DOMAIN),
-        __('Date', MOOWOODLE_TEXT_DOMAIN)
+        __('Start Date - End Data', MOOWOODLE_TEXT_DOMAIN)
     ),
     'lang' => array(
         'Search_Course' => __("Search Course", MOOWOODLE_TEXT_DOMAIN),

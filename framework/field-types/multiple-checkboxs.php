@@ -18,6 +18,7 @@
                      </div>
                      <div class="mw-normal-checkbox-label">
                          <p class="mw-settings-checkbox-description pt-0"><?php echo $k . (isset($v['is_pro']) && ($v['is_pro'] == 'pro') ? $pro_sticker : ''); ?></p>
+                         <p class="mw-form-description"><?php echo esc_html__($v['desc']); ?></p>
                      </div>
                  </div>
              </div>
