@@ -1,15 +1,12 @@
 <?php
-
 class MooWoodle_Enrollment {
 	public $wc_order;
-
 	public function __construct() {
 		add_action( 'woocommerce_order_status_completed', array( &$this, 'process_order' ), 10, 1 );		
 		add_action( 'woocommerce_subscription_status_updated', array( &$this, 'update_course_access' ), 10, 3 );
 		add_action( 'woocommerce_thankyou', array( &$this, 'enrollment_modified_details' ) );
 		add_action( 'woocommerce_after_shop_loop_item_title', array( &$this, 'add_dates_with_product' ) );
 	}
-	
 	/**
 	 * Process the oreder when order status is complete.
 	 *
@@ -23,7 +20,6 @@ class MooWoodle_Enrollment {
 			$this->process_enrollment();			
 		}		
 	}
-	
 	/**
 	 * Perform enrollment to moodle
 	 *
@@ -34,7 +30,6 @@ class MooWoodle_Enrollment {
 		$moowoodle_moodle_user_id = $this->get_moodle_user_id( true );
 		$this->enrol_moodle_user( intval( $moowoodle_moodle_user_id ) );		
 	}
-	
 	/**
 	 * Get moodle user id. If the user does not exist in moodle then creats an user in moodle.
 	 *
@@ -67,7 +62,6 @@ class MooWoodle_Enrollment {
 		}
 		return $moowoodle_moodle_user_id;
 	}
-
 	/**
 	 * Searches for an user in moodle by a specific field.
 	 *
@@ -83,7 +77,6 @@ class MooWoodle_Enrollment {
 		}		
 		return 0;
 	}
-
 	/**
 	 * Creates an user in moodle.
 	 *
@@ -101,7 +94,6 @@ class MooWoodle_Enrollment {
 		}		
 		return $moowoodle_moodle_user_id;
 	}
-
 	/**
 	 * Info about an user to be created/updated in moodle.
 	 *
@@ -127,7 +119,7 @@ class MooWoodle_Enrollment {
 		$username = strtolower( $username );
 		$moodle_pwd_meta = get_user_meta( $user_id, 'moowoodle_moodle_user_pwd', true );
 		$pwd = '';
-		if ( empty( $moodle_pwd_meta ) )  {
+		if ( empty( $moodle_pwd_meta ) || $moodle_pwd_meta == null )  {
 			$pwd = $this->password_generator();
 			add_user_meta( $user_id, 'moowoodle_moodle_user_pwd', $pwd );
 		} else {
@@ -151,10 +143,8 @@ class MooWoodle_Enrollment {
 		$user_data['country'] = $wc_order->get_billing_country();
 		$user_data['preferences'][0]['type'] = "auth_forcepasswordchange";
 		$user_data['preferences'][0]['value'] = 1;
-
 		return apply_filters( 'moowoodle_moodle_users_data', $user_data, $wc_order );
 	}
-
 	/**
 	 * Updates an user info in moodle.
 	 *
@@ -163,13 +153,10 @@ class MooWoodle_Enrollment {
 	 * @return int
 	 */
 	private function update_moodle_user( $moowoodle_moodle_user_id = 0 ) {
-		
 		$user_data = $this->get_user_data( $moowoodle_moodle_user_id );
-
 		moowoodle_moodle_core_function_callback( 'update_users', array( 'users' => array( $user_data ) ) );
 		return $moowoodle_moodle_user_id;
 	}
-	
 	/**
 	 * Enrollment/suspend enrollment of an user in moodle.
 	 *
@@ -198,7 +185,6 @@ class MooWoodle_Enrollment {
 		// send confirmation email
 		do_action( 'moowoodle_after_enrol_moodle_user', $enrolment_data );
 	}
-		
 	/**
 	 * Data required for enrollment.
 	 *
@@ -229,7 +215,6 @@ class MooWoodle_Enrollment {
 		}		
 		return apply_filters( 'moowoodle_moodle_enrolments_data', $enrolments );
 	}
-	
 	/**
 	 * Update user access to a course in moodle.
 	 *
@@ -253,16 +238,14 @@ class MooWoodle_Enrollment {
 		$moowoodle_moodle_user_id = $this->get_moodle_user_id( $create_moodle_user );
 		$this->enrol_moodle_user( $moowoodle_moodle_user_id, $suspend );
 	}
-	
 	public function enrollment_modified_details( $order_id ) {
 		$order = wc_get_order( $order_id );
 		if ( $order->get_status() == 'completed' ) {
-			echo esc_html_e( 'Please check your mail or go to My Courses page to access your courses.', 'moowoodle' );
+			echo esc_html_e( 'Please check your mail or go to My Courses page to access your courses.', MOOWOODLE_TEXT_DOMAIN );
 		} else {
-			echo esc_html_e( 'Order status is :- ', 'moowoodle' ) . $order->get_status() . '<br>';
+			echo esc_html_e( 'Order status is :- ', MOOWOODLE_TEXT_DOMAIN ) . $order->get_status() . '<br>';
 		}
 	}
-
 	public function add_dates_with_product() {
 		global $product, $MooWoodle;
 		$startdate = get_post_meta( $product->get_id(), '_course_startdate', true );
@@ -270,15 +253,14 @@ class MooWoodle_Enrollment {
 		$display_settings = $MooWoodle->options_display_settings;
 		if ( isset( $display_settings[ 'start_end_date' ] ) && $display_settings[ 'start_end_date' ] == "Enable" ) {
 			if ( $startdate ) {
-				echo esc_html_e( "Start Date : ", 'moowoodle' ) . esc_html_e( date( 'Y-m-d', $startdate ), 'moowoodle' );
+				echo esc_html_e( "Start Date : ", MOOWOODLE_TEXT_DOMAIN ) . esc_html_e( date( 'Y-m-d', $startdate ), MOOWOODLE_TEXT_DOMAIN );
 			}
 			print_r( "<br>" );
 			if ( $enddate ) {
-				echo esc_html_e( "End Date : ", 'moowoodle' ) . esc_html_e( date( 'Y-m-d', $enddate ), 'moowoodle' );
+				echo esc_html_e( "End Date : ", MOOWOODLE_TEXT_DOMAIN ) . esc_html_e( date( 'Y-m-d', $enddate ), MOOWOODLE_TEXT_DOMAIN );
 			}
 		}
 	}
-
 	function password_generator() {
 		$length = 8;
 		$sets = array();

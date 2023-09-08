@@ -1,47 +1,37 @@
 <?php
-
 class MooWoodle_Emails_New_Enrollment extends WC_Email {
-
   /**
    * Constructor
    */
   public $email_data;
   function __construct() {
-
     global $MooWoodle;
-
-    $this->id 						= 'new_moodle_enrollment';
-    $this->title 					= __( 'New Moodle Enrollment', 'moowoodle' );
-    $this->description		= __( 'This is a notification email sent to the enrollees for new enrollment.', 'moowoodle' );
+    $this->id             = 'new_moodle_enrollment';
+    $this->title           = __('New Moodle Enrollment', MOOWOODLE_TEXT_DOMAIN);
+    $this->description    = __('This is a notification email sent to the enrollees for new enrollment.', MOOWOODLE_TEXT_DOMAIN);
     $this->customer_email = true;
-    $this->heading 				= __( 'New Enrollment', 'moowoodle' );
-    $this->subject      	= __( '{site_title} New Enrollment', 'moowoodle' );
-    $this->template_html 	= 'emails/new-enrollment.php';
+    $this->heading         = __('New Enrollment', MOOWOODLE_TEXT_DOMAIN);
+    $this->subject        = __('{site_title} New Enrollment', MOOWOODLE_TEXT_DOMAIN);
+    $this->template_html   = 'emails/new-enrollment.php';
     $this->template_plain = 'emails/plain/new-enrollment.php';
-
     // Call parent constructor
     parent::__construct();
-
     $this->template_base = $MooWoodle->plugin_path . '/templates/';
   }
-
   /**
    * trigger function.
    *
    * @access public
    * @return void
    */
-  public function trigger( $email_data ) {
-  	$this->recipient = $email_data[ 'email' ];
-		$this->object = $email_data;
-		
-		if ( ! $this->is_enabled() || ! $this->get_recipient() ) {
-			return;
-		}
-		
-		$this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
+  public function trigger($email_data) {
+    $this->recipient = $email_data['email'];
+    $this->object = $email_data;
+    if (!$this->is_enabled() || !$this->get_recipient()) {
+      return;
+    }
+    $this->send($this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments());
   }
-
   /**
    * get_content_html function.
    *
@@ -50,19 +40,19 @@ class MooWoodle_Emails_New_Enrollment extends WC_Email {
    */
   function get_content_html() {
     global $MooWoodle;
-		ob_start();
-		$MooWoodle->template->get_template( $this->template_html, 
-                                        array(
-                                      			'enrollments'    => $this->object,
-                                            'user_data' => $this->recipient,
-                                      			'email_heading' => $this->get_heading(),
-                                      			'sent_to_admin' => false,
-                                      			'plain_text'    => false
-		                                    )
-                                      );
-		return ob_get_clean();
+    ob_start();
+    $MooWoodle->template->get_template(
+      $this->template_html,
+      array(
+        'enrollments'    => $this->object,
+        'user_data' => $this->recipient,
+        'email_heading' => $this->get_heading(),
+        'sent_to_admin' => false,
+        'plain_text'    => false
+      )
+    );
+    return ob_get_clean();
   }
-
   /**
    * get_content_plain function.
    *
@@ -70,19 +60,19 @@ class MooWoodle_Emails_New_Enrollment extends WC_Email {
    * @return string
    */
   function get_content_plain() {
-  	global $MooWoodle;
+    global $MooWoodle;
     ob_start();
-    $MooWoodle->template->get_template( $this->template_plain, 
-                                        array(
-                                            'enrollments'    => $this->object,
-                                            'email_heading' => $this->get_heading(),
-                                            'sent_to_admin' => false,
-                                            'plain_text'    => true
-                                        )
-                                      );
+    $MooWoodle->template->get_template(
+      $this->template_plain,
+      array(
+        'enrollments'    => $this->object,
+        'email_heading' => $this->get_heading(),
+        'sent_to_admin' => false,
+        'plain_text'    => true
+      )
+    );
     return ob_get_clean();
   }
-
   /**
    * Initialise Settings Form Fields
    *
@@ -90,38 +80,37 @@ class MooWoodle_Emails_New_Enrollment extends WC_Email {
    * @return void
    */
   function init_form_fields() {
-  	
     $this->form_fields = array(
-    	'enabled' => array(
-				'title' 		=> __( 'Enable/Disable', 'moowoodle' ),
-				'type' 			=> 'checkbox',
-				'label' 		=> __( 'Enable this email notification', 'moowoodle' ),
-				'default' 		=> 'yes'
-			),
+      'enabled' => array(
+        'title'     => __('Enable/Disable', MOOWOODLE_TEXT_DOMAIN),
+        'type'       => 'checkbox',
+        'label'     => __('Enable this email notification', MOOWOODLE_TEXT_DOMAIN),
+        'default'     => 'yes'
+      ),
       'subject' => array(
-        'title' 		=> __( 'Subject', 'moowoodle' ),
-        'type' 			=> 'text',
-        'description' 	=> sprintf( __( 'This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', 'moowoodle' ), $this->subject ),
-        'placeholder' 	=> '',
-        'default' 		=> ''
+        'title'     => __('Subject', MOOWOODLE_TEXT_DOMAIN),
+        'type'       => 'text',
+        'description'   => sprintf(__('This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', MOOWOODLE_TEXT_DOMAIN), $this->subject),
+        'placeholder'   => '',
+        'default'     => ''
       ),
       'heading' => array(
-        'title' 		=> __( 'Email Heading', 'moowoodle' ),
-        'type' 			=> 'text',
-        'description' 	=> sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', 'moowoodle' ), $this->heading ),
-        'placeholder' 	=> '',
-        'default' 		=> ''
+        'title'     => __('Email Heading', MOOWOODLE_TEXT_DOMAIN),
+        'type'       => 'text',
+        'description'   => sprintf(__('This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', MOOWOODLE_TEXT_DOMAIN), $this->heading),
+        'placeholder'   => '',
+        'default'     => ''
       ),
-			'email_type' => array(
-        'title' 		=> __( 'Email type', 'moowoodle' ),
-        'type' 			=> 'select',
-        'description' 	=> __( 'Choose which format of email to send.', 'moowoodle' ),
-        'default' 		=> 'html',
-        'class'			=> 'email_type',
-        'options'		=> array(
-          'plain'		 	=> __( 'Plain text', 'moowoodle' ),
-          'html' 			=> __( 'HTML', 'moowoodle' ),
-          'multipart' 	=> __( 'Multipart', 'moowoodle' ),
+      'email_type' => array(
+        'title'     => __('Email type', MOOWOODLE_TEXT_DOMAIN),
+        'type'       => 'select',
+        'description'   => __('Choose which format of email to send.', MOOWOODLE_TEXT_DOMAIN),
+        'default'     => 'html',
+        'class'      => 'email_type',
+        'options'    => array(
+          'plain'       => __('Plain text', MOOWOODLE_TEXT_DOMAIN),
+          'html'       => __('HTML', MOOWOODLE_TEXT_DOMAIN),
+          'multipart'   => __('Multipart', MOOWOODLE_TEXT_DOMAIN),
         )
       )
     );
