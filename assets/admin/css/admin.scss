@@ -432,7 +432,7 @@ h6 {
     margin: 1rem 0;
     display: grid;
     float: none;
-    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
     gap: 0.5rem;
 
 
@@ -494,9 +494,10 @@ h6 {
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      position: absolute;
+      position: fixed;
+      right: 0;
       top: 0;
-      width: 100%;
+      width: calc(100% - 160px);
       height: 100%;
       background: rgb(0 0 0 / 75%);
       visibility: hidden;
@@ -505,35 +506,76 @@ h6 {
       z-index: 9999;
       .mw-overlay-content {
         background: #fff;
-        padding: 2rem;
+        padding: 5rem 2.5rem 2rem;
         text-align: center;
         border-radius: 0.25rem;
-        .mw-img-overlay-arrow{
-          padding: 0 0 1rem;
-        }
+        max-width: 26rem;
+        position: relative;
+        .mw-modal.cross {
+          position: absolute;
+          right: 1.5rem;
+          top: 1.5rem;
+          color: #181819;
+      }
     }
-
+  
+  h1.banner-header {
+    font-size: 2rem;
+    span.banner-pro-tag {
+      line-height: 0;
+      background: #65438f;
+      color: #f9f8fb !important;
+      padding: 0 0.25rem;
+      border-radius: 0.25rem;
+      margin-left: 0.125rem;
+      box-shadow: 0.25rem 0.25rem 0.875rem rgb(63 20 115 / 25%);
+  }
+  }
+  h2 {
+    font-size: 1.5rem;
+    margin: 2.5rem 0 2rem;
+}
 
       h3 {
         color: #000;
+        font-size: 1.125rem;
       }
+      .discount-tag {
+        background: #fbedee;
+        color: #e26f76;
+        font-size: 1.25rem;
+        padding: 0.75rem 1.5rem;
+        width: fit-content;
+        margin: 0.5rem auto;
+        border-radius: 2rem;
+    }
 
-
-      p,
-      span {
-        color: #000;
+      p {
+        color: #5e5d60;
+        font-size: 1rem;
       }
-
+      .mw-banner-offer {
+        margin: 3rem 0 1rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #181819;
+    }
+    .upgrade{
+      color: #181718;
+    }
 
       a.mw-go-pro-btn {
-        background: #65438f;
+        background: #e35047;
         color: #f9f8fb;
         text-decoration: none;
         padding: 0.5rem 1.5rem;
         line-height: 1.6;
-        border-radius: 0.125rem;
-        font-size: 1rem;
-        margin-top: 1.25rem;
+        border-radius: 0.25rem;
+        font-size: 1.25rem;
+        margin: 3rem auto 0;
+        display: block;
+        width: fit-content;
+        box-shadow: 0.25rem 0.25rem 1.5rem rgb(227 80 71 / 50%);
       }
     }
   }
@@ -575,6 +617,7 @@ h6 {
         align-items: center;
         gap: 0.25rem;
         position: relative;
+       
        
         &:has(.mw-warning-massage){
           padding-bottom: 4rem;
@@ -1015,11 +1058,17 @@ color: $font-white;
 }
 .mw-select-deselect-checkbox-label-marge {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 1rem 4rem;
 }
 .d-flex{
   display: flex;
-    align-items: center;
+  align-items: center;
+  gap: 0.25rem;
+}
+p.mw-settings-checkbox-description {
+  font-size: 1rem;
+  font-weight: 500;
 }
 .mw-wrap-checkbox-and-label {
   gap: 0.25rem;
@@ -1041,6 +1090,3 @@ input[type=checkbox]:checked::before {
     padding: 1rem 0;//sync page padding
   }
 }
-
-
-

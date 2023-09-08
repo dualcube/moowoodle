@@ -1,22 +1,24 @@
 (function($) {
     'use strict';
     $(document).ready(function() {
-        $(".mw-image-overlay, .mw-pro-popup-overlay").hover(function() {
+        $(".mw-image-overlay, .mw-pro-popup-overlay").click(function() {
             $(".mw-image-overlay").css({
                 "opacity": "1",
                 "visibility": "visible"
             })
-        }, function() {
-            $(".mw-image-overlay").css({
-                "opacity": "0",
-                "visibility": "hidden"
-            })
+            console.log('show');
+        // }, function() {
+        //     $(".mw-image-overlay").css({
+        //         "opacity": "0",
+        //         "visibility": "hidden"
+        //     })
         });
-        $(document).click(function() {
+        $('.mw-image-overlay').click(function() {
             $(".mw-image-overlay").css({
                 "opacity": "0",
                 "visibility": "hidden"
             })
+            console.log('hide');
         });
         //copy text-input value to clipboard 
         $('.mw-copytoclip').on("click", function() {
