@@ -121,7 +121,7 @@ class MooWoodle_Library {
                                             "label" => __("Force Override Moodle User Profile
 
 ", MOOWOODLE_TEXT_DOMAIN),
-                                            "desc" => __('If activated, the personal information of Moodle users will be automatically refreshed to match the data of the corresponding WordPress users.', MOOWOODLE_TEXT_DOMAIN),
+                                            "desc" => __('If enabled, all moodle user\'s profile data (first name, last name, city, address, etc.) will be updated as per their wordpress profile data. Explicitly, for existing user, their data will be overwritten on moodle.', MOOWOODLE_TEXT_DOMAIN),
                                             "option_values" => array(
                                                 'Enable' => __('', MOOWOODLE_TEXT_DOMAIN),
                                             ),
@@ -247,10 +247,11 @@ class MooWoodle_Library {
                                             "label" => __("Synchronize Options", MOOWOODLE_TEXT_DOMAIN),
                                             "desc" => __("Choose the category you wish to synchronize from Moodle to your WordPress site. During synchronization, if a course is found deleted in Moodle, it will likewise remove the corresponding course and product data from WordPress.", MOOWOODLE_TEXT_DOMAIN),
                                             "option_values" => array(
-                                                'Moodle Courses (Always Active)' => array(
+                                                'Moodle Courses' => array(
                                                     "id" => "sync-courses",
                                                     "name" => "sync_courses",
                                                     "desc" => __("This function will retrieve all Moodle course data and synchronize it with the courses listed in WordPress.", MOOWOODLE_TEXT_DOMAIN),
+                                                    "checked" => "forced",
                                                 ),
                                                 'Moodle Course Categories' => array(
                                                     "id" => "sync-course-category",
