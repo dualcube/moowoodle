@@ -16,9 +16,9 @@ class MooWoodle_Install {
 	 * @return void
 	 */
 	public static function check_version() {
-		if ( get_option( 'moowoodle_version' ) != MOOWOODLE_PLUGIN_VERSION ) {
+		if (get_option('moowoodle_version') != MOOWOODLE_PLUGIN_VERSION) {
 			self::install();
-			do_action( 'moowoodle_updated' );
+			do_action('moowoodle_updated');
 		}
 	}
 	/**
@@ -38,8 +38,8 @@ class MooWoodle_Install {
 	 * @return void
 	 */
 	public static function create_options() {
-		add_option( 'moowoodle_version', MOOWOODLE_PLUGIN_VERSION );
-		update_option( 'woocommerce_registration_generate_username', 'no' );
-		update_option( 'woocommerce_enable_guest_checkout', 'no' );
-	}	
+		add_option('moowoodle_version', MOOWOODLE_PLUGIN_VERSION);
+		update_option('woocommerce_registration_generate_username', 'no');
+		update_option('woocommerce_enable_guest_checkout', 'no');
+	}
 }

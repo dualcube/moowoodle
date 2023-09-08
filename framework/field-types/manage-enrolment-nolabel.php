@@ -2,7 +2,7 @@
 global $MooWoodle;
 $pro_sticker = '';
 if ($MooWoodle->moowoodle_pro_adv) {
-    $pro_popup_overlay = ' mw-pro-popup-overlay ';
+	$pro_popup_overlay = ' mw-pro-popup-overlay ';
 }
 ?>
 <div class='mw-manage-enrolment-content '>

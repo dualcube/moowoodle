@@ -59,7 +59,7 @@ class MooWoodle_Emails {
 	public function load_class($class_name = '') {
 		global $MooWoodle;
 		if ('' != $class_name && '' != $MooWoodle->token) {
-			require_once('emails/class-' . $MooWoodle->token . '-email-' . $class_name . '.php');
+			require_once 'emails/class-' . $MooWoodle->token . '-email-' . $class_name . '.php';
 		} // End If Statement
 	} // End load_class()
 }

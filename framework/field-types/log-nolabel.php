@@ -5,13 +5,13 @@
 		</form>
 		<div class="mw-log-status">
 			<?php
-			if (file_exists(MW_LOGS . "/error.log")) {
-				$logs = explode("\n", file_get_contents(MW_LOGS . "/error.log"));
-			}
-			foreach ($logs as $log) {
-				echo '<p>' . $log . '</p>';
-			}
-			?>
+if (file_exists(MW_LOGS . "/error.log")) {
+	$logs = explode("\n", file_get_contents(MW_LOGS . "/error.log"));
+}
+foreach ($logs as $log) {
+	echo '<p>' . $log . '</p>';
+}
+?>
 		</div>
 	</div>
 </div>

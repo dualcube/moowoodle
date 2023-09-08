@@ -5,7 +5,7 @@
 // $options[$id] value from the db
 global $MooWoodle;
 foreach ($option_values as $k => $v) {
-    echo "<div class='mw-toggle-checkbox-content '><input id='$id' class='mw-toggle-checkbox $id " . (($is_pro == 'pro') && $MooWoodle->moowoodle_pro_adv  ? ' disabled ': '' ) . "' type='checkbox' name='{$setting_id}[$name]' value='$k' " . ((isset($options[$name]) ? $options[$name] == "Enable" : '') ? 'checked' : '') . ' ' . (($is_pro == 'pro') &&  $MooWoodle->moowoodle_pro_adv ? ' disabled ': '') . "  /><label for='$id' class='mw-toggle-checkbox-label'></label></div> $v";
+	echo "<div class='mw-toggle-checkbox-content '><input id='$id' class='mw-toggle-checkbox $id " . (($is_pro == 'pro') && $MooWoodle->moowoodle_pro_adv ? ' disabled ' : '') . "' type='checkbox' name='{$setting_id}[$name]' value='$k' " . ((isset($options[$name]) ? $options[$name] == "Enable" : '') ? 'checked' : '') . ' ' . (($is_pro == 'pro') && $MooWoodle->moowoodle_pro_adv ? ' disabled ' : '') . "  /><label for='$id' class='mw-toggle-checkbox-label'></label></div> $v";
 }
 $suffix = defined('MOOWOODLE_SCRIPT_DEBUG') && MOOWOODLE_SCRIPT_DEBUG ? '' : '.min';
 wp_enqueue_style('woocommerce_check_css', $MooWoodle->plugin_url . 'framework/field-types/css/checkbox.css', array(), $MooWoodle->version);

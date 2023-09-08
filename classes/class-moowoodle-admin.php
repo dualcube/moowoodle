@@ -25,20 +25,20 @@ class MooWoodle_Admin {
 		global $MooWoodle;
 
 		if ('' != $class_name) {
-			require_once($MooWoodle->plugin_path . '/admin/class-' . $MooWoodle->token . '-' . $class_name . '.php');
+			require_once $MooWoodle->plugin_path . '/admin/class-' . $MooWoodle->token . '-' . $class_name . '.php';
 		} // End If Statement
 	} // End load_class()
 
 	public function moowoodle_admin_footer() {
 		global $MooWoodle;
 
-?>
+		?>
 		<div style="clear: both"></div>
 		<div class="dualcube-admin-footer" id="dualcube-admin-footer">
-			<?php esc_html_e('Powered by', MOOWOODLE_TEXT_DOMAIN); ?> <a href="<?php echo esc_url(MOOWOODLE_DUALCUBE_URL); ?>" target="_blank"><img src="<?php echo esc_url($MooWoodle->plugin_url) ?>/assets/images/dualcube.png"></a><?php esc_html_e('DualCube', MOOWOODLE_TEXT_DOMAIN); ?> &copy; <?php echo esc_html(date('Y')); ?>
+			<?php esc_html_e('Powered by', MOOWOODLE_TEXT_DOMAIN);?> <a href="<?php echo esc_url(MOOWOODLE_DUALCUBE_URL); ?>" target="_blank"><img src="<?php echo esc_url($MooWoodle->plugin_url) ?>/assets/images/dualcube.png"></a><?php esc_html_e('ualCube', MOOWOODLE_TEXT_DOMAIN);?> &copy; <?php echo esc_html(date('Y')); ?>
 		</div>
 <?php
-	}
+}
 
 	/**
 	 * Admin Scripts
