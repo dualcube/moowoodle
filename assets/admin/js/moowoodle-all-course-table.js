@@ -1,10 +1,30 @@
 (function($) {
     'use strict';
     $(document).ready(function() {
+
+       var columnsData = [];
+
+        // Iterate through the 'from_heading' array
+        for (var i = 0; i < table_args.from_heading.length; i++) {
+            var element = table_args.from_heading[i];
+            
+            // Extract text content from the HTML element using a regex pattern
+            var textContent = element.replace(/<[^>]*>/g, '').trim();
+
+            // Check if the text content is present in 'non_sortable_column'
+            if (table_args.non_sortable_column.includes(textContent)) {
+                columnsData.push({ 'sortable': false });
+            } else {
+                columnsData.push({ 'sortable': true });
+            }
+        }
+
+        console.log(columnsData);
         var myTable = $("#moowoodle_table").DataTable({
             paging: false,
             searching: true,
             info: false,
+            "columns":columnsData
         });
         //remove all default filteration
         $('.dataTables_filter').remove();

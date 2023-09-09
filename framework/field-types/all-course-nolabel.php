@@ -9,37 +9,56 @@ if ($MooWoodle->moowoodle_pro_adv) {
 // Include the JavaScript above in your plugin
 wp_enqueue_script('moowoodle_all_course_tables', plugins_url('../../assets/admin/js/moowoodle-all-course-table.js', __FILE__), array('jquery'), '', true);
 wp_enqueue_style('woocommerce_course_css', $MooWoodle->plugin_url . 'assets/admin/css/dataTables.min.css', array(), $MooWoodle->version);
+// from heading
+$from_heading = apply_filters(
+    'moowoodle_courses_heading',
+    array(
+        '<label hidden><span>' . __("Select All", MOOWOODLE_TEXT_DOMAIN) . '</span></label><input type="checkbox" class="bulk-action-select-all" name="bulk_action_seclect_all">',
+        __("Course", MOOWOODLE_TEXT_DOMAIN),
+        __("Short Name", MOOWOODLE_TEXT_DOMAIN),
+        __("Product", MOOWOODLE_TEXT_DOMAIN),
+        __("Category", MOOWOODLE_TEXT_DOMAIN),
+        __("Enrolled", MOOWOODLE_TEXT_DOMAIN),
+        __("Start Date - End Data", MOOWOODLE_TEXT_DOMAIN),
+        __("Actions", MOOWOODLE_TEXT_DOMAIN) . $pro_sticker,
+    )
+);
 $args = array(
+    'from_heading' => $from_heading,
 	'non_filterable_column' => array(
 		__('Actions', MOOWOODLE_TEXT_DOMAIN),
 		__('Enrolled', MOOWOODLE_TEXT_DOMAIN),
 		__('Date', MOOWOODLE_TEXT_DOMAIN),
+        __('Select All', MOOWOODLE_TEXT_DOMAIN),
 	),
 	'lang' => array(
 		'Search_Course' => __("Search Course", MOOWOODLE_TEXT_DOMAIN),
 	),
+    'non_sortable_column' => array(
+        __('Actions', MOOWOODLE_TEXT_DOMAIN),
+        __('Select All', MOOWOODLE_TEXT_DOMAIN),
+    )
 );
 wp_localize_script('moowoodle_all_course_tables', 'table_args', $args);
-// from heading
-$from_heading = apply_filters(
-	'moowoodle_courses_heading',
-	array(
-		__("Course", MOOWOODLE_TEXT_DOMAIN),
-		__("Short Name", MOOWOODLE_TEXT_DOMAIN),
-		__("Product", MOOWOODLE_TEXT_DOMAIN),
-		__("Category", MOOWOODLE_TEXT_DOMAIN),
-		__("Enrolled", MOOWOODLE_TEXT_DOMAIN),
-		__("Start Date - End Data", MOOWOODLE_TEXT_DOMAIN),
-		__("Actions", MOOWOODLE_TEXT_DOMAIN) . $pro_sticker,
-	)
-);
 ?>
 <script src="<?php echo $MooWoodle->plugin_url . 'assets/admin/js/dataTables.min.js'; ?>"></script>
 <script src="<?php echo $MooWoodle->plugin_url . 'assets/admin/js/moment.min.js'; ?>"></script>
 <script src="<?php echo $MooWoodle->plugin_url . 'assets/admin/js/dataTables.dateTime.min.js'; ?>"></script>
 <div class="mw-input-content">
     <div class='mw-course-table-content '>
-        <div class="moowoodle-table-fuilter"></div>
+        <div class="moowoodle-table-fuilter">
+            <div class="alignleft actions bulkactions">
+                <label for="bulk-action-selector-top" class="screen-reader-text">Select bulk action</label>
+                <select name="action" id="bulk-action-selector-top">
+                    <option value="-1">Bulk actions</option>
+                    <option value="sync_courses">Sync Course</option>
+                    <option value="sync_all_product">Create Product</option>
+                    <option value="sync_all_product">Update Product</option>
+                </select>
+                <input type="submit" id="doaction" class="button action" value="Apply">
+            </div>
+
+        </div>
         <table id="moowoodle_table" class="table table-bordered responsive-table moodle-linked-courses widefat">
             <thead>
                 <tr>
@@ -120,21 +139,24 @@ if (!empty($courses)) {
 			$date .= ' - ' . wp_date('M j, Y  ', $course_enddate);
 		}
 		$actions = '';
-		$actions .= '<div class="moowoodle-course-actions ' . $pro_popup_overlay . '"><form method="post"><input type="hidden" name="course_id" value=" ' . $course->ID . '"/><button name="sync_course" type="submit"  class=" button-primary" title="' . esc_attr('Sync Couse Data', MOOWOODLE_TEXT_DOMAIN) . '" ' . $button_disabled . ' ><i class="dashicons dashicons-update"></i></button></form>';
+		$actions .= '<div class="moowoodle-course-actions ' . $pro_popup_overlay . '"><form method="post"><input type="hidden" name="course_id" value=" ' . $course->ID . '"/><button name="sync_single_course" type="submit"  class=" button-primary" title="' . esc_attr('Sync Couse Data', MOOWOODLE_TEXT_DOMAIN) . '" ' . $button_disabled . ' ><i class="dashicons dashicons-update"></i></button></form>';
 		if ($product) {
 			$actions .= '<form method="post">
                         <input type="hidden" name="course_id" value=" ' . $course->ID . '"/>
-                        <button type="submit" name="update_product" class="button-secondary" title="' . esc_attr('Sync Course Data & Update Product', MOOWOODLE_TEXT_DOMAIN) . '" ' . $button_disabled . '><i class="dashicons dashicons-admin-links"></i></button>
+                        <button type="submit" name="update_existed_single_product" class="button-secondary" title="' . esc_attr('Sync Course Data & Update Product', MOOWOODLE_TEXT_DOMAIN) . '" ' . $button_disabled . '><i class="dashicons dashicons-admin-links"></i></button>
                     </form>';
 		} else {
 			$actions .= '<form method="post">
                         <input type="hidden" name="course_id" value=" ' . $course->ID . '"/>
-                        <button type="submit" name="create_product" class="button-secondary" title="' . esc_attr('Create Product', MOOWOODLE_TEXT_DOMAIN) . '" ' . $button_disabled . '><i class="dashicons dashicons-cloud-upload"></i></button>
+                        <button type="submit" name="create_single_product" class="button-secondary" title="' . esc_attr('Create Product', MOOWOODLE_TEXT_DOMAIN) . '" ' . $button_disabled . '><i class="dashicons dashicons-cloud-upload"></i></button>
                     </form>';
 		}
 		$table_body = '';
 		?>
                         <tr>
+                            <td>
+                                <input type="checkbox" class="bulk-action-select" name="bulk_action_seclect">
+                            </td>
                             <td>
                                 <?php echo $moodle_url; ?>
                             </td>

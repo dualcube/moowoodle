@@ -118,9 +118,7 @@ class MooWoodle_Library {
 										"update-moodle-user" => array(
 											"type" => "toggle-checkbox",
 											"name" => "update_moodle_user",
-											"label" => __("Force Override Moodle User Profile
-
-", MOOWOODLE_TEXT_DOMAIN),
+											"label" => __("Force Override Moodle User Profile", MOOWOODLE_TEXT_DOMAIN),
 											"desc" => __('If enabled, all moodle user\'s profile data (first name, last name, city, address, etc.) will be updated as per their wordpress profile data. Explicitly, for existing user, their data will be overwritten on moodle.', MOOWOODLE_TEXT_DOMAIN),
 											"option_values" => array(
 												'Enable' => __('', MOOWOODLE_TEXT_DOMAIN),
@@ -258,17 +256,23 @@ class MooWoodle_Library {
 													"name" => "sync_courses_category",
 													"desc" => __("This feature will scan the entire Moodle course category structure and synchronize it with the WordPress category listings.", MOOWOODLE_TEXT_DOMAIN),
 												),
+                                                'Create and Update Products' => array(
+                                                    "id" => "sync-all-product",
+                                                    "name" => "sync_all_product",
+                                                    "desc" => __("This feature allows you to update previously created product information using Moodle course data. NOTE: This action will overwrite all existing product details with those from Moodle course details.", MOOWOODLE_TEXT_DOMAIN),
+                                                ),
 												'Create New Products' => array(
-													"id" => "sync-products",
-													"name" => "sync_products",
+													"id" => "sync-new-products",
+													"name" => "sync_new_products",
 													"desc" => __("This functionality enables automatic creation of new products based on Moodle course data if they do not already exist in WordPress.", MOOWOODLE_TEXT_DOMAIN),
+                                                    "is_pro" => "pro",
 												),
-												'Update Existing Products' => array(
-													"id" => "sync-prev-courses",
-													"name" => "sync_prev_courses",
-													"desc" => __("This feature allows you to update previously created product information using Moodle course data. NOTE: This action will overwrite all existing product details with those from Moodle course details.", MOOWOODLE_TEXT_DOMAIN),
-													"is_pro" => "pro",
-												),
+                                                'Update Existing Products' => array(
+                                                    "id" => "sync-exist-product",
+                                                    "name" => "sync_exist_product",
+                                                    "desc" => __("This feature allows you to update previously created product information using Moodle course data. NOTE: This action will overwrite all existing product details with those from Moodle course details.", MOOWOODLE_TEXT_DOMAIN),
+                                                    "is_pro" => "pro",
+                                                ),
 												'Course Images' => array(
 													"id" => "sync-image",
 													"name" => "sync_image",

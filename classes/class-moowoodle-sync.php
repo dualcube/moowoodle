@@ -98,7 +98,7 @@ class MooWoodle_Sync {
 		$sync_settings = $MooWoodle->options_synchronize_settings;
 		$courses = moowoodle_moodle_core_function_callback('get_courses');
 		$this->update_posts($courses, 'course', 'course_cat', 'moowoodle_term');
-		if (isset($sync_settings['sync_products']) && $sync_settings['sync_products'] == "Enable") {
+		if (isset($sync_settings['sync_all_product']) && $sync_settings['sync_all_product'] == "Enable" && !$MooWoodle->moowoodle_pro_adv) {
 			$this->update_posts($courses, 'product', 'product_cat', 'woocommerce_term');
 		}
 	}
@@ -133,7 +133,7 @@ class MooWoodle_Sync {
 				if ($post_id > 0) {
 					$args['ID'] = $post_id;
 					$new_post_id = wp_update_post($args);
-				} else {
+				} else {	
 					$new_post_id = wp_insert_post($args);
 				}
 				if ($new_post_id > 0) {
