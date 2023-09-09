@@ -47,7 +47,7 @@ wp_localize_script('moowoodle_all_course_tables', 'table_args', $args);
 <div class="mw-input-content">
     <div class='mw-course-table-content '>
         <div class="moowoodle-table-fuilter">
-            <div class="alignleft actions bulkactions">
+            <div class="mw-filter-bulk">
                 <label for="bulk-action-selector-top" class="screen-reader-text">Select bulk action</label>
                 <select name="action" id="bulk-action-selector-top">
                     <option value="-1">Bulk actions</option>
@@ -55,7 +55,7 @@ wp_localize_script('moowoodle_all_course_tables', 'table_args', $args);
                     <option value="sync_all_product">Create Product</option>
                     <option value="sync_all_product">Update Product</option>
                 </select>
-                <input type="submit" id="doaction" class="button action" value="Apply">
+                <input type="submit" id="doaction" class="button action mw-bulk-apply-btn" value="Apply">
             </div>
 
         </div>

@@ -249,8 +249,37 @@ h6 {
   left: 0;
   z-index: 9;
 }
-.mw-container .mw-banner-right img {
+.mw-container .mw-banner-right {
+  font-size: 1rem;
+  background: -webkit-gradient(linear, left top, left bottom, from(rgb(253, 253, 251)), color-stop(76%, rgb(253, 238, 255)), to(rgb(236, 232, 241)));
+  background: linear-gradient(180deg, rgb(253, 253, 251) 0%, rgb(253, 238, 255) 76%, rgb(236, 232, 241) 100%);
+  padding: 3rem 2.25rem 3rem;
+  max-width: 28rem;
+  text-align: center;
   border-radius: 0.5rem;
+}
+.mw-container .mw-banner-right a.mw-image-adv img {
+  height: 150px;
+  width: 234px;
+  margin: 0 0 2rem;
+}
+.mw-container .mw-banner-right .mw-banner-right-content {
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0.02rem;
+  font-weight: 500;
+}
+.mw-container .mw-banner-right .mw-banner-right-content p {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+  text-align: left;
+  letter-spacing: 0.02rem;
+  font-weight: 400;
+}
+.mw-container .mw-banner-right .mw-banner-right-content p span {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #181819;
 }
 .mw-container .supt-link a {
   display: block;
@@ -263,6 +292,7 @@ h6 {
   font-weight: 500;
   font-size: 1rem;
   border-radius: 0.25rem;
+  margin-top: 1.5rem;
 }
 .mw-container .moowoodle-table-fuilter {
   margin: 1rem 0;
@@ -270,6 +300,21 @@ h6 {
   float: none;
   grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
   gap: 0.5rem;
+}
+.mw-container .moowoodle-table-fuilter .mw-filter-bulk {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 200px;
+  gap: 0.25rem;
+}
+.mw-container .moowoodle-table-fuilter .mw-filter-bulk .mw-bulk-apply-btn {
+  background-color: transparent;
+  border: 0.06rem solid #65438f;
+  padding: 0rem 0.875rem;
+  height: 35px;
+  line-height: 1;
+  color: #181819;
 }
 .mw-container .moowoodle-table-fuilter label {
   display: -webkit-box;
@@ -287,6 +332,7 @@ h6 {
   border-radius: 0.25rem;
   padding: 0.25rem 0.75rem;
   background-color: #fff;
+  width: 200px;
 }
 .mw-container .moowoodle-table-fuilter .mw-date-range div#reportrange {
   border: 0 !important;
@@ -403,6 +449,29 @@ h6 {
 }
 .mw-container .mw-section-wraper .mw-image-overlay .upgrade {
   color: #181718;
+}
+.mw-container .mw-section-wraper .mw-image-overlay .mw-banner-content {
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0.02rem;
+  font-weight: 500;
+}
+.mw-container .mw-section-wraper .mw-image-overlay .mw-banner-content p {
+  font-size: 0.9rem;
+  margin: 0 0 0.25rem;
+  text-align: left;
+  letter-spacing: 0;
+  font-weight: 400;
+  font-style: italic;
+}
+.mw-container .mw-section-wraper .mw-image-overlay span.mw-cupon {
+  font-weight: 600;
+  color: #181819;
+  background: #ece8f1;
+  margin: 0 0.25rem;
+  padding: 0 0.25rem;
+  border-radius: 0.25rem;
+  line-height: 1.8;
 }
 .mw-container .mw-section-wraper .mw-image-overlay a.mw-go-pro-btn {
   background: #e35047;
@@ -989,6 +1058,9 @@ span.mw-pro-tag {
   }
   .mw-container .mw-datepicker-wraper {
     float: none;
+  }
+  .mw-banner-right {
+    max-width: 20rem;
   }
   .moowoodle_subtab_container {
     -ms-flex-wrap: wrap;

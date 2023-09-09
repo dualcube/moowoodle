@@ -407,12 +407,39 @@ h6 {
   }
 
 
+ 
   .mw-banner-right {
-    img {
-      border-radius: 0.5rem;
+    font-size: 1rem;
+    background: linear-gradient(180deg, rgba(253,253,251,1) 0%, rgba(253,238,255,1) 76%, rgba(236,232,241,1) 100%);
+    padding: 3rem 2.25rem 3rem;
+    max-width: 28rem;
+    text-align: center;
+    border-radius: 0.5rem;
+    a.mw-image-adv img {
+      height: 150px;
+      width: 234px;
+      margin: 0 0 2rem;
+  }
+  .mw-banner-right-content{
+    font-size: 1rem;
+    line-height: 1.6;
+    letter-spacing: 0.02rem;
+    font-weight: 500;
+      p {
+        font-size: 1rem;
+        margin: 0 0 0.5rem;
+        text-align: left;
+        letter-spacing: 0.02rem;
+        font-weight: 400;
+        span{
+          font-size: 1.125rem;
+          font-weight: 500;
+          color: #181819;
+        }
     }
   }
 
+}
 
   .supt-link a {
     display: block;
@@ -425,6 +452,7 @@ h6 {
     font-weight: 500;
     font-size: 1rem;
     border-radius: 0.25rem;
+    margin-top: 1.5rem;
   }
 
 
@@ -435,7 +463,19 @@ h6 {
     grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
     gap: 0.5rem;
 
-
+    .mw-filter-bulk{
+      display: flex;
+    width: 200px;
+    gap: 0.25rem;
+    .mw-bulk-apply-btn{
+      background-color: transparent;
+    border: 0.06rem solid #65438f;
+    padding: 0rem 0.875rem;
+    height: 35px;
+    line-height: 1;
+    color: #181819;
+    }
+    }
     label {
       display: flex;
       gap: 0.25rem;
@@ -452,6 +492,7 @@ h6 {
       border-radius: 0.25rem;
       padding: 0.25rem 0.75rem;
       background-color: #fff;
+      width: 200px;
       div#reportrange{
         border: 0 !important;
         display: flex;
@@ -563,7 +604,28 @@ h6 {
     .upgrade{
       color: #181718;
     }
-
+    .mw-banner-content{
+      font-size: 1rem;
+    line-height: 1.6;
+    letter-spacing: 0.02rem;
+    font-weight: 500;
+      p {
+      font-size: 0.9rem;
+      margin: 0 0 0.25rem;
+      text-align: left;
+      letter-spacing: 0;
+      font-weight: 400;
+      font-style: italic;
+    }}
+    span.mw-cupon {
+      font-weight: 600;
+      color: #181819;
+      background: #ece8f1;
+      margin: 0 0.25rem;
+      padding: 0 0.25rem;
+      border-radius: 0.25rem;
+      line-height: 1.8;
+  }
       a.mw-go-pro-btn {
         background: #e35047;
         color: #f9f8fb;
@@ -1043,6 +1105,9 @@ color: $font-white;
 }
 .mw-container .mw-datepicker-wraper{
   float: none;
+}
+.mw-banner-right{
+  max-width: 20rem;
 }
 .moowoodle_subtab_container {
   flex-wrap: wrap;
