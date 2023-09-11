@@ -463,12 +463,11 @@ h6 {
     margin: 1rem 0;
     display: grid;
     float: none;
-    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
     gap: 0.5rem;
 
     .mw-filter-bulk{
       display: flex;
-    width: 200px;
     gap: 0.25rem;
     .mw-bulk-apply-btn{
       background-color: transparent;
@@ -1151,4 +1150,17 @@ input[type=checkbox]:checked::before {
   .mw-input-content {
     padding: 1rem 0;//sync page padding
   }
+}
+.mw-container .mw-banner-right.mw-banner-right-pro a.mw-image-adv {
+  margin: 1rem 0 2.5rem;
+  display: block;
+    img {
+      width: 15rem;
+      height: auto;
+      margin: 0 0 0.5rem;
+      border: 0.06rem solid #ece8f1;
+      padding: 0.5rem 1rem;
+      background: #fdfdfe;
+      border-radius: 0.25rem;
+    }
 }
