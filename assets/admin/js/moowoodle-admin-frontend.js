@@ -86,23 +86,6 @@
                 }
             });
         }
-        //bulk action seclect all
-        const selectAllCheckbox = document.querySelector(".bulk-action-select-all");
-        if (selectAllCheckbox) {
-            selectAllCheckbox.addEventListener("change", function () {
-                const checkedEnabledCheckboxes = document.querySelectorAll(".bulk-action-select:checked:enabled");
-                const uncheckedCheckboxes = document.querySelectorAll(".bulk-action-select:not(:checked):enabled");
-                if (checkedEnabledCheckboxes.length >= uncheckedCheckboxes.length) {
-                    checkedEnabledCheckboxes.forEach(function(checkbox) {
-                        if (!checkbox.disabled) checkbox.checked = false;
-                    });
-                } else {
-                    uncheckedCheckboxes.forEach(function(checkbox) {
-                        if (!checkbox.disabled) checkbox.checked = true;
-                    });
-                }
-            });
-        }
         //test connection
         var course_id = '';
         var course_empty = '';

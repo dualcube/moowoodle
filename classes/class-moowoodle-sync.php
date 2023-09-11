@@ -11,6 +11,11 @@ class MooWoodle_Sync {
 	 */
 	public function sync() {
 		global $MooWoodle;
+		// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        
+        // Now, $checkedValues contains an array of checked checkbox values (integers)
+        // print_r($_POST);die;
+// }
 		if (!isset($_POST['syncnow'])) {
 			return;
 		}

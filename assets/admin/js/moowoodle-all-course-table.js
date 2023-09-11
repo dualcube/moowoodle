@@ -18,8 +18,6 @@
                 columnsData.push({ 'sortable': true });
             }
         }
-
-        console.log(columnsData);
         var myTable = $("#moowoodle_table").DataTable({
             paging: false,
             searching: true,
@@ -38,7 +36,7 @@
             // header column header
             // On change of the list values,
             // perform search operation
-            var mySelectList = $("<select />").prependTo($(".moowoodle-table-fuilter")).on("change", function() {
+            var mySelectList = $("<select />").appendTo($(".moowoodle-table-fuilter")).on("change", function() {
                 myTable.column(colID).search($(this).val());
                 // update the changes using draw() method
                 myTable.column(colID).draw();
@@ -59,5 +57,22 @@
         $('.moowoodle-search-input').keyup(function() {
             myTable.column(0).search($(this).val()).draw();
         })
+        //bulk action seclect all
+        const selectAllCheckbox = document.querySelector(".bulk-action-select-all");
+        if (selectAllCheckbox) {
+            selectAllCheckbox.addEventListener("change", function () {
+                const checkedEnabledCheckboxes = document.querySelectorAll(".bulk-action-checkbox:checked:enabled");
+                const uncheckedCheckboxes = document.querySelectorAll(".bulk-action-checkbox:not(:checked):enabled");
+                if (checkedEnabledCheckboxes.length >= uncheckedCheckboxes.length) {
+                    checkedEnabledCheckboxes.forEach(function(checkbox) {
+                        if (!checkbox.disabled) checkbox.checked = false;
+                    });
+                } else {
+                    uncheckedCheckboxes.forEach(function(checkbox) {
+                        if (!checkbox.disabled) checkbox.checked = true;
+                    });
+                }
+            });
+        }
     });
 })(jQuery);

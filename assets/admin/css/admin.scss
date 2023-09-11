@@ -425,6 +425,9 @@ h6 {
     line-height: 1.6;
     letter-spacing: 0.02rem;
     font-weight: 500;
+    .mw-banner-line{
+      margin: 1rem 0;
+    }
       p {
         font-size: 1rem;
         margin: 0 0 0.5rem;
@@ -901,15 +904,9 @@ h6 {
     border: 0;
     border-bottom: 0 !important;
 
-
-    th.sorting {
-     
-    }
-
-
     tr.odd td,
     tr.even td,
-    th.sorting {
+    th.sorting, th.sorting_disabled {
       border: solid #b2b2b2;
       border-width: 0.06rem 0;
       padding: 1rem;

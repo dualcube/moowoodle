@@ -123,7 +123,7 @@ if ($MooWoodle->moowoodle_pro_adv) {
                     </a>
                     <div class="mw-banner-right-content">
           Unlock premium features and elevate your experience by upgrading to MooWoodle Pro!
-           With our Pro version, you can enjoy:
+           <div class="mw-banner-line"> With our Pro version, you can enjoy:</div>
             <p>&nbsp;</p>
                         <p><span>1.</span> Convenient Single Sign-On for Moodle™ and WordPress Login</p>
                         <p><span>2.</span> Create steady income through course subscriptions.</p>

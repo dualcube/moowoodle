@@ -269,6 +269,9 @@ h6 {
   letter-spacing: 0.02rem;
   font-weight: 500;
 }
+.mw-container .mw-banner-right .mw-banner-right-content .mw-banner-line {
+  margin: 1rem 0;
+}
 .mw-container .mw-banner-right .mw-banner-right-content p {
   font-size: 1rem;
   margin: 0 0 0.5rem;
@@ -862,10 +865,11 @@ h6 {
 }
 .mw-container .moodle-linked-courses tr.odd td,
 .mw-container .moodle-linked-courses tr.even td,
-.mw-container .moodle-linked-courses th.sorting,
+.mw-container .moodle-linked-courses th.sorting, .mw-container .moodle-linked-courses th.sorting_disabled,
 .mw-container .moowoodle-manage-enrollment tr.odd td,
 .mw-container .moowoodle-manage-enrollment tr.even td,
-.mw-container .moowoodle-manage-enrollment th.sorting {
+.mw-container .moowoodle-manage-enrollment th.sorting,
+.mw-container .moowoodle-manage-enrollment th.sorting_disabled {
   border: solid #b2b2b2;
   border-width: 0.06rem 0;
   padding: 1rem;
@@ -875,19 +879,21 @@ h6 {
 }
 .mw-container .moodle-linked-courses tr.odd td:first-child,
 .mw-container .moodle-linked-courses tr.even td:first-child,
-.mw-container .moodle-linked-courses th.sorting:first-child,
+.mw-container .moodle-linked-courses th.sorting:first-child, .mw-container .moodle-linked-courses th.sorting_disabled:first-child,
 .mw-container .moowoodle-manage-enrollment tr.odd td:first-child,
 .mw-container .moowoodle-manage-enrollment tr.even td:first-child,
-.mw-container .moowoodle-manage-enrollment th.sorting:first-child {
+.mw-container .moowoodle-manage-enrollment th.sorting:first-child,
+.mw-container .moowoodle-manage-enrollment th.sorting_disabled:first-child {
   border-left: 0.06rem solid #b2b2b2;
   border-radius: 0.25rem 0 0 0.25rem;
 }
 .mw-container .moodle-linked-courses tr.odd td:last-child,
 .mw-container .moodle-linked-courses tr.even td:last-child,
-.mw-container .moodle-linked-courses th.sorting:last-child,
+.mw-container .moodle-linked-courses th.sorting:last-child, .mw-container .moodle-linked-courses th.sorting_disabled:last-child,
 .mw-container .moowoodle-manage-enrollment tr.odd td:last-child,
 .mw-container .moowoodle-manage-enrollment tr.even td:last-child,
-.mw-container .moowoodle-manage-enrollment th.sorting:last-child {
+.mw-container .moowoodle-manage-enrollment th.sorting:last-child,
+.mw-container .moowoodle-manage-enrollment th.sorting_disabled:last-child {
   border-right: 0.06rem solid #b2b2b2;
   border-radius: 0 0.25rem 0.25rem 0;
   min-width: 8rem;
