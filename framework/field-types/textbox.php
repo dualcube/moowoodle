@@ -3,7 +3,15 @@
 // $class - optional class value
 // $id - setting id
 // $options[$id] value from the db
-if ( empty( $options[ $name ] ) ) {
-	$options[ $name ] = '';
+global $MooWoodle;
+if (empty($options[$name])) {
+	$options[$name] = '';
 }
-echo "<input id='$id' class='" . ( empty( $class ) ? 'regular-text' : $class ) . "' name='{$setting_id}[$name]' type='text' value='" . esc_attr( $options[ $name ] ) . "' /><br>";
+
+echo "
+	<div class='mw-textbox-input-wraper " . ' ' .  (empty($class) ? 'regular-text' : $class) . "'>
+		<input id='$id' class='mw-setting-form-input " . ' ' . (($is_pro == 'pro') ? $MooWoodle->moowoodle_pro_adv ? ' disabled ' : '' : '') . (empty($class) ? 'regular-text' : $class) . "' name='{$setting_id}[$name]' type='text' value='" . esc_attr($options[$name]) . "' />";
+if ($copy_text == 'copy') {
+	echo "<button class='mw-copytoclip button-secondary' type='button'>" . esc_html(__('Copy', 'moowoodle')) . "</button>";
+}
+echo "</div>";
