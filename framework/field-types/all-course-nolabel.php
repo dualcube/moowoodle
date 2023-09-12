@@ -33,6 +33,12 @@ $args = array(
 	),
 	'lang' => array(
 		'Search_Course' => __("Search Course", MOOWOODLE_TEXT_DOMAIN),
+        'select_bulk_action' => __('Select bulk action', MOOWOODLE_TEXT_DOMAIN),
+        'bulk_action' => __('Bulk Actions', MOOWOODLE_TEXT_DOMAIN),
+        'sync_course' => __('Sync Course', MOOWOODLE_TEXT_DOMAIN),
+        'create_product' => __('Create Product', MOOWOODLE_TEXT_DOMAIN),
+        'update_product' => __('Update Product', MOOWOODLE_TEXT_DOMAIN),
+        'apply' => __('Apply', MOOWOODLE_TEXT_DOMAIN),
 	),
     'non_sortable_column' => array(
         __('Actions', MOOWOODLE_TEXT_DOMAIN),
@@ -51,18 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 <script src="<?php echo $MooWoodle->plugin_url . 'assets/admin/js/dataTables.dateTime.min.js'; ?>"></script>
 <div class="mw-input-content">
     <div class='mw-course-table-content '>
-        <div class="moowoodle-table-fuilter">
-            <div class="mw-filter-bulk">
-                <label for="bulk-action-selector-top" class="screen-reader-text">Select bulk action</label>
-                <select name="action" id="bulk-action-selector-top">
-                    <option value="-1"><?php echo __('Bulk Actions', MOOWOODLE_TEXT_DOMAIN)?></option>
-                    <option value="sync_courses"><?php echo __('Sync Course', MOOWOODLE_TEXT_DOMAIN)?></option>
-                    <option value="sync_create_product"><?php echo __('Create Product', MOOWOODLE_TEXT_DOMAIN)?></option>
-                    <option value="sync_update_product"><?php echo __('Update Product', MOOWOODLE_TEXT_DOMAIN)?></option>
-                </select>
-                <button class="button-secondary bulk-action-select-apply" name="bulk-action-apply" type="button"><?php echo __('Apply', MOOWOODLE_TEXT_DOMAIN)?></button>
-            </div>
-        </div>
+        <div class="moowoodle-table-fuilter"></div>
+        <div class="search-bulk-action"></div>
         </div>
         <table id="moowoodle_table" class="table table-bordered responsive-table moodle-linked-courses widefat">
             <thead>
@@ -113,7 +109,7 @@ if (!empty($courses)) {
 		}
 		$moodle_url = '';
 		if ($id) {
-			$moodle_url = '<a href="' . esc_url($MooWoodle->options_general_settings["moodle_url"]) . 'course/edit.php?id=' . $id . '">' . esc_html($course_name) . '</a>';
+			$moodle_url = '<a href="' . esc_url($MooWoodle->options_general_settings["moodle_url"]) . 'course/edit.php?id=' . $id . '" target="_blank">' . esc_html($course_name) . '</a>';
 		}
 		$product_name = '';
 		if ($product) {
