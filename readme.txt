@@ -25,22 +25,24 @@ The MooWoodle plugin is an extention of WooCommerce that acts as a bridge betwee
 * Multilingual Support is included with the plugin and is fully compatible with WPML.
 
 == Configurable ==
-*For a complete instruction on the MooWoodle set-up, [Click Here](https://dualcube.com/docs-category/moowoodle/)
+*For a complete instruction on the MooWoodle set-up, [Click Here](https://dualcube.com/docs/moowoodle-set-up-guide/)
 
 == Other Moodle Products From Dualcube ==
 After years of not getting it just right, our excellent design and development team combined craft, care, love and experience to deliver two impeccable Moodle themes i.e "Nalanda" and "University" , blend with a smooth and rich UI.
 It was mostly our clients who inspired us for this venture. Their constant feedback and appreciation led us to build this for the countless Moodle lovers.
 
-* You can view the demo of Nalanda here [Click Here](http://nalanda.dualcube.com/)
-** Much awaited Dark mode is coming with the new update.
+== Demo Link ==
+* WordPress Site https://dev.dualcube.com/demo.moowoodle/wp-admin
+* Admin Username : moo_admin
+* Admin Password: 1Admin@23
+* Moodle Site [Click Here] http://dev.dualcube.com/moodle411/login/index.php
+* Admin Access: 
+* Admin Username : moo_admin
+* Admin Password: 1Admin@23
 
-* Student Access: 
-* Login ID: student
-* Password: 1Admin@23
-
-* We also have a premium version of the plugin on Dualcube with Single Sign-On feature.  
+* We also have a premium version of the plugin on Dualcube with Single Sign-On, WooCommerce Subscription support feature.  
 * This is to be installed in Moodle. 
-* To get any of these themes: [Click Here](https://dualcube.com/shop/)
+* To get any of these themes: [Click Here](https://dualcube.com/products)
 
 = Feedback =
 All we want is love. We are extremely responsive about support requests - so if you face a problem or find any bugs, shoot us a mail or post it in the support forum, and we will respond within 24 hours(during business days). If you get the impulse to rate the plugin low because it is not working as it should, please do wait for our response because the root cause of the problem may be something else. 
@@ -78,22 +80,6 @@ Yes, this plugin works really fine with WordPress 5.6! It is also compatible for
 Yes, this plugin works really fine with Moodle 3.9! It is also compatible with Moodle version 3.4+.
 = Up to which version of WooCommerce this plugin compatible with? =
 This plugin is compatible with the latest version of WooCommerce, that is, Version 4.9.
-
-== Screenshots ==
-1. Fill up the Moodle Site URL, Moodle Access Token and the other setting field. 
-2. Fill up the display settings according to your need.
-3. Enable the settings and click sync now to sync all your courses and categories from your moodle site.
-4. In advanced features check Enable web service check box and save changes to enable web service for your moodle site.
-5. Enable REST protocol from manage protocol of your moodle site.
-6. In External services click on Add to add your external service.
-7. Give a Name to your external service and check Enabled then Add service to add your external service.
-8. Click on Add functions to add functions to your service.
-9. Add above mentioned functions mentioned to your service.
-10. In Manage tokens click on Add to generate new webservice token for your service.
-11.Select your admin user from the User list and your service form Service list and then click save changes.
-12. The token generated for your service. (Copy this token and paste it in Webservice token field in our WordPress plugin settings.)
-13. Paste the token generated for your service in the Webservice token and fill up the other settings.
-14.  List of Courses after sync.
 
 
 == Changelog ==
