@@ -1,11 +1,11 @@
 === MooWoodle ===
-Contributors: dualcube, rajsekharchatterjee11
+Contributors: dualcube
 Tags: wordpress, moodle, woocommerce, wordpress-moodle, woocommerce-moodle
 Donate link: https://dualcube.com/
 Requires at least: 5.0.0
-Tested up to: 6.1.1
-Requires at least PHP: 5.6
-Stable tag: 3.0.4
+Tested up to: 6.3.1
+Requires at least PHP: 8.0
+Stable tag: 3.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,8 +81,32 @@ Yes, this plugin works really fine with Moodle 3.9! It is also compatible with M
 = Up to which version of WooCommerce this plugin compatible with? =
 This plugin is compatible with the latest version of WooCommerce, that is, Version 4.9.
 
+== Screenshots ==
+1. Fill up the Moodle Site URL, Moodle Access Token and the other setting field. 
+2. Fill up the display settings according to your need.
+3. Enable the settings and click sync now to sync all your courses and categories from your moodle site.
+4. In advanced features check Enable web service check box and save changes to enable web service for your moodle site.
+5. Enable REST protocol from manage protocol of your moodle site.
+6. In External services click on Add to add your external service.
+7. Give a Name to your external service and check Enabled then Add service to add your external service.
+8. Click on Add functions to add functions to your service.
+9. Add above mentioned functions mentioned to your service.
+10. In Manage tokens click on Add to generate new webservice token for your service.
+11.Select your admin user from the User list and your service form Service list and then click save changes.
+12. The token generated for your service. (Copy this token and paste it in Webservice token field in our WordPress plugin settings.)
+13. Paste the token generated for your service in the Webservice token and fill up the other settings.
+14.  List of Courses after sync.
+
 
 == Changelog ==
+
+= 3.1.0 – 2023-09-12 =
+* Added - Compatibility of Wordpress 6.3.1.
+* Added - Compatibility of WooCommerce 8.0.3.
+* Added - Test Connection Tab to Verify the Proper Connection Between Your WordPress Site and Moodle. 
+* Added - Log file to find the MooWoodle error.
+* Enhancement - New way of managing all courses.
+* Enhancemnt - New Interface for Effortless Course/product Synchronization Selection.Added - Timeout option to set cUrl time out value.
 
 = 3.0.4 – 2023-02-21 =
 * Added - Compatibility of Wordpress 6.1.1.
@@ -183,4 +207,3 @@ This plugin is compatible with the latest version of WooCommerce, that is, Versi
 = 1.1.0 =
 
 = 1.0.0 =
-
