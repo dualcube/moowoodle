@@ -263,7 +263,7 @@ if ($MooWoodle->moowoodle_pro_adv) {
          <!--<div class="mw-img-overlay-arrow">
            <span class="dashicons dashicons-arrow-down-alt"></span>
            </div>-->
-          <a class="mw-go-pro-btn" target="_blank" href="' . MOOWOODLE_PRO_SHOP_URL . '">' . esc_html__('Available in MooWoodle Pro', 'moowoodle') . '</a>
+          <a class="mw-go-pro-btn" target="_blank" href="' . MOOWOODLE_PRO_SHOP_URL . '">' . esc_html__('Buy MooWoodle Pro', 'moowoodle') . '</a>
           <!--<p class="upgrade"><b>Already Upgraded?</b></p>-->
           </div>
 
