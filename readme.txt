@@ -103,6 +103,10 @@ This plugin is compatible with the latest version of WooCommerce, that is, Versi
 = 3.1.0 – 2023-09-12 =
 * Added - Compatibility of Wordpress 6.3.1.
 * Added - Compatibility of WooCommerce 8.0.3.
+* Added - Test Connection Tab to Verify the Proper Connection Between Your WordPress Site and Moodle. 
+* Added - Log file to find the MooWoodle error.
+* Enhancement - New way of managing all courses.
+* Enhancemnt - New Interface for Effortless Course/product Synchronization Selection.Added - Timeout option to set cUrl time out value.
 
 = 3.0.4 – 2023-02-21 =
 * Added - Compatibility of Wordpress 6.1.1.
