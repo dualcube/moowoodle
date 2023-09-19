@@ -1,4 +1,3 @@
-
  <div id="<?php echo $id; ?>-multiple-checkboxs">
      <button type="button" id="selectDeselectButton" class="button-secondary">Select / Deselect All</button>
      <div class="mw-select-deselect-checkbox-label-marge">
