@@ -8,8 +8,6 @@ class MooWoodle_Settings {
 	*/
 	public function __construct() {
 		//Admin menu
-		global $MooWoodle;
-		$this->settings_library = $MooWoodle->library->moowoodle_get_options();
 		add_action('admin_menu', array($this, 'add_settings_page'));
 		add_action('admin_init', array($this, 'settings_page_init'));
 	}
@@ -18,6 +16,7 @@ class MooWoodle_Settings {
 	 */
 	public function add_settings_page() {
 		global $MooWoodle;
+		$this->settings_library = $MooWoodle->library->moowoodle_get_options();
 		add_menu_page(
 			"MooWoodle",
 			"MooWoodle",

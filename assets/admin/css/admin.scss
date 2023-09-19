@@ -666,7 +666,24 @@ h6 {
     }
   }
 
-
+  .mw-warning-massage{
+    color: $font-white !important;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #f8b6a5;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    &::after{
+      position: absolute;
+      content: "";
+      border-left: 0.58rem solid transparent;
+      border-right: 0.58rem solid transparent;
+      border-bottom: 0.6rem solid #f8b6a5;
+      top: 0;
+      transform: translateY(-100%);
+    }
+}
   .mw-form-group {
     display: flex;
     padding: 1.5rem 0;
@@ -708,24 +725,7 @@ h6 {
         &:has(.mw-warning-massage){
           padding-bottom: 4rem;
         }
-        .mw-warning-massage{
-              color: $font-white !important;
-              position: absolute;
-              bottom: 0;
-              left: 0;
-              background: #f8b6a5;
-              padding: 0.5rem 1rem;
-              border-radius: 0.25rem;
-              &::after{
-                position: absolute;
-                content: "";
-                border-left: 0.58rem solid transparent;
-                border-right: 0.58rem solid transparent;
-                border-bottom: 0.6rem solid #f8b6a5;
-                top: 0;
-                transform: translateY(-100%);
-              }
-        }
+        
         .mw-copytoclip{
             background-color: transparent;
             padding: 0.5rem 0.875rem;

@@ -1,5 +1,4 @@
 <?php
-
 class MooWoodle_Admin {
 
 	public $settings;

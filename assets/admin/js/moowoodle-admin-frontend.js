@@ -30,6 +30,24 @@
             // Add click event listener
             checkbox.addEventListener('click', handleCheckboxClick);
         });
+        //forced checked checkbox
+        const forcecheckbox = document.querySelectorAll('.forceCheckCheckbox');
+        var warningShown = false;
+        // Add a click event listener to the checkbox
+        if(forcecheckbox)
+        forcecheckbox.forEach((checkbox, index) => {
+            checkbox.addEventListener('click', function () {
+                // Once checked, disable the checkbox
+                if (!checkbox.checked) {
+                    if(!warningShown){
+                        const warningHTML = '<div class="mw-warning-massage" id="warningMessage-' + index + '" style="position: relative;">' + admin_frontend_args.lang.warning_to_force_checked + '</div>';
+                        checkbox.parentElement.insertAdjacentHTML("afterend", warningHTML);
+                        warningShown = true;
+                    }
+                    checkbox.checked = true;
+                }
+            })
+        });
         //copy text-input value to clipboard 
         $('.mw-copytoclip').on("click", function() {
             var $button = $(this);
