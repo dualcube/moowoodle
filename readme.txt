@@ -1,85 +1,157 @@
-=== MooWoodle ===
-Contributors: dualcube
+=== MooWoodle - WordPress & Moodle LMS Integration Bridge ===
+Contributors: dualcube, kndnsow
 Tags: wordpress, moodle, woocommerce, wordpress-moodle, woocommerce-moodle
 Donate link: https://dualcube.com/
 Requires at least: 5.0.0
 Tested up to: 6.3.1
-Requires at least PHP: 8.0
+Requires PHP: 8.0
 Stable tag: 3.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-The MooWoodle plugin is an extention of WooCommerce that acts as a bridge between WordPress/Woocommerce and Moodle.
+The **MooWoodle plugin** is an extension of WooCommerce that acts as a bridge between WordPress/WooCommerce and Moodle.
 
 == Description ==
-The MooWoodle plugin is an extention of WooCommerce that acts as a bridge between WordPress/Woocommerce and Moodle. It fetches all the courses from your Moodle instance and makes them available for sale, which may be bought by users through WooCommerce. It reduces your effort by synchronising your LMS site with your online store. And when someone purchases a course from the store he/she is automatically gets registered for the course in the LMS site. More over this plugin works with WooCommerce subscription plugin too.
 
-* For details documentation: [Click Here](https://dualcube.com/docs-category/moowoodle/)
+**MooWoodle - WordPress and Moodle Integration Bridge for Creating and Selling Online Courses** 
 
-= Compatibility =
+🏆 **#1** Moodle WooCommerce Bridge, **MooWoodle**, provides effortless e-learning integration. It seamlessly connects WooCommerce and Moodle, ensuring smooth course synchronization and facilitating hassle-free course sales.
 
-* Compatible with the latest version of WordPress, WooCommerce, Moodle 
-* WooCommerce upto 7.4.0
-* WordPress upto 6.1.1
-* Moodle upto 4.2
-* Multilingual Support is included with the plugin and is fully compatible with WPML.
+📝 Explore our **[Documentation](https://dualcube.com/docs/moowoodle-pro/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree)**
 
-== Configurable ==
-*For a complete instruction on the MooWoodle set-up, [Click Here](https://dualcube.com/docs/moowoodle-set-up-guide/)
+👉 Learn More About **[MooWoodle (PRO)](https://dualcube.com/product/moowoodle-pro/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree)**
 
-== Other Moodle Products From Dualcube ==
-After years of not getting it just right, our excellent design and development team combined craft, care, love and experience to deliver two impeccable Moodle themes i.e "Nalanda" and "University" , blend with a smooth and rich UI.
-It was mostly our clients who inspired us for this venture. Their constant feedback and appreciation led us to build this for the countless Moodle lovers.
+## ✌️ Benefits
 
-== Demo Link ==
-* WordPress Site https://dev.dualcube.com/demo.moowoodle/wp-admin
-* Admin Username : moo_admin
-* Admin Password: 1Admin@23
-* Moodle Site [Click Here] http://dev.dualcube.com/moodle411/login/index.php
-* Admin Access: 
-* Admin Username : moo_admin
-* Admin Password: 1Admin@23
+* 💰 Sell courses via WordPress & WooCommerce, and deliver via Moodle.
+* 🎓 Easily create and manage courses.
+* ↔️ Synchronize your courses between WordPress and Moodle.
+* 📚 Automatically enroll students in courses upon successful Payment.
+* 💲 Boost income with group, variation, or individual course sales. [PRO]
+* 💰 Maximize earnings with bundled, varied, or individual courses.[PRO]
+* 🗂️ Category-Based Course Synchronization. [PRO]
+* 🎯 Select courses for synchronization with flexibility. [PRO]
+* ✅ Easily enroll or remove users into courses from WordPress itself. [PRO]
+* 💸 Conveniently provide student refunds through WordPress.[PRO]
+* 🖼️ Effortlessly sync Moodle course images to your WordPress.[PRO]
 
-* We also have a premium version of the plugin on Dualcube with Single Sign-On, WooCommerce Subscription support feature.  
-* This is to be installed in Moodle. 
-* To get any of these themes: [Click Here](https://dualcube.com/products)
+👉 Official Demo Link: Try out **MooWoodle** Demo sites
 
-= Feedback =
-All we want is love. We are extremely responsive about support requests - so if you face a problem or find any bugs, shoot us a mail or post it in the support forum, and we will respond within 24 hours(during business days). If you get the impulse to rate the plugin low because it is not working as it should, please do wait for our response because the root cause of the problem may be something else. 
+➡️ **[WordPress](https://dev.dualcube.com/demo.moowoodle/wp-admin)**
+➡️ **[Moodle](http://dev.dualcube.com/moodle411/login/index.php)**
 
-== Installation ==
-NOTE: MooWoodle plugin is a extention of WooCommerce, so the WooCommerce plugin must be installed and activated in your WordPress site for this plugin to work properly.
+## ➡️ Key Features
 
-1. Download and install MooWoodle plugin using the built-in WordPress plugin installer.
-If you download MooWoodle plugin manually, make sure it is uploaded to `/wp-content/plugins/moowoodle/`. Or follow the steps below:
-Plugins > Add new > Upload plugin > Upload moowoodle.zip > Install Now.
+   🚀 **Course Integration**: Showcase Moodle courses directly on your WordPress site, making it easy for students to discover and enroll in courses without leaving your website. [Check for more details](https://dualcube.com/docs/moowoodle-set-up-guide/#11-toc-title?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
 
-2. Activate the plugin through the \'Plugins\' menu in WordPress.
+   📋 **Enrollment Management**: Effortlessly manage course enrollments right within WordPress, reducing administrative complexity and enhancing the enrollment process via automation. Check for [more details](https://dualcube.com/docs/moowoodle-set-up-guide/#7-toc-title?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
 
-== Workflow ==
+  🔄 **User Synchronization**: Say goodbye to duplicate user management. Moowoodle keeps your user profiles in sync between WordPress and Moodle, reducing administrative overhead. [Check for more details](https://dualcube.com/docs/moowoodle-set-up-guide/#8-toc-title?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
 
-After the users receive the order-complete email, they need to click the link of the course or courses that they bought. 
-It will then create and enroll the users in their courses.
-They can then access the courses using the username and password sent via email.
+   💳 **WooCommerce Integration**: If you're using WooCommerce for e-commerce on your WordPress site, MooWoodle integrates seamlessly. This allows you to sell Moodle courses through your WooCommerce store, manage orders, and provide access to enrolled users. [Check for more details](https://dualcube.com/docs/moowoodle-set-up-guide/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
 
-Alternatively, When someone buys a course, after the payment, he/she will be directed to a thank you page which normally contains the link of the my courses page.
+   📊 **Bulk Actions**: You can perform bulk actions such as enrolling multiple users in courses, updating user profiles, and more, saving time on administrative tasks.
 
-On this page you will have all the courses listed that you have bought along with the links to the individual courses.
+   📧 **Notifications**: MooWoodle can send email notifications to users for course updates, enrollments, and other events, keeping them informed and engaged.
 
-You will need to click on the links/buttons to get enrolled.
-If you have bought a course and, the course is listed on that page but if the link is not displayed; then the payment is not verified yet. Once it is verified, the link will appear.
+   🌍 **Multilingual Support**: It offers multilingual support, making it suitable for websites with a global audience.
 
-Note: You will need to click the purchased courses' links/buttons in the email body or on my course page in order to get enrolled.Then only you can use the ID and password to access your course on Moodle site.
+   💳 **WooCommerce Payment Gateway**: Choose any WooCommerce payment method that suits your requirements to accept payments from students.
 
+   🖥️ **User-Friendly Interface**: Moowoodle offers an intuitive and user-friendly interface, making integration straightforward for users of all technical levels.
 
+   🎨 **Customizable Solution**: MooWoodle is customizable, allowing you to match the design and style of your Moodle courses with your WordPress site for a cohesive user experience.
 
-== Frequently Asked Questions ==
-= Does this plugin work with newest WP version and also older versions? =
-Yes, this plugin works really fine with WordPress 5.6! It is also compatible for older WordPress versions upto 4.1.1.
-= Does this plugin work with latest version of Moodle? =
-Yes, this plugin works really fine with Moodle 3.9! It is also compatible with Moodle version 3.4+.
-= Up to which version of WooCommerce this plugin compatible with? =
-This plugin is compatible with the latest version of WooCommerce, that is, Version 4.9.
+### ➡️ Upgrade to [Moowoodle Pro](https://dualcube.com/product/moowoodle-pro/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree) for Enhanced Features:
+
+Unlock even more possibilities with Moowoodle Pro:
+
+   🚪 **Single Sign-On (SSO) [PRO]**: When you log in or log out of either Moodle™ or WordPress, the other platform automatically follows suit. Say goodbye to login hassles as your learners can effortlessly access both Moodle™ and WordPress with the same user profile, saving time and reducing the need for login-related support. [Check for more details](https://dualcube.com/docs/single-sign-on/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
+
+   🔍 **Advanced Course Filtering [PRO]**: MooWoodle Pro allows you to filter courses by a variety of criteria, such as category, instructor, and price. This can be helpful for users who are looking for specific courses. [Check for more details](https://dualcube.com/docs/moowoodle-set-up-guide/#8-toc-title?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
+
+   🚀 **Simplify Your Course Management [PRO]**: Boost productivity by easily managing multiple courses at once, including transfers to WordPress and student enrollments.
+
+   💼 **Flexible Subscription Plans [PRO]**: Create subscription-based courses with varied access levels and pricing options, making it cost-effective and adaptable for diverse learning needs.
+
+   🗂️ **Bulk Course Management [PRO]**: Increase productivity by using bulk course management features to manage multiple course management tasks simultaneously. With the help of this feature, you can handle multiple course transfers to WordPress, multiple student enrollments, and other similar tasks all at once.
+
+   🔄 **Variations on Courses [PRO]**: Offering course variations with the option to sell them through your online store with the help of WooCommerce Subscription.
+
+   💲 **Multiple Pricing Models [PRO]**: MooWoodle Integration supports various pricing models, including one-time payments, subscriptions, and memberships. This flexibility allows you to offer courses in a way that best suits your business model.
+
+👉 Learn More About [MooWoodle (PRO)](https://dualcube.com/product/moowoodle-pro/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree)
+
+   👉 Explore more of our [Moodle LMS Products](https://dualcube.com/moodle-plugins-themes/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
+
+### ➡️ MooWoodle Settings
+
+📚 **Complete Course Listing**: The "All Courses" tab allows administrators to conveniently access and oversee all courses, including their essential details such as categories, start dates, enrolled users, and more. Moreover, with the Pro version, you have the flexibility to manage courses on an individual basis or in bulk, including updating course details and images. [Check for more details](https://dualcube.com/docs/moowoodle-set-up-guide/#6-toc-title?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
+
+📈 **Enrollment Insights [PRO]**: The All Enrollments tab offers administrators a comprehensive view, allowing easy sorting of enrollments by students, courses, and dates for efficient management. [Check for more details](https://dualcube.com/docs/moowoodle-set-up-guide/#7-toc-title?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
+
+📺 **Course Display Preferences**: This dedicated setting allows administrators to control the locations within the WordPress site where students can access their courses, such as the dashboard, orders, downloads, addresses, and more.
+
+🚪 **Single Sign On (SSO) [PRO]**: Whether you log in or out in Moodle™ or WordPress, the other system mirrors your actions. No more login hassles – learners can seamlessly access both Moodle™ and WordPress with a single user profile, saving time and avoiding login issues. [Check for more details](https://dualcube.com/docs/single-sign-on/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
+
+🔧 **Moodle Test Connection**: This valuable feature verifies the proper configuration of all settings required to establish a connection between Moodle and WordPress. In the event that any settings have been overlooked, it will promptly notify you of the oversight. This allows you to review the log and identify which settings need to be adjusted. [Check for more details](https://dualcube.com/docs/moowoodle-set-up-guide/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
+
+📜 **Log File**: Log files are crucial for troubleshooting and debugging purposes. When issues or errors occur during the operation between Moodle and WordPress communication, log files can provide detailed information about what went wrong, making it easier for website administrators and developers to identify and resolve the problem. [Check for more details](https://dualcube.com/docs/moowoodle-set-up-guide/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree). 
+
+### ➡️ Course Synchronization Options
+
+📊 **Moodle Course Categories Sync**: Effortlessly synchronize your Moodle course category structure with WordPress category listings.
+
+🔄 **Create and Update Products**: Easily update existing product information using Moodle course data. 
+
+🛒 **Create New Products [PRO]**: Automatically generate new products based on Moodle course data if they don't already exist in WordPress.
+
+🔄 **Update Existing Products [PRO]**: Conveniently update previously created product information using Moodle course data.
+
+🖼️ **Course Images [PRO]**: Copy course images and apply them as WooCommerce product images.
+
+### ➡️ User Synchronization Options
+
+Coming Soon!! ✌️
+
+Join the ranks of satisfied users who have transformed their e-learning experiences with Moowoodle. Download it now and revolutionize your online education platform!
+
+Don't miss out on the opportunity to enhance your e-learning ecosystem. Get started with Moowoodle today!
+
+## 🤝 Contributions
+
+This project might have bugs and may be lacking certain features. If you'd like to contribute to this project, your help is greatly appreciated. Please fork the repository on [GitHub](https://github.com/dualcube/moowoodle).
+
+== Frequently Asked Questions == 
+
+= Even after setting up MooWoodle, why aren't the courses visible? =
+
+Ans: MooWoodle offers a dedicated "Test Connection" feature to help identify any configuration issues and ensure a seamless connection between Moodle and WordPress. 
+
+= Is it possible to link one Moodle site to several WordPress sites? =
+
+Ans: Absolutely, with MooWoodle, you can effortlessly connect your Moodle site to multiple WordPress sites.
+
+= Am I restricted to using only Stripe or PayPal as payment gateways? =
+
+Ans: MooWoodle relies on WooCommerce Payment gateways for payments, so you have the flexibility to utilize any payment method supported by WooCommerce to receive payments.
+
+= What course information gets transferred when syncing courses from Moodle to WordPress? =
+
+Ans: The synchronization process imports the course title, description, images, and course category from Moodle to WordPress.
+
+= Despite students making payments for the course, they haven't received enrollment emails, and they're not added to Moodle. What could be the issue? =
+
+Ans: Occasionally, this can occur when MooWoodle encounters a server timeout while attempting to send new student creation data to Moodle. To address this, we provide a dedicated "Timeout" setting where you can adjust the server timeout option.
+
+= I prefer not to add new courses in WordPress; I only want to update previously added courses. Is this possible? =
+
+Ans: Certainly! MooWoodle Pro provides an "Update Existing Products" setting. When enabled, MooWoodle will exclusively update previously added course data in WordPress.
+
+= Is it necessary for WordPress and Moodle to be installed and operational on the same server? =
+
+Ans: No, it's not a requirement. You have the flexibility to install both systems on the same server or on different servers as per your needs.
+
 
 == Screenshots ==
 1. Fill up the Moodle Site URL, Moodle Access Token and the other setting field. 
@@ -97,54 +169,55 @@ This plugin is compatible with the latest version of WooCommerce, that is, Versi
 13. Paste the token generated for your service in the Webservice token and fill up the other settings.
 14.  List of Courses after sync.
 
-
 == Changelog ==
+
 = 3.1.1 – 2023-09-19 =
-* Fixed - Synchronization moodle course.
+* Fixed - Synchronization Moodle course.
 
 = 3.1.0 – 2023-09-12 =
-* Added - Compatibility of Wordpress 6.3.1.
+* Added - Compatibility of WordPress 6.3.1.
 * Added - Compatibility of WooCommerce 8.0.3.
 * Added - Test Connection Tab to Verify the Proper Connection Between Your WordPress Site and Moodle. 
 * Added - Log file to find the MooWoodle error.
 * Enhancement - New way of managing all courses.
-* Enhancemnt - New Interface for Effortless Course/product Synchronization Selection.Added - Timeout option to set cUrl time out value.
+* Enhancement - New Interface for Effortless Course/product Synchronization Selection.
+* Added - Timeout option to set cURL timeout value.
 
 = 3.0.4 – 2023-02-21 =
-* Added - Compatibility of Wordpress 6.1.1.
+* Added - Compatibility of WordPress 6.1.1.
 * Added - Compatibility of WooCommerce 7.4.0.
 * Added - Compatibility of Moodle 4.2.
 
 = 3.0.3 – 2022-04-12 =
-* Added - Compatibility of Wordpress 5.9.3.
-* Fix 	- Enrollment of users doesnt work #44.
+* Added - Compatibility of WordPress 5.9.3.
+* Fix - Enrollment of users doesn't work #44.
 * Updated - Language file.
 
 = 3.0.2 – 2022-04-01 =
-* Added - Compatibility of Wordpress 5.9.2.
+* Added - Compatibility of WordPress 5.9.2.
 * Added - Compatibility of WooCommerce 6.3.1.
 * Added - Compatibility of PHP 8.0.6.
-* Fix 	- Error if WooCommerce deactive #41.
-* Fix 	- My course endpoint issue #40.
-* Fix 	- Text Modify #38.
-* Fix 	- PHP warning #37.
+* Fix - Error if WooCommerce deactivates #41.
+* Fix - My course endpoint issue #40.
+* Fix - Text Modify #38.
+* Fix - PHP warning #37.
 * Updated - Language file.
 
 = 3.0.1 – 2021-11-18 =
-* Added - Compatibility of Wordpress 5.8.2.
+* Added - Compatibility of WordPress 5.8.2.
 * Added - Compatibility of WooCommerce 5.9.0.
 * Added - Compatibility of PHP 8.0.4.
-* Fix - Seperate username and password #30.
+* Fix - Separate username and password #30.
 
 = 3.0 – 2021-01-20 =
 * Fix - Major revamp of the plugin structure and flow. 
 
 = 2.4 =
-* Fix - Firstname and lastname data not store.
+* Fix - Firstname and lastname data not stored.
 
 = 2.3 =
 * Added - Moodle 3.8.3 compatibility
-* Added - Moowoodle Enrolment box
+* Added - MooWoodle Enrollment box
 * Added - Sync through course and categories
 * Added - Display start and end date on shop page
 * Fix - Enrollment through administrative data
@@ -162,14 +235,14 @@ This plugin is compatible with the latest version of WooCommerce, that is, Versi
 = 2.0 =
 * Added - WooCommerce 3.8 compatibility added
 * Added - Moodle 3.8 compatibility added
-* Fix - Now ID and password to login to the Moodle instance will be emailed to the customer after verified purchase.
+* Fix - Now ID and password to log in to the Moodle instance will be emailed to the customer after verified purchase.
 * Fix - More stable workflow and coding clean-up.
 
 = 1.3.0 =
-* Added - Compatible with the latest version of WordPress, WooCommerce and Moodle 
-* Added - WooCommerce upto 3.5.0
-* Added - WordPress upto 4.9.8
-* Added - Moodle upto 3.5
+* Added - Compatible with the latest version of WordPress, WooCommerce, and Moodle 
+* Added - WooCommerce up to 3.5.0
+* Added - WordPress up to 4.9.8
+* Added - Moodle up to 3.5
 * Fix - Stable structure implementation and minor fixation
 
 = 1.2.2 =
@@ -190,6 +263,7 @@ This plugin is compatible with the latest version of WooCommerce, that is, Versi
 * Initial version
 
 == Upgrade Notice ==
+
 = 2.3 =
 
 = 2.2 =
