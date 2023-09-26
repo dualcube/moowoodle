@@ -1,6 +1,6 @@
 === MooWoodle - WordPress & Moodle LMS Integration Bridge ===
 Contributors: dualcube, kndnsow
-Tags: wordpress, moodle, woocommerce, wordpress-moodle, woocommerce-moodle
+Tags: Moodle Integration, LMS Integration, WordPress LMS, e-Learning, Moodle Connector
 Donate link: https://dualcube.com/
 Requires at least: 5.0.0
 Tested up to: 6.3.1
