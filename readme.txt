@@ -9,7 +9,7 @@ Stable tag: 3.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-The **MooWoodle plugin** is an extension of WooCommerce that acts as a bridge between WordPress/WooCommerce and Moodle.
+Unlock the power of seamless course import and sales with MooWoodle's WordPress Moodle Intigration Bridge
 
 == Description ==
 
@@ -120,7 +120,9 @@ Don't miss out on the opportunity to enhance your e-learning ecosystem. Get star
 
 ## 🤝 Contributions
 
-This project might have bugs and may be lacking certain features. If you'd like to contribute to this project, your help is greatly appreciated. Please fork the repository on [GitHub](https://github.com/dualcube/moowoodle).
+This project might have bugs and may be lacking certain features. If you'd like to contribute to this project, your help is greatly appreciated.
+
+👨‍💻 [Please fork the repository from Github](https://github.com/dualcube/moowoodle) 👨‍💻
 
 == Frequently Asked Questions == 
 
