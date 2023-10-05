@@ -167,6 +167,7 @@ class MooWoodle {
 		if (in_array('woocommerce-subscriptions/woocommerce-subscriptions.php', self::$active_plugins) || array_key_exists('woocommerce-subscriptions/woocommerce-subscriptions.php', self::$active_plugins)) {
 			add_action('admin_notices', array($this, 'product_type_subcription_notice'));
 		}
+		return $php_classname;
 	}
 	/**
 	 * Displays an inactive notice when the software is inactive.

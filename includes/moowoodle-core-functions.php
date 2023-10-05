@@ -28,6 +28,7 @@ if (!function_exists('moowoodle_moodle_core_function_callback')) {
 			'enrol_users' => 'enrol_manual_enrol_users',
 			'get_course_image' => 'core_course_get_courses_by_field',
 			'unenrol_users' => 'enrol_manual_unenrol_users',
+			'get_all_users_data' => 'moowoodle_user_sync_get_all_users_data',
 		);
 		if (array_key_exists($key, $moodle_core_functions)) {
 			$function_name = $moodle_core_functions[$key];

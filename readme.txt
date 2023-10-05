@@ -5,7 +5,7 @@ Donate link: https://dualcube.com/
 Requires at least: 5.0.0
 Tested up to: 6.3.1
 Requires PHP: 8.0
-Stable tag: 3.1.1
+Stable tag: 3.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -111,8 +111,15 @@ Unlock even more possibilities with Moowoodle Pro:
 🖼️ **Course Images [PRO]**: Copy course images and apply them as WooCommerce product images.
 
 ### ➡️ User Synchronization Options
+👥 **Moowoodle User [PRO]**:  
 
-Coming Soon!! ✌️
+👥 **Wordpress User[PRO]**: 
+
+👥 **Real Time User Sync[PRO]**: 
+
+👥 **Bulk User Sync[PRO]**: 
+
+👥 **User Profile details Sync Option[PRO]**: 
 
 Join the ranks of satisfied users who have transformed their e-learning experiences with Moowoodle. Download it now and revolutionize your online education platform!
 
@@ -172,6 +179,10 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 14.  List of Courses after sync.
 
 == Changelog ==
+
+= 3.1.2 – 2023-10-05 =
+* Added - Settings for User Sync.
+* Added - Dependency plugin activation warning.
 
 = 3.1.1 – 2023-09-19 =
 * Fixed - Synchronization Moodle course.

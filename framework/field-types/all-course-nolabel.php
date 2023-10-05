@@ -33,7 +33,18 @@ $args = array(
     'non_sortable_column' => array(
         __('Actions', 'moowoodle'),
         __('Select All', 'moowoodle'),
-    )
+    ),
+    // 'lang' => array(
+    // 	'select_bulk_action' => '',
+    // 	'pro_popup_class' => '',
+    // 	'bulk_actions' => '',
+    // 	'sync_course' => '',
+    // 	'create_product' => '',
+    // 	'update_product' => '',
+    // 	'apply' => '',
+    // 	'pro_sticker' => '',
+    // 	'Search_Course' => '',
+    // )
 );
 wp_localize_script('moowoodle_all_course_tables', 'table_args', $args);
 if ($_SERVER['REQUEST_METHOD'] === 'POST')

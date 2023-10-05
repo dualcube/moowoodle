@@ -11,7 +11,7 @@ class MooWoodle_Sync {
 	 */
 	public function sync() {
 		global $MooWoodle;
-		if (!isset($_POST['syncnow'])) {
+		if (!isset($_POST['synccoursenow'])) {
 			return;
 		}
 		$sync_settings = $MooWoodle->options_synchronize_settings;
