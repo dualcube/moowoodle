@@ -28,7 +28,7 @@ if (!function_exists('moowoodle_moodle_core_function_callback')) {
 			'enrol_users' => 'enrol_manual_enrol_users',
 			'get_course_image' => 'core_course_get_courses_by_field',
 			'unenrol_users' => 'enrol_manual_unenrol_users',
-			'get_all_users_data' => 'moowoodle_user_sync_get_all_users_data',
+			'get_all_users_data' => 'auth_moowoodle_user_sync_get_all_users_data',
 		);
 		if (array_key_exists($key, $moodle_core_functions)) {
 			$function_name = $moodle_core_functions[$key];
@@ -77,7 +77,7 @@ if (!function_exists('moowoodle_moodle_core_function_callback')) {
 			$error_massage = $url_check . __(' error code: ', 'moowoodle') . $response['response']['code'] . " } " . $response['response']['message'];
 			$MooWoodle->ws_has_error = true;
 		}
-		file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n        moowoodle error:" . $error_massage . "\n", FILE_APPEND);
+		file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n        moowoodle error:" . $error_massage . "\n" . json_encode($request_param) . "\n", FILE_APPEND);
 		return null;
 	}
 }
@@ -130,8 +130,6 @@ if (!function_exists('get_moowoodle_course_url')) {
 		$course = $linked_course_id;
 		$class = "moowoodle";
 		$target = '_blank';
-		$authtext = '';
-		$activity = 0;
 		$content = $course_name;
 		$conn_settings = $MooWoodle->options_general_settings;
 		$redirect_uri = $conn_settings['moodle_url'] . "/course/view.php?id=" . $course;

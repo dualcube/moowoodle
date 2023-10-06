@@ -254,7 +254,7 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 == Changelog ==
 
 
-= 3.1.2 – 2023-10-05 =
+= 3.1.2 – 2023-10-06 =
 * Added - Settings for User Sync.
 * Added - Dependency plugin activation warning.
 
@@ -399,8 +399,3 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 
 
 = 1.0.0 =
-
-
-
-
-

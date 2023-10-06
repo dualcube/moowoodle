@@ -14,7 +14,7 @@ class MooWoodle_Sync {
 		if (!isset($_POST['synccoursenow'])) {
 			return;
 		}
-		$sync_settings = $MooWoodle->options_synchronize_settings;
+		$sync_settings = $MooWoodle->options_synchronize_now;
 		if (isset($sync_settings['sync_courses_category']) && $sync_settings['sync_courses_category'] == "Enable") {
 			$this->sync_categories();
 		}
@@ -95,7 +95,7 @@ class MooWoodle_Sync {
 	 */
 	private function sync_courses() {
 		global $MooWoodle;
-		$sync_settings = $MooWoodle->options_synchronize_settings;
+		$sync_settings = $MooWoodle->options_synchronize_now;
 		$courses = moowoodle_moodle_core_function_callback('get_courses');
 		$this->update_posts($courses, 'course', 'course_cat', 'moowoodle_term');
 		if (isset($sync_settings['sync_all_product']) && $sync_settings['sync_all_product'] == "Enable" && !$MooWoodle->moowoodle_pro_adv) {

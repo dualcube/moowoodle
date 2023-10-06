@@ -243,9 +243,15 @@ class MooWoodle_Library {
 											"desc" => __("Select which user profile information should be synchronized in real-time updates between Moodle and WordPress.Please note that this setting won't affect the creation of new user profiles.", 'moowoodle'),
 											"desc_posi" => "up",
 											"option_values" => array(
-												'User\'s Full Name' => array(
-													"id" => "sync-user-name",
-													"name" => "sync_users_fullname",
+												'First Name' => array(
+													"id" => "sync-user-first-name",
+													"name" => "sync_user_first_name",
+													"desc" => __("", 'moowoodle'),
+													"is_pro" => "pro",
+												),
+												'Last Name' => array(
+													"id" => "sync-user-last-name",
+													"name" => "sync_user_last_name",
 													"desc" => __("", 'moowoodle'),
 													"is_pro" => "pro",
 												),
@@ -271,7 +277,7 @@ class MooWoodle_Library {
 						"moowoodle-sync-now" => array(
 							"label" => __("Synchronize Now", 'moowoodle'),
 							"font_class" => "dashicons-admin-links",
-							"setting" => "moowoodle_synchronize_settings",
+							"setting" => "moowoodle_synchronize_now",
 							"section" => array(
 								"moowoodle-sync-now" => array(
 									"label" => __("Synchronize Option", 'moowoodle'),
