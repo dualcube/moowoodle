@@ -21,6 +21,7 @@ class MooWoodle {
 	public $options_general_settings;
 	public $options_display_settings;
 	public $options_synchronize_settings;
+	public $options_synchronize_now;
 	public $options_timeout_settings;
 	public $testconnection;
 	public $product_data_tab;
@@ -38,6 +39,8 @@ class MooWoodle {
 		$this->options_display_settings = get_option('moowoodle_display_settings');
 		// synchronize settings
 		$this->options_synchronize_settings = get_option('moowoodle_synchronize_settings');
+		// synchronize now options
+		$this->options_synchronize_now = get_option('moowoodle_synchronize_now');
 		// moodle timeout settings
 		$timeout = get_option('moowoodle_general_settings');
 		if ($timeout != null && is_int((int) $timeout['moodle_timeout']) && (int) $timeout['moodle_timeout'] > 5) {
@@ -167,6 +170,7 @@ class MooWoodle {
 		if (in_array('woocommerce-subscriptions/woocommerce-subscriptions.php', self::$active_plugins) || array_key_exists('woocommerce-subscriptions/woocommerce-subscriptions.php', self::$active_plugins)) {
 			add_action('admin_notices', array($this, 'product_type_subcription_notice'));
 		}
+		return $php_classname;
 	}
 	/**
 	 * Displays an inactive notice when the software is inactive.

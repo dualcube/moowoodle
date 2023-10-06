@@ -297,6 +297,16 @@ if ($MooWoodle->moowoodle_pro_adv) {
 			}
 
 			call_user_func($field['callback'], $field['args']);
+
+			if((isset($field_id) && $field_id == 'sync-course-options')){
+				echo '<p  class="mw-save-changes"><input name="synccoursenow" class="button-primary" type="submit" value="' . __('Sync Courses Now', 'moowoodle') . '" class="button-primary">';
+			}
+			if(isset($field_id) && $field_id == 'sync-user-options'){
+				echo '<p  class="mw-save-changes"><input name="submit" type="submit" value="Save Changes" class="button-primary">';
+			}
+			if(isset($field_id) && $field_id == 'sync-all-user-options'){
+				echo '<p  class="mw-save-changes"><input name="syncusernow" class="button-primary" type="submit" value="' . __('Sync All Users Now', 'moowoodle') . '" class="button-primary">';
+			}
 			if (!str_contains($field_id, 'nolabel')) {
 				echo '</div>';
 			}
@@ -356,6 +366,7 @@ if ($MooWoodle->moowoodle_pro_adv) {
 											'disabled' => (isset($field['disabled']) ? $field['disabled'] : ''),
 											'is_pro' => (isset($field['is_pro']) ? $field['is_pro'] : ''),
 											'copy_text' => (isset($field['copy_text']) ? $field['copy_text'] : ''),
+											'desc_posi' => (isset($field['desc_posi']) ? $field['desc_posi'] : ''),
 										),
 										$field
 									)
