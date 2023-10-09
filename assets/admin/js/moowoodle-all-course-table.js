@@ -51,8 +51,6 @@
                 mySelectList.append($('<option value="' + param + '">' + param + "</option>"));
             });
         });
-        // set custom search section
-        $('<div class=" ' + table_args.lang.pro_popup_class + ' mw-filter-bulk"><label for="bulk-action-selector-top" class="screen-reader-text">' + table_args.lang.select_bulk_action + '</label><select name="action" id="bulk-action-selector-top"><option value="-1">' + table_args.lang.bulk_actions + '</option><option value="sync_courses">' + table_args.lang.sync_course + '</option><option value="sync_create_product">' + table_args.lang.create_product + '</option><option value="sync_update_product">' + table_args.lang.update_product + '</option></select><button class="button-secondary bulk-action-select-apply" name="bulk-action-apply" type="button">' + table_args.lang.apply + '</button>' + table_args.lang.pro_sticker + '</div><div class="mw-header-search-section"><label class="moowoodle-course-search"><i class="dashicons dashicons-search"></i></label><input type="search" class="moowoodle-search-input" placeholder="' + table_args.lang.Search_Course + '" aria-controls="moowoodle_table"></div>').appendTo($('.search-bulk-action'));
         // fuilter by custom search
         $('.moowoodle-search-input').keyup(function() {
             myTable.column(0).search($(this).val()).draw();
