@@ -4,12 +4,12 @@
  * Plugin URI: https://dualcube.com/
  * Description: The MooWoodle plugin is an extention of WooCommerce that acts as a bridge between WordPress/Woocommerce and Moodle.
  * Author: DualCube
- * Version: 3.1.1
+ * Version: 3.1.2
  * Author URI: https://dualcube.com/
  * Requires at least: 5.0
  * Tested up to: 6.3.1
  * WC requires at least: 4.0
- * WC tested up to: 8.0.3
+ * WC tested up to: 8.1.1
  *
  * Text Domain: moowoodle
  * Domain Path: /languages/
@@ -65,4 +65,17 @@ if (!class_exists('MooWoodle') && MooWoodle_Dependencies::woocommerce_active_che
 	global $MooWoodle;
 	$MooWoodle = new MooWoodle(__FILE__);
 	$GLOBALS['MooWoodle'] = $MooWoodle;
+} elseif (isset($_GET['page']) && $_GET['page'] == 'moowoodle-settings') {
+	?>
+	<div style="text-align: center; padding: 20px; height: 100%">
+        <h2><?php echo __('Warning: Activate WooCommerce and Verify Moowoodle Files', 'moowoodle'); ?></h2>
+        <p><?php echo __('To access Moowoodle, please follow these steps:', 'moowoodle'); ?></p>
+        <ol style="text-align: left; margin-left: 40px;">
+            <li><?php echo __('Activate WooCommerce on your <a href="', 'moowoodle') . home_url() . '/wp-admin/plugins.php'; ?>"><?php echo __('website', 'moowoodle'); ?></a><?php echo __(', if it\'s not already activated.', 'moowoodle'); ?></li>
+            <li><?php echo __('Ensure that all Moowoodle files are present in your WordPress installation.', 'moowoodle'); ?></li>
+            <li><?php echo __('If you suspect any missing files, consider reinstalling Moowoodle to resolve the issue.', 'moowoodle'); ?></li>
+        </ol>
+        <p><?php echo __('After completing these steps, refresh this page to proceed.', 'moowoodle'); ?></p>
+    </div>
+    <?php
 }

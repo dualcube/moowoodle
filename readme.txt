@@ -5,7 +5,7 @@ Donate link: https://dualcube.com/
 Requires at least: 5.0.0
 Tested up to: 6.3.1
 Requires PHP: 8.0
-Stable tag: 3.1.1
+Stable tag: 3.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -172,6 +172,10 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 14.  List of Courses after sync.
 
 == Changelog ==
+
+= 3.1.2 – 2023-10-09 =
+* Fixed - Product data tab subscriptions notic.
+* Added - Dependency plugin activation warning.
 
 = 3.1.1 – 2023-09-19 =
 * Fixed - Synchronization Moodle course.

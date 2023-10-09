@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MooWoodle\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-19 09:38+0000\n"
+"POT-Creation-Date: 2023-10-09 13:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid " error code: "
 msgstr ""
 
-#: classes/class-moowoodle-library.php:198
+#: classes/class-moowoodle-library.php:197
 msgid " SSO Secrate Key"
 msgstr ""
 
@@ -37,14 +37,22 @@ msgid ""
 "MooWoodle to work. Please %sinstall & activate WooCommerce%s"
 msgstr ""
 
+#: moowoodle.php:74
+msgid ", if it's not already activated."
+msgstr ""
+
 #: framework/field-types/all-course-nolabel.php:22
 #: framework/field-types/all-course-nolabel.php:28
 #: framework/field-types/all-course-nolabel.php:34
 msgid "Actions"
 msgstr ""
 
-#: admin/class-moowoodle-settings.php:250
+#: admin/class-moowoodle-settings.php:249
 msgid "Activate 30+ Pro Modules"
+msgstr ""
+
+#: moowoodle.php:74
+msgid "Activate WooCommerce on your <a href=\""
 msgstr ""
 
 #: classes/class-moowoodle-posttype-course-register.php:20
@@ -52,11 +60,15 @@ msgstr ""
 msgid "Add New %s"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:22
+#: moowoodle.php:78
+msgid "After completing these steps, refresh this page to proceed."
+msgstr ""
+
+#: classes/class-moowoodle-library.php:21
 msgid "All Courses"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:61
+#: classes/class-moowoodle-library.php:60
 msgid "All Enrolments"
 msgstr ""
 
@@ -72,7 +84,7 @@ msgstr ""
 msgid "Bulk Actions"
 msgstr ""
 
-#: admin/class-moowoodle-settings.php:266
+#: admin/class-moowoodle-settings.php:265
 msgid "Buy MooWoodle Pro"
 msgstr ""
 
@@ -85,7 +97,7 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:246
+#: classes/class-moowoodle-library.php:245
 msgid ""
 "Choose the category you wish to synchronize from Moodle to your WordPress "
 "site. During synchronization, if a course is found deleted in Moodle, it "
@@ -101,7 +113,7 @@ msgstr ""
 msgid "Clear Log"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:91
+#: classes/class-moowoodle-library.php:90
 msgid "Connection Settings"
 msgstr ""
 
@@ -140,12 +152,12 @@ msgstr ""
 msgid "Course Sync"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:234
+#: classes/class-moowoodle-library.php:233
 msgid "Course Synchronization"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:24
-#: classes/class-moowoodle-library.php:33
+#: classes/class-moowoodle-library.php:23
+#: classes/class-moowoodle-library.php:32
 #: classes/class-moowoodle-posttype-course-register.php:8
 #: classes/class-moowoodle-posttype-course-register.php:9
 msgid "Courses"
@@ -159,15 +171,15 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:144
+#: classes/class-moowoodle-library.php:143
 msgid "Display"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:150
+#: classes/class-moowoodle-library.php:149
 msgid "Display Settings"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:155
+#: classes/class-moowoodle-library.php:154
 msgid "Display Start Date and End Date in Shop Page"
 msgstr ""
 
@@ -205,7 +217,7 @@ msgstr ""
 msgid "Enrolled"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:56
+#: classes/class-moowoodle-library.php:55
 msgid "Enrolment"
 msgstr ""
 
@@ -213,7 +225,12 @@ msgstr ""
 msgid "Enrolment Date"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:97
+#: moowoodle.php:75
+msgid ""
+"Ensure that all Moowoodle files are present in your WordPress installation."
+msgstr ""
+
+#: classes/class-moowoodle-library.php:96
 msgid "Enter the Moodle Site URL"
 msgstr ""
 
@@ -227,15 +244,15 @@ msgstr ""
 msgid "Failed, please check the"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:121
+#: classes/class-moowoodle-library.php:120
 msgid "Force Override Moodle User Profile"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:85
+#: classes/class-moowoodle-library.php:84
 msgid "General"
 msgstr ""
 
-#: admin/class-moowoodle-settings.php:136
+#: admin/class-moowoodle-settings.php:135
 msgid "Got a Support Question"
 msgstr ""
 
@@ -248,19 +265,25 @@ msgstr ""
 msgid "https://dualcube.com/"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:156
+#: classes/class-moowoodle-library.php:155
 msgid "If enabled display start date and end date in shop page."
 msgstr ""
 
-#: classes/class-moowoodle-library.php:187
+#: classes/class-moowoodle-library.php:186
 msgid "If enabled Moodle user's will login by WordPress user"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:122
+#: classes/class-moowoodle-library.php:121
 msgid ""
 "If enabled, all moodle user's profile data (first name, last name, city, "
 "address, etc.) will be updated as per their wordpress profile data. "
 "Explicitly, for existing user, their data will be overwritten on moodle."
+msgstr ""
+
+#: moowoodle.php:76
+msgid ""
+"If you suspect any missing files, consider reinstalling Moowoodle to resolve "
+"the issue."
 msgstr ""
 
 #: classes/class-moowoodle-endpoints.php:124
@@ -276,30 +299,29 @@ msgstr ""
 msgid "Linked Course"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:206
-#: classes/class-moowoodle-library.php:211
+#: classes/class-moowoodle-library.php:205
+#: classes/class-moowoodle-library.php:210
 msgid "Log"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:50
+#: classes/class-moowoodle-library.php:49
 msgid "Manage Enrolment"
+msgstr ""
+
+#: classes/class-moowoodle-library.php:9 classes/class-moowoodle-library.php:12
+msgid "Manage tokens"
 msgstr ""
 
 #: classes/class-moowoodle-library.php:10
 #: classes/class-moowoodle-library.php:13
-msgid "Manage tokens"
-msgstr ""
-
-#: classes/class-moowoodle-library.php:11
-#: classes/class-moowoodle-library.php:14
 msgid "Moodle"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:102
+#: classes/class-moowoodle-library.php:101
 msgid "Moodle Access Token"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:28
+#: classes/class-moowoodle-library.php:27
 msgid "Moodle Courses"
 msgstr ""
 
@@ -307,7 +329,7 @@ msgstr ""
 msgid "Moodle Linked Course"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:96
+#: classes/class-moowoodle-library.php:95
 msgid "Moodle Site URL"
 msgstr ""
 
@@ -315,18 +337,18 @@ msgstr ""
 msgid "Moodle User Name"
 msgstr ""
 
-#: admin/class-moowoodle-settings.php:293
-#: classes/class-moowoodle-library.php:107
+#: admin/class-moowoodle-settings.php:292
+#: classes/class-moowoodle-library.php:106
 msgid "Mooowoodle Test Connection"
 msgstr ""
 
 #. Name of the plugin
-#: admin/class-moowoodle-settings.php:64 classes/class-moowoodle-library.php:52
-#: classes/class-moowoodle-library.php:81
+#: admin/class-moowoodle-settings.php:63 classes/class-moowoodle-library.php:51
+#: classes/class-moowoodle-library.php:80
 msgid "MooWoodle"
 msgstr ""
 
-#: classes/class-moowoodle.php:176
+#: classes/class-moowoodle.php:177
 msgid "MooWoodle Pro"
 msgstr ""
 
@@ -338,7 +360,7 @@ msgstr ""
 msgid "My Courses"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:164
+#: classes/class-moowoodle-library.php:163
 msgid "My Courses Menu Position"
 msgstr ""
 
@@ -410,7 +432,7 @@ msgctxt "post type singular name"
 msgid "%s"
 msgstr ""
 
-#: classes/class-moowoodle-admin.php:38
+#: classes/class-moowoodle-admin.php:37
 msgid "Powered by"
 msgstr ""
 
@@ -431,9 +453,9 @@ msgstr ""
 msgid "Response is not JSON decodeable"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:87
-#: classes/class-moowoodle-library.php:146
-#: classes/class-moowoodle-library.php:176
+#: classes/class-moowoodle-library.php:86
+#: classes/class-moowoodle-library.php:145
+#: classes/class-moowoodle-library.php:175
 msgid "Save All Changes"
 msgstr ""
 
@@ -452,7 +474,7 @@ msgstr ""
 msgid "Select All"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:165
+#: classes/class-moowoodle-library.php:164
 msgid "Select below which menu the My Courses Menu will be displayed"
 msgstr ""
 
@@ -464,7 +486,7 @@ msgstr ""
 msgid "Select course..."
 msgstr ""
 
-#: classes/class-moowoodle-library.php:136
+#: classes/class-moowoodle-library.php:135
 msgid "Set Curl connection time out in sec."
 msgstr ""
 
@@ -472,7 +494,7 @@ msgstr ""
 msgid "Set up a Moodle course to conduct the connection test."
 msgstr ""
 
-#: moowoodle.php:40 classes/class-moowoodle-library.php:80
+#: moowoodle.php:40 classes/class-moowoodle-library.php:79
 msgid "Settings"
 msgstr ""
 
@@ -484,19 +506,19 @@ msgstr ""
 msgid "Short Name"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:186
+#: classes/class-moowoodle-library.php:185
 msgid "Single Sing On"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:180
+#: classes/class-moowoodle-library.php:179
 msgid "Single Sing On Settings"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:174
+#: classes/class-moowoodle-library.php:173
 msgid "SSO "
 msgstr ""
 
-#: classes/class-moowoodle-library.php:197
+#: classes/class-moowoodle-library.php:196
 msgid "SSO Secrate Key"
 msgstr ""
 
@@ -520,16 +542,16 @@ msgstr ""
 msgid "Sync Course"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:236
+#: classes/class-moowoodle-library.php:235
 msgid "Sync Now"
 msgstr ""
 
+#: classes/class-moowoodle-library.php:228
 #: classes/class-moowoodle-library.php:229
-#: classes/class-moowoodle-library.php:230
 msgid "Synchronization"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:241
+#: classes/class-moowoodle-library.php:240
 msgid "Synchronization Settings"
 msgstr ""
 
@@ -538,15 +560,15 @@ msgstr ""
 msgid "Synchronize Moodle Courses from here."
 msgstr ""
 
-#: classes/class-moowoodle-library.php:245
+#: classes/class-moowoodle-library.php:244
 msgid "Synchronize Options"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:237
+#: classes/class-moowoodle-library.php:236
 msgid "syncnow"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:130
+#: classes/class-moowoodle-library.php:129
 msgid "System Settings"
 msgstr ""
 
@@ -578,33 +600,33 @@ msgid ""
 "Leave blank to use the default heading: <code>%s</code>."
 msgstr ""
 
-#: classes/class-moowoodle-library.php:262
-#: classes/class-moowoodle-library.php:273
+#: classes/class-moowoodle-library.php:261
+#: classes/class-moowoodle-library.php:272
 msgid ""
 "This feature allows you to update previously created product information "
 "using Moodle course data. NOTE: This action will overwrite all existing "
 "product details with those from Moodle course details."
 msgstr ""
 
-#: classes/class-moowoodle-library.php:257
+#: classes/class-moowoodle-library.php:256
 msgid ""
 "This feature will scan the entire Moodle course category structure and "
 "synchronize it with the WordPress category listings."
 msgstr ""
 
-#: classes/class-moowoodle-library.php:279
+#: classes/class-moowoodle-library.php:278
 msgid ""
 "This function copies course images and sets them as WooCommerce product "
 "images."
 msgstr ""
 
-#: classes/class-moowoodle-library.php:251
+#: classes/class-moowoodle-library.php:250
 msgid ""
 "This function will retrieve all Moodle course data and synchronize it with "
 "the courses listed in WordPress."
 msgstr ""
 
-#: classes/class-moowoodle-library.php:267
+#: classes/class-moowoodle-library.php:266
 msgid ""
 "This functionality enables automatic creation of new products based on "
 "Moodle course data if they do not already exist in WordPress."
@@ -614,8 +636,12 @@ msgstr ""
 msgid "This is a notification email sent to the enrollees for new enrollment."
 msgstr ""
 
-#: classes/class-moowoodle-library.php:135
+#: classes/class-moowoodle-library.php:134
 msgid "Timeout"
+msgstr ""
+
+#: moowoodle.php:72
+msgid "To access Moowoodle, please follow these steps:"
 msgstr ""
 
 #: templates/emails/new-enrollment.php:31
@@ -633,7 +659,7 @@ msgid ""
 "services."
 msgstr ""
 
-#: classes/class-moowoodle-admin.php:38
+#: classes/class-moowoodle-admin.php:37
 msgid "ualCube"
 msgstr ""
 
@@ -641,16 +667,16 @@ msgstr ""
 msgid "Update Product"
 msgstr ""
 
-#: admin/class-moowoodle-settings.php:249
+#: admin/class-moowoodle-settings.php:248
 msgid "Upgrade to Moowoodle Pro"
 msgstr ""
 
-#: moowoodle.php:45 admin/class-moowoodle-settings.php:44
-#: admin/class-moowoodle-settings.php:45
+#: moowoodle.php:45 admin/class-moowoodle-settings.php:43
+#: admin/class-moowoodle-settings.php:44
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: admin/class-moowoodle-settings.php:220
+#: admin/class-moowoodle-settings.php:219
 msgid "Upgrade to Pro for More Features"
 msgstr ""
 
@@ -670,7 +696,7 @@ msgstr ""
 msgid "User Enrolment"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:116
+#: classes/class-moowoodle-library.php:115
 msgid "User Information Exchange Settings"
 msgstr ""
 
@@ -687,7 +713,15 @@ msgstr ""
 msgid "View %s"
 msgstr ""
 
-#: classes/class-moowoodle.php:176
+#: moowoodle.php:71
+msgid "Warning: Activate WooCommerce and Verify Moowoodle Files"
+msgstr ""
+
+#: moowoodle.php:74
+msgid "website"
+msgstr ""
+
+#: classes/class-moowoodle.php:177
 msgid "WooComerce Subbcription is supported only with "
 msgstr ""
 
