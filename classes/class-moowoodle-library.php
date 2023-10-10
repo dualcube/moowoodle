@@ -188,13 +188,13 @@ class MooWoodle_Library {
 												'Enable' => __('', 'moowoodle'),
 											),
 										),
-										"moowoodle-sso-secrate-key" => array(
+										"moowoodle-sso-secret-key" => array(
 											"type" => "textbox",
-											"name" => "moowoodle_sso_secrate_key",
+											"name" => "moowoodle_sso_secret_key",
 											"is_pro" => "pro",
 											"copy_text" => "copy",
-											"label" => __("SSO Secrate Key", 'moowoodle'),
-											"desc" => __('Enter SSO Secrate Key it should be same as ' . $moodle_sso_url . ' SSO Secrate Key', 'moowoodle'),
+											"label" => __("SSO Secret Key", 'moowoodle'),
+											"desc" => __('Enter SSO Secret Key it should be same as ' . $moodle_sso_url . ' SSO Secret Key', 'moowoodle'),
 										),
 									),
 								),

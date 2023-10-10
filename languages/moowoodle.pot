@@ -22,7 +22,7 @@ msgid " error code: "
 msgstr ""
 
 #: classes/class-moowoodle-library.php:197
-msgid " SSO Secrate Key"
+msgid " SSO Secret Key"
 msgstr ""
 
 #: classes/class-moowoodle-posttype-course-register.php:23
@@ -519,7 +519,7 @@ msgid "SSO "
 msgstr ""
 
 #: classes/class-moowoodle-library.php:196
-msgid "SSO Secrate Key"
+msgid "SSO Secret Key"
 msgstr ""
 
 #: framework/field-types/all-course-nolabel.php:21
