@@ -13,7 +13,7 @@ Unlock the power of seamless course import and sales with MooWoodle's WordPress 
 
 == Description ==
 
-### MooWoodle - WordPress and Moodle Integration Bridge for Creating and Selling Online Courses ### 
+### MooWoodle - WordPress and Moodle Integration Bridge for Creating and Selling Online Courses ###
 
 🏆 **#1** Moodle WooCommerce Bridge, **MooWoodle**, provides effortless e-learning integration. It seamlessly connects WooCommerce and Moodle, ensuring smooth course synchronization and facilitating hassle-free course sales.
 
