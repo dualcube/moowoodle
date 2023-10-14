@@ -138,7 +138,7 @@ class MooWoodle_Library {
 											"type" => "toggle-checkbox",
 											"name" => "moowoodle_adv_log",
 											"label" => __("Advance Log", 'moowoodle'),
-											"desc" => __('These settings will record all data that moves within the Moodle site. Please don\'t Enable it if not needed, cause it will create a large log file.', 'moowoodle'),
+											"desc" => __('These setting will record all advanced error informations. Please don\'t Enable it if not required, because it will create a large log file.', 'moowoodle'),
 											"option_values" => array(
 												'Enable' => __('', 'moowoodle'),
 											),
