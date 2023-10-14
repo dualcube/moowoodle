@@ -134,6 +134,15 @@ class MooWoodle_Library {
 											"label" => __("Timeout", 'moowoodle'),
 											"desc" => __('Set Curl connection time out in sec.', 'moowoodle'),
 										),
+										"moowoodle-adv-log" => array(
+											"type" => "toggle-checkbox",
+											"name" => "moowoodle_adv_log",
+											"label" => __("Advance Log", 'moowoodle'),
+											"desc" => __('These setting will record all advanced error informations. Please don\'t Enable it if not required, because it will create a large log file.', 'moowoodle'),
+											"option_values" => array(
+												'Enable' => __('', 'moowoodle'),
+											),
+										),
 									),
 								),
 							),

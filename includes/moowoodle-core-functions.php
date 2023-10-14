@@ -42,6 +42,9 @@ if (!function_exists('moowoodle_moodle_core_function_callback')) {
 		if (!empty($url) && !empty($token) && $function_name != '') {
 			$request_query = http_build_query($request_param);
 			$response = wp_remote_post($request_url, array('body' => $request_query, 'timeout' => $MooWoodle->options_timeout_settings['moodle_timeout']));
+			if(isset($conn_settings['moowoodle_adv_log']) && $conn_settings['moowoodle_adv_log'] == 'Enable'){
+				file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n\n        moowoodle url:" . $request_url . '&' . $request_query . "\n        moowoodle response:" . json_encode($response) . "\n\n", FILE_APPEND);
+			}
 		}
 		$url_check = $error_massage = '';
 		if (!is_wp_error($response) && $response != null && $response['response']['code'] == 200) {
