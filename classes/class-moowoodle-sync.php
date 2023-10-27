@@ -62,12 +62,16 @@ class MooWoodle_Sync {
 						add_term_meta($term['term_id'], '_category_id', $category['id'], false);
 						add_term_meta($term['term_id'], '_parent', $category['parent'], false);
 						add_term_meta($term['term_id'], '_category_path', $category['path'], false);
+					} else {
+						file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n        moowoodle url:" . $term->get_error_message() . "\n", FILE_APPEND);
 					}
 				} else {
 					$term = wp_update_term($term_id, $taxonomy, array('name' => $category['name'], 'slug' => "{$category['name']} {$category['id']}", 'description' => $category['description']));
 					if (!is_wp_error($term)) {
 						update_term_meta($term['term_id'], '_parent', $category['parent'], '');
 						update_term_meta($term['term_id'], '_category_path', $category['path'], false);
+					} else {
+						file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n        moowoodle url:" . $term->get_error_message() . "\n", FILE_APPEND);
 					}
 				}
 				$category_ids[] = $category['id'];
@@ -98,7 +102,7 @@ class MooWoodle_Sync {
 		$sync_settings = $MooWoodle->options_synchronize_settings;
 		$courses = moowoodle_moodle_core_function_callback('get_courses');
 		$this->update_posts($courses, 'course', 'course_cat', 'moowoodle_term');
-		if (isset($sync_settings['sync_all_product']) && $sync_settings['sync_all_product'] == "Enable" && !$MooWoodle->moowoodle_pro_adv) {
+		if (isset($sync_settings['sync_all_product']) && $sync_settings['sync_all_product'] == "Enable" && $MooWoodle->moowoodle_pro_adv) {
 			$this->update_posts($courses, 'product', 'product_cat', 'woocommerce_term');
 		}
 	}

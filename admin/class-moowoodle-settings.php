@@ -1,8 +1,8 @@
 <?php
 class MooWoodle_Settings {
-	public $settings_library = array();
+	private $settings_library = array();
 	private $options;
-	public $pro_sticker = '';
+	private $pro_sticker = '';
 	/*
 		  * Start up
 	*/
@@ -308,64 +308,64 @@ if ($MooWoodle->moowoodle_pro_adv) {
 	 * Register and add settings
 	 */
 	public function settings_page_init() {
-		global $MooWoodle;
-		$settingValues = array();
-		foreach ($this->settings_library['menu'] as $menuItem) {
-			foreach ($menuItem['tabs'] as $tab) {
-				if (empty($tab['validate_function'])) {
-					$validate_function = array(
-						&$this,
-						'validate_machine',
-					);
-					$setting_id = $tab['setting'];
-					register_setting($tab['setting'], $tab['setting'], $validate_function);
-				}
-				foreach ($tab['section'] as $section_id => $section) {
-					if (empty($section['desc_callback'])) {
-						$section['desc_callback'] = array(
+		if($this->settings_library['menu'] != null) {
+			foreach ($this->settings_library['menu'] as $menuItem) {
+				foreach ($menuItem['tabs'] as $tab) {
+					if (empty($tab['validate_function'])) {
+						$validate_function = array(
 							&$this,
-							'return_empty_string',
+							'validate_machine',
 						);
+						$setting_id = $tab['setting'];
+						register_setting($tab['setting'], $tab['setting'], $validate_function);
 					}
-					add_settings_section($section_id, $section['label'], $section['desc_callback'], $section_id);
-					if (is_array($section['field_types'])) {
-						foreach ($section['field_types'] as $field_id => $field) {
-							if (is_array($field)) {
-								if (empty($field['callback'])) {
-									$field['callback'] = array($this, 'field_machine');
+					foreach ($tab['section'] as $section_id => $section) {
+						if (empty($section['desc_callback'])) {
+							$section['desc_callback'] = array(
+								&$this,
+								'return_empty_string',
+							);
+						}
+						add_settings_section($section_id, $section['label'], $section['desc_callback'], $section_id);
+						if (is_array($section['field_types'])) {
+							foreach ($section['field_types'] as $field_id => $field) {
+								if (is_array($field)) {
+									if (empty($field['callback'])) {
+										$field['callback'] = array($this, 'field_machine');
+									}
+									add_settings_field(
+										$field_id,
+										(isset($field['label']) ? $field['label'] : ''),
+										$field['callback'],
+										$section_id,
+										$section_id,
+										apply_filters(
+											'moowoodle_add_settings_field',
+											array(
+												'id' => $field_id,
+												'name' => (isset($field['name']) ? $field['name'] : ''),
+												'desc' => (isset($field['desc']) ? $field['desc'] : ''),
+												'setting_id' => $setting_id,
+												'class' => (isset($field['class']) ? $field['class'] : ''),
+												'type' => (isset($field['type']) ? $field['type'] : ''),
+												'default_value' => (isset($field['default_value']) ? $field['default_value'] : ''),
+												'option_values' => (isset($field['option_values']) ? $field['option_values'] : ''),
+												'extra_input' => (isset($field['extra_input']) ? $field['extra_input'] : ''),
+												'font_class' => (isset($field['font_class']) ? $field['font_class'] : ''),
+												'disabled' => (isset($field['disabled']) ? $field['disabled'] : ''),
+												'is_pro' => (isset($field['is_pro']) ? $field['is_pro'] : ''),
+												'copy_text' => (isset($field['copy_text']) ? $field['copy_text'] : ''),
+											),
+											$field
+										)
+									);
 								}
-								add_settings_field(
-									$field_id,
-									(isset($field['label']) ? $field['label'] : ''),
-									$field['callback'],
-									$section_id,
-									$section_id,
-									apply_filters(
-										'moowoodle_add_settings_field',
-										array(
-											'id' => $field_id,
-											'name' => (isset($field['name']) ? $field['name'] : ''),
-											'desc' => (isset($field['desc']) ? $field['desc'] : ''),
-											'setting_id' => $setting_id,
-											'class' => (isset($field['class']) ? $field['class'] : ''),
-											'type' => (isset($field['type']) ? $field['type'] : ''),
-											'default_value' => (isset($field['default_value']) ? $field['default_value'] : ''),
-											'option_values' => (isset($field['option_values']) ? $field['option_values'] : ''),
-											'extra_input' => (isset($field['extra_input']) ? $field['extra_input'] : ''),
-											'font_class' => (isset($field['font_class']) ? $field['font_class'] : ''),
-											'disabled' => (isset($field['disabled']) ? $field['disabled'] : ''),
-											'is_pro' => (isset($field['is_pro']) ? $field['is_pro'] : ''),
-											'copy_text' => (isset($field['copy_text']) ? $field['copy_text'] : ''),
-										),
-										$field
-									)
-								);
 							}
 						}
 					}
 				}
 			}
-		}
+		}	
 	}
 	public function field_machine($args) {
 		global $MooWoodle;

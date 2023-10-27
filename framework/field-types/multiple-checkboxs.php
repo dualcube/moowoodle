@@ -3,7 +3,7 @@
      <div class="mw-select-deselect-checkbox-label-marge">
          <?php
 global $MooWoodle;
-$pro_sticker = '';
+$pro_popup_overlay = $pro_sticker = '';
 if ($MooWoodle->moowoodle_pro_adv) {
 	$pro_sticker = '<span class="mw-pro-tag">Pro</span>';
 	$pro_popup_overlay = ' mw-pro-popup-overlay ';
