@@ -309,6 +309,7 @@ if ($MooWoodle->moowoodle_pro_adv) {
 	 */
 	public function settings_page_init() {
 		global $MooWoodle;
+		$this->settings_library = $MooWoodle->library->moowoodle_get_options();
 		$settingValues = array();
 		foreach ($this->settings_library['menu'] as $menuItem) {
 			foreach ($menuItem['tabs'] as $tab) {

@@ -221,7 +221,7 @@ class MooWoodle_Testconnection {
 						if (str_contains($response_arr['message'], 'Invalid token')) {
 							$url_check = '<a href="' . $conn_settings['moodle_url'] . '/admin/webservice/tokens.php">' . __('Link', 'moowoodle') . '</a>';
 						}
-						$error_massage = $response_arr['message'] . ' ' . $url_check;
+						$error_massage = $response_arr['message'] . ' ' . $url_check . $response_arr['debuginfo'] ;
 					}
 				} else {
 					$error_massage = __('Response is not JSON decodeable', 'moowoodle');
@@ -233,7 +233,7 @@ class MooWoodle_Testconnection {
 			if ($response['response']['code'] == 404) {
 				$url_check = __('Please check "Moodle Site URL" ||', 'moowoodle');
 			}
-			$error_massage = $url_check . __(' error code: ', 'moowoodle') . $response['response']['code'] . " " . $response['response']['message'];
+			$error_massage = $url_check . __(' error code: ', 'moowoodle') . $response['response']['code'] . " " . $response['response']['message'] ;
 		}
 		file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n        moowoodle error:" . $error_massage . "\n", FILE_APPEND);
 		return $error_massage;
