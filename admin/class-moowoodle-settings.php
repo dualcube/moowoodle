@@ -2,7 +2,7 @@
 class MooWoodle_Settings {
 	private $settings_library = array();
 	private $options;
-	public $pro_sticker = '';
+	private $pro_sticker = '';
 	/*
 		  * Start up
 	*/
