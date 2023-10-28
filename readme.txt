@@ -37,8 +37,8 @@ Unlock the power of seamless course import and sales with MooWoodle's WordPress 
 
 👉 Official Demo Link: Try out **MooWoodle** Demo sites
 
-➡️ **[WordPress](https://dev.dualcube.com/demo.moowoodle/wp-admin)**
-➡️ **[Moodle](http://dev.dualcube.com/moodle411/login/index.php)**
+➡️ **[WordPress](http://demo.dualcube.com/moowoodle/wp-admin)**
+➡️ **[Moodle](http://demo.dualcube.com/moodledemo/login/index.php)**
 
 ## ➡️ Key Features
 
