@@ -233,7 +233,7 @@ class MooWoodle_Testconnection {
 			if ($response['response']['code'] == 404) {
 				$url_check = __('Please check "Moodle Site URL" ||', 'moowoodle');
 			}
-			$error_massage = $url_check . __(' error code: ', 'moowoodle') . $response['response']['code'] . " " . $response['response']['message'] ;
+			$error_massage = $url_check . __(' error code: ', 'moowoodle') . $response['response']['code'] . " " . $response['response']['message'];
 		}
 		file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n        moowoodle error:" . $error_massage . "\n", FILE_APPEND);
 		return $error_massage;

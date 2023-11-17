@@ -1,3 +1,11 @@
+<?php
+if($desc_posi == 'up'){
+    ?>
+    <p class='mw-form-description'><?php echo $desc; ?></p>
+    <?php
+    $desc = '';
+}
+?>
  <div id="<?php echo $id; ?>-multiple-checkboxs">
      <button type="button" id="selectDeselectButton" class="button-secondary">Select / Deselect All</button>
      <div class="mw-select-deselect-checkbox-label-marge">
