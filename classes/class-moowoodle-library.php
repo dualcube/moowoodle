@@ -211,6 +211,30 @@ class MooWoodle_Library {
 								),
 							),
 						),
+						"moowoodle-notification" => array(
+							"is_pro" => "pro",
+							"label" => __("Notification ", 'moowoodle'),
+							"font_class" => "dashicons-bell",
+							"submit_btn_value" => __('Save All Changes', 'moowoodle'),
+							"setting" => "moowoodle_notification_settings",
+							"section" => array(
+								"moowoodle-notification" => array(
+									"label" => __("Moowoodle Customize Notification Settings", 'moowoodle'),
+									"field_types" => array(
+										"moowoodle-create-user-custom-mail-eneble" => array(
+											"type" => "toggle-checkbox",
+											'name' => "moowoodle_create_user_custom_mail",
+											"is_pro" => "pro",
+											"label" => __("Customize New User Registration Email", 'moowoodle'),
+											"desc" => __('If this option is enabled, default WordPress and Moodle new user registration emails will be disabled. Our custom New User Registration email will be sent to the newly registered user. You can personalize the content of the MooWoodle New User email using our Email Body settings.', 'moowoodle'),
+											"option_values" => array(
+												'Enable' => __('', 'moowoodle'),
+											),
+										),
+									),
+								),
+							),
+						),
 						"moowoodle-log" => array(
 							"id" => "moowoodle-log",
 							"label" => __("Log", 'moowoodle'),
@@ -248,11 +272,32 @@ class MooWoodle_Library {
 								"moowoodle-sync-settings" => array(
 									"label" => __("Synchronization Options", 'moowoodle'),
 									"field_types" => array(
+										"sync-real-time-user-options" => array(
+											"type" => "multiple-checkboxs",
+											"label" => __("Realtime User Sync", 'moowoodle'),
+											"desc" => __("Activate this feature for effortless user synchronization between Moodle and WordPress. As soon as a new user is added on one platform, our system dynamically syncs their profile to the other, accompanied by email notifications. This ensures users are promptly informed, creating a seamlessly unified experience across both platforms.", 'moowoodle') ,
+											"option_values" => array(
+												'Moodle &rArr; WordPress' => array(
+													"id" => "realtime-sync-moodle-users",
+													"name" => "realtime_sync_moodle_users",
+													"desc" => __("", 'moowoodle'),
+													"is_pro" => "pro",
+												),
+												'WordPress &rArr; Moodle' => array(
+													"id" => "realtime-sync-wordpress-users",
+													"name" => "realtime_sync_wordpress_users",
+													"desc" => __("", 'moowoodle'),
+													"is_pro" => "pro",
+												),
+												
+											),
+										),
 										"sync-user-options" => array(
 											"type" => "multiple-checkboxs",
 											"label" => __("User Information", 'moowoodle'),
 											"desc" => __("Determine User Information to Synchronize in Moodle-WordPress User synchronization. Please be aware that this setting does not apply to newly created users.", 'moowoodle'),
 											"desc_posi" => "up",
+											"note" => "<b>Note:</b> password hashing changed if password sync is on",
 											"option_values" => array(
 												'First Name' => array(
 													"id" => "sync-user-first-name",
@@ -311,7 +356,6 @@ class MooWoodle_Library {
 													"desc" => __("To update passwords for users created before activating the plugin, they must log in once to migrate their passwords to the new hashing method. After this step, the admin can synchronize their passwords from WordPress to Moodle.If the user doesn't log in, all other fields will be synchronized except for the password.", 'moowoodle'),
 													"is_pro" => "pro",
 												),
-												
 											),
 										),
 										"sync-course-options" => array(

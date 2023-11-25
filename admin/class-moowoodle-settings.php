@@ -366,6 +366,7 @@ class MooWoodle_Settings {
 												'is_pro' => (isset($field['is_pro']) ? $field['is_pro'] : ''),
 												'copy_text' => (isset($field['copy_text']) ? $field['copy_text'] : ''),
 												'desc_posi' => (isset($field['desc_posi']) ? $field['desc_posi'] : ''),
+												'note' => (isset($field['note']) ? $field['note'] : ''),
 											),
 											$field
 										)

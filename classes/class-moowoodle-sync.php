@@ -102,7 +102,7 @@ class MooWoodle_Sync {
 		$sync_settings = $MooWoodle->options_synchronize_now;
 		$courses = moowoodle_moodle_core_function_callback('get_courses');
 		$this->update_posts($courses, 'course', 'course_cat', 'moowoodle_term');
-		if (isset($sync_settings['sync_all_product']) && $sync_settings['sync_all_product'] == "Enable" && !$MooWoodle->moowoodle_pro_adv) {
+		if (isset($sync_settings['sync_all_product']) && $sync_settings['sync_all_product'] == "Enable" && $MooWoodle->moowoodle_pro_adv) {
 			$this->update_posts($courses, 'product', 'product_cat', 'woocommerce_term');
 		}
 	}

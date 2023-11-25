@@ -74,10 +74,15 @@ if (!function_exists('moowoodle_moodle_core_function_callback')) {
 				$MooWoodle->ws_has_error = true;
 			}
 		} else {
-			if ($response['response']['code'] == 404) {
-				$url_check = __('Please check "Moodle Site URL" { ', 'moowoodle');
+			$error_codes = '';
+			if(is_array($response->get_error_codes())) {
+				foreach($response->get_error_code() as $error_code) {
+					$error_codes .= $error_code;
+				}
+			} else {
+				$error_codes .= $response->get_error_code();
 			}
-			$error_massage = $url_check . __(' error code: ', 'moowoodle') . $response['response']['code'] . " } " . $response['response']['message'];
+			$error_massage =  $error_codes. $response->get_error_message();
 			$MooWoodle->ws_has_error = true;
 		}
 		file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n        moowoodle error:" . $error_massage . "\n", FILE_APPEND);
@@ -188,5 +193,21 @@ if (!function_exists('moodle_course_exist_in_order_items')) {
 			}
 		}
 		return false;
+	}
+}
+
+if(!function_exists('do_mwdl_data_migrate')) {
+	function do_mwdl_data_migrate($previous_plugin_version = '', $new_plugin_version = '') {
+		if ($previous_plugin_version) {
+			if ($previous_plugin_version <= '3.1.3') {
+				$old_settings = get_option('moowoodle_synchronize_settings');
+				if ($old_settings) {
+					update_option('moowoodle_synchronize_now', $old_settings);
+					delete_option('moowoodle_synchronize_settings');
+				}
+				update_option('your_plugin_version', 'new_version');
+			}
+		}
+        update_option('dc_moowoodle_plugin_db_version', $new_plugin_version);
 	}
 }

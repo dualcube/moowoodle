@@ -3,7 +3,7 @@ if($desc_posi == 'up'){
     ?>
     <p class='mw-form-description'><?php echo $desc; ?></p>
     <?php
-    $desc = '';
+    $desc = $note != '' ? $note : '';
 }
 ?>
  <div id="<?php echo $id; ?>-multiple-checkboxs">
