@@ -276,7 +276,7 @@ class MooWoodle_Library {
 										"sync-real-time-user-options" => array(
 											"type" => "multiple-checkboxs",
 											"label" => __("Realtime User Sync", 'moowoodle'),
-											"desc" => __("Activate this feature for effortless user (except admin) synchronization between Moodle and WordPress. As soon as a new user is added on one platform, our system dynamically syncs their profile to the other, accompanied by email notifications. This ensures users are promptly informed, creating a seamlessly unified experience across both platforms.", 'moowoodle') ,
+											"desc" => __("Activate this feature for effortless user synchronization between Moodle and WordPress. As soon as a new user is added on one platform, our system dynamically syncs their profile to the other, accompanied by email notifications. This ensures users are promptly informed, creating a seamlessly unified experience across both platforms.", 'moowoodle') ,
 											"option_values" => array(
 												'Moodle &rArr; WordPress' => array(
 													"id" => "realtime-sync-moodle-users",
