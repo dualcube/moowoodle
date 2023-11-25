@@ -71,7 +71,7 @@ class MooWoodle_Settings {
                   <?php endif;?>
                   <form class="mw-dynamic-form" action="options.php" method="post">
                     <?php
-$show_submit = false;
+		$show_submit = false;
 		foreach ($this->settings_library['menu'] as $menuItem) {
 			foreach ($menuItem['tabs'] as $tab_id => $tab) {
 				if (empty($default_tab)) {
@@ -114,7 +114,7 @@ $show_submit = false;
             <?php if ($layout == '2-col'): ?>
               <div class="mw-sidebar">
                 <?php
-if ($MooWoodle->moowoodle_pro_adv) {
+			if ($MooWoodle->moowoodle_pro_adv) {
 			?>
                    <div class="mw-banner-right">
                     <a class="mw-image-adv">
@@ -140,7 +140,7 @@ if ($MooWoodle->moowoodle_pro_adv) {
                   </div>
                   
                 <?php
-}
+		}
 		// Additional banner for pro version
 		do_action('moowoodle_pro_right_side_bar');
 		?>
@@ -151,7 +151,7 @@ if ($MooWoodle->moowoodle_pro_adv) {
         </div>
       </div>
       <?php
-// MooWoodle admin footer
+		// MooWoodle admin footer
 		do_action('moowoodle_admin_footer');
 	}
 	public function moowoodle_get_page_layout() {
@@ -239,8 +239,8 @@ if ($MooWoodle->moowoodle_pro_adv) {
 			?>
     </div>
     </div>
-<?php
-if ($MooWoodle->moowoodle_pro_adv) {
+			<?php
+			if ($MooWoodle->moowoodle_pro_adv) {
 				echo '<div class="mw-image-overlay">
           <div class="mw-overlay-content">
           <span class="dashicons dashicons-no-alt mw-modal cross"></span>
@@ -248,13 +248,13 @@ if ($MooWoodle->moowoodle_pro_adv) {
           <h2>' . esc_html__('Upgrade to Moowoodle Pro', 'moowoodle') . '</h2>
          <!-- <h3 class="mw-banner-thrd">' . esc_html__('Activate 30+ Pro Modules', 'moowoodle') . '</h3>-->
           <div class="mw-banner-content">Boost to MooWoodle Pro to access premium features and enhancements!
-      <p>&nbsp;</p>
-        <p>1. Convenient Single Sign-On for Moodle™ and WordPress Login.</p>
-      <p>2. Create steady income through course subscriptions.</p>
-      <p>3. Increase earnings by offering courses in groups, variations, or individually.</p>
-      <p>4. Selectively sync courses with flexibility.</p>
-      <p>5. Effortlessly synchronize courses in bulk.</p>
-      </div>
+		      <p>&nbsp;</p>
+		        <p>1. Convenient Single Sign-On for Moodle™ and WordPress Login.</p>
+		      <p>2. Create steady income through course subscriptions.</p>
+		      <p>3. Increase earnings by offering courses in groups, variations, or individually.</p>
+		      <p>4. Selectively sync courses with flexibility.</p>
+		      <p>5. Effortlessly synchronize courses in bulk.</p>
+		      </div>
           <div class="mw-banner-offer">Today\'s Offer</div>
           <div class="discount-tag">Upto <b>15%</b>Discount</div>
           <p class="">Seize the opportunity – upgrade now and unlock the full potential of our Pro
@@ -297,6 +297,16 @@ if ($MooWoodle->moowoodle_pro_adv) {
 			}
 
 			call_user_func($field['callback'], $field['args']);
+
+			if((isset($field_id) && $field_id == 'sync-course-options')){
+				echo '<p  class="mw-save-changes"><input name="synccoursenow" class="button-primary" type="submit" value="' . __('Sync Courses Now', 'moowoodle') . '" class="button-primary">';
+			}
+			if(isset($field_id) && $field_id == 'sync-user-options'){
+				echo '<p  class="mw-save-changes"><input name="submit" type="submit" value="Save Changes" class="button-primary">';
+			}
+			if(isset($field_id) && $field_id == 'sync-all-user-options'){
+				echo '<p  class="mw-save-changes"><input name="syncusernow" class="button-primary" type="submit" value="' . __('Sync All Users Now', 'moowoodle') . '" class="button-primary">';
+			}
 			if (!str_contains($field_id, 'nolabel')) {
 				echo '</div>';
 			}
@@ -355,6 +365,8 @@ if ($MooWoodle->moowoodle_pro_adv) {
 												'disabled' => (isset($field['disabled']) ? $field['disabled'] : ''),
 												'is_pro' => (isset($field['is_pro']) ? $field['is_pro'] : ''),
 												'copy_text' => (isset($field['copy_text']) ? $field['copy_text'] : ''),
+												'desc_posi' => (isset($field['desc_posi']) ? $field['desc_posi'] : ''),
+												'note' => (isset($field['note']) ? $field['note'] : ''),
 											),
 											$field
 										)
@@ -365,7 +377,7 @@ if ($MooWoodle->moowoodle_pro_adv) {
 					}
 				}
 			}
-		}	
+		}
 	}
 	public function field_machine($args) {
 		global $MooWoodle;

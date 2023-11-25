@@ -28,6 +28,7 @@ if (!function_exists('moowoodle_moodle_core_function_callback')) {
 			'enrol_users' => 'enrol_manual_enrol_users',
 			'get_course_image' => 'core_course_get_courses_by_field',
 			'unenrol_users' => 'enrol_manual_unenrol_users',
+			'get_all_users_data' => 'auth_moowoodle_user_sync_get_all_users_data',
 		);
 		if (array_key_exists($key, $moodle_core_functions)) {
 			$function_name = $moodle_core_functions[$key];
@@ -73,10 +74,15 @@ if (!function_exists('moowoodle_moodle_core_function_callback')) {
 				$MooWoodle->ws_has_error = true;
 			}
 		} else {
-			if ($response['response']['code'] == 404) {
-				$url_check = __('Please check "Moodle Site URL" { ', 'moowoodle');
+			$error_codes = '';
+			if(is_array($response->get_error_codes())) {
+				foreach($response->get_error_code() as $error_code) {
+					$error_codes .= $error_code;
+				}
+			} else {
+				$error_codes .= $response->get_error_code();
 			}
-			$error_massage = $url_check . __(' error code: ', 'moowoodle') . $response['response']['code'] . " } " . $response['response']['message'];
+			$error_massage =  $error_codes. $response->get_error_message();
 			$MooWoodle->ws_has_error = true;
 		}
 		file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n        moowoodle error:" . $error_massage . "\n", FILE_APPEND);
@@ -132,8 +138,6 @@ if (!function_exists('get_moowoodle_course_url')) {
 		$course = $linked_course_id;
 		$class = "moowoodle";
 		$target = '_blank';
-		$authtext = '';
-		$activity = 0;
 		$content = $course_name;
 		$conn_settings = $MooWoodle->options_general_settings;
 		$redirect_uri = $conn_settings['moodle_url'] . "/course/view.php?id=" . $course;
@@ -189,5 +193,21 @@ if (!function_exists('moodle_course_exist_in_order_items')) {
 			}
 		}
 		return false;
+	}
+}
+
+if(!function_exists('do_mwdl_data_migrate')) {
+	function do_mwdl_data_migrate($previous_plugin_version = '', $new_plugin_version = '') {
+		if ($previous_plugin_version) {
+			if ($previous_plugin_version <= '3.1.3') {
+				$old_settings = get_option('moowoodle_synchronize_settings');
+				if ($old_settings) {
+					update_option('moowoodle_synchronize_now', $old_settings);
+					delete_option('moowoodle_synchronize_settings');
+				}
+				update_option('your_plugin_version', 'new_version');
+			}
+		}
+        update_option('dc_moowoodle_plugin_db_version', $new_plugin_version);
 	}
 }

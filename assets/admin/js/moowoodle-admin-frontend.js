@@ -161,7 +161,7 @@
         }
         //sso generat key
         const inputDiv = document.querySelector(".mw-textbox-input-wraper");
-        const ssKeyInput = document.getElementById("moowoodlepro-sso-secret-key");
+        const ssKeyInput = document.getElementById("moowoodle-sso-secret-key");
         if (ssKeyInput != null) {
             const generatButton = document.createElement("div");
             generatButton.innerHTML = '<button class="generat-key button-secondary" label="Generot Key" type="button">Generate</button>';

@@ -3,9 +3,9 @@ Contributors: dualcube, kndnsow
 Tags: Moodle Integration, LMS Integration, WordPress LMS, e-Learning, Moodle Connector
 Donate link: https://dualcube.com/
 Requires at least: 5.0.0
-Tested up to: 6.3.2
+Tested up to: 6.4.1
 Requires PHP: 8.0
-Stable tag: 3.1.3
+Stable tag: 3.1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -110,9 +110,9 @@ Unlock even more possibilities with Moowoodle Pro:
 
 🖼️ **Course Images [PRO]**: Copy course images and apply them as WooCommerce product images.
 
-### ➡️ User Synchronization Options
+### ➡️ User Synchronization Options [PRO]
 
-Coming Soon!! ✌️
+🕺💃Now Available💃🕺 ✌️
 
 Join the ranks of satisfied users who have transformed their e-learning experiences with Moowoodle. Download it now and revolutionize your online education platform!
 
@@ -172,6 +172,9 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 14.  List of Courses after sync.
 
 == Changelog ==
+
+= 3.1.4 – 2023-11-25 =.
+* Added - Advanced Log.
 
 = 3.1.3 – 2023-10-27 =
 * Fixed - Product Sync.

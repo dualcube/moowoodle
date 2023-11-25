@@ -9,6 +9,7 @@ class MooWoodle_Product_Data_Tabs {
 	 * Creates custom tab for product types.
 	 *
 	 * @access public
+	 * @param array $product_data_tabs
 	 * @return void
 	 */
 	public function moowoodle_linked_course_tab($product_data_tabs) {
@@ -22,7 +23,6 @@ class MooWoodle_Product_Data_Tabs {
 	 * Add meta box panal.
 	 *
 	 * @access public
-	 * @param array $product_data_tabs
 	 * @return void
 	 */
 	public function moowoodle_linked_course_panals() {

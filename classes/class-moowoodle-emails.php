@@ -41,7 +41,7 @@ class MooWoodle_Emails {
 	public function send_moodle_enrollment_confirmation($enrolments) {
 		global $MooWoodle;
 		$conn_settings = $MooWoodle->options_general_settings;
-		$moodle_access_url = $conn_settings['moodle_url'];
+		$moodle_access_url = $MooWoodle->options_general_settings['moodle_url'];
 		$enrollment_datas = array();
 		$user_id = $MooWoodle->enrollment->wc_order->get_user_id();
 		$user = get_userdata($user_id);

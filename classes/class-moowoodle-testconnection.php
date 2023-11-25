@@ -22,6 +22,7 @@ class MooWoodle_Testconnection {
 	}
 	// test connection with moodle server from connection settings
 	public function testconnection() {
+		add_action('wp_ajax_get_site_info', array($this, 'get_site_info'));
 		add_action('wp_ajax_get_course', array($this, 'get_course'));
 		add_action('wp_ajax_get_catagory', array($this, 'get_catagory'));
 		add_action('wp_ajax_get_course_by_fuild', array($this, 'get_course_by_fuild'));
@@ -31,6 +32,21 @@ class MooWoodle_Testconnection {
 		add_action('wp_ajax_enrol_users', array($this, 'enrol_users'));
 		add_action('wp_ajax_unenrol_users', array($this, 'unenrol_users'));
 		add_action('wp_ajax_delete_users', array($this, 'delete_users'));
+	}
+	//test get site info
+	public function get_site_info() {
+		$response = $this->moowoodle_moodle_test_connection_callback('get_site_info');
+		if ($response != null) {
+			if ($this->check_connection($response) == 'success') {
+				$response_obj = json_decode($response['body']);
+				$this->response_data['message'] = 'success';
+				update_option('moowoodle_moodle_site_name', $response_obj->sitename);
+			}
+		}
+		$this->response_data['course_empty'] = $_POST['course_empty'];
+		$this->response_data['course_id'] = $_POST['course_id'];
+		$this->response_data['user_id'] = $_POST['user_id'];
+		wp_send_json($this->response_data);
 	}
 	//test get course
 	public function get_course() {
@@ -168,7 +184,9 @@ class MooWoodle_Testconnection {
 		global $MooWoodle;
 		$response = null;
 		$function_name = "";
-		$moodle_core_functions = array('get_categories' => 'core_course_get_categories',
+		$moodle_core_functions = array(
+			'get_site_info' => 'core_webservice_get_site_info',
+			'get_categories' => 'core_course_get_categories',
 			'get_courses' => 'core_course_get_courses',
 			'get_moodle_users' => 'core_user_get_users',
 			'create_users' => 'core_user_create_users',
@@ -191,7 +209,7 @@ class MooWoodle_Testconnection {
 		if (!empty($url) && !empty($token) && $function_name != '') {
 			$request_query = http_build_query($request_param);
 			$response = wp_remote_post($request_url, array('body' => $request_query, 'timeout' => $MooWoodle->options_timeout_settings['moodle_timeout']));
-			if(isset($conn_settings['moowoodle_adv_log']) && $conn_settings['moowoodle_adv_log'] == 'Enable'){
+			if(isset($conn_settings['moowoodle_adv_log']) && $conn_settings['moowoodle_adv_log'] == 'Enable' ){
 				file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n\n        moowoodle url:" . $request_url . '&' . $request_query . "\n        moowoodle response:" . json_encode($response) . "\n\n", FILE_APPEND);
 			}
 			
@@ -206,6 +224,7 @@ class MooWoodle_Testconnection {
 	 * @return string
 	 */
 	private function check_connection($response) {
+		global $MooWoodle;
 		$conn_settings = get_option('moowoodle_general_settings');
 		$url_check = $error_massage = '';
 		if (!is_wp_error($response) && $response != null && $response['response']['code'] == 200) {
@@ -229,11 +248,17 @@ class MooWoodle_Testconnection {
 			} else {
 				$error_massage = __('Not String response', 'moowoodle');
 			}
-		} else {
-			if ($response['response']['code'] == 404) {
-				$url_check = __('Please check "Moodle Site URL" ||', 'moowoodle');
+		} elseif ($response != null) {
+			$error_codes = '';
+			if(is_array($response->get_error_codes())) {
+				foreach($response->get_error_code() as $error_code) {
+					$error_codes .= $error_code;
+				}
+			} else {
+				$error_codes .= $response->get_error_code();
 			}
-			$error_massage = $url_check . __(' error code: ', 'moowoodle') . $response['response']['code'] . " " . $response['response']['message'] ;
+			$error_massage =  $error_codes. $response->get_error_message();
+			$MooWoodle->ws_has_error = true;
 		}
 		file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n        moowoodle error:" . $error_massage . "\n", FILE_APPEND);
 		return $error_massage;

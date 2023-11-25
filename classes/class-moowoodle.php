@@ -21,6 +21,7 @@ class MooWoodle {
 	public $options_general_settings;
 	public $options_display_settings;
 	public $options_synchronize_settings;
+	public $options_synchronize_now;
 	public $options_timeout_settings;
 	public $testconnection;
 	public $product_data_tab;
@@ -38,6 +39,8 @@ class MooWoodle {
 		$this->options_display_settings = get_option('moowoodle_display_settings');
 		// synchronize settings
 		$this->options_synchronize_settings = get_option('moowoodle_synchronize_settings');
+		// synchronize now options
+		$this->options_synchronize_now = get_option('moowoodle_synchronize_now');
 		// moodle timeout settings
 		$timeout = get_option('moowoodle_general_settings');
 		if ($timeout != null && is_int((int) $timeout['moodle_timeout']) && (int) $timeout['moodle_timeout'] > 5) {
@@ -49,6 +52,7 @@ class MooWoodle {
 		}
 		add_filter('woocommerce_product_class', array($this, 'product_type_subcription_warning'), 10, 2);
 		add_action('init', array(&$this, 'init'), 1);
+		add_action('admin_init', array(&$this, 'mwdl_admin_init'));
 	}
 	/**
 	 * initilize plugin on WP init
@@ -71,6 +75,7 @@ class MooWoodle {
 			//frontend js file
 			$args = array(
 				'testconnection_actions' => array(
+					'get_site_info' => __('Connecting to Moodle', 'moowoodle'),
 					'get_catagory' => __('Course Category Sync', 'moowoodle'),
 					'get_course_by_fuild' => __('Course Data Sync', 'moowoodle'),
 					'get_course' => __('Course Sync', 'moowoodle'),
@@ -115,6 +120,11 @@ class MooWoodle {
 		if (isset($_POST['clearlog'])) {
 			file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "MooWoodle Log file Cleared\n");
 		}
+	}
+	function mwdl_admin_init() {
+		$previous_plugin_version = get_option('dc_moowoodle_plugin_db_version');
+        /* Migrate MooWoodle data */
+        do_mwdl_data_migrate($previous_plugin_version, $this->version);
 	}
 	/**
 	 * Load Localisation files.
@@ -164,17 +174,17 @@ class MooWoodle {
 			self::$active_plugins = array_merge(self::$active_plugins, get_site_option('active_sitewide_plugins', array()));
 		}
 
-		if (in_array('woocommerce-subscriptions/woocommerce-subscriptions.php', self::$active_plugins) || array_key_exists('woocommerce-subscriptions/woocommerce-subscriptions.php', self::$active_plugins)) {
-			add_action('admin_notices', array($this, 'product_type_subcription_notice'));
+		if (in_array('woocommerce-subscriptions/woocommerce-subscriptions.php', self::$active_plugins) || array_key_exists('woocommerce-product/woocommerce-subscriptions.php', self::$active_plugins) || in_array('woocommerce-product-bundles/woocommerce-product-bundles.php', self::$active_plugins) || array_key_exists('woocommerce-product-bundles/woocommerce-product-bundles.php', self::$active_plugins)) {
+			add_action('admin_notices', array($this, 'product_type_notice'));
 		}
 		return $php_classname;
 	}
 	/**
 	 * Displays an inactive notice when the software is inactive.
 	 */
-	public function product_type_subcription_notice() {
+	public function product_type_notice() {
 		if ($this->moowoodle_pro_adv) {
-			echo '<div class="notice notice-warning is-dismissible"><p>' . __('WooComerce Subbcription is supported only with ', 'moowoodle') . '<a href="' . MOOWOODLE_PRO_SHOP_URL . '">' . __('MooWoodle Pro', 'moowoodle') . '</></p></div>';
+			echo '<div class="notice notice-warning is-dismissible"><p>' . __('WooComerce Subbcription and WooComerce Product Bundles is supported only with ', 'moowoodle') . '<a href="' . MOOWOODLE_PRO_SHOP_URL . '">' . __('MooWoodle Pro', 'moowoodle') . '</></p></div>';
 		}
 
 	}

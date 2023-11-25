@@ -5,12 +5,15 @@ class MooWoodle_Library {
 		$conn_settings = get_option('moowoodle_general_settings');
 		$url = isset($conn_settings['moodle_url']) ? $conn_settings['moodle_url'] : '';
 		$pro_sticker = '';
+		$woocom_new_user_mail = '<a href="'. site_url() .'/wp-admin/admin.php?page=wc-settings&tab=email&section=moowoodle_emails_new_enrollment">here!</a>';
 		if ($url != null) {
 			$moodle_tokens_url = '<a href="' . $url . 'admin/webservice/tokens.php"> ' . __('Manage tokens', 'moowoodle') . '</a>';
 			$moodle_sso_url = '<a href="' . $url . 'admin/settings.php?section=auth_moowoodleconnect"> ' . __('Moodle', 'moowoodle') . '</a>';
+			$moowoodle_sync_setting_url = '<a href="' . get_admin_url() . '/admin.php?page=moowoodle-synchronization&tab=moowoodle-sync-options"> ' . __('Synchronization Settings', 'moowoodle') . '</a>';
 		} else {
 			$moodle_tokens_url = __('Manage tokens', 'moowoodle');
 			$moodle_sso_url = __('Moodle', 'moowoodle');
+			$moowoodle_sync_setting_url = __('Moodle', 'moowoodle');
 		}
 		if ($MooWoodle->moowoodle_pro_adv) {
 			$pro_sticker = '<span class="mw-pro-tag">Pro</span>';
@@ -209,6 +212,30 @@ class MooWoodle_Library {
 								),
 							),
 						),
+						"moowoodle-notification" => array(
+							"is_pro" => "pro",
+							"label" => __("Notification ", 'moowoodle'),
+							"font_class" => "dashicons-bell",
+							"submit_btn_value" => __('Save All Changes', 'moowoodle'),
+							"setting" => "moowoodle_notification_settings",
+							"section" => array(
+								"moowoodle-notification" => array(
+									"label" => __("Manage Notification", 'moowoodle'),
+									"field_types" => array(
+										"moowoodle-create-user-custom-mail-eneble" => array(
+											"type" => "toggle-checkbox",
+											'name' => "moowoodle_create_user_custom_mail",
+											"is_pro" => "pro",
+											"label" => __("Customize New User Registration Email", 'moowoodle'),
+											"desc" => __('If this option is enabled, default WordPress new user registration emails will be disabled for both admin and user. Our custom New User Registration email will be sent to the newly registered user. You can personalize the content of the MooWoodle New User email from ', 'moowoodle') . $woocom_new_user_mail,
+											"option_values" => array(
+												'Enable' => __('', 'moowoodle'),
+											),
+										),
+									),
+								),
+							),
+						),
 						"moowoodle-log" => array(
 							"id" => "moowoodle-log",
 							"label" => __("Log", 'moowoodle'),
@@ -238,19 +265,103 @@ class MooWoodle_Library {
 					"page_name" => __("Synchronization", 'moowoodle'),
 					"layout" => "2-col",
 					"tabs" => array(
-						"moowoodle-courses-sync" => array(
-							"label" => __("Course Synchronization", 'moowoodle'),
+						"moowoodle-sync-options" => array(
+							"label" => __("Synchronization Settings", 'moowoodle'),
 							"font_class" => "dashicons-admin-links",
-							"submit_btn_value" => __('Sync Now', 'moowoodle'),
-							"submit_btn_name" => __('syncnow', 'moowoodle'),
 							"setting" => "moowoodle_synchronize_settings",
 							"section" => array(
-								"moowoodle-sync-courses" => array(
-									"label" => __("Synchronization Settings", 'moowoodle'),
+								"moowoodle-sync-settings" => array(
+									"label" => __("Synchronization Options", 'moowoodle'),
 									"field_types" => array(
-										"sync-options" => array(
+										"sync-real-time-user-options" => array(
 											"type" => "multiple-checkboxs",
-											"label" => __("Synchronize Options", 'moowoodle'),
+											"label" => __("Realtime User Sync", 'moowoodle'),
+											"desc" => __("Activate this feature for effortless user (except admin) synchronization between Moodle and WordPress. As soon as a new user is added on one platform, our system dynamically syncs their profile to the other, accompanied by email notifications. This ensures users are promptly informed, creating a seamlessly unified experience across both platforms.", 'moowoodle') ,
+											"option_values" => array(
+												'Moodle &rArr; WordPress' => array(
+													"id" => "realtime-sync-moodle-users",
+													"name" => "realtime_sync_moodle_users",
+													"desc" => __("", 'moowoodle'),
+													"is_pro" => "pro",
+												),
+												'WordPress &rArr; Moodle' => array(
+													"id" => "realtime-sync-wordpress-users",
+													"name" => "realtime_sync_wordpress_users",
+													"desc" => __("", 'moowoodle'),
+													"is_pro" => "pro",
+												),
+												
+											),
+										),
+										"sync-user-options" => array(
+											"type" => "multiple-checkboxs",
+											"label" => __("User Information", 'moowoodle'),
+											"desc" => __("Determine User Information to Synchronize in Moodle-WordPress User synchronization. Please be aware that this setting does not apply to newly created users.", 'moowoodle'),
+											"desc_posi" => "up",
+											"note" => "<b>Note:</b> We're updating the WordPress password hashing method to ensure compatibility with Moodle. Rest assured, no user data is compromised, and this won't impact the login procedure on your site.",
+											"option_values" => array(
+												'First Name' => array(
+													"id" => "sync-user-first-name",
+													"name" => "sync_user_first_name",
+													"desc" => __("", 'moowoodle'),
+													"is_pro" => "pro",
+												),
+												'Last Name' => array(
+													"id" => "sync-user-last-name",
+													"name" => "sync_user_last_name",
+													"desc" => __("", 'moowoodle'),
+													"is_pro" => "pro",
+												),
+												'Username' => array(
+													"id" => "sync-username",
+													"name" => "sync_username",
+													"desc" => __("", 'moowoodle'),
+													"is_pro" => "pro",
+												),
+												'Password' => array(
+													"id" => "sync-password",
+													"name" => "sync_password",
+													"desc" => __("", 'moowoodle'),
+													"is_pro" => "pro",
+												),
+												
+											),
+										),
+									),
+								),
+							),
+						),
+						"moowoodle-sync-now" => array(
+							"label" => __("Synchronize Now", 'moowoodle'),
+							"font_class" => "dashicons-admin-links",
+							"setting" => "moowoodle_synchronize_now",
+							"section" => array(
+								"moowoodle-sync-now" => array(
+									"label" => __("Synchronize Option", 'moowoodle'),
+									"field_types" => array(
+										"sync-all-user-options" => array(
+											"type" => "multiple-checkboxs",
+											"label" => __("Existing Users", 'moowoodle'),
+											"desc" => __("<b>Prior to updating existing user info, you must seclect the user info to be synchronized at </b>", 'moowoodle') . $moowoodle_sync_setting_url . __("<br><br>While synchronizing user information, we use the email address as the unique identifier for each user. We check the username associated with that email address, and if we find the same username in the other instance but with a different email address, the user's information cannot be synchronized.", 'moowoodle') ,
+											"desc_posi" => "up",
+											"option_values" => array(
+												'Moodle &rArr; WordPress' => array(
+													"id" => "sync-moodle-users",
+													"name" => "sync_moodle_users",
+													"desc" => __("", 'moowoodle'),
+													"is_pro" => "pro",
+												),
+												'WordPress &rArr; Moodle' => array(
+													"id" => "sync-wordpress-users",
+													"name" => "sync_wordpress_users",
+													"desc" => __("To update passwords for users created before activating the plugin, they must log in once to migrate their passwords to the new hashing method. After this step, the admin can synchronize their passwords from WordPress to Moodle.If the user doesn't log in, all other fields will be synchronized except for the password.", 'moowoodle'),
+													"is_pro" => "pro",
+												),
+											),
+										),
+										"sync-course-options" => array(
+											"type" => "multiple-checkboxs",
+											"label" => __("Courses", 'moowoodle'),
 											"desc" => __("Choose the category you wish to synchronize from Moodle to your WordPress site. During synchronization, if a course is found deleted in Moodle, it will likewise remove the corresponding course and product data from WordPress.", 'moowoodle'),
 											"option_values" => array(
 												'Moodle Courses' => array(
