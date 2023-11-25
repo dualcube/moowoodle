@@ -38,9 +38,32 @@ class MooWoodle_Testconnection {
 		$response = $this->moowoodle_moodle_test_connection_callback('get_site_info');
 		if ($response != null) {
 			if ($this->check_connection($response) == 'success') {
-				$response_obj = json_decode($response['body']);
-				$this->response_data['message'] = 'success';
-				update_option('moowoodle_moodle_site_name', $response_obj->sitename);
+				$response_arr = json_decode($response['body'], true);
+				$web_service_functions = array(
+					'core_user_get_users',
+					'core_user_update_users',
+					'enrol_manual_enrol_users',
+					'core_user_delete_users',
+					'enrol_manual_unenrol_users',
+					'core_course_get_courses_by_field',
+					'core_course_get_courses',
+					'core_user_create_users',
+					'core_course_get_categories',
+					'auth_moowoodle_user_sync_get_all_users_data',
+					'core_webservice_get_site_info',
+				);
+				$response_functions = array_map(function ($function) {
+					return $function['name'];
+				}, $response_arr['functions']);
+				
+				$missing_functions = array_diff($web_service_functions, $response_functions);
+				
+				if (!empty($missing_functions)) {
+					file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n\n        It seems that certain Moodle external web service functions are not configured correctly.\n        The missing functions following:" . json_encode($missing_functions) . "\n\n", FILE_APPEND);
+				} else {
+					$this->response_data['message'] = 'success';
+				}
+				update_option('moowoodle_moodle_site_name', $response_arr['sitename']);
 			}
 		}
 		$this->response_data['course_empty'] = $_POST['course_empty'];
