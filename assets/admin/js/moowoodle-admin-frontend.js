@@ -151,8 +151,11 @@
                         course_empty = response['course_empty'];
                         course_id = response['course_id'];
                         user_id = response['user_id'];
-                        // base case
-                        if (actions.length !== 0) {
+                        if(action == 'get_site_info' && response['message'] != 'success'){
+                            console.log('Setup Problem.');
+                        } else if(action == 'get_user' && user_id == '') {
+                            console.log('User not found.');
+                        } else if (actions.length !== 0) {
                             callajax(actions, actions_desc);
                         }
                     }
