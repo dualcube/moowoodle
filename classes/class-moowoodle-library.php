@@ -5,6 +5,7 @@ class MooWoodle_Library {
 		$conn_settings = get_option('moowoodle_general_settings');
 		$url = isset($conn_settings['moodle_url']) ? $conn_settings['moodle_url'] : '';
 		$pro_sticker = '';
+		$woocom_new_user_mail = '<a href="'. site_url() .'/wp-admin/admin.php?page=wc-settings&tab=email&section=moowoodle_emails_new_enrollment">here!</a>';
 		if ($url != null) {
 			$moodle_tokens_url = '<a href="' . $url . 'admin/webservice/tokens.php"> ' . __('Manage tokens', 'moowoodle') . '</a>';
 			$moodle_sso_url = '<a href="' . $url . 'admin/settings.php?section=auth_moowoodleconnect"> ' . __('Moodle', 'moowoodle') . '</a>';
@@ -219,14 +220,14 @@ class MooWoodle_Library {
 							"setting" => "moowoodle_notification_settings",
 							"section" => array(
 								"moowoodle-notification" => array(
-									"label" => __("Moowoodle Customize Notification Settings", 'moowoodle'),
+									"label" => __("Manage Notification", 'moowoodle'),
 									"field_types" => array(
 										"moowoodle-create-user-custom-mail-eneble" => array(
 											"type" => "toggle-checkbox",
 											'name' => "moowoodle_create_user_custom_mail",
 											"is_pro" => "pro",
 											"label" => __("Customize New User Registration Email", 'moowoodle'),
-											"desc" => __('If this option is enabled, default WordPress and Moodle new user registration emails will be disabled. Our custom New User Registration email will be sent to the newly registered user. You can personalize the content of the MooWoodle New User email using our Email Body settings.', 'moowoodle'),
+											"desc" => __('If this option is enabled, default WordPress new user registration emails will be disabled for both admin and user. Our custom New User Registration email will be sent to the newly registered user. You can personalize the content of the MooWoodle New User email from ', 'moowoodle') . $woocom_new_user_mail,
 											"option_values" => array(
 												'Enable' => __('', 'moowoodle'),
 											),
@@ -275,7 +276,7 @@ class MooWoodle_Library {
 										"sync-real-time-user-options" => array(
 											"type" => "multiple-checkboxs",
 											"label" => __("Realtime User Sync", 'moowoodle'),
-											"desc" => __("Activate this feature for effortless user synchronization between Moodle and WordPress. As soon as a new user is added on one platform, our system dynamically syncs their profile to the other, accompanied by email notifications. This ensures users are promptly informed, creating a seamlessly unified experience across both platforms.", 'moowoodle') ,
+											"desc" => __("Activate this feature for effortless user (except admin) synchronization between Moodle and WordPress. As soon as a new user is added on one platform, our system dynamically syncs their profile to the other, accompanied by email notifications. This ensures users are promptly informed, creating a seamlessly unified experience across both platforms.", 'moowoodle') ,
 											"option_values" => array(
 												'Moodle &rArr; WordPress' => array(
 													"id" => "realtime-sync-moodle-users",
@@ -297,7 +298,7 @@ class MooWoodle_Library {
 											"label" => __("User Information", 'moowoodle'),
 											"desc" => __("Determine User Information to Synchronize in Moodle-WordPress User synchronization. Please be aware that this setting does not apply to newly created users.", 'moowoodle'),
 											"desc_posi" => "up",
-											"note" => "<b>Note:</b> password hashing changed if password sync is on",
+											"note" => "<b>Note:</b> We're updating the WordPress password hashing method to ensure compatibility with Moodle. Rest assured, no user data is compromised, and this won't impact the login procedure on your site.",
 											"option_values" => array(
 												'First Name' => array(
 													"id" => "sync-user-first-name",
