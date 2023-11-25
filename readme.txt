@@ -176,7 +176,7 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 = 3.1.4 – 2023-11-25 =.
 * Added - Advanced Log.
 * Added - Enhanced test connectivity to verify Moodle webservice functions.
-* Added - Revised the Moowoodle log system.
+* Added - Revised the MooWoodle log system.
 
 = 3.1.3 – 2023-10-27 =
 * Fixed - Product Sync.
