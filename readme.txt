@@ -101,11 +101,11 @@ Unlock even more possibilities with Moowoodle Pro:
 📜 **Log File**: Log files are crucial for troubleshooting and debugging purposes. When issues or errors occur during the operation between Moodle and WordPress communication, log files can provide detailed information about what went wrong, making it easier for website administrators and developers to identify and resolve the problem. [Check for more details](https://dualcube.com/docs/moowoodle-set-up-guide/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree). 
 
 
-### ➡️ Course Synchronization Options
+### ➡️   [Course Synchronization Options ](https://dualcube.com/docs/moowoodle-set-up-guide/#12-toc-title/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree). [PRO]
 
 📊 **Moodle Course Categories Sync**: Effortlessly synchronize your Moodle course category structure with WordPress category listings.
 
-🔄 **Create and Update Products**: Easily update existing product information using Moodle course data. 
+🔄 **Create and Update Products**: Easily update existing product information using Moodle course data.
 
 🛒 **Create New Products [PRO]**: Automatically generate new products based on Moodle course data if they don't already exist in WordPress.
 
@@ -114,13 +114,13 @@ Unlock even more possibilities with Moowoodle Pro:
 🖼️ **Course Images [PRO]**: Copy course images and apply them as WooCommerce product images.
 
 
-### ➡️ User Synchronization Options [PRO]
+### ➡️ ### ➡️ [User Synchronization Options ](https://dualcube.com/docs/moowoodle-set-up-guide/#12-toc-title/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree). [PRO]
 
 🔄 **Real-Time User Sync [PRO]**: Automatically sync user data between Moodle and WordPress and vice versa. When adding a new user on one platform, our system instantly syncs their profile to the other.
 
 🧑‍💻 **User Information [PRO]**: Select user details for syncing in Moodle-WordPress. Choose info like First Name, Last Name, Username, and Password to sync across platforms.
 
-👥 **Existing Users [PRO]**: Utilize this option to synchronize user data manually between Moodle and WordPress bidirectionally. When adding a new user on one platform, our system instantly syncs their profile to the other.
+👥 **Existing Users [PRO]**: Utilize this option to synchronize user data manually between Moodle and WordPress bidirectionally. When adding a new user on one platform, our system instantly syncs their profile to the other. Check for more details.
 
 Join the ranks of satisfied users who have transformed their e-learning experiences with Moowoodle. Download it now and revolutionize your online education platform!
 
