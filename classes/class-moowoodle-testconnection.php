@@ -35,6 +35,7 @@ class MooWoodle_Testconnection {
 	}
 	//test get site info
 	public function get_site_info() {
+		global $MooWoodle;
 		$response = $this->moowoodle_moodle_test_connection_callback('get_site_info');
 		if ($response != null) {
 			if ($this->check_connection($response) == 'success') {
@@ -49,17 +50,24 @@ class MooWoodle_Testconnection {
 					'core_course_get_courses',
 					'core_user_create_users',
 					'core_course_get_categories',
-					'auth_moowoodle_user_sync_get_all_users_data',
 					'core_webservice_get_site_info',
 				);
 				$response_functions = array_map(function ($function) {
 					return $function['name'];
 				}, $response_arr['functions']);
-				
+
 				$missing_functions = array_diff($web_service_functions, $response_functions);
-				
+
 				if (!empty($missing_functions)) {
 					file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n\n        It seems that certain Moodle external web service functions are not configured correctly.\n        The missing functions following:" . json_encode($missing_functions) . "\n\n", FILE_APPEND);
+				} else if (!$MooWoodle->moowoodle_pro_adv) {
+					if (!in_array('auth_moowoodle_user_sync_get_all_users_data', $response_functions)) {
+						file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n\n        It seems that you are using MooWoodle Pro but Moodle external web service functions 'auth_moowoodle_user_sync_get_all_users_data' is not configured correctly.\n\n", FILE_APPEND);
+					} else if ($response_arr['downloadfiles'] != 1) {
+						file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n\n        It seems that you are using MooWoodle Pro but Moodle external web service is not configured correctly. Please edit your Moodle External service and enable 'Can download files' (you can find it from 'Show more...' options)\n\n", FILE_APPEND);
+					} else {
+						$this->response_data['message'] = 'success';
+					}
 				} else {
 					$this->response_data['message'] = 'success';
 				}
@@ -232,10 +240,9 @@ class MooWoodle_Testconnection {
 		if (!empty($url) && !empty($token) && $function_name != '') {
 			$request_query = http_build_query($request_param);
 			$response = wp_remote_post($request_url, array('body' => $request_query, 'timeout' => $MooWoodle->options_timeout_settings['moodle_timeout']));
-			if(isset($conn_settings['moowoodle_adv_log']) && $conn_settings['moowoodle_adv_log'] == 'Enable' ){
+			if (isset($conn_settings['moowoodle_adv_log']) && $conn_settings['moowoodle_adv_log'] == 'Enable') {
 				file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n\n        moowoodle url:" . $request_url . '&' . $request_query . "\n        moowoodle response:" . json_encode($response) . "\n\n", FILE_APPEND);
 			}
-			
 		}
 		return $response;
 	}
@@ -249,7 +256,7 @@ class MooWoodle_Testconnection {
 	private function check_connection($response) {
 		global $MooWoodle;
 		$conn_settings = get_option('moowoodle_general_settings');
-		$url_check = $error_massage = '';
+		$url_check = $error_massage = $error_codes = '';
 		if (!is_wp_error($response) && $response != null && $response['response']['code'] == 200) {
 			if (is_string($response['body'])) {
 				$response_arr = json_decode($response['body'], true);
@@ -263,7 +270,7 @@ class MooWoodle_Testconnection {
 						if (str_contains($response_arr['message'], 'Invalid token')) {
 							$url_check = '<a href="' . $conn_settings['moodle_url'] . '/admin/webservice/tokens.php">' . __('Link', 'moowoodle') . '</a>';
 						}
-						$error_massage = $response_arr['message'] . ' ' . $url_check . $response_arr['debuginfo'] ;
+						$error_massage = $response_arr['message'] . ' ' . $url_check . $response_arr['debuginfo'];
 					}
 				} else {
 					$error_massage = __('Response is not JSON decodeable', 'moowoodle');
@@ -271,16 +278,25 @@ class MooWoodle_Testconnection {
 			} else {
 				$error_massage = __('Not String response', 'moowoodle');
 			}
+		} elseif (!is_wp_error($response) && $response != null && isset($response['response']['code'])) {
+			$error_msg = '';
+			if ($response['response']['code'] == 404) {
+				$error_msg = ' | Check Moodle URL | ';
+			}
+			if ($response['response']['code'] == 403) {
+				$error_msg = ' | Ensure that Moodle web services and REST protocol are enabled. | ';
+			}
+
+			$error_massage = $error_msg . 'error code:' . $response['response']['code'] . '  ' . $response['response']['message'];
 		} elseif ($response != null) {
-			$error_codes = '';
-			if(is_array($response->get_error_codes())) {
-				foreach($response->get_error_code() as $error_code) {
+			if (is_array($response->get_error_codes())) {
+				foreach ($response->get_error_code() as $error_code) {
 					$error_codes .= $error_code;
 				}
 			} else {
 				$error_codes .= $response->get_error_code();
 			}
-			$error_massage =  $error_codes. $response->get_error_message();
+			$error_massage = $error_codes . $response->get_error_message();
 			$MooWoodle->ws_has_error = true;
 		}
 		file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n        moowoodle error:" . $error_massage . "\n", FILE_APPEND);

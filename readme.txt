@@ -5,7 +5,7 @@ Donate link: https://dualcube.com/
 Requires at least: 5.0.0
 Tested up to: 6.4.1
 Requires PHP: 8.0
-Stable tag: 3.1.4
+Stable tag: 3.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -174,12 +174,15 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 8. Click on Add functions to add functions to your service.
 9. Add above mentioned functions mentioned to your service.
 10. In Manage tokens click on Add to generate new webservice token for your service.
-11.Select your admin user from the User list and your service form Service list and then click save changes.
+11. Select your admin user from the User list and your service form Service list and then click save changes.
 12. The token generated for your service. (Copy this token and paste it in Webservice token field in our WordPress plugin settings.)
 13. Paste the token generated for your service in the Webservice token and fill up the other settings.
 14.  List of Courses after sync.
 
 == Changelog ==
+
+= 3.1.5 – 2023-11-28 =
+* Fixed - Test Connection.
 
 = 3.1.4 – 2023-11-25 =
 * Added - Advanced Log.
