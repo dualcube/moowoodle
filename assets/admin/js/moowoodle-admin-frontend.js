@@ -153,7 +153,7 @@
                         user_id = response['user_id'];
                         if(action == 'get_site_info' && response['message'] != 'success'){
                             console.log('Setup Problem.');
-                        } else if(action == 'get_user' && user_id == '') {
+                        } else if(action == 'get_user' &&  user_id == null) {
                             console.log('User not found.');
                         } else if (actions.length !== 0) {
                             callajax(actions, actions_desc);
