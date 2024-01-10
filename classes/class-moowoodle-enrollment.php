@@ -15,8 +15,9 @@ class MooWoodle_Enrollment {
 	 * @return void
 	 */
 	public function process_order($order_id) {
-		if (get_post_meta($order_id, 'moodle_user_enrolled', true) != "true") {
-			$this->wc_order = new WC_Order($order_id);
+		$order = new WC_Order($order_id);
+		if ($order->get_meta( 'moodle_user_enrolled', true) != "true") {
+			$this->wc_order = $order;
 			$this->process_enrollment();
 		}
 	}
@@ -185,8 +186,9 @@ class MooWoodle_Enrollment {
 			unset($enrolments[$key]['course_name']);
 		}
 		moowoodle_moodle_core_function_callback('enrol_users', array('enrolments' => $enrolments));
-		add_post_meta($wc_order->id, 'moodle_user_enrolled', "true");
-		add_post_meta($wc_order->id, 'moodle_user_enrolment_date', time());
+		$wc_order->update_meta_data('moodle_user_enrolled', "true");
+		$wc_order->update_meta_data('moodle_user_enrolment_date', time());
+		$wc_order->save();
 		// send confirmation email
 		do_action('moowoodle_after_enrol_moodle_user', $enrolment_data);
 	}

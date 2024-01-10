@@ -4,12 +4,12 @@
  * Plugin URI: https://dualcube.com/
  * Description: The MooWoodle plugin is an extention of WooCommerce that acts as a bridge between WordPress/Woocommerce and Moodle.
  * Author: DualCube
- * Version: 3.1.5
+ * Version: 3.1.6
  * Author URI: https://dualcube.com/
  * Requires at least: 5.0
- * Tested up to: 6.4.1
- * WC requires at least: 4.0
- * WC tested up to: 8.3.1
+ * Tested up to: 6.4.2
+ * WC requires at least: 8.2.2
+ * WC tested up to: 8.4.0
  *
  * Text Domain: moowoodle
  * Domain Path: /languages/
@@ -79,3 +79,8 @@ if (!class_exists('MooWoodle') && MooWoodle_Dependencies::woocommerce_active_che
     </div>
     <?php
 }
+add_action ( 'before_woocommerce_init', function () {  
+    if ( class_exists ( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility ( 'custom_order_tables', WP_CONTENT_DIR.'/plugins/moowoodle/moowoodle.php', true );  
+    } 
+});
