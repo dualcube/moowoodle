@@ -151,9 +151,12 @@
                         course_empty = response['course_empty'];
                         course_id = response['course_id'];
                         user_id = response['user_id'];
+                        console.log('action:' + action + '<   >course_empty:' + course_empty + '<   >course_id:' + course_id + '<   >user_id:' + user_id )
                         if(action == 'get_site_info' && response['message'] != 'success'){
                             console.log('Setup Problem.');
-                        } else if(action == 'get_user' &&  user_id == null) {
+                        } else if(action == 'update_user' &&  !course_id) {
+                            console.log('Course not found.');
+                        }  else if(action == 'update_user' &&  user_id == null) {
                             console.log('User not found.');
                         } else if (actions.length !== 0) {
                             callajax(actions, actions_desc);
@@ -161,6 +164,7 @@
                     }
                 }
             });
+        course_id = course_empty =  user_id = '';
         }
         //sso generat key
         const inputDiv = document.querySelector(".mw-textbox-input-wraper");

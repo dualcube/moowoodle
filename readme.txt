@@ -3,9 +3,9 @@ Contributors: dualcube, kndnsow
 Tags: Moodle Integration, LMS Integration, WordPress LMS, e-Learning, Moodle Connector
 Donate link: https://dualcube.com/
 Requires at least: 5.0.0
-Tested up to: 6.4.1
+Tested up to: 6.4.2
 Requires PHP: 8.0
-Stable tag: 3.1.5
+Stable tag: 3.1.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -180,6 +180,9 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 14.  List of Courses after sync.
 
 == Changelog ==
+
+= 3.1.6 – 2024-01-10 =
+* Added - WooCommerce HPOS Compatibility.
 
 = 3.1.5 – 2023-11-28 =
 * Fixed - Test Connection.

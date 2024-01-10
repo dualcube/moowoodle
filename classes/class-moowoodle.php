@@ -1,4 +1,5 @@
 <?php
+use Automattic\WooCommerce\Utilities\OrderUtil as WCOrderUtil;
 class MooWoodle {
 	public $moowoodle_pro_adv = true;
 	public $plugin_url;
@@ -26,6 +27,7 @@ class MooWoodle {
 	public $testconnection;
 	public $product_data_tab;
 	private static $active_plugins;
+	public $hpos_is_enabled;
 	public function __construct($file) {
 		$this->file = $file;
 		$this->plugin_url = trailingslashit(plugins_url('', $plugin = $file));
@@ -58,6 +60,9 @@ class MooWoodle {
 	 * initilize plugin on WP init
 	 */
 	function init() {
+		if(version_compare(WC_VERSION, '8.3.0', '>=')){
+            $this->hpos_is_enabled = $this->hpos_is_enabled();
+        } 
 		// Init Text Domain
 		$this->load_plugin_textdomain();
 		// Init library
@@ -188,4 +193,16 @@ class MooWoodle {
 		}
 
 	}
+	/**
+     * Helper function to get whether custom order tables are enabled or not.
+     *
+     * This method can be removed, and we can directly use WC OrderUtil::custom_orders_table_usage_is_enabled method in future
+     * if we set the minimum wc version requirements to 8.0
+     *
+     *
+     * @return bool
+     */
+    public static function hpos_is_enabled(): bool {
+        return version_compare( WC_VERSION, '8.3.0', '>=' ) ? WCOrderUtil::custom_orders_table_usage_is_enabled() : false;
+    }
 }

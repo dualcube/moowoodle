@@ -125,16 +125,25 @@ if (!empty($courses)) {
 			$product_name = '<a href="' . esc_url(admin_url() . 'post.php?post=' . $product[0]->ID . '&action=edit') . '">' . esc_html($product[0]->post_title) . '</a>';
 		}
 		$enroled_user = '';
-		$customer_orders = get_posts(array(
+		$args = array(
 			'numberposts' => -1,
 			'orderby' => 'date',
 			'order' => 'DESC',
 			'post_type' => 'shop_order',
 			'post_status' => 'wc-completed',
-		));
+		);
+        if($MooWoodle->hpos_is_enabled){
+			$query = new WC_Order_Query( apply_filters( 'moowoodle_my_courses_endpoint_get_orders_query_args', $args ) );
+			$customer_orders = $query->get_orders();
+		}else{
+			$args = wp_parse_args($args, array('fields' => 'ids'));
+			$order_ids = get_posts( apply_filters( 'moowoodle_my_courses_endpoint_get_orders_query_args', $args ) );
+			foreach($order_ids as $id){
+				$customer_orders[] = wc_get_order($id);
+			}
+		}
 		$count_enrolment = 0;
-		foreach ($customer_orders as $customer_order) {
-			$order = wc_get_order($customer_order->ID);
+		foreach ($customer_orders as $order) {
 			foreach ($order->get_items() as $enrolment) {
 				$linked_course_id = get_post_meta($enrolment->get_product_id(), 'linked_course_id', true);
 				if ($linked_course_id == $id) {

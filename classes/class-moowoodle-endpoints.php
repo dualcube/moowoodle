@@ -38,16 +38,34 @@ class MooWoodle_Endpoints {
 		return $menu_links;
 	}
 	function woocommerce_account_my_courses_endpoint() {
+		global $MooWoodle;
 		$customer = wp_get_current_user();
-		$customer_orders = get_posts(array(
+		$args = array(
 			'numberposts' => -1,
-			'meta_key' => '_customer_user',
 			'orderby' => 'date',
 			'order' => 'DESC',
-			'meta_value' => $customer->ID,
 			'post_type' => 'shop_order',
 			'post_status' => 'wc-completed',
-		));
+			'post_author' => $customer->ID,
+			// 'meta_query' => array(
+            //     array(
+            //         'key' => '_customer_user',
+            //         'value' => $customer->ID
+            //     ),
+            // ),
+		);
+		if($MooWoodle->hpos_is_enabled){
+			// $args = wp_parse_args($args, array('customer_id' => $customer->ID));
+			// unset($args['meta_query']);
+			$query = new WC_Order_Query( apply_filters( 'moowoodle_my_courses_endpoint_get_orders_query_args', $args ) );
+			$customer_orders = $query->get_orders();
+		}else{
+			$args = wp_parse_args($args, array('fields' => 'ids'));
+			$order_ids = get_posts( apply_filters( 'moowoodle_my_courses_endpoint_get_orders_query_args', $args ) );
+			foreach($order_ids as $id){
+				$customer_orders[] = wc_get_order($id);
+			}
+		}
 		$pwd = get_user_meta($customer->ID, 'moowoodle_moodle_user_pwd', true);
 		if (count($customer_orders) > 0) {
 			?>
@@ -69,9 +87,8 @@ foreach ($this->table_heading as $key_heading => $value_heading) {
           </thead>
           <tbody>
             <?php
-foreach ($customer_orders as $customer_order) {
-				$order = wc_get_order($customer_order->ID);
-				$unenrolled_course = get_post_meta($customer_order->ID, '_course_unenroled', true);
+foreach ($customer_orders as $order) {
+				$unenrolled_course = $order->get_meta( '_course_unenroled', true);
 				$unenrolled_courses[] = null;
 				if ($unenrolled_course != null) {
 					$unenrolled_courses = str_contains($unenrolled_course, ',') ? explode(',', $unenrolled_course) : array($unenrolled_course);
@@ -79,12 +96,12 @@ foreach ($customer_orders as $customer_order) {
 				foreach ($order->get_items() as $enrolment) {
 					$moodle_course_id = get_post_meta($enrolment->get_product_id(), 'moodle_course_id', true);
 					$course_link = get_moowoodle_course_url($moodle_course_id, 'View');
-					$enrolment_date = get_post_meta($order->get_id(), 'moodle_user_enrolment_date', true);
+					$enrolment_date = $order->get_meta( 'moodle_user_enrolment_date', true);
 					$linked_course_id = get_post_meta($enrolment->get_product_id(), 'linked_course_id', true);
 					if (!$linked_course_id || in_array($moodle_course_id, $unenrolled_courses)) {
 						continue;
 					}
-
+					
 					?>
                 <tr>
                   <td>
