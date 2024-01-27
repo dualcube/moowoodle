@@ -207,15 +207,15 @@ class MooWoodle_Enrollment {
 		$role_id = apply_filters('moowoodle_enrolled_user_role_id', 5);
 		if (!empty($items)) {
 			foreach ($items as $item) {
-				$course_id = get_post_meta($item['product_id'], 'moodle_course_id', true);
+				$course_id = get_post_meta($item->get_product_id(), 'moodle_course_id', true);
 				if (!empty($course_id)) {
 					$enrolment = array();
 					$enrolment['courseid'] = intval($course_id);
 					$enrolment['userid'] = $moowoodle_moodle_user_id;
 					$enrolment['roleid'] = $role_id;
 					$enrolment['suspend'] = $suspend;
-					$enrolment['linked_course_id'] = get_post_meta($item['product_id'], 'linked_course_id', true);
-					$enrolment['course_name'] = get_the_title($item['product_id']);
+					$enrolment['linked_course_id'] = get_post_meta($item->get_product_id(), 'linked_course_id', true);
+					$enrolment['course_name'] = get_the_title($item->get_product_id());
 					$enrolments[] = $enrolment;
 				}
 			}

@@ -81,6 +81,7 @@
                 const originalValue = textInput.value;
                 let warningShown = false;
                 textInput.addEventListener("input", function() {
+                    textInput.value = textInput.value.trim();
                     if (!warningShown && textInput.value !== originalValue) {
                         const warningHTML = '<div class="mw-warning-massage" id="warningMessage-' + index + '" style="color: red; display: block;">' + admin_frontend_args.lang.warning_to_save + '</div>';
                         textInput.insertAdjacentHTML("afterend", warningHTML);

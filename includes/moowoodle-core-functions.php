@@ -36,7 +36,7 @@ if (!function_exists('moowoodle_moodle_core_function_callback')) {
 		$conn_settings = $MooWoodle->options_general_settings;
 		$url = $conn_settings['moodle_url'];
 		$token = $conn_settings['moodle_access_token'];
-		$request_url = $url . '/webservice/rest/server.php?wstoken=' . $token . '&wsfunction=' . $function_name . '&moodlewsrestformat=json';
+		$request_url = rtrim($url, '/') . '/webservice/rest/server.php?wstoken=' . $token . '&wsfunction=' . $function_name . '&moodlewsrestformat=json';
 		if ($function_name == 'core_user_get_users') {
 			$request_url = $request_url . '&criteria[0][key]=email&criteria[0][value]=%%';
 		}
@@ -76,7 +76,7 @@ if (!function_exists('moowoodle_moodle_core_function_callback')) {
 		} else {
 			$error_codes = '';
 			if(is_array($response->get_error_codes())) {
-				foreach($response->get_error_code() as $error_code) {
+				foreach($response->get_error_codes() as $error_code) {
 					$error_codes .= $error_code;
 				}
 			} else {
