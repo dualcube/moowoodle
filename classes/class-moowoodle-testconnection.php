@@ -82,18 +82,22 @@ class MooWoodle_Testconnection {
 	//test get course
 	public function get_course() {
 		$response = $this->moowoodle_moodle_test_connection_callback('get_courses');
+		$this->response_data['course_empty'] = $_POST['course_empty'];
+		$this->response_data['course_id'] = $_POST['course_id'];
 		if ($response != null) {
 			if ($this->check_connection($response) == 'success') {
-				$response_arr = json_decode($response['body'], true);
 				$this->response_data['message'] = 'success';
-				if (!empty($response_arr)) {
-					foreach ($response_arr as $course) {
-						if ($course['format'] == 'topics') {
-							$this->response_data['course_id'] = $course['id'];
-							$this->response_data['course_empty'] = '';
-							break;
+				if($this->response_data['course_id']){
+					$response_arr = json_decode($response['body'], true);
+					if (!empty($response_arr)) {
+						foreach ($response_arr as $course) {
+							if ($course['format'] != 'site') {
+								$this->response_data['course_id'] = $course['id'];
+								$this->response_data['course_empty'] = '';
+								break;
+							}
+							$this->response_data['course_empty'] = __('Set up a Moodle course to conduct the connection test.', 'moowoodle');
 						}
-						$this->response_data['course_empty'] = __('Set up a Moodle course to conduct the connection test.', 'moowoodle');
 					}
 				}
 			}
@@ -115,12 +119,21 @@ class MooWoodle_Testconnection {
 	//  test get course by fuild
 	public function get_course_by_fuild() {
 		$response = $this->moowoodle_moodle_test_connection_callback('get_course_by_fuild');
-
-		if ($response != null && $this->check_connection($response) == 'success') {
-			$this->response_data['message'] = 'success';
-		}
 		$this->response_data['course_empty'] = $_POST['course_empty'];
 		$this->response_data['course_id'] = $_POST['course_id'];
+		if ($response != null && $this->check_connection($response) == 'success') {
+			$response_arr = json_decode($response['body'], true);
+			$this->response_data['message'] = 'success';
+			if (!empty($response_arr)) {
+				foreach ($response_arr['courses'] as $course) {
+					if ($course['format'] != 'site') {
+						$this->response_data['course_id'] = $course['id'];
+						$this->response_data['course_empty'] = '';
+						break;
+					}
+				}
+			}
+		}
 		$this->response_data['user_id'] = $_POST['user_id'];
 		wp_send_json($this->response_data);
 	}
@@ -290,7 +303,7 @@ class MooWoodle_Testconnection {
 			$error_massage = $error_msg . 'error code:' . $response['response']['code'] . '  ' . $response['response']['message'];
 		} elseif ($response != null) {
 			if (is_array($response->get_error_codes())) {
-				foreach ($response->get_error_code() as $error_code) {
+				foreach ($response->get_error_codes() as $error_code) {
 					$error_codes .= $error_code;
 				}
 			} else {

@@ -40,6 +40,7 @@ class MooWoodle_Endpoints {
 	function woocommerce_account_my_courses_endpoint() {
 		global $MooWoodle;
 		$customer = wp_get_current_user();
+		$customer_orders = array();
 		$args = array(
 			'numberposts' => -1,
 			'orderby' => 'date',
