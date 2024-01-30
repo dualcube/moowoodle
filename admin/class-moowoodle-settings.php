@@ -130,6 +130,8 @@ class MooWoodle_Settings {
                         <p><span>4.</span> Select and sync courses with flexibility</p>
                         <p><span>5.</span> Easily synchronize courses in bulk</p>
                         <p><span>6.</span> Seamless, One-Password Access to Moodle™ and WordPress.</p>
+						<p><span>7.</span> Choose which user information to synchronize.</p>
+						<p><span>8.</span> Automatic User Synchronization for Moodle™ and WordPress.</p>
             <p class="supt-link">
                       <a href="<?php echo esc_url(MOOWOODLE_SUPPORT_URL) ?>" target="_blank">
                         <?php esc_html_e('Got a Support Question', 'moowoodle')?>
@@ -242,31 +244,33 @@ class MooWoodle_Settings {
 			<?php
 			if ($MooWoodle->moowoodle_pro_adv) {
 				echo '<div class="mw-image-overlay">
-          <div class="mw-overlay-content">
-          <span class="dashicons dashicons-no-alt mw-modal cross"></span>
-          <h1 class="banner-header">Unlock <span class="banner-pro-tag">Pro</span> </h1>
-          <h2>' . esc_html__('Upgrade to Moowoodle Pro', 'moowoodle') . '</h2>
-         <!-- <h3 class="mw-banner-thrd">' . esc_html__('Activate 30+ Pro Modules', 'moowoodle') . '</h3>-->
-          <div class="mw-banner-content">Boost to MooWoodle Pro to access premium features and enhancements!
-		      <p>&nbsp;</p>
-		        <p>1. Convenient Single Sign-On for Moodle™ and WordPress Login.</p>
-		      <p>2. Create steady income through course subscriptions.</p>
-		      <p>3. Increase earnings by offering courses in groups, variations, or individually.</p>
-		      <p>4. Selectively sync courses with flexibility.</p>
-		      <p>5. Effortlessly synchronize courses in bulk.</p>
-		      </div>
-          <div class="mw-banner-offer">Today\'s Offer</div>
-          <div class="discount-tag">Upto <b>15%</b>Discount</div>
-          <p class="">Seize the opportunity – upgrade now and unlock the full potential of our Pro
-       features with a 15% discount using coupon code:<span class="mw-cupon">UP15!</span></p>
-         <!--<div class="mw-img-overlay-arrow">
-           <span class="dashicons dashicons-arrow-down-alt"></span>
-           </div>-->
-          <a class="mw-go-pro-btn" target="_blank" href="' . MOOWOODLE_PRO_SHOP_URL . '">' . esc_html__('Buy MooWoodle Pro', 'moowoodle') . '</a>
-          <!--<p class="upgrade"><b>Already Upgraded?</b></p>-->
-          </div>
-
-          </div>';
+				<div class="mw-overlay-content">
+				<span class="dashicons dashicons-no-alt mw-modal cross"></span>
+				<h1 class="banner-header">Unlock <span class="banner-pro-tag">Pro</span> </h1>
+				<h2>' . esc_html__('Upgrade to Moowoodle Pro', 'moowoodle') . '</h2>
+			   <!-- <h3 class="mw-banner-thrd">' . esc_html__('Activate 30+ Pro Modules', 'moowoodle') . '</h3>-->
+				<div class="mw-banner-content">Boost to MooWoodle Pro to access premium features and enhancements!
+					<p> </p>
+					<p>1. Convenient Single Sign-On for Moodle™ and WordPress Login.</p>
+					<p>2. Create steady income through course subscriptions.</p>
+					<p>3. Increase earnings by offering courses in groups, variations, or individually.</p>
+					<p>4. Selectively sync courses with flexibility.</p>
+					<p>5. Effortlessly synchronize courses in bulk.</p>
+					<p>6. Automatic User Synchronization for Moodle™ and WordPress.</p>
+					<p>7. Choose which user information to synchronize.</p>
+					</div>
+				<div class="mw-banner-offer">Today\'s Offer</div>
+				<div class="discount-tag">Upto <b>15%</b>Discount</div>
+				<p class="">Seize the opportunity – upgrade now and unlock the full potential of our Pro
+			 features with a 15% discount using coupon code:<span class="mw-cupon">UP15!</span></p>
+			   <!--<div class="mw-img-overlay-arrow">
+				 <span class="dashicons dashicons-arrow-down-alt"></span>
+				 </div>-->
+				<a class="mw-go-pro-btn" target="_blank" href="' . MOOWOODLE_PRO_SHOP_URL . '">' . esc_html__('Buy MooWoodle Pro', 'moowoodle') . '</a>
+				<!--<p class="upgrade"><b>Already Upgraded?</b></p>-->
+				</div>
+	  
+				</div>';
 			}
 		}
 	}
@@ -304,9 +308,7 @@ class MooWoodle_Settings {
 			if(isset($field_id) && $field_id == 'sync-user-options'){
 				echo '<p  class="mw-save-changes"><input name="submit" type="submit" value="Save Changes" class="button-primary">';
 			}
-			if(isset($field_id) && $field_id == 'sync-all-user-options'){
-				echo '<p  class="mw-save-changes"><input name="syncusernow" class="button-primary" type="submit" value="' . __('Sync All Users Now', 'moowoodle') . '" class="button-primary">';
-			}
+			do_action('moowoodle_add_save_changes', $field_id);
 			if (!str_contains($field_id, 'nolabel')) {
 				echo '</div>';
 			}
