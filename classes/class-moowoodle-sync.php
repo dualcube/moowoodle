@@ -10,15 +10,16 @@ class MooWoodle_Sync {
 	 * @return void
 	 */
 	public function sync() {
-		global $MooWoodle;
 		if (!isset($_POST['synccoursenow'])) {
 			return;
 		}
-		$sync_settings = $MooWoodle->options_synchronize_now;
-		if (isset($sync_settings['sync_courses_category']) && $sync_settings['sync_courses_category'] == "Enable") {
+		if (isset($_POST["moowoodle_synchronize_now"])) {
+			$sync_now_options = $_POST["moowoodle_synchronize_now"];
+		}
+		if (isset($sync_now_options['sync_courses_category']) && $sync_now_options['sync_courses_category'] == "Enable") {
 			$this->sync_categories();
 		}
-		if (isset($sync_settings['sync_courses']) && $sync_settings['sync_courses'] == "Enable") {
+		if (isset($sync_now_options['sync_courses']) && $sync_now_options['sync_courses'] == "Enable") {
 			$this->sync_courses();
 		}
 		do_action('moowoodle_after_sync');
@@ -99,10 +100,12 @@ class MooWoodle_Sync {
 	 */
 	private function sync_courses() {
 		global $MooWoodle;
-		$sync_settings = $MooWoodle->options_synchronize_now;
+		if (isset($_POST["moowoodle_synchronize_now"])) {
+			$sync_now_options = $_POST["moowoodle_synchronize_now"];
+		}
 		$courses = moowoodle_moodle_core_function_callback('get_courses');
 		$this->update_posts($courses, 'course', 'course_cat', 'moowoodle_term');
-		if (isset($sync_settings['sync_all_product']) && $sync_settings['sync_all_product'] == "Enable" && $MooWoodle->moowoodle_pro_adv) {
+		if (isset($sync_now_options['sync_all_product']) && $sync_now_options['sync_all_product'] == "Enable" && $MooWoodle->moowoodle_pro_adv) {
 			$this->update_posts($courses, 'product', 'product_cat', 'woocommerce_term');
 		}
 	}
