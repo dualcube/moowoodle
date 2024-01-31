@@ -4,8 +4,11 @@
 // $id - setting id
 // $options[$id] value from the db
 global $MooWoodle;
+$pro_popup_overlay = $pro_sticker = $disable = '';
 if ($MooWoodle->moowoodle_pro_adv) {
+	$pro_sticker = '<span class="mw-pro-tag">Pro</span>';
 	$pro_popup_overlay = ' mw-pro-popup-overlay ';
+	$disable = 'disabled';
 }
 
 if($desc_posi == 'up'){
@@ -14,7 +17,7 @@ if($desc_posi == 'up'){
     <?php
     $desc = $note != '' ? $note : '';
 }
-echo "<select id='$id' class='mw-setting-form-select" . ' ' . (empty($class) ? '' : $class) . "' name='{$setting_id}[$name]'>";
+echo "<select id='$id' class='mw-setting-form-select"  . (empty($class) ? '' : $class) . "' name='{$setting_id}[$name]' >" ;
 $i=0;
 foreach ($option_values as $k => $v) {
 	if (is_array($v)) {
@@ -22,7 +25,7 @@ foreach ($option_values as $k => $v) {
 			echo "<option value='0' " . selected($options[$name], 0, false) . ">Seclect</option>";
 			$i++;
 		}
-		echo "<option value='$i' " . selected($options[$name], $i, false) . " data-desc='" . $v['desc'] . " '>$k</option>";
+		echo "<option value='$i' " . selected($options[$name], $i, false) . " data-desc='" . $v['desc'] . " ' >$k</option>";
 		if(selected($options[$name], $i, false)) $sub_desc = $v['desc'];
 	} else {
 		if (!isset($options[$name])) {
@@ -32,7 +35,7 @@ foreach ($option_values as $k => $v) {
 	}
 	$i++;
 }
-echo "</select> ";
+echo "</select> " . $pro_sticker;
 if(is_array($v)){
 ?>
 <script>

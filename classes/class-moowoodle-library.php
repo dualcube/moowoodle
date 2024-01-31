@@ -2,7 +2,7 @@
 class MooWoodle_Library {
 	public function moowoodle_get_options() {
 		global $MooWoodle;
-		$wp_user_sync_running_cron_batch = apply_filters('moowoodle_sync_wordpress_user_corn_info', '');
+		$user_sync_running_cron_batch = apply_filters('moowoodle_sync_user_corn_info', '');
 		$sync_wordpress_users = apply_filters('add_moowoodle_sync_wordpress_users_roles','');
 		$conn_settings = get_option('moowoodle_general_settings');
 		$url = isset($conn_settings['moodle_url']) ? $conn_settings['moodle_url'] : '';
@@ -351,13 +351,13 @@ class MooWoodle_Library {
 												'Moodle &rArr; WordPress' => array(
 													"id" => "sync-moodle-users",
 													"name" => "sync_moodle_users",
-													"desc" => __("", 'moowoodle'),
+													"desc" =>$user_sync_running_cron_batch . __("", 'moowoodle'),
 													"is_pro" => "pro",
 												),
 												'WordPress &rArr; Moodle' => array(
 													"id" => "sync-wordpress-users",
 													"name" => "sync_wordpress_users",
-													"desc" => $wp_user_sync_running_cron_batch . $sync_wordpress_users . __("To update passwords for users created before activating the plugin, they must log into WorPress site to migrate their passwords to the new hashing method. After this step, it will synchronize their passwords from WordPress to Moodle.If the user doesn't log in, all other fields will be synchronized except for the password.", 'moowoodle'),
+													"desc" => $user_sync_running_cron_batch . $sync_wordpress_users . __("<br>To update passwords for users created before activating the plugin, they must log into WorPress site to migrate their passwords to the new hashing method. After this step, it will synchronize their passwords from WordPress to Moodle.If the user doesn't log in, all other fields will be synchronized except for the password.", 'moowoodle'),
 													"is_pro" => "pro",
 												),
 											),

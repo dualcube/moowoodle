@@ -308,7 +308,15 @@ class MooWoodle_Settings {
 			if(isset($field_id) && $field_id == 'sync-user-options'){
 				echo '<p  class="mw-save-changes"><input name="submit" type="submit" value="Save Changes" class="button-primary">';
 			}
-			do_action('moowoodle_add_save_changes', $field_id);
+			if(isset($field_id) && $field_id == 'sync-all-user-options'){
+
+				if($MooWoodle->moowoodle_pro_adv){
+					echo '<p  class="mw-save-changes"><input name="syncusernow" class="button-primary mw-pro-popup-overlay" type="button" value="' . __('Sync All Users Now', 'moowoodle') . '">';
+				} else {
+					echo '<p  class="mw-save-changes"><input name="syncusernow" class="button-primary" type="submit" value="' . __('Sync All Users Now', 'moowoodle') . '" ' . apply_filters('moowoodle_syncusernow_changes', '') . '>';
+				}
+			}
+			
 			if (!str_contains($field_id, 'nolabel')) {
 				echo '</div>';
 			}

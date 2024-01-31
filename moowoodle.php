@@ -7,7 +7,7 @@
  * Version: 3.1.7
  * Author URI: https://dualcube.com/
  * Requires at least: 5.0
- * Tested up to: 6.4.2
+ * Tested up to: 6.4.3
  * WC requires at least: 8.2.2
  * WC tested up to: 8.5.2
  *

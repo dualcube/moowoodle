@@ -181,7 +181,9 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 
 == Changelog ==
 
-= 3.1.7 – 2024-01-30 =
+= 3.1.7 – 2024-01-31 =
+* Added - Support WordPress 6.4.3.
+* Added - Support WooCommerce 8.5.2.
 * Fixed - Internal bug.
 
 = 3.1.6 – 2024-01-10 =
