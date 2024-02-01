@@ -47,17 +47,16 @@ class MooWoodle_Endpoints {
 			'order' => 'DESC',
 			'post_type' => 'shop_order',
 			'post_status' => 'wc-completed',
-			'post_author' => $customer->ID,
-			// 'meta_query' => array(
-            //     array(
-            //         'key' => '_customer_user',
-            //         'value' => $customer->ID
-            //     ),
-            // ),
+			'meta_query' => array(
+                array(
+                    'key' => '_customer_user',
+                    'value' => $customer->ID
+                ),
+            ),
 		);
 		if($MooWoodle->hpos_is_enabled){
-			// $args = wp_parse_args($args, array('customer_id' => $customer->ID));
-			// unset($args['meta_query']);
+			$args = wp_parse_args($args, array('customer_id' => $customer->ID));
+			unset($args['meta_query']);
 			$query = new WC_Order_Query( apply_filters( 'moowoodle_my_courses_endpoint_get_orders_query_args', $args ) );
 			$customer_orders = $query->get_orders();
 		}else{
