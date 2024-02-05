@@ -90,7 +90,7 @@ if (!empty($courses)) {
 	foreach ($courses as $course) {
 		$moodle_course_id = get_post_meta($course->ID, 'moodle_course_id', true);
 		$course_short_name = get_post_meta($course->ID, '_course_short_name', true);
-		$product = get_posts(array('post_type' => 'product', 'numberposts' => -1, 'post_status' => 'publish', 'name' => $course_short_name));
+		$products = get_posts(array('post_type' => 'product', 'numberposts' => -1, 'post_status' => 'publish', 'meta_key' =>  'linked_course_id' , 'meta_value' => $course->ID));
 		$course_startdate = get_post_meta($course->ID, '_course_startdate', true);
 		$course_enddate = get_post_meta($course->ID, '_course_enddate', true);
 		$course_name = $course->post_title;
@@ -121,8 +121,11 @@ if (!empty($courses)) {
 			$moodle_url = '<a href="' . esc_url($MooWoodle->options_general_settings["moodle_url"]) . 'course/edit.php?id=' . $moodle_course_id . '" target="_blank">' . esc_html($course_name) . '</a>';
 		}
 		$product_name = '';
-		if ($product) {
-			$product_name = '<a href="' . esc_url(admin_url() . 'post.php?post=' . $product[0]->ID . '&action=edit') . '">' . esc_html($product[0]->post_title) . '</a>';
+		if ($products) {
+            foreach($products as $product){
+                if($product_name)  $product_name .= ' ,<br>' ;
+                $product_name .= '<a href="' . esc_url(admin_url() . 'post.php?post=' . $product->ID . '&action=edit') . '">' . esc_html($product->post_title) . '</a>';
+            }
 		}
 		$enroled_user = '';
 		$args = array(

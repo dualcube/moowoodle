@@ -107,6 +107,8 @@ echo esc_html_e("Cannot find your course in this list?", "moowoodle");
 		}
 		if (isset($_POST['course_id'])) {
 			update_post_meta($post_id, 'linked_course_id', wp_kses_post($_POST['course_id']));
+			update_post_meta($post_id, '_sku', 'course-' . get_post_meta($_POST['course_id'], '_sku'));
+			update_post_meta($post_id, 'moodle_course_id', get_post_meta($_POST['course_id'], 'moodle_course_id'));
 		}
 	}
 }
