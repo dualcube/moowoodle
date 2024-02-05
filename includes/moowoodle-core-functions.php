@@ -133,9 +133,9 @@ function moowoodle_get_post_by_moodle_id($course_id, $post_type = '') {
 	return 0;
 }
 if (!function_exists('get_moowoodle_course_url')) {
-	function get_moowoodle_course_url($linked_course_id, $course_name) {
+	function get_moowoodle_course_url($moodle_course_id, $course_name) {
 		global $MooWoodle;
-		$course = $linked_course_id;
+		$course = $moodle_course_id;
 		$class = "moowoodle";
 		$target = '_blank';
 		$content = $course_name;

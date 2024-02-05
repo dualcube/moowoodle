@@ -28,9 +28,7 @@ class MooWoodle_Product_Data_Tabs {
 	public function moowoodle_linked_course_panals() {
 		echo '<div id="moowoodle_course_link_tab" class="panel woocommerce_options_panel">';
 		global $post;
-		$course_id = get_post_meta($post->ID, 'moodle_course_id', true);
 		$linked_course_id = get_post_meta($post->ID, 'linked_course_id', true);
-		$post_id = moowoodle_get_post_by_moodle_id($course_id, 'course');
 		$courses = get_posts(array('post_type' => 'course', 'numberposts' => -1, 'post_status' => 'publish'));
 		?>
 		<p>
@@ -40,7 +38,7 @@ class MooWoodle_Product_Data_Tabs {
 				<?php
 if (!empty($courses)) {
 			foreach ($courses as $course) {
-				$id = get_post_meta($course->ID, 'moodle_course_id', true);
+				$id = $course->ID;
 				$course_short_name = get_post_meta($course->ID, '_course_short_name', true);
 				$category_id = get_post_meta($course->ID, '_category_id', true);
 				$term_id = moowoodle_get_term_by_moodle_id($category_id, 'course_cat', 'moowoodle_term');

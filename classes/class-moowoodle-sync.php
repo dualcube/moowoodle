@@ -145,7 +145,8 @@ class MooWoodle_Sync {
 				}
 				if ($new_post_id > 0) {
 					if ($post_type == 'product') {
-						update_post_meta($new_post_id, 'linked_course_id', (int) $course['id']);
+						$linked_course_id = moowoodle_get_post_by_moodle_id($course['id'], 'course');
+						update_post_meta($new_post_id, 'linked_course_id', $linked_course_id);
 						update_post_meta($new_post_id, '_sku', 'course-' . (int) $course['id']);
 						update_post_meta($new_post_id, '_virtual', 'yes');
 						update_post_meta($new_post_id, '_sold_individually', 'yes');

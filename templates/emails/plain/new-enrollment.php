@@ -18,7 +18,7 @@ if ($count_course_order && $count_course_order < 2) {
 }
 echo esc_html('To enroll and access your course please click on the course link given below :', 'moowoodle') . '\n\n';
 foreach ($enrollments['enrolments'] as $enrollment) {
-	$enrollment_list[] = get_moowoodle_course_url($enrollment['linked_course_id'], $enrollment['course_name']);
+	$enrollment_list[] = get_moowoodle_course_url($enrollment['courseid'], $enrollment['course_name']);
 	echo esc_html('You are enrolled in ' . $enrollment_list[$i]) . ' \n\n';
 	$i++;
 }

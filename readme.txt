@@ -181,10 +181,11 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 
 == Changelog ==
 
-= 3.1.7 – 2024-02-02 =
+= 3.1.7 – 2024-02-05 =
 * Added - Support WordPress 6.4.3.
 * Added - Support WooCommerce 8.5.2.
 * Fixed - Internal bug.
+* Fixed - product meta 'linked_course_id' store course post_id.
 
 = 3.1.6 – 2024-01-10 =
 * Added - WooCommerce HPOS Compatibility.

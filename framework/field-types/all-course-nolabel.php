@@ -88,7 +88,7 @@ foreach ($from_heading as $key_heading => $value_heading) {
 $courses = get_posts(array('post_type' => 'course', 'numberposts' => -1, 'post_status' => 'publish'));
 if (!empty($courses)) {
 	foreach ($courses as $course) {
-		$id = get_post_meta($course->ID, 'moodle_course_id', true);
+		$moodle_course_id = get_post_meta($course->ID, 'moodle_course_id', true);
 		$course_short_name = get_post_meta($course->ID, '_course_short_name', true);
 		$product = get_posts(array('post_type' => 'product', 'numberposts' => -1, 'post_status' => 'publish', 'name' => $course_short_name));
 		$course_startdate = get_post_meta($course->ID, '_course_startdate', true);
@@ -117,8 +117,8 @@ if (!empty($courses)) {
 			$catagory_name = '<a href="' . esc_url(admin_url('edit.php?course_cat=' . $term->slug . '&post_type=course')) . '">' . esc_html($course_path) . '</a>';
 		}
 		$moodle_url = '';
-		if ($id) {
-			$moodle_url = '<a href="' . esc_url($MooWoodle->options_general_settings["moodle_url"]) . 'course/edit.php?id=' . $id . '" target="_blank">' . esc_html($course_name) . '</a>';
+		if ($moodle_course_id) {
+			$moodle_url = '<a href="' . esc_url($MooWoodle->options_general_settings["moodle_url"]) . 'course/edit.php?id=' . $moodle_course_id . '" target="_blank">' . esc_html($course_name) . '</a>';
 		}
 		$product_name = '';
 		if ($product) {
@@ -138,15 +138,15 @@ if (!empty($courses)) {
 		}else{
 			$args = wp_parse_args($args, array('fields' => 'ids'));
 			$order_ids = get_posts( apply_filters( 'moowoodle_my_courses_endpoint_get_orders_query_args', $args ) );
-			foreach($order_ids as $id){
-				$customer_orders[] = wc_get_order($id);
+			foreach($order_ids as $order_id){
+				$customer_orders[] = wc_get_order($order_id);
 			}
 		}
 		$count_enrolment = 0;
 		foreach ($customer_orders as $order) {
 			foreach ($order->get_items() as $enrolment) {
 				$linked_course_id = get_post_meta($enrolment->get_product_id(), 'linked_course_id', true);
-				if ($linked_course_id == $id) {
+				if ($linked_course_id == $course->ID) {
 					$count_enrolment++;
 				}
 
