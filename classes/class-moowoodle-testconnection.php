@@ -61,8 +61,11 @@ class MooWoodle_Testconnection {
 				if (!empty($missing_functions)) {
 					file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n\n        It seems that certain Moodle external web service functions are not configured correctly.\n        The missing functions following:" . json_encode($missing_functions) . "\n\n", FILE_APPEND);
 				} else if (!$MooWoodle->moowoodle_pro_adv) {
-					if (!in_array('auth_moowoodle_user_sync_get_all_users_data', $response_functions)) {
+					global $MooWoodle_Pro;
+					if (!in_array('auth_moowoodle_user_sync_get_all_users_data', $response_functions) && version_compare( MOOWOODLE_PRO_PLUGIN_VERSION, '1.0.5', '<' ) ) {
 						file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n\n        It seems that you are using MooWoodle Pro but Moodle external web service functions 'auth_moowoodle_user_sync_get_all_users_data' is not configured correctly.\n\n", FILE_APPEND);
+					} else if (!in_array('auth_moowoodle_moodle_connector_user_sync', $response_functions) && version_compare( MOOWOODLE_PRO_PLUGIN_VERSION, '1.0.5', '>=' ) ) {
+						file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n\n        It seems that you are using MooWoodle Pro but Moodle external web service functions 'auth_moowoodle_moodle_connector_user_sync' is not configured correctly.\n\n", FILE_APPEND);
 					} else if ($response_arr['downloadfiles'] != 1) {
 						file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n\n        It seems that you are using MooWoodle Pro but Moodle external web service is not configured correctly. Please edit your Moodle External service and enable 'Can download files' (you can find it from 'Show more...' options)\n\n", FILE_APPEND);
 					} else {

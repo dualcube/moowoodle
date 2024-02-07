@@ -232,6 +232,8 @@ class MooWoodle_Enrollment {
 	 * @return void
 	 */
 	public function update_course_access($subscription, $new_status, $old_status) {
+		$order_id = $subscription->get_parent_id();
+		$this->wc_order = wc_get_order( $order_id );
 		$suspend_for_status = apply_filters('moowoodle_suspend_course_access_for_subscription', array('on-hold', 'cancelled', 'expired'));
 		$create_moodle_user = false;
 		$suspend = 0;

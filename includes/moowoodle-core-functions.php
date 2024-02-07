@@ -2,11 +2,11 @@
 if (!function_exists('moowoodle_alert_notice')) {
 	function moowoodle_alert_notice() {
 		?>
-    <div id="message" class="error">
-      <p><?php printf(__('%sMooWoodle is inactive.%s The %sWooCommerce plugin%s must be active for the MooWoodle to work. Please %sinstall & activate WooCommerce%s', 'moowoodle'), '<strong>', '</strong>', '<a target="_blank" href="http://wordpress.org/extend/plugins/woocommerce/">', '</a>', '<a href="' . admin_url('plugins.php') . '">', '&nbsp;&raquo;</a>');?></p>
-    </div>
-    <?php
-}
+		<div id="message" class="error">
+		<p><?php printf(__('%sMooWoodle is inactive.%s The %sWooCommerce plugin%s must be active for the MooWoodle to work. Please %sinstall & activate WooCommerce%s', 'moowoodle'), '<strong>', '</strong>', '<a target="_blank" href="http://wordpress.org/extend/plugins/woocommerce/">', '</a>', '<a href="' . admin_url('plugins.php') . '">', '&nbsp;&raquo;</a>');?></p>
+		</div>
+    	<?php
+	}
 }
 /**
  * Call to moodle core functions.
@@ -29,6 +29,7 @@ if (!function_exists('moowoodle_moodle_core_function_callback')) {
 			'get_course_image' => 'core_course_get_courses_by_field',
 			'unenrol_users' => 'enrol_manual_unenrol_users',
 			'get_all_users_data' => 'auth_moowoodle_user_sync_get_all_users_data',
+			'sync_users_data' => 'auth_moowoodle_moodle_connector_user_sync',
 		);
 		if (array_key_exists($key, $moodle_core_functions)) {
 			$function_name = $moodle_core_functions[$key];

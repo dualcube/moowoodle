@@ -328,7 +328,7 @@ class MooWoodle_Settings {
 	 * Register and add settings
 	 */
 	public function settings_page_init() {
-		if($this->settings_library['menu'] != null) {
+		if(isset($this->settings_library['menu']) && $this->settings_library['menu'] != null) {
 			foreach ($this->settings_library['menu'] as $menuItem) {
 				foreach ($menuItem['tabs'] as $tab) {
 					if (empty($tab['validate_function'])) {
