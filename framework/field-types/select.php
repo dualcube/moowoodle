@@ -47,7 +47,7 @@ selectElement.addEventListener('change', function() {
 });
 </script>
 <div class="mw-normal-checkbox-label">
-	<?php echo $sub_desc;?>
+	<?php if(isset($sub_desc)) echo $sub_desc;?>
 </div>
 <?php
 }
