@@ -13,12 +13,14 @@ class MooWoodle_Sync {
 		if (filter_input(INPUT_POST, 'synccoursenow', FILTER_DEFAULT) === null) {
 			return;
 		}
-		$sync_now_options = filter_input(INPUT_POST, 'moowoodle_synchronize_now', FILTER_DEFAULT) !== null ? filter_input(INPUT_POST, 'moowoodle_synchronize_now', FILTER_DEFAULT) : array();
+		$sync_now_options = isset( $_POST['moowoodle_synchronize_now'] ) ? array_map('sanitize_key', $_POST['moowoodle_synchronize_now']) : array();
 		if (isset($sync_now_options['sync_courses_category']) && $sync_now_options['sync_courses_category'] == "Enable") {
 			$this->sync_categories();
 		}
-		if (isset($sync_now_options['sync_courses']) && $sync_now_options['sync_courses'] == "Enable") {
-			$this->sync_courses();
+		$courses = moowoodle_moodle_core_function_callback('get_courses');
+		$this->update_posts($courses, 'course', 'course_cat', 'moowoodle_term');
+		if (isset($sync_now_options['sync_all_product']) && $sync_now_options['sync_all_product'] == "Enable") {
+			$this->update_posts($courses, 'product', 'product_cat', 'woocommerce_term');
 		}
 		do_action('moowoodle_after_sync');
 	}
@@ -89,23 +91,6 @@ class MooWoodle_Sync {
 					wp_delete_term($term->term_id, $taxonomy);
 				}
 			}
-		}
-	}
-	/**
-	 * Sync courses from moodle.
-	 *
-	 * @access private
-	 * @return void
-	 */
-	private function sync_courses() {
-		global $MooWoodle;
-		if (filter_input(INPUT_POST, 'moowoodle_synchronize_now', FILTER_DEFAULT) !== null) {
-			$sync_now_options = filter_input(INPUT_POST, 'moowoodle_synchronize_now', FILTER_DEFAULT);
-		}
-		$courses = moowoodle_moodle_core_function_callback('get_courses');
-		$this->update_posts($courses, 'course', 'course_cat', 'moowoodle_term');
-		if (isset($sync_now_options['sync_all_product']) && $sync_now_options['sync_all_product'] == "Enable" && $MooWoodle->moowoodle_pro_adv) {
-			$this->update_posts($courses, 'product', 'product_cat', 'woocommerce_term');
 		}
 	}
 	/**

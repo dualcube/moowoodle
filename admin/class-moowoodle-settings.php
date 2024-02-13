@@ -1,10 +1,9 @@
 <?php
 class MooWoodle_Settings {
 	private $settings_library = array();
-	private $options;
-	private $pro_sticker = '';
+	private $page = '';
 	/*
-		  * Start up
+	* Start up
 	*/
 	public function __construct() {
 		//Admin menu
@@ -55,10 +54,9 @@ class MooWoodle_Settings {
 	}
 	public function option_page() {
 		global $MooWoodle;
-		$menu_slug = null;
-		$page = filter_input(INPUT_GET, 'page', FILTER_DEFAULT);
+		$this->page = filter_input(INPUT_GET, 'page', FILTER_DEFAULT) !== null ? filter_input(INPUT_GET, 'page', FILTER_DEFAULT) : '';
 		$layout = $this->moowoodle_get_page_layout();?>
-    <div class="mw-admin-dashbord <?php echo $page; ?>">
+    <div class="mw-admin-dashbord <?php echo $this->page; ?>">
       <div class="mw-general-wrapper">
         <div class="mw-header-wapper"><?php echo __('MooWoodle', 'moowoodle'); ?></div>
         <div class="mw-container">
@@ -75,12 +73,12 @@ class MooWoodle_Settings {
 		foreach ($this->settings_library['menu'] as $menuItem) {
 			foreach ($menuItem['tabs'] as $tab_id => $tab) {
 				if (empty($default_tab)) {
-					foreach ($this->settings_library['menu'][$page]['tabs'] as $tabKey => $tabValue) {
+					foreach ($this->settings_library['menu'][$this->page]['tabs'] as $tabKey => $tabValue) {
 						$default_tab = $tabKey;
 						break;
 					}
 				}
-				$current_tab = filter_input(INPUT_GET, 'tab', FILTER_DEFAULT)??  $default_tab;
+				$current_tab = filter_input(INPUT_GET, 'tab', FILTER_DEFAULT) !== null ? filter_input(INPUT_GET, 'tab', FILTER_DEFAULT) : $default_tab;
 				if ($current_tab == $tab_id) {
 					settings_fields($tab['setting']);
 					$show_submit = true;
@@ -156,11 +154,9 @@ class MooWoodle_Settings {
 		do_action('moowoodle_admin_footer');
 	}
 	public function moowoodle_get_page_layout() {
-		global $MooWoodle;
 		$layout = 'classic';
 		foreach ($this->settings_library["menu"] as $k => $v) {
-			$page = filter_input(INPUT_GET, 'page', FILTER_DEFAULT);
-			if ($page == $k) {
+			if ($this->page == $k) {
 				if (isset($v['layout'])) {
 					$layout = $v['layout'];
 				}
@@ -171,10 +167,8 @@ class MooWoodle_Settings {
 	//tab
 	public function moowoodle_plugin_options_tabs() {
 		global $MooWoodle;
-		$menu_slug = null;
-		$page = filter_input(INPUT_GET, 'page', FILTER_DEFAULT);
 		$uses_tabs = false;
-		$current_tab = filter_input(INPUT_GET, 'tab', FILTER_DEFAULT) ?? false;
+		$current_tab = filter_input(INPUT_GET, 'tab', FILTER_DEFAULT) !== null ? filter_input(INPUT_GET, 'tab', FILTER_DEFAULT) : false;
 		$tab_count = 1;
 		$pro_sticker = $MooWoodle->moowoodle_pro_adv ? '<span class="mw-pro-tag">Pro</span>' : '';
 		//Check if this config uses tabs
@@ -186,10 +180,10 @@ class MooWoodle_Settings {
 		}
 		// If uses tabs then generate the tabs
 		if ($uses_tabs) {
-			if (isset($this->settings_library['menu'][$page])) {
+			if (isset($this->settings_library['menu'][$this->page])) {
 				echo '<div class="mw-current-tab-lists">';
-				if (isset($this->settings_library['menu'][$page]['tabs'])) {
-					foreach ($this->settings_library['menu'][$page]['tabs'] as $tab_id => $tab) {
+				if (isset($this->settings_library['menu'][$this->page]['tabs'])) {
+					foreach ($this->settings_library['menu'][$this->page]['tabs'] as $tab_id => $tab) {
 						$active = '';
 						if ($current_tab) {
 							$active = $current_tab == $tab_id ? 'nav-tab-active' : '';
@@ -199,7 +193,7 @@ class MooWoodle_Settings {
 						if ($tab_id == 'moowoodle-from') {
 							echo '<a id="' . esc_attr($tab_id) . '" class="nav-tab ' . $active . '" href="admin.php?moowoodle&tab=moowoodle-from">';
 						} else {
-							echo '<a id="' . esc_attr($tab_id) . '" class="nav-tab ' . $active . '" href="?page=' . $page . '&tab=' . $tab_id . '">';
+							echo '<a id="' . esc_attr($tab_id) . '" class="nav-tab ' . $active . '" href="?page=' . $this->page . '&tab=' . $tab_id . '">';
 						}
 						if (isset($tab['font_class'])) {
 							echo '<i class="dashicons ' . esc_attr($tab['font_class']) . '"></i> ';

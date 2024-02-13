@@ -38,7 +38,6 @@ class MooWoodle_Endpoints {
 		return $menu_links;
 	}
 	function woocommerce_account_my_courses_endpoint() {
-		global $MooWoodle;
 		$customer = wp_get_current_user();
 		$customer_orders = array();
 		$args = array(
@@ -47,25 +46,9 @@ class MooWoodle_Endpoints {
 			'order' => 'DESC',
 			'post_type' => 'shop_order',
 			'post_status' => 'wc-completed',
-			'meta_query' => array(
-                array(
-                    'key' => '_customer_user',
-                    'value' => $customer->ID
-                ),
-            ),
+			'customer_id' => $customer->ID,
 		);
-		if($MooWoodle->hpos_is_enabled){
-			$args = wp_parse_args($args, array('customer_id' => $customer->ID));
-			unset($args['meta_query']);
-			$query = new WC_Order_Query( apply_filters( 'moowoodle_my_courses_endpoint_get_orders_query_args', $args ) );
-			$customer_orders = $query->get_orders();
-		}else{
-			$args = wp_parse_args($args, array('fields' => 'ids'));
-			$order_ids = get_posts( apply_filters( 'moowoodle_my_courses_endpoint_get_orders_query_args', $args ) );
-			foreach($order_ids as $id){
-				$customer_orders[] = wc_get_order($id);
-			}
-		}
+        $customer_orders = wc_get_orders($args);
 		$pwd = get_user_meta($customer->ID, 'moowoodle_moodle_user_pwd', true);
 		if (count($customer_orders) > 0) {
 			?>

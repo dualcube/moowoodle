@@ -6,7 +6,6 @@
                 "opacity": "1",
                 "visibility": "visible"
             })
-            console.log('123');
         });
         $('.mw-image-overlay').click(function() {
             $(".mw-image-overlay").css({

@@ -130,16 +130,7 @@ if (!empty($courses)) {
 			'post_type' => 'shop_order',
 			'post_status' => 'wc-completed',
 		);
-        if($MooWoodle->hpos_is_enabled){
-			$query = new WC_Order_Query( apply_filters( 'moowoodle_my_courses_endpoint_get_orders_query_args', $args ) );
-			$customer_orders = $query->get_orders();
-		}else{
-			$args = wp_parse_args($args, array('fields' => 'ids'));
-			$order_ids = get_posts( apply_filters( 'moowoodle_my_courses_endpoint_get_orders_query_args', $args ) );
-			foreach($order_ids as $order_id){
-				$customer_orders[] = wc_get_order($order_id);
-			}
-		}
+        $customer_orders = wc_get_orders($args);
 		$count_enrolment = 0;
 		foreach ($customer_orders as $order) {
 			foreach ($order->get_items() as $enrolment) {
@@ -157,7 +148,7 @@ if (!empty($courses)) {
 		}
 		$actions = '';
 		$actions .= '<div class="moowoodle-course-actions ' . $pro_popup_overlay . '"><input type="hidden" name="course_id" value=" ' . $course->ID . '"/><button type="button" name="sync_courses" class="sync-single-course button-primary" title="' . esc_attr('Sync Couse Data', 'moowoodle') . '" ' . ' ><i class="dashicons dashicons-update"></i></button>';
-		if ($product) {
+		if (($products)) {
 			$actions .= '
                         <button type="button" name="sync_update_product" class="update-existed-single-product button-secondary" title="' . esc_attr('Sync Course Data & Update Product', 'moowoodle') . '" ' . '><i class="dashicons dashicons-admin-links"></i></button>
                     </div>';
@@ -193,7 +184,7 @@ if (!empty($courses)) {
                             <td>
                                 <?php echo $actions; ?>
                             </td>
-                            <?php echo apply_filters('moowoodle_courses_body', $table_body, $course, $product); ?>
+                            <?php echo apply_filters('moowoodle_courses_body', $table_body, $course, $products); ?>
                         </tr>
                 <?php
 }

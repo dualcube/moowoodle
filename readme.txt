@@ -186,6 +186,7 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 * Added - Support WooCommerce 8.5.2.
 * Fixed - Internal bug.
 * Fixed - product meta 'linked_course_id' store course post_id.
+* Fixed - issues #83 ,#84, #85, #86.
 
 = 3.1.6 – 2024-01-10 =
 * Added - WooCommerce HPOS Compatibility.
