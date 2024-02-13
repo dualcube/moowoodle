@@ -10,12 +10,10 @@ class MooWoodle_Sync {
 	 * @return void
 	 */
 	public function sync() {
-		if (!isset($_POST['synccoursenow'])) {
+		if (filter_input(INPUT_POST, 'synccoursenow', FILTER_DEFAULT) === null) {
 			return;
 		}
-		if (isset($_POST["moowoodle_synchronize_now"])) {
-			$sync_now_options = $_POST["moowoodle_synchronize_now"];
-		}
+		$sync_now_options = filter_input(INPUT_POST, 'moowoodle_synchronize_now', FILTER_DEFAULT) !== null ? filter_input(INPUT_POST, 'moowoodle_synchronize_now', FILTER_DEFAULT) : array();
 		if (isset($sync_now_options['sync_courses_category']) && $sync_now_options['sync_courses_category'] == "Enable") {
 			$this->sync_categories();
 		}
@@ -48,6 +46,7 @@ class MooWoodle_Sync {
 	 * @return void
 	 */
 	private function update_categories($categories, $taxonomy, $meta_key) {
+		global $MooWoodle;
 		if (empty($taxonomy) || empty($meta_key) || !taxonomy_exists($taxonomy)) {
 			return;
 		}
@@ -64,7 +63,7 @@ class MooWoodle_Sync {
 						add_term_meta($term['term_id'], '_parent', $category['parent'], false);
 						add_term_meta($term['term_id'], '_category_path', $category['path'], false);
 					} else {
-						file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n        moowoodle url:" . $term->get_error_message() . "\n", FILE_APPEND);
+						$MooWoodle->MW_log( "\n        moowoodle url:" . $term->get_error_message() . "\n");
 					}
 				} else {
 					$term = wp_update_term($term_id, $taxonomy, array('name' => $category['name'], 'slug' => "{$category['name']} {$category['id']}", 'description' => $category['description']));
@@ -72,7 +71,7 @@ class MooWoodle_Sync {
 						update_term_meta($term['term_id'], '_parent', $category['parent'], '');
 						update_term_meta($term['term_id'], '_category_path', $category['path'], false);
 					} else {
-						file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n        moowoodle url:" . $term->get_error_message() . "\n", FILE_APPEND);
+						$MooWoodle->MW_log( "\n        moowoodle url:" . $term->get_error_message() . "\n");
 					}
 				}
 				$category_ids[] = $category['id'];
@@ -100,8 +99,8 @@ class MooWoodle_Sync {
 	 */
 	private function sync_courses() {
 		global $MooWoodle;
-		if (isset($_POST["moowoodle_synchronize_now"])) {
-			$sync_now_options = $_POST["moowoodle_synchronize_now"];
+		if (filter_input(INPUT_POST, 'moowoodle_synchronize_now', FILTER_DEFAULT) !== null) {
+			$sync_now_options = filter_input(INPUT_POST, 'moowoodle_synchronize_now', FILTER_DEFAULT);
 		}
 		$courses = moowoodle_moodle_core_function_callback('get_courses');
 		$this->update_posts($courses, 'course', 'course_cat', 'moowoodle_term');

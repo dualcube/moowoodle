@@ -45,7 +45,7 @@ if (!function_exists('moowoodle_moodle_core_function_callback')) {
 			$request_query = http_build_query($request_param);
 			$response = wp_remote_post($request_url, array('body' => $request_query, 'timeout' => $MooWoodle->options_timeout_settings['moodle_timeout']));
 			if(isset($conn_settings['moowoodle_adv_log']) && $conn_settings['moowoodle_adv_log'] == 'Enable'){
-				file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n\n        moowoodle url:" . $request_url . '&' . $request_query . "\n        moowoodle response:" . json_encode($response) . "\n\n", FILE_APPEND);
+				$MooWoodle->MW_log( "\n\n        moowoodle url:" . $request_url . '&' . $request_query . "\n        moowoodle response:" . wp_json_encode($response) . "\n\n");
 			}
 		}
 		$url_check = $error_massage = '';
@@ -86,7 +86,7 @@ if (!function_exists('moowoodle_moodle_core_function_callback')) {
 			$error_massage =  $error_codes. $response->get_error_message();
 			$MooWoodle->ws_has_error = true;
 		}
-		file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n        moowoodle error:" . $error_massage . "\n", FILE_APPEND);
+		$MooWoodle->MW_log( "\n        moowoodle error:" . $error_massage . "\n");
 		return null;
 	}
 }

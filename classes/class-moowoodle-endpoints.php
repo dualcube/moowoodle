@@ -116,7 +116,7 @@ foreach ($customer_orders as $order) {
                   <td>
                     <?php
 if (!empty($enrolment_date)) {
-						_e(get_date_from_gmt(date('M j, Y-H:i', $enrolment_date)));
+						_e(get_date_from_gmt(gmdate('M j, Y-H:i', $enrolment_date)));
 					}
 					?>
                   </td>

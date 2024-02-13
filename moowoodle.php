@@ -65,7 +65,7 @@ if (!class_exists('MooWoodle') && MooWoodle_Dependencies::woocommerce_active_che
 	global $MooWoodle;
 	$MooWoodle = new MooWoodle(__FILE__);
 	$GLOBALS['MooWoodle'] = $MooWoodle;
-} elseif (isset($_GET['page']) && $_GET['page'] == 'moowoodle-settings') {
+} elseif (filter_input(INPUT_POST, 'page', FILTER_DEFAULT) == 'moowoodle-settings') {
 	?>
 	<div style="text-align: center; padding: 20px; height: 100%">
         <h2><?php echo __('Warning: Activate WooCommerce and Verify Moowoodle Files', 'moowoodle'); ?></h2>

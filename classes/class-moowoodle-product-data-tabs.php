@@ -95,20 +95,21 @@ echo esc_html_e("Cannot find your course in this list?", "moowoodle");
 	 */
 	public function save_product_meta_data($post_id) {
 		// Security check
-		if (!isset($_POST['product_meta_nonce'])) {
+		if (filter_input(INPUT_POST, 'product_meta_nonce', FILTER_DEFAULT) === null) {
 			return $post_id;
 		}
 		//Verify that the nonce is valid.
-		if (!wp_verify_nonce($_POST['product_meta_nonce'])) {
+		if (filter_input(INPUT_POST, 'product_meta_nonce', FILTER_DEFAULT) === null) {
 			return $post_id;
 		}
-		if (!current_user_can('edit_product', $post_id)) {
+		if (filter_input(INPUT_POST, 'edit_product', FILTER_DEFAULT) === null) {
 			return $post_id;
 		}
-		if (isset($_POST['course_id'])) {
-			update_post_meta($post_id, 'linked_course_id', wp_kses_post($_POST['course_id']));
-			update_post_meta($post_id, '_sku', 'course-' . get_post_meta($_POST['course_id'], '_sku'));
-			update_post_meta($post_id, 'moodle_course_id', get_post_meta($_POST['course_id'], 'moodle_course_id'));
+		$course_id = filter_input(INPUT_POST, 'course_id', FILTER_DEFAULT);
+		if ($course_id !== null) {
+			update_post_meta($post_id, 'linked_course_id', wp_kses_post($course_id));
+			update_post_meta($post_id, '_sku', 'course-' . get_post_meta($course_id, '_sku'));
+			update_post_meta($post_id, 'moodle_course_id', get_post_meta($course_id, 'moodle_course_id'));
 		}
 	}
 }

@@ -262,11 +262,11 @@ class MooWoodle_Enrollment {
 		$display_settings = $MooWoodle->options_display_settings;
 		if (isset($display_settings['start_end_date']) && $display_settings['start_end_date'] == "Enable") {
 			if ($startdate) {
-				echo esc_html_e("Start Date : ", 'moowoodle') . esc_html_e(date('Y-m-d', $startdate), 'moowoodle');
+				echo esc_html_e("Start Date : ", 'moowoodle') . esc_html_e(gmdate('Y-m-d', $startdate), 'moowoodle');
 			}
 			print_r("<br>");
 			if ($enddate) {
-				echo esc_html_e("End Date : ", 'moowoodle') . esc_html_e(date('Y-m-d', $enddate), 'moowoodle');
+				echo esc_html_e("End Date : ", 'moowoodle') . esc_html_e(gmdate('Y-m-d', $enddate), 'moowoodle');
 			}
 		}
 	}

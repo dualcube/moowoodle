@@ -60,6 +60,7 @@ class MooWoodle {
 	 * initilize plugin on WP init
 	 */
 	function init() {
+		global $wp_filesystem;
 		if(version_compare(WC_VERSION, '8.3.0', '>=')){
             $this->hpos_is_enabled = $this->hpos_is_enabled();
         } 
@@ -79,6 +80,7 @@ class MooWoodle {
 			$this->product_data_tab = new MooWoodle_Product_Data_Tabs();
 			//frontend js file
 			$args = array(
+				'nonce' => wp_create_nonce('MooWoodle-security-nonce'),
 				'testconnection_actions' => array(
 					'get_site_info' => __('Connecting to Moodle', 'moowoodle'),
 					'get_catagory' => __('Course Category Sync', 'moowoodle'),
@@ -116,14 +118,18 @@ class MooWoodle {
 		//init endpoints
 		$this->load_class('endpoints');
 		$this->endpoints = new MooWoodle_Endpoints();
+		if (empty($wp_filesystem)) {
+			require_once ABSPATH . '/wp-admin/includes/file.php';
+			WP_Filesystem();
+		}
 		//log folder
 		if (!file_exists(MW_LOGS . "/error.log")) {
 			wp_mkdir_p(MW_LOGS);
-			echo file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "MooWoodle Log file Created\n", FILE_APPEND);
+			$wp_filesystem->put_contents(MW_LOGS . "/error.log", gmdate("d/m/Y H:i:s", time()) . ': ' . "MooWoodle Log file Created\n");
 		}
 		//clear log file
-		if (isset($_POST['clearlog'])) {
-			file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "MooWoodle Log file Cleared\n");
+		if (filter_input(INPUT_POST, 'clearlog', FILTER_DEFAULT) !== null) {
+			$wp_filesystem->put_contents(MW_LOGS . "/error.log", gmdate("d/m/Y H:i:s", time()) . ': ' . "MooWoodle Log file Cleared\n");
 		}
 	}
 	function mwdl_admin_init() {
@@ -205,4 +211,23 @@ class MooWoodle {
     public static function hpos_is_enabled(): bool {
         return version_compare( WC_VERSION, '8.3.0', '>=' ) ? WCOrderUtil::custom_orders_table_usage_is_enabled() : false;
     }
+	/**
+     * MooWoodle LOG function.
+     *
+     * @param string $message
+     * @return bool
+     */
+	public static function MW_log($message) {
+		global $wp_filesystem;
+		if ($wp_filesystem) {
+			$log_entry = gmdate("d/m/Y H:i:s", time()) . ': ' . $message;
+			$existing_content = $wp_filesystem->get_contents(get_site_url(null, str_replace(ABSPATH, '', MW_LOGS) . "/error.log"));
+			if (!empty($existing_content)) {
+				$log_entry = "\n" . $log_entry;
+			}
+			$new_content = $existing_content . $log_entry;
+			return $wp_filesystem->put_contents(MW_LOGS . "/error.log", $new_content);
+		}
+		return false;
+	}
 }

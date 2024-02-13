@@ -36,11 +36,6 @@ $args = array(
     )
 );
 wp_localize_script('moowoodle_all_course_tables', 'table_args', $args);
-if ($_SERVER['REQUEST_METHOD'] === 'POST')
-            if(isset($_POST['mw_bulk_apply_btn']))
-            if(isset($_POST['bulk_action_seclect_course_id'])){
-                print_r($_POST['bulk_action_seclect_course_id']);die;
-            }
 ?>
 <script src="<?php echo $MooWoodle->plugin_url . 'assets/admin/js/dataTables.min.js'; ?>"></script>
 <script src="<?php echo $MooWoodle->plugin_url . 'assets/admin/js/moment.min.js'; ?>"></script>

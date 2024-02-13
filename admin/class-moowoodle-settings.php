@@ -56,7 +56,7 @@ class MooWoodle_Settings {
 	public function option_page() {
 		global $MooWoodle;
 		$menu_slug = null;
-		$page = $_REQUEST['page'];
+		$page = filter_input(INPUT_GET, 'page', FILTER_DEFAULT);
 		$layout = $this->moowoodle_get_page_layout();?>
     <div class="mw-admin-dashbord <?php echo $page; ?>">
       <div class="mw-general-wrapper">
@@ -80,7 +80,7 @@ class MooWoodle_Settings {
 						break;
 					}
 				}
-				$current_tab = isset($_GET['tab']) ? $_GET['tab'] : $default_tab;
+				$current_tab = filter_input(INPUT_GET, 'tab', FILTER_DEFAULT)??  $default_tab;
 				if ($current_tab == $tab_id) {
 					settings_fields($tab['setting']);
 					$show_submit = true;
@@ -88,7 +88,6 @@ class MooWoodle_Settings {
 					$submit_btn_name = isset($tab['submit_btn_name']) ? $tab['submit_btn_name'] : 'submit';
 				}
 				foreach ($tab['section'] as $section_id => $section) {
-					$current_tab = isset($_GET['tab']) ? $_GET['tab'] : $default_tab;
 					if ($current_tab == $tab_id or $current_tab === false) {
 						if ($layout == '2-col') {
 							echo '<div id="' . esc_attr($section_id) . '" class="mw-section-wraper">';
@@ -130,8 +129,8 @@ class MooWoodle_Settings {
                         <p><span>4.</span> Select and sync courses with flexibility</p>
                         <p><span>5.</span> Easily synchronize courses in bulk</p>
                         <p><span>6.</span> Seamless, One-Password Access to Moodle™ and WordPress.</p>
-						<p><span>7.</span> Choose which user information to synchronize.</p>
-						<p><span>8.</span> Automatic User Synchronization for Moodle™ and WordPress.</p>
+                        <p><span>7.</span> Choose which user information to synchronize.</p>
+                        <p><span>8.</span> Automatic User Synchronization for Moodle™ and WordPress.</p>
             <p class="supt-link">
                       <a href="<?php echo esc_url(MOOWOODLE_SUPPORT_URL) ?>" target="_blank">
                         <?php esc_html_e('Got a Support Question', 'moowoodle')?>
@@ -160,7 +159,7 @@ class MooWoodle_Settings {
 		global $MooWoodle;
 		$layout = 'classic';
 		foreach ($this->settings_library["menu"] as $k => $v) {
-			$page = $_REQUEST['page'];
+			$page = filter_input(INPUT_GET, 'page', FILTER_DEFAULT);
 			if ($page == $k) {
 				if (isset($v['layout'])) {
 					$layout = $v['layout'];
@@ -173,9 +172,9 @@ class MooWoodle_Settings {
 	public function moowoodle_plugin_options_tabs() {
 		global $MooWoodle;
 		$menu_slug = null;
-		$page = $_REQUEST['page'];
+		$page = filter_input(INPUT_GET, 'page', FILTER_DEFAULT);
 		$uses_tabs = false;
-		$current_tab = isset($_GET['tab']) ? $_GET['tab'] : false;
+		$current_tab = filter_input(INPUT_GET, 'tab', FILTER_DEFAULT) ?? false;
 		$tab_count = 1;
 		$pro_sticker = $MooWoodle->moowoodle_pro_adv ? '<span class="mw-pro-tag">Pro</span>' : '';
 		//Check if this config uses tabs

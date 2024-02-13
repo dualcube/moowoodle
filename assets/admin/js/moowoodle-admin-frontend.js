@@ -138,6 +138,7 @@
                 url: 'admin-ajax.php',
                 data: {
                     action: action,
+                    nonce: admin_frontend_args.nonce,
                     user_id: user_id,
                     course_id: course_id,
                 },
@@ -152,6 +153,7 @@
                         course_empty = response['course_empty'];
                         course_id = response['course_id'];
                         user_id = response['user_id'];
+                        if(course_empty != '')console.log(course_empty);
                         if(action == 'get_site_info' && response['message'] != 'success'){
                             console.log('Setup Problem.');
                         } else if(action == 'update_user' &&  !course_id) {
