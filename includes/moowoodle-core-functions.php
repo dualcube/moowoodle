@@ -2,11 +2,11 @@
 if (!function_exists('moowoodle_alert_notice')) {
 	function moowoodle_alert_notice() {
 		?>
-    <div id="message" class="error">
-      <p><?php printf(__('%sMooWoodle is inactive.%s The %sWooCommerce plugin%s must be active for the MooWoodle to work. Please %sinstall & activate WooCommerce%s', 'moowoodle'), '<strong>', '</strong>', '<a target="_blank" href="http://wordpress.org/extend/plugins/woocommerce/">', '</a>', '<a href="' . admin_url('plugins.php') . '">', '&nbsp;&raquo;</a>');?></p>
-    </div>
-    <?php
-}
+		<div id="message" class="error">
+		<p><?php printf(__('%sMooWoodle is inactive.%s The %sWooCommerce plugin%s must be active for the MooWoodle to work. Please %sinstall & activate WooCommerce%s', 'moowoodle'), '<strong>', '</strong>', '<a target="_blank" href="http://wordpress.org/extend/plugins/woocommerce/">', '</a>', '<a href="' . admin_url('plugins.php') . '">', '&nbsp;&raquo;</a>');?></p>
+		</div>
+    	<?php
+	}
 }
 /**
  * Call to moodle core functions.
@@ -29,6 +29,7 @@ if (!function_exists('moowoodle_moodle_core_function_callback')) {
 			'get_course_image' => 'core_course_get_courses_by_field',
 			'unenrol_users' => 'enrol_manual_unenrol_users',
 			'get_all_users_data' => 'auth_moowoodle_user_sync_get_all_users_data',
+			'sync_users_data' => 'auth_moowoodle_moodle_connector_user_sync',
 		);
 		if (array_key_exists($key, $moodle_core_functions)) {
 			$function_name = $moodle_core_functions[$key];
@@ -44,7 +45,7 @@ if (!function_exists('moowoodle_moodle_core_function_callback')) {
 			$request_query = http_build_query($request_param);
 			$response = wp_remote_post($request_url, array('body' => $request_query, 'timeout' => $MooWoodle->options_timeout_settings['moodle_timeout']));
 			if(isset($conn_settings['moowoodle_adv_log']) && $conn_settings['moowoodle_adv_log'] == 'Enable'){
-				file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n\n        moowoodle url:" . $request_url . '&' . $request_query . "\n        moowoodle response:" . json_encode($response) . "\n\n", FILE_APPEND);
+				$MooWoodle->MW_log( "\n\n        moowoodle url:" . $request_url . '&' . $request_query . "\n        moowoodle response:" . wp_json_encode($response) . "\n\n");
 			}
 		}
 		$url_check = $error_massage = '';
@@ -85,7 +86,7 @@ if (!function_exists('moowoodle_moodle_core_function_callback')) {
 			$error_massage =  $error_codes. $response->get_error_message();
 			$MooWoodle->ws_has_error = true;
 		}
-		file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n        moowoodle error:" . $error_massage . "\n", FILE_APPEND);
+		$MooWoodle->MW_log( "\n        moowoodle error:" . $error_massage . "\n");
 		return null;
 	}
 }
@@ -133,9 +134,9 @@ function moowoodle_get_post_by_moodle_id($course_id, $post_type = '') {
 	return 0;
 }
 if (!function_exists('get_moowoodle_course_url')) {
-	function get_moowoodle_course_url($linked_course_id, $course_name) {
+	function get_moowoodle_course_url($moodle_course_id, $course_name) {
 		global $MooWoodle;
-		$course = $linked_course_id;
+		$course = $moodle_course_id;
 		$class = "moowoodle";
 		$target = '_blank';
 		$content = $course_name;

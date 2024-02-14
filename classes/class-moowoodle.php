@@ -27,7 +27,6 @@ class MooWoodle {
 	public $testconnection;
 	public $product_data_tab;
 	private static $active_plugins;
-	public $hpos_is_enabled;
 	public function __construct($file) {
 		$this->file = $file;
 		$this->plugin_url = trailingslashit(plugins_url('', $plugin = $file));
@@ -60,9 +59,6 @@ class MooWoodle {
 	 * initilize plugin on WP init
 	 */
 	function init() {
-		if(version_compare(WC_VERSION, '8.3.0', '>=')){
-            $this->hpos_is_enabled = $this->hpos_is_enabled();
-        } 
 		// Init Text Domain
 		$this->load_plugin_textdomain();
 		// Init library
@@ -79,6 +75,7 @@ class MooWoodle {
 			$this->product_data_tab = new MooWoodle_Product_Data_Tabs();
 			//frontend js file
 			$args = array(
+				'nonce' => wp_create_nonce('MooWoodle-security-nonce'),
 				'testconnection_actions' => array(
 					'get_site_info' => __('Connecting to Moodle', 'moowoodle'),
 					'get_catagory' => __('Course Category Sync', 'moowoodle'),
@@ -116,15 +113,7 @@ class MooWoodle {
 		//init endpoints
 		$this->load_class('endpoints');
 		$this->endpoints = new MooWoodle_Endpoints();
-		//log folder
-		if (!file_exists(MW_LOGS . "/error.log")) {
-			wp_mkdir_p(MW_LOGS);
-			echo file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "MooWoodle Log file Created\n", FILE_APPEND);
-		}
-		//clear log file
-		if (isset($_POST['clearlog'])) {
-			file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "MooWoodle Log file Cleared\n");
-		}
+		$this->MW_log('');
 	}
 	function mwdl_admin_init() {
 		$previous_plugin_version = get_option('dc_moowoodle_plugin_db_version');
@@ -194,15 +183,38 @@ class MooWoodle {
 
 	}
 	/**
-     * Helper function to get whether custom order tables are enabled or not.
+     * MooWoodle LOG function.
      *
-     * This method can be removed, and we can directly use WC OrderUtil::custom_orders_table_usage_is_enabled method in future
-     * if we set the minimum wc version requirements to 8.0
-     *
-     *
+     * @param string $message
      * @return bool
      */
-    public static function hpos_is_enabled(): bool {
-        return version_compare( WC_VERSION, '8.3.0', '>=' ) ? WCOrderUtil::custom_orders_table_usage_is_enabled() : false;
-    }
+	public static function MW_log($message) {
+		global $wp_filesystem;
+		if (empty($wp_filesystem)) {
+			require_once ABSPATH . '/wp-admin/includes/file.php';
+			WP_Filesystem();
+		}
+		if ($wp_filesystem) {
+			// log folder create
+			if (!file_exists(MW_LOGS . "/error.log")) {
+				wp_mkdir_p(MW_LOGS);
+				$wp_filesystem->put_contents(MW_LOGS . "/error.log", gmdate("d/m/Y H:i:s", time()) . ': ' . "MooWoodle Log file Created\n");
+			}
+			// Clear log file
+			if (filter_input(INPUT_POST, 'clearlog', FILTER_DEFAULT) !== null) {
+				$wp_filesystem->put_contents(MW_LOGS . "/error.log", gmdate("d/m/Y H:i:s", time()) . ': ' . "MooWoodle Log file Cleared\n");
+			}
+			// Write Log
+			if($message != ''){
+				$log_entry = gmdate("d/m/Y H:i:s", time()) . ': ' . $message;
+				$existing_content = $wp_filesystem->get_contents(get_site_url(null, str_replace(ABSPATH, '', MW_LOGS) . "/error.log"));
+				if (!empty($existing_content)) {
+					$log_entry = "\n" . $log_entry;
+				}
+				$new_content = $existing_content . $log_entry;
+				return $wp_filesystem->put_contents(MW_LOGS . "/error.log", $new_content);
+			}
+		}
+		return false;
+	}
 }

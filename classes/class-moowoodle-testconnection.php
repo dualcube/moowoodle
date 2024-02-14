@@ -36,6 +36,7 @@ class MooWoodle_Testconnection {
 	//test get site info
 	public function get_site_info() {
 		global $MooWoodle;
+		$this->verify_nonce();
 		$response = $this->moowoodle_moodle_test_connection_callback('get_site_info');
 		if ($response != null) {
 			if ($this->check_connection($response) == 'success') {
@@ -59,12 +60,15 @@ class MooWoodle_Testconnection {
 				$missing_functions = array_diff($web_service_functions, $response_functions);
 
 				if (!empty($missing_functions)) {
-					file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n\n        It seems that certain Moodle external web service functions are not configured correctly.\n        The missing functions following:" . json_encode($missing_functions) . "\n\n", FILE_APPEND);
+					$MooWoodle->MW_log( "\n\n        It seems that certain Moodle external web service functions are not configured correctly.\n        The missing functions following:" . wp_json_encode($missing_functions) . "\n\n");
 				} else if (!$MooWoodle->moowoodle_pro_adv) {
-					if (!in_array('auth_moowoodle_user_sync_get_all_users_data', $response_functions)) {
-						file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n\n        It seems that you are using MooWoodle Pro but Moodle external web service functions 'auth_moowoodle_user_sync_get_all_users_data' is not configured correctly.\n\n", FILE_APPEND);
+					global $MooWoodle_Pro;
+					if (!in_array('auth_moowoodle_user_sync_get_all_users_data', $response_functions) && version_compare( MOOWOODLE_PRO_PLUGIN_VERSION, '1.0.5', '<' ) ) {
+						$MooWoodle->MW_log( "\n\n        It seems that you are using MooWoodle Pro but Moodle external web service functions 'auth_moowoodle_user_sync_get_all_users_data' is not configured correctly.\n\n");
+					} else if (!in_array('auth_moowoodle_moodle_connector_user_sync', $response_functions) && version_compare( MOOWOODLE_PRO_PLUGIN_VERSION, '1.0.5', '>=' ) ) {
+						$MooWoodle->MW_log( "\n\n        It seems that you are using MooWoodle Pro but Moodle external web service functions 'auth_moowoodle_moodle_connector_user_sync' is not configured correctly.\n\n");
 					} else if ($response_arr['downloadfiles'] != 1) {
-						file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n\n        It seems that you are using MooWoodle Pro but Moodle external web service is not configured correctly. Please edit your Moodle External service and enable 'Can download files' (you can find it from 'Show more...' options)\n\n", FILE_APPEND);
+						$MooWoodle->MW_log( "\n\n        It seems that you are using MooWoodle Pro but Moodle external web service is not configured correctly. Please edit your Moodle External service and enable 'Can download files' (you can find it from 'Show more...' options)\n\n");
 					} else {
 						$this->response_data['message'] = 'success';
 					}
@@ -74,16 +78,12 @@ class MooWoodle_Testconnection {
 				update_option('moowoodle_moodle_site_name', $response_arr['sitename']);
 			}
 		}
-		$this->response_data['course_empty'] = $_POST['course_empty'];
-		$this->response_data['course_id'] = $_POST['course_id'];
-		$this->response_data['user_id'] = $_POST['user_id'];
 		wp_send_json($this->response_data);
 	}
 	//test get course
 	public function get_course() {
+		$this->verify_nonce();
 		$response = $this->moowoodle_moodle_test_connection_callback('get_courses');
-		$this->response_data['course_empty'] = $_POST['course_empty'];
-		$this->response_data['course_id'] = $_POST['course_id'];
 		if ($response != null) {
 			if ($this->check_connection($response) == 'success') {
 				$this->response_data['message'] = 'success';
@@ -102,25 +102,21 @@ class MooWoodle_Testconnection {
 				}
 			}
 		}
-		$this->response_data['user_id'] = $_POST['user_id'];
 		wp_send_json($this->response_data);
 	}
 	// test get category
 	public function get_catagory() {
+		$this->verify_nonce();
 		$response = $this->moowoodle_moodle_test_connection_callback('get_categories');
 		if ($response != null && $this->check_connection($response) == 'success') {
 			$this->response_data['message'] = 'success';
 		}
-		$this->response_data['course_empty'] = $_POST['course_empty'];
-		$this->response_data['course_id'] = $_POST['course_id'];
-		$this->response_data['user_id'] = $_POST['user_id'];
 		wp_send_json($this->response_data);
 	}
 	//  test get course by fuild
 	public function get_course_by_fuild() {
+		$this->verify_nonce();
 		$response = $this->moowoodle_moodle_test_connection_callback('get_course_by_fuild');
-		$this->response_data['course_empty'] = $_POST['course_empty'];
-		$this->response_data['course_id'] = $_POST['course_id'];
 		if ($response != null && $this->check_connection($response) == 'success') {
 			$response_arr = json_decode($response['body'], true);
 			$this->response_data['message'] = 'success';
@@ -134,86 +130,78 @@ class MooWoodle_Testconnection {
 				}
 			}
 		}
-		$this->response_data['user_id'] = $_POST['user_id'];
 		wp_send_json($this->response_data);
 	}
 	public function create_user() {
+		$this->verify_nonce();
 		$response = $this->moowoodle_moodle_test_connection_callback('create_users', array('users' => array($this->user_data)));
 		$this->response_data['message'] = esc_html(__('Failed, please check the', 'moowoodle')) . ' <a href="' . admin_url("admin.php?page=moowoodle-settings&tab=moowoodle-log") . '"> ' . esc_html(__('error log', 'moowoodle')) . ' </a>';
 		if ($response != null && ($this->check_connection($response) == 'success' || strpos($this->check_connection($response), 'Username already exists'))) {
 			$this->response_data['message'] = 'success';
 		}
-		$this->response_data['course_empty'] = $_POST['course_empty'];
-		$this->response_data['course_id'] = $_POST['course_id'];
-		$this->response_data['user_id'] = $_POST['user_id'];
 		wp_send_json($this->response_data);
 	}
 	// test get user
 	public function get_user() {
+		$this->verify_nonce();
 		$response = $this->moowoodle_moodle_test_connection_callback('get_moodle_users', array('criteria' => array(array('key' => 'email', 'value' => 'moowoodletestuser@gmail.com'))));
 		if ($response != null && $this->check_connection($response) == 'success') {
 			$response_arr = json_decode($response['body'], true);
 			$this->response_data['user_id'] = $response_arr['users'][0]['id'];
 			$this->response_data['message'] = 'success';
 		}
-		$this->response_data['course_empty'] = $_POST['course_empty'];
-		$this->response_data['course_id'] = $_POST['course_id'];
 		wp_send_json($this->response_data);
 	}
 	// test user update
 	public function update_user() {
-		$this->user_data['id'] = $_POST['user_id'];
+		$this->verify_nonce();
+		$this->user_data['id'] = $this->response_data['user_id'];
 		$this->user_data['city'] = 'citymoowoodle';
-		$response = $this->moowoodle_moodle_test_connection_callback('update_users', array('users' => array($this->user_data)));
-		if ($response != null && $this->check_connection($response) == 'success') {
-			$response_arr = json_decode($response['body'], true);
-			$this->response_data['message'] = 'success';
+		if($this->user_data){
+			$response = $this->moowoodle_moodle_test_connection_callback('update_users', array('users' => array($this->user_data)));
+			if ($response != null && $this->check_connection($response) == 'success') {
+				$this->response_data['message'] = 'success';
+			}
 		}
-		$this->response_data['course_empty'] = $_POST['course_empty'];
-		$this->response_data['course_id'] = $_POST['course_id'];
-		$this->response_data['user_id'] = $_POST['user_id'];
 		wp_send_json($this->response_data);
 	}
 	// test enrol users
 	public function enrol_users() {
-		$enrolment['courseid'] = $_POST['course_id'];
-		$enrolment['userid'] = $_POST['user_id'];
+		$this->verify_nonce();
+		$enrolment['courseid'] = $this->response_data['course_id'];
+		$enrolment['userid'] = $this->response_data['user_id'];
 		$enrolment['roleid'] = '5';
-		$response = $this->moowoodle_moodle_test_connection_callback('enrol_users', array('enrolments' => array($enrolment)));
-
-		if ($response != null && $this->check_connection($response) == 'success') {
-			$this->response_data['message'] = 'success';
+		if($enrolment['courseid'] && $enrolment['userid']){
+			$response = $this->moowoodle_moodle_test_connection_callback('enrol_users', array('enrolments' => array($enrolment)));
+			if ($response != null && $this->check_connection($response) == 'success') {
+				$this->response_data['message'] = 'success';
+			}
 		}
-		$this->response_data['course_empty'] = $_POST['course_empty'];
-		$this->response_data['course_id'] = $_POST['course_id'];
-		$this->response_data['user_id'] = $_POST['user_id'];
 		wp_send_json($this->response_data);
 	}
 	// test unenrol users
 	public function unenrol_users() {
-		$enrolment['courseid'] = $_POST['course_id'];
-		$enrolment['userid'] = $_POST['user_id'];
-		$response = $this->moowoodle_moodle_test_connection_callback('unenrol_users', array('enrolments' => array($enrolment)));
-
-		if ($response != null && $this->check_connection($response) == 'success') {
-			$this->response_data['message'] = 'success';
+		$this->verify_nonce();
+		$enrolment['courseid'] = $this->response_data['course_id'];
+		$enrolment['userid'] = $this->response_data['user_id'];
+		if($enrolment['courseid'] && $enrolment['userid']){
+			$response = $this->moowoodle_moodle_test_connection_callback('unenrol_users', array('enrolments' => array($enrolment)));
+			if ($response != null && $this->check_connection($response) == 'success') {
+				$this->response_data['message'] = 'success';
+			}
 		}
-		$this->response_data['course_empty'] = $_POST['course_empty'];
-		$this->response_data['course_id'] = $_POST['course_id'];
-		$this->response_data['user_id'] = $_POST['user_id'];
 		wp_send_json($this->response_data);
 	}
 	// test delete users
 	public function delete_users() {
-		$this->user_data['id'] = $_POST['user_id'];
-		$response = $this->moowoodle_moodle_test_connection_callback('delete_users', array('userids' => array($this->user_data['id'])));
-
-		if ($response != null && $this->check_connection($response) == 'success') {
-			$this->response_data['message'] = 'success';
+		$this->verify_nonce();
+		$this->user_data['id'] = $this->response_data['user_id'];
+		if($this->user_data['id']){
+			$response = $this->moowoodle_moodle_test_connection_callback('delete_users', array('userids' => array($this->user_data['id'])));
+			if ($response != null && $this->check_connection($response) == 'success') {
+				$this->response_data['message'] = 'success';
+			}
 		}
-		$this->response_data['course_empty'] = $_POST['course_empty'];
-		$this->response_data['course_id'] = $_POST['course_id'];
-		$this->response_data['user_id'] = $_POST['user_id'];
 		wp_send_json($this->response_data);
 	}
 	/**
@@ -254,7 +242,7 @@ class MooWoodle_Testconnection {
 			$request_query = http_build_query($request_param);
 			$response = wp_remote_post($request_url, array('body' => $request_query, 'timeout' => $MooWoodle->options_timeout_settings['moodle_timeout']));
 			if (isset($conn_settings['moowoodle_adv_log']) && $conn_settings['moowoodle_adv_log'] == 'Enable') {
-				file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n\n        moowoodle url:" . $request_url . '&' . $request_query . "\n        moowoodle response:" . json_encode($response) . "\n\n", FILE_APPEND);
+				$MooWoodle->MW_log( "\n\n        moowoodle url:" . $request_url . '&' . $request_query . "\n        moowoodle response:" . wp_json_encode($response) . "\n\n");
 			}
 		}
 		return $response;
@@ -312,7 +300,16 @@ class MooWoodle_Testconnection {
 			$error_massage = $error_codes . $response->get_error_message();
 			$MooWoodle->ws_has_error = true;
 		}
-		file_put_contents(MW_LOGS . "/error.log", date("d/m/Y H:i:s", time()) . ": " . "\n        moowoodle error:" . $error_massage . "\n", FILE_APPEND);
+		$MooWoodle->MW_log( "\n        moowoodle error:" . $error_massage . "\n");
 		return $error_massage;
+	}
+	private function verify_nonce(){
+		if (! check_ajax_referer('MooWoodle-security-nonce', 'nonce', false)) {
+			wp_send_json_error( 'Invalid security token sent.' );
+			wp_die();
+		}
+		$this->response_data['course_empty'] = filter_input(INPUT_POST, 'course_empty', FILTER_DEFAULT) !== null ? filter_input(INPUT_POST, 'course_empty', FILTER_DEFAULT) : 0;
+		$this->response_data['course_id'] = filter_input(INPUT_POST, 'course_id', FILTER_DEFAULT) !== null ? filter_input(INPUT_POST, 'course_id', FILTER_DEFAULT) : 0;
+		$this->response_data['user_id'] = filter_input(INPUT_POST, 'user_id', FILTER_DEFAULT) !== null ? filter_input(INPUT_POST, 'user_id', FILTER_DEFAULT) : 0;
 	}
 }

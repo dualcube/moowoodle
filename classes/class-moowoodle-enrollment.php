@@ -232,6 +232,8 @@ class MooWoodle_Enrollment {
 	 * @return void
 	 */
 	public function update_course_access($subscription, $new_status, $old_status) {
+		$order_id = $subscription->get_parent_id();
+		$this->wc_order = wc_get_order( $order_id );
 		$suspend_for_status = apply_filters('moowoodle_suspend_course_access_for_subscription', array('on-hold', 'cancelled', 'expired'));
 		$create_moodle_user = false;
 		$suspend = 0;
@@ -260,11 +262,11 @@ class MooWoodle_Enrollment {
 		$display_settings = $MooWoodle->options_display_settings;
 		if (isset($display_settings['start_end_date']) && $display_settings['start_end_date'] == "Enable") {
 			if ($startdate) {
-				echo esc_html_e("Start Date : ", 'moowoodle') . esc_html_e(date('Y-m-d', $startdate), 'moowoodle');
+				echo esc_html_e("Start Date : ", 'moowoodle') . esc_html_e(gmdate('Y-m-d', $startdate), 'moowoodle');
 			}
 			print_r("<br>");
 			if ($enddate) {
-				echo esc_html_e("End Date : ", 'moowoodle') . esc_html_e(date('Y-m-d', $enddate), 'moowoodle');
+				echo esc_html_e("End Date : ", 'moowoodle') . esc_html_e(gmdate('Y-m-d', $enddate), 'moowoodle');
 			}
 		}
 	}

@@ -5,7 +5,7 @@ Donate link: https://dualcube.com/
 Requires at least: 5.0.0
 Tested up to: 6.4.2
 Requires PHP: 8.0
-Stable tag: 3.1.6
+Stable tag: 3.1.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -180,6 +180,13 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 14.  List of Courses after sync.
 
 == Changelog ==
+
+= 3.1.7 – 2024-02-14 =
+* Added - Support WordPress 6.4.3.
+* Added - Support WooCommerce 8.5.2.
+* Fixed - Internal bug.
+* Fixed - product meta 'linked_course_id' store course post_id.
+* Fixed - issues #83 ,#84, #85, #86.
 
 = 3.1.6 – 2024-01-10 =
 * Added - WooCommerce HPOS Compatibility.

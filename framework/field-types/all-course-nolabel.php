@@ -36,11 +36,6 @@ $args = array(
     )
 );
 wp_localize_script('moowoodle_all_course_tables', 'table_args', $args);
-if ($_SERVER['REQUEST_METHOD'] === 'POST')
-            if(isset($_POST['mw_bulk_apply_btn']))
-            if(isset($_POST['bulk_action_seclect_course_id'])){
-                print_r($_POST['bulk_action_seclect_course_id']);die;
-            }
 ?>
 <script src="<?php echo $MooWoodle->plugin_url . 'assets/admin/js/dataTables.min.js'; ?>"></script>
 <script src="<?php echo $MooWoodle->plugin_url . 'assets/admin/js/moment.min.js'; ?>"></script>
@@ -88,9 +83,9 @@ foreach ($from_heading as $key_heading => $value_heading) {
 $courses = get_posts(array('post_type' => 'course', 'numberposts' => -1, 'post_status' => 'publish'));
 if (!empty($courses)) {
 	foreach ($courses as $course) {
-		$id = get_post_meta($course->ID, 'moodle_course_id', true);
+		$moodle_course_id = get_post_meta($course->ID, 'moodle_course_id', true);
 		$course_short_name = get_post_meta($course->ID, '_course_short_name', true);
-		$product = get_posts(array('post_type' => 'product', 'numberposts' => -1, 'post_status' => 'publish', 'name' => $course_short_name));
+		$products = get_posts(array('post_type' => 'product', 'numberposts' => -1, 'post_status' => 'publish', 'meta_key' =>  'linked_course_id' , 'meta_value' => $course->ID));
 		$course_startdate = get_post_meta($course->ID, '_course_startdate', true);
 		$course_enddate = get_post_meta($course->ID, '_course_enddate', true);
 		$course_name = $course->post_title;
@@ -117,12 +112,15 @@ if (!empty($courses)) {
 			$catagory_name = '<a href="' . esc_url(admin_url('edit.php?course_cat=' . $term->slug . '&post_type=course')) . '">' . esc_html($course_path) . '</a>';
 		}
 		$moodle_url = '';
-		if ($id) {
-			$moodle_url = '<a href="' . esc_url($MooWoodle->options_general_settings["moodle_url"]) . 'course/edit.php?id=' . $id . '" target="_blank">' . esc_html($course_name) . '</a>';
+		if ($moodle_course_id) {
+			$moodle_url = '<a href="' . esc_url($MooWoodle->options_general_settings["moodle_url"]) . 'course/edit.php?id=' . $moodle_course_id . '" target="_blank">' . esc_html($course_name) . '</a>';
 		}
 		$product_name = '';
-		if ($product) {
-			$product_name = '<a href="' . esc_url(admin_url() . 'post.php?post=' . $product[0]->ID . '&action=edit') . '">' . esc_html($product[0]->post_title) . '</a>';
+		if ($products) {
+            foreach($products as $product){
+                if($product_name)  $product_name .= ' ,<br>' ;
+                $product_name .= '<a href="' . esc_url(admin_url() . 'post.php?post=' . $product->ID . '&action=edit') . '">' . esc_html($product->post_title) . '</a>';
+            }
 		}
 		$enroled_user = '';
 		$args = array(
@@ -132,21 +130,12 @@ if (!empty($courses)) {
 			'post_type' => 'shop_order',
 			'post_status' => 'wc-completed',
 		);
-        if($MooWoodle->hpos_is_enabled){
-			$query = new WC_Order_Query( apply_filters( 'moowoodle_my_courses_endpoint_get_orders_query_args', $args ) );
-			$customer_orders = $query->get_orders();
-		}else{
-			$args = wp_parse_args($args, array('fields' => 'ids'));
-			$order_ids = get_posts( apply_filters( 'moowoodle_my_courses_endpoint_get_orders_query_args', $args ) );
-			foreach($order_ids as $id){
-				$customer_orders[] = wc_get_order($id);
-			}
-		}
+        $customer_orders = wc_get_orders($args);
 		$count_enrolment = 0;
 		foreach ($customer_orders as $order) {
 			foreach ($order->get_items() as $enrolment) {
 				$linked_course_id = get_post_meta($enrolment->get_product_id(), 'linked_course_id', true);
-				if ($linked_course_id == $id) {
+				if ($linked_course_id == $course->ID) {
 					$count_enrolment++;
 				}
 
@@ -159,7 +148,7 @@ if (!empty($courses)) {
 		}
 		$actions = '';
 		$actions .= '<div class="moowoodle-course-actions ' . $pro_popup_overlay . '"><input type="hidden" name="course_id" value=" ' . $course->ID . '"/><button type="button" name="sync_courses" class="sync-single-course button-primary" title="' . esc_attr('Sync Couse Data', 'moowoodle') . '" ' . ' ><i class="dashicons dashicons-update"></i></button>';
-		if ($product) {
+		if (($products)) {
 			$actions .= '
                         <button type="button" name="sync_update_product" class="update-existed-single-product button-secondary" title="' . esc_attr('Sync Course Data & Update Product', 'moowoodle') . '" ' . '><i class="dashicons dashicons-admin-links"></i></button>
                     </div>';
@@ -195,7 +184,7 @@ if (!empty($courses)) {
                             <td>
                                 <?php echo $actions; ?>
                             </td>
-                            <?php echo apply_filters('moowoodle_courses_body', $table_body, $course, $product); ?>
+                            <?php echo apply_filters('moowoodle_courses_body', $table_body, $course, $products); ?>
                         </tr>
                 <?php
 }

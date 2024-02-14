@@ -1,10 +1,9 @@
 <?php
 class MooWoodle_Settings {
 	private $settings_library = array();
-	private $options;
-	private $pro_sticker = '';
+	private $page = '';
 	/*
-		  * Start up
+	* Start up
 	*/
 	public function __construct() {
 		//Admin menu
@@ -55,10 +54,9 @@ class MooWoodle_Settings {
 	}
 	public function option_page() {
 		global $MooWoodle;
-		$menu_slug = null;
-		$page = $_REQUEST['page'];
+		$this->page = filter_input(INPUT_GET, 'page', FILTER_DEFAULT) !== null ? filter_input(INPUT_GET, 'page', FILTER_DEFAULT) : '';
 		$layout = $this->moowoodle_get_page_layout();?>
-    <div class="mw-admin-dashbord <?php echo $page; ?>">
+    <div class="mw-admin-dashbord <?php echo $this->page; ?>">
       <div class="mw-general-wrapper">
         <div class="mw-header-wapper"><?php echo __('MooWoodle', 'moowoodle'); ?></div>
         <div class="mw-container">
@@ -75,12 +73,12 @@ class MooWoodle_Settings {
 		foreach ($this->settings_library['menu'] as $menuItem) {
 			foreach ($menuItem['tabs'] as $tab_id => $tab) {
 				if (empty($default_tab)) {
-					foreach ($this->settings_library['menu'][$page]['tabs'] as $tabKey => $tabValue) {
+					foreach ($this->settings_library['menu'][$this->page]['tabs'] as $tabKey => $tabValue) {
 						$default_tab = $tabKey;
 						break;
 					}
 				}
-				$current_tab = isset($_GET['tab']) ? $_GET['tab'] : $default_tab;
+				$current_tab = filter_input(INPUT_GET, 'tab', FILTER_DEFAULT) !== null ? filter_input(INPUT_GET, 'tab', FILTER_DEFAULT) : $default_tab;
 				if ($current_tab == $tab_id) {
 					settings_fields($tab['setting']);
 					$show_submit = true;
@@ -88,7 +86,6 @@ class MooWoodle_Settings {
 					$submit_btn_name = isset($tab['submit_btn_name']) ? $tab['submit_btn_name'] : 'submit';
 				}
 				foreach ($tab['section'] as $section_id => $section) {
-					$current_tab = isset($_GET['tab']) ? $_GET['tab'] : $default_tab;
 					if ($current_tab == $tab_id or $current_tab === false) {
 						if ($layout == '2-col') {
 							echo '<div id="' . esc_attr($section_id) . '" class="mw-section-wraper">';
@@ -130,6 +127,8 @@ class MooWoodle_Settings {
                         <p><span>4.</span> Select and sync courses with flexibility</p>
                         <p><span>5.</span> Easily synchronize courses in bulk</p>
                         <p><span>6.</span> Seamless, One-Password Access to Moodle™ and WordPress.</p>
+                        <p><span>7.</span> Choose which user information to synchronize.</p>
+                        <p><span>8.</span> Automatic User Synchronization for Moodle™ and WordPress.</p>
             <p class="supt-link">
                       <a href="<?php echo esc_url(MOOWOODLE_SUPPORT_URL) ?>" target="_blank">
                         <?php esc_html_e('Got a Support Question', 'moowoodle')?>
@@ -155,11 +154,9 @@ class MooWoodle_Settings {
 		do_action('moowoodle_admin_footer');
 	}
 	public function moowoodle_get_page_layout() {
-		global $MooWoodle;
 		$layout = 'classic';
 		foreach ($this->settings_library["menu"] as $k => $v) {
-			$page = $_REQUEST['page'];
-			if ($page == $k) {
+			if ($this->page == $k) {
 				if (isset($v['layout'])) {
 					$layout = $v['layout'];
 				}
@@ -170,10 +167,8 @@ class MooWoodle_Settings {
 	//tab
 	public function moowoodle_plugin_options_tabs() {
 		global $MooWoodle;
-		$menu_slug = null;
-		$page = $_REQUEST['page'];
 		$uses_tabs = false;
-		$current_tab = isset($_GET['tab']) ? $_GET['tab'] : false;
+		$current_tab = filter_input(INPUT_GET, 'tab', FILTER_DEFAULT) !== null ? filter_input(INPUT_GET, 'tab', FILTER_DEFAULT) : false;
 		$tab_count = 1;
 		$pro_sticker = $MooWoodle->moowoodle_pro_adv ? '<span class="mw-pro-tag">Pro</span>' : '';
 		//Check if this config uses tabs
@@ -185,10 +180,10 @@ class MooWoodle_Settings {
 		}
 		// If uses tabs then generate the tabs
 		if ($uses_tabs) {
-			if (isset($this->settings_library['menu'][$page])) {
+			if (isset($this->settings_library['menu'][$this->page])) {
 				echo '<div class="mw-current-tab-lists">';
-				if (isset($this->settings_library['menu'][$page]['tabs'])) {
-					foreach ($this->settings_library['menu'][$page]['tabs'] as $tab_id => $tab) {
+				if (isset($this->settings_library['menu'][$this->page]['tabs'])) {
+					foreach ($this->settings_library['menu'][$this->page]['tabs'] as $tab_id => $tab) {
 						$active = '';
 						if ($current_tab) {
 							$active = $current_tab == $tab_id ? 'nav-tab-active' : '';
@@ -198,7 +193,7 @@ class MooWoodle_Settings {
 						if ($tab_id == 'moowoodle-from') {
 							echo '<a id="' . esc_attr($tab_id) . '" class="nav-tab ' . $active . '" href="admin.php?moowoodle&tab=moowoodle-from">';
 						} else {
-							echo '<a id="' . esc_attr($tab_id) . '" class="nav-tab ' . $active . '" href="?page=' . $page . '&tab=' . $tab_id . '">';
+							echo '<a id="' . esc_attr($tab_id) . '" class="nav-tab ' . $active . '" href="?page=' . $this->page . '&tab=' . $tab_id . '">';
 						}
 						if (isset($tab['font_class'])) {
 							echo '<i class="dashicons ' . esc_attr($tab['font_class']) . '"></i> ';
@@ -242,31 +237,33 @@ class MooWoodle_Settings {
 			<?php
 			if ($MooWoodle->moowoodle_pro_adv) {
 				echo '<div class="mw-image-overlay">
-          <div class="mw-overlay-content">
-          <span class="dashicons dashicons-no-alt mw-modal cross"></span>
-          <h1 class="banner-header">Unlock <span class="banner-pro-tag">Pro</span> </h1>
-          <h2>' . esc_html__('Upgrade to Moowoodle Pro', 'moowoodle') . '</h2>
-         <!-- <h3 class="mw-banner-thrd">' . esc_html__('Activate 30+ Pro Modules', 'moowoodle') . '</h3>-->
-          <div class="mw-banner-content">Boost to MooWoodle Pro to access premium features and enhancements!
-		      <p>&nbsp;</p>
-		        <p>1. Convenient Single Sign-On for Moodle™ and WordPress Login.</p>
-		      <p>2. Create steady income through course subscriptions.</p>
-		      <p>3. Increase earnings by offering courses in groups, variations, or individually.</p>
-		      <p>4. Selectively sync courses with flexibility.</p>
-		      <p>5. Effortlessly synchronize courses in bulk.</p>
-		      </div>
-          <div class="mw-banner-offer">Today\'s Offer</div>
-          <div class="discount-tag">Upto <b>15%</b>Discount</div>
-          <p class="">Seize the opportunity – upgrade now and unlock the full potential of our Pro
-       features with a 15% discount using coupon code:<span class="mw-cupon">UP15!</span></p>
-         <!--<div class="mw-img-overlay-arrow">
-           <span class="dashicons dashicons-arrow-down-alt"></span>
-           </div>-->
-          <a class="mw-go-pro-btn" target="_blank" href="' . MOOWOODLE_PRO_SHOP_URL . '">' . esc_html__('Buy MooWoodle Pro', 'moowoodle') . '</a>
-          <!--<p class="upgrade"><b>Already Upgraded?</b></p>-->
-          </div>
-
-          </div>';
+				<div class="mw-overlay-content">
+				<span class="dashicons dashicons-no-alt mw-modal cross"></span>
+				<h1 class="banner-header">Unlock <span class="banner-pro-tag">Pro</span> </h1>
+				<h2>' . esc_html__('Upgrade to Moowoodle Pro', 'moowoodle') . '</h2>
+			   <!-- <h3 class="mw-banner-thrd">' . esc_html__('Activate 30+ Pro Modules', 'moowoodle') . '</h3>-->
+				<div class="mw-banner-content">Boost to MooWoodle Pro to access premium features and enhancements!
+					<p> </p>
+					<p>1. Convenient Single Sign-On for Moodle™ and WordPress Login.</p>
+					<p>2. Create steady income through course subscriptions.</p>
+					<p>3. Increase earnings by offering courses in groups, variations, or individually.</p>
+					<p>4. Selectively sync courses with flexibility.</p>
+					<p>5. Effortlessly synchronize courses in bulk.</p>
+					<p>6. Automatic User Synchronization for Moodle™ and WordPress.</p>
+					<p>7. Choose which user information to synchronize.</p>
+					</div>
+				<div class="mw-banner-offer">Today\'s Offer</div>
+				<div class="discount-tag">Upto <b>15%</b>Discount</div>
+				<p class="">Seize the opportunity – upgrade now and unlock the full potential of our Pro
+			 features with a 15% discount using coupon code:<span class="mw-cupon">UP15!</span></p>
+			   <!--<div class="mw-img-overlay-arrow">
+				 <span class="dashicons dashicons-arrow-down-alt"></span>
+				 </div>-->
+				<a class="mw-go-pro-btn" target="_blank" href="' . MOOWOODLE_PRO_SHOP_URL . '">' . esc_html__('Buy MooWoodle Pro', 'moowoodle') . '</a>
+				<!--<p class="upgrade"><b>Already Upgraded?</b></p>-->
+				</div>
+	  
+				</div>';
 			}
 		}
 	}
@@ -305,8 +302,14 @@ class MooWoodle_Settings {
 				echo '<p  class="mw-save-changes"><input name="submit" type="submit" value="Save Changes" class="button-primary">';
 			}
 			if(isset($field_id) && $field_id == 'sync-all-user-options'){
-				echo '<p  class="mw-save-changes"><input name="syncusernow" class="button-primary" type="submit" value="' . __('Sync All Users Now', 'moowoodle') . '" class="button-primary">';
+
+				if($MooWoodle->moowoodle_pro_adv){
+					echo '<p  class="mw-save-changes"><input name="syncusernow" class="button-primary mw-pro-popup-overlay" type="button" value="' . __('Sync All Users Now', 'moowoodle') . '">';
+				} else {
+					echo '<p  class="mw-save-changes"><input name="syncusernow" class="button-primary" type="submit" value="' . __('Sync All Users Now', 'moowoodle') . '" ' . apply_filters('moowoodle_syncusernow_changes', '') . '>';
+				}
 			}
+			
 			if (!str_contains($field_id, 'nolabel')) {
 				echo '</div>';
 			}
@@ -318,7 +321,7 @@ class MooWoodle_Settings {
 	 * Register and add settings
 	 */
 	public function settings_page_init() {
-		if($this->settings_library['menu'] != null) {
+		if(isset($this->settings_library['menu']) && $this->settings_library['menu'] != null) {
 			foreach ($this->settings_library['menu'] as $menuItem) {
 				foreach ($menuItem['tabs'] as $tab) {
 					if (empty($tab['validate_function'])) {

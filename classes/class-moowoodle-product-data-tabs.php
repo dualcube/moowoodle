@@ -28,9 +28,7 @@ class MooWoodle_Product_Data_Tabs {
 	public function moowoodle_linked_course_panals() {
 		echo '<div id="moowoodle_course_link_tab" class="panel woocommerce_options_panel">';
 		global $post;
-		$course_id = get_post_meta($post->ID, 'moodle_course_id', true);
 		$linked_course_id = get_post_meta($post->ID, 'linked_course_id', true);
-		$post_id = moowoodle_get_post_by_moodle_id($course_id, 'course');
 		$courses = get_posts(array('post_type' => 'course', 'numberposts' => -1, 'post_status' => 'publish'));
 		?>
 		<p>
@@ -40,21 +38,11 @@ class MooWoodle_Product_Data_Tabs {
 				<?php
 if (!empty($courses)) {
 			foreach ($courses as $course) {
-				$id = get_post_meta($course->ID, 'moodle_course_id', true);
+				$id = $course->ID;
 				$course_short_name = get_post_meta($course->ID, '_course_short_name', true);
-				$category_id = get_post_meta($course->ID, '_category_id', true);
-				$term_id = moowoodle_get_term_by_moodle_id($category_id, 'course_cat', 'moowoodle_term');
-				$course_category_path = get_term_meta($term_id, '_category_path', true);
-				$category_ids = explode('/', $course_category_path);
 				$course_path = array();
-				if (!empty($category_ids)) {
-					foreach ($category_ids as $cat_id) {
-						if (!empty($cat_id)) {
-							$term_id = moowoodle_get_term_by_moodle_id(intval($cat_id), 'course_cat', 'moowoodle_term');
-							$term = get_term($term_id, 'course_cat');
-							$course_path[] = $term->name;
-						}
-					}
+				foreach(get_the_terms($id, 'course_cat') as $term){
+					$course_path[] = $term->name;
 				}
 				$course_name = '';
 				if (!empty($course_path)) {
@@ -97,18 +85,21 @@ echo esc_html_e("Cannot find your course in this list?", "moowoodle");
 	 */
 	public function save_product_meta_data($post_id) {
 		// Security check
-		if (!isset($_POST['product_meta_nonce'])) {
+		if (filter_input(INPUT_POST, 'product_meta_nonce', FILTER_DEFAULT) === null) {
 			return $post_id;
 		}
 		//Verify that the nonce is valid.
-		if (!wp_verify_nonce($_POST['product_meta_nonce'])) {
+		if (filter_input(INPUT_POST, 'product_meta_nonce', FILTER_DEFAULT) === null) {
 			return $post_id;
 		}
-		if (!current_user_can('edit_product', $post_id)) {
+		if (filter_input(INPUT_POST, 'edit_product', FILTER_DEFAULT) === null) {
 			return $post_id;
 		}
-		if (isset($_POST['course_id'])) {
-			update_post_meta($post_id, 'linked_course_id', wp_kses_post($_POST['course_id']));
+		$course_id = filter_input(INPUT_POST, 'course_id', FILTER_DEFAULT);
+		if ($course_id !== null) {
+			update_post_meta($post_id, 'linked_course_id', wp_kses_post($course_id));
+			update_post_meta($post_id, '_sku', 'course-' . get_post_meta($course_id, '_sku'));
+			update_post_meta($post_id, 'moodle_course_id', get_post_meta($course_id, 'moodle_course_id'));
 		}
 	}
 }
