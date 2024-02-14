@@ -34,7 +34,7 @@ class MooWoodle_Admin {
 		?>
 		<div style="clear: both"></div>
 		<div class="dualcube-admin-footer" id="dualcube-admin-footer">
-		<?php esc_html_e('Powered by', 'moowoodle');?> <a href="<?php echo esc_url(MOOWOODLE_DUALCUBE_URL); ?>" target="_blank"><img src="<?php echo esc_url($MooWoodle->plugin_url) ?>/assets/images/dualcube.png"></a><?php esc_html_e('ualCube', 'moowoodle');?> &copy; <?php echo esc_html(gmdate('Y')); ?>
+		<?php esc_html_e('Powered by', 'moowoodle');?> <a href="<?php echo esc_url(MOOWOODLE_DUALCUBE_URL); ?>" target="_blank"><img src="<?php echo esc_url($MooWoodle->plugin_url) ?>/assets/images/dualcube.png"></a>ualCube &copy; <?php echo esc_html(gmdate('Y')); ?>
 		</div>
 <?php
 }
