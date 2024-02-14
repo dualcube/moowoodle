@@ -7,4 +7,4 @@ define('MW_LOGS', trailingslashit( wp_upload_dir(null, false)['basedir'] ) . '/m
 define('MOOWOODLE_PRO_SHOP_URL', 'https://dualcube.com/product/moowoodle-pro/');
 define('MOOWOODLE_SETUP_URL', 'https://dualcube.com/docs/moowoodle-set-up-guide/');
 define('MOOWOODLE_SUPPORT_URL', 'https://wordpress.org/support/plugin/moowoodle/');
-define('MOOWOODLE_DUALCUBE_URL', 'http://dualcube.com');
+define('MOOWOODLE_DUALCUBE_URL', 'https://dualcube.com');
