@@ -6,7 +6,8 @@
 		<div class="mw-log-status">
 			<?php
 if (file_exists(MW_LOGS . "/error.log")) {
-	$logs = explode("\n", wp_remote_retrieve_body(wp_remote_get(get_site_url(null, str_replace(ABSPATH, '', MW_LOGS) . "/error.log"))));
+	global $wp_filesystem;
+	$logs = explode("\n", $wp_filesystem->get_contents((get_site_url(null, str_replace(ABSPATH, '', MW_LOGS) . "/error.log"))));
 }
 foreach ($logs as $log) {
 	echo '<p>' . $log . '</p>';
