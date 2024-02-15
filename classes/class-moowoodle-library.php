@@ -9,8 +9,8 @@ class MooWoodle_Library {
 		$pro_sticker = '';
 		$woocom_new_user_mail = '<a href="'. site_url() .'/wp-admin/admin.php?page=wc-settings&tab=email&section=moowoodle_emails_new_enrollment">here!</a>';
 		if ($url != null) {
-			$moodle_tokens_url = '<a href="' . $url . 'admin/webservice/tokens.php"> ' . __('Manage tokens', 'moowoodle') . '</a>';
-			$moodle_sso_url = '<a href="' . $url . 'admin/settings.php?section=auth_moowoodleconnect"> ' . __('Moodle', 'moowoodle') . '</a>';
+			$moodle_tokens_url = '<a href="' . $url . '/admin/webservice/tokens.php"> ' . __('Manage tokens', 'moowoodle') . '</a>';
+			$moodle_sso_url = '<a href="' . $url . '/admin/settings.php?section=auth_moowoodleconnect"> ' . __('Moodle', 'moowoodle') . '</a>';
 			$moowoodle_sync_setting_url = '<a href="' . get_admin_url() . '/admin.php?page=moowoodle-synchronization&tab=moowoodle-sync-options"> ' . __('Synchronization Settings', 'moowoodle') . '</a>';
 		} else {
 			$moodle_tokens_url = __('Manage tokens', 'moowoodle');

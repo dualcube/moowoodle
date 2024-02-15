@@ -46,7 +46,7 @@ class MooWoodle_Enrollment {
 		$moowoodle_moodle_user_id = 0;
 		$conn_settings = $MooWoodle->options_general_settings;
 		if ($user_id) {
-			$moodle_user_id_meta = apply_filters('moowoodle_before_moodle_enrol_user_create', get_user_meta($user_id, 'moowoodle_moodle_user_id', true), $user_id);
+			$moodle_user_id_meta = !$MooWoodle->moowoodle_pro_adv && !empty(get_user_meta($user_id, 'moowoodle_moodle_user_id')) ? wordpress_user_sync_to_moodle( get_userdata( $user_id ) ) : get_user_meta($user_id, 'moowoodle_moodle_user_id') ;
 			if (empty($moodle_user_id_meta)) {
 				//Metadata not found
 				$moowoodle_moodle_user_id = $this->search_for_moodle_user('email', $user->user_email);
