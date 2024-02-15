@@ -29,7 +29,7 @@ if (!function_exists('moowoodle_moodle_core_function_callback')) {
 			'get_course_image' => 'core_course_get_courses_by_field',
 			'unenrol_users' => 'enrol_manual_unenrol_users',
 			'get_all_users_data' => 'auth_moowoodle_user_sync_get_all_users_data',
-			'sync_users_data' => 'auth_moowoodle_moodle_connector_user_sync',
+			'sync_users_data' => 'auth_moowoodle_user_sync',
 		);
 		if (array_key_exists($key, $moodle_core_functions)) {
 			$function_name = $moodle_core_functions[$key];

@@ -5,7 +5,7 @@ Donate link: https://dualcube.com/
 Requires at least: 5.0.0
 Tested up to: 6.4.2
 Requires PHP: 8.0
-Stable tag: 3.1.7
+Stable tag: 3.1.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -180,6 +180,9 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 14.  List of Courses after sync.
 
 == Changelog ==
+
+= 3.1.8 – 2024-02-15 =
+* Fixed - Moodle user login after enrollment issue.
 
 = 3.1.7 – 2024-02-14 =
 * Added - Support WordPress 6.4.3.
