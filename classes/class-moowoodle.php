@@ -196,23 +196,23 @@ class MooWoodle {
 		}
 		if ($wp_filesystem) {
 			// log folder create
-			if (!file_exists(MW_LOGS . "/error.log")) {
+			if (!file_exists(MW_LOGS . "/error.txt")) {
 				wp_mkdir_p(MW_LOGS);
-				$wp_filesystem->put_contents(MW_LOGS . "/error.log", gmdate("d/m/Y H:i:s", time()) . ': ' . "MooWoodle Log file Created\n");
+				$wp_filesystem->put_contents(MW_LOGS . "/error.txt", gmdate("d/m/Y H:i:s", time()) . ': ' . "MooWoodle Log file Created\n");
 			}
 			// Clear log file
 			if (filter_input(INPUT_POST, 'clearlog', FILTER_DEFAULT) !== null) {
-				$wp_filesystem->put_contents(MW_LOGS . "/error.log", gmdate("d/m/Y H:i:s", time()) . ': ' . "MooWoodle Log file Cleared\n");
+				$wp_filesystem->put_contents(MW_LOGS . "/error.txt", gmdate("d/m/Y H:i:s", time()) . ': ' . "MooWoodle Log file Cleared\n");
 			}
 			// Write Log
 			if($message != ''){
 				$log_entry = gmdate("d/m/Y H:i:s", time()) . ': ' . $message;
-				$existing_content = $wp_filesystem->get_contents(get_site_url(null, str_replace(ABSPATH, '', MW_LOGS) . "/error.log"));
+				$existing_content = $wp_filesystem->get_contents(get_site_url(null, str_replace(ABSPATH, '', MW_LOGS) . "/error.txt"));
 				if (!empty($existing_content)) {
 					$log_entry = "\n" . $log_entry;
 				}
 				$new_content = $existing_content . $log_entry;
-				return $wp_filesystem->put_contents(MW_LOGS . "/error.log", $new_content);
+				return $wp_filesystem->put_contents(MW_LOGS . "/error.txt", $new_content);
 			}
 		}
 		return false;
