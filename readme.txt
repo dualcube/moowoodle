@@ -5,7 +5,7 @@ Donate link: https://dualcube.com/
 Requires at least: 5.0.0
 Tested up to: 6.4.2
 Requires PHP: 8.0
-Stable tag: 3.1.9
+Stable tag: 3.1.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,6 +184,8 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 14.  List of Courses after sync.
 
 == Changelog ==
+
+= 3.1.10 – 2024-03-1 =
 
 = 3.1.9 – 2024-02-28 =
 * Fixed - Product was not getting added with the course manually.
