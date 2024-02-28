@@ -1,6 +1,6 @@
 <?php
 define('MOOWOODLE_PLUGIN_TOKEN', 'moowoodle');
-define('MOOWOODLE_PLUGIN_VERSION', '3.1.8');
+define('MOOWOODLE_PLUGIN_VERSION', '3.1.9');
 define('EMU2_I18N_DOMAIN', 'moowoodle');
 define('MOOWOODLE_SCRIPT_DEBUG', false);
 define('MW_LOGS', trailingslashit( wp_upload_dir(null, false)['basedir'] ) . '/mw-logs');
