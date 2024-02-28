@@ -36,6 +36,9 @@ Unlock the power of seamless course import and sales with MooWoodle's WordPress 
 * ✅ Easily enroll or remove users into courses from WordPress itself. [PRO]
 * 💸 Conveniently provide student refunds through WordPress.[PRO]
 * 🖼️ Effortlessly sync Moodle course images to your WordPress.[PRO]
+* 🔄 Sync users in real-time between Moodle and WordPress.[PRO]
+* ✍️ Specify the user information (Username, Password, First Name, Last Name) for synchronization. [PRO]
+
 
 👉 Official Demo Link: Try out **MooWoodle** Demo sites
 
@@ -81,6 +84,7 @@ Unlock even more possibilities with Moowoodle Pro:
    🔄 **Variations on Courses [PRO]**: Offering course variations with the option to sell them through your online store with the help of WooCommerce Subscription.
 
    💲 **Multiple Pricing Models [PRO]**: MooWoodle Integration supports various pricing models, including one-time payments, subscriptions, and memberships. This flexibility allows you to offer courses in a way that best suits your business model.
+   👥 **Real-Time User Synchronization [PRO]**: Seamlessly sync users, whether from Moodle to WordPress or vice versa. This feature ensures users have unified access across both platforms, eliminating the need for separate accounts.
 
 👉 Learn More About [MooWoodle (PRO)](https://dualcube.com/product/moowoodle-pro/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree)
 
