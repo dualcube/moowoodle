@@ -5,7 +5,7 @@ Donate link: https://dualcube.com/
 Requires at least: 5.0.0
 Tested up to: 6.4.2
 Requires PHP: 8.0
-Stable tag: 3.1.8
+Stable tag: 3.1.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -185,8 +185,13 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 
 == Changelog ==
 
+= 3.1.9 – 2024-02-28 =
+* Fixed - Product was not getting added with the course manually.
+* Added - Support WooCommerce 8.6.1
+
 = 3.1.8 – 2024-02-15 =
 * Fixed - Moodle user login after enrollment issue.
+
 
 = 3.1.7 – 2024-02-14 =
 * Added - Support WordPress 6.4.3.
