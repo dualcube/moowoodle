@@ -198,17 +198,16 @@ if (!function_exists('moodle_course_exist_in_order_items')) {
 }
 
 if(!function_exists('do_mwdl_data_migrate')) {
-	function do_mwdl_data_migrate($previous_plugin_version = '', $new_plugin_version = '') {
-		if ($previous_plugin_version) {
-			if ($previous_plugin_version <= '3.1.3') {
+	function do_mwdl_data_migrate() {
+		if (get_option('dc_moowoodle_plugin_db_version')) {
+			if (version_compare(get_option('dc_moowoodle_plugin_db_version'), '3.1.3' ,'<=')) {
 				$old_settings = get_option('moowoodle_synchronize_settings');
 				if ($old_settings) {
 					update_option('moowoodle_synchronize_now', $old_settings);
 					delete_option('moowoodle_synchronize_settings');
 				}
-				update_option('your_plugin_version', 'new_version');
 			}
 		}
-        update_option('dc_moowoodle_plugin_db_version', $new_plugin_version);
+        update_option('dc_moowoodle_plugin_db_version', MOOWOODLE_PLUGIN_VERSION);
 	}
 }

@@ -271,7 +271,7 @@ msgstr ""
 
 #: moowoodle.php:75
 msgid ""
-"Ensure that all Moowoodle files are present in your WordPress installation."
+"Ensure that all MooWoodle files are present in your WordPress installation."
 msgstr ""
 
 #: classes/class-moowoodle-library.php:101
@@ -338,7 +338,7 @@ msgstr ""
 
 #: moowoodle.php:76
 msgid ""
-"If you suspect any missing files, consider reinstalling Moowoodle to resolve "
+"If you suspect any missing files, consider reinstalling MooWoodle to resolve "
 "the issue."
 msgstr ""
 
@@ -720,7 +720,7 @@ msgid "Timeout"
 msgstr ""
 
 #: moowoodle.php:72
-msgid "To access Moowoodle, please follow these steps:"
+msgid "To access MooWoodle, please follow these steps:"
 msgstr ""
 
 #: templates/emails/new-enrollment.php:31
@@ -743,7 +743,7 @@ msgid "Update Product"
 msgstr ""
 
 #: admin/class-moowoodle-settings.php:243
-msgid "Upgrade to Moowoodle Pro"
+msgid "Upgrade to MooWoodle Pro"
 msgstr ""
 
 #: moowoodle.php:45 admin/class-moowoodle-settings.php:42
@@ -793,7 +793,7 @@ msgid "View %s"
 msgstr ""
 
 #: moowoodle.php:71
-msgid "Warning: Activate WooCommerce and Verify Moowoodle Files"
+msgid "Warning: Activate WooCommerce and Verify MooWoodle Files"
 msgstr ""
 
 #: moowoodle.php:74
