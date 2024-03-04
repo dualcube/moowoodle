@@ -185,7 +185,7 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 
 == Changelog ==
 
-= 3.1.10 – 2024-03-02 =
+= 3.1.10 – 2024-03-04 =
 * Fixed - Moodle course id is not lincked.
 
 = 3.1.9 – 2024-02-28 =
