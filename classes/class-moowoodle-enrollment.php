@@ -42,7 +42,7 @@ class MooWoodle_Enrollment {
 		global $MooWoodle;
 		$wc_order = $this->wc_order;
 		$user_id = $wc_order->get_user_id();
-		apply_filters('moowoodle_get_moodle_user_id_before_enrollment', $user_id);
+		do_action('moowoodle_get_moodle_user_id_before_enrollment', $user_id);
 		$moodle_user_id_meta = get_user_meta($user_id, 'moowoodle_moodle_user_id', true);
 		if (empty($moodle_user_id_meta)) {
 			//Metadata not found
