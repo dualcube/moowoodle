@@ -41,33 +41,22 @@ class MooWoodle_Enrollment {
 	private function get_moodle_user_id($create_moodle_user = false) {
 		global $MooWoodle;
 		$wc_order = $this->wc_order;
-		$user = $wc_order->get_user();
-		$user_id = $user->ID;
-		$moowoodle_moodle_user_id = 0;
-		$conn_settings = $MooWoodle->options_general_settings;
-		if ($user_id) {
-			apply_filters('moowoodle_get_moodle_user_id_before_enrollment', $user_id);
-			$moodle_user_id_meta = get_user_meta($user_id, 'moowoodle_moodle_user_id', true);
-			if (empty($moodle_user_id_meta)) {
-				//Metadata not found
-				$moowoodle_moodle_user_id = $this->search_for_moodle_user('email', $user->user_email);
-				if ($moowoodle_moodle_user_id > 0) {
-					//User exist in Moodle
-					if (isset($conn_settings['update_moodle_user']) && $conn_settings['update_moodle_user'] == "Enable") {
-						//Allow Moodle user to be updated
-						$moowoodle_moodle_user_id = $this->update_moodle_user($moowoodle_moodle_user_id);
-					}
-				} else {
-					//User does not exist in Moodle
-					$moowoodle_moodle_user_id = $this->create_moodle_user();
-				}
-				update_user_meta($user_id, 'moowoodle_moodle_user_id', $moowoodle_moodle_user_id);
+		$user_id = $wc_order->get_user_id();
+		apply_filters('moowoodle_get_moodle_user_id_before_enrollment', $user_id);
+		$moodle_user_id_meta = get_user_meta($user_id, 'moowoodle_moodle_user_id', true);
+		if (empty($moodle_user_id_meta)) {
+			//Metadata not found
+			$moodle_user_id_meta = $this->search_for_moodle_user('email', $wc_order->get_billing_email());
+			if ($moodle_user_id_meta > 0 && isset($$MooWoodle->options_general_settings['update_moodle_user']) && $MooWoodle->options_general_settings['update_moodle_user'] == "Enable") {
+				$moodle_user_id_meta = $this->update_moodle_user($moodle_user_id_meta);
 			} else {
-				//Metadata found
-				$moowoodle_moodle_user_id = $moodle_user_id_meta;
+				//User does not exist in Moodle
+				$moodle_user_id_meta = $this->create_moodle_user();
 			}
+			update_user_meta($user_id, 'moowoodle_moodle_user_id', $moowoodle_moodle_user_id);
+			return $moodle_user_id_meta;
 		}
-		return $moowoodle_moodle_user_id;
+		return 0;
 	}
 	/**
 	 * Searches for an user in moodle by a specific field.
