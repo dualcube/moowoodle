@@ -279,7 +279,7 @@ class MooWoodle_Testconnection {
 			} else {
 				$error_massage = __('Not String response', 'moowoodle');
 			}
-		} elseif ($response != null && !is_wp_error($response) && isset($response['response']['code'])) {
+		} elseif (!is_wp_error($response) && $response != null && isset($response['response']['code'])) {
 			$error_msg = '';
 			if ($response['response']['code'] == 404) {
 				$error_msg = ' | Check Moodle URL | ';

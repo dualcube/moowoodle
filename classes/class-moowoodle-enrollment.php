@@ -46,7 +46,8 @@ class MooWoodle_Enrollment {
 		$moowoodle_moodle_user_id = 0;
 		$conn_settings = $MooWoodle->options_general_settings;
 		if ($user_id) {
-			$moodle_user_id_meta = apply_filters('moowoodle_get_moodle_user_id_before_enrollment',get_user_meta($user_id, 'moowoodle_moodle_user_id', true), $user_id);
+			$moodle_user_id_meta = get_user_meta($user_id, 'moowoodle_moodle_user_id', true);
+			if(empty($moodle_user_id_meta) && !$MooWoodle->moowoodle_pro_adv)$moodle_user_id_meta = apply_filters('moowoodle_get_moodle_user_id_before_enrollment', $user_id);
 			if (empty($moodle_user_id_meta)) {
 				//Metadata not found
 				$moowoodle_moodle_user_id = $this->search_for_moodle_user('email', $user->user_email);
@@ -58,7 +59,7 @@ class MooWoodle_Enrollment {
 					}
 				} else {
 					//User does not exist in Moodle
-					$moowoodle_moodle_user_id = $this->create_moodle_user();
+					$moodle_user_id_meta = $this->create_moodle_user();
 				}
 				update_user_meta($user_id, 'moowoodle_moodle_user_id', $moowoodle_moodle_user_id);
 			} else {
