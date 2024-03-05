@@ -13,13 +13,13 @@ class MooWoodle_Sync {
 		if (filter_input(INPUT_POST, 'synccoursenow', FILTER_DEFAULT) === null) {
 			return;
 		}
-		$sync_now_options = isset( $_POST['moowoodle_synchronize_now'] ) ? array_map('sanitize_key', $_POST['moowoodle_synchronize_now']) : array();
-		if (isset($sync_now_options['sync_courses_category']) && $sync_now_options['sync_courses_category'] == "enable") {
+		$sync_now_options = sanitize_post($_POST['moowoodle_synchronize_now']);
+		if (isset($sync_now_options['sync_courses_category']) && $sync_now_options['sync_courses_category'] == "Enable") {
 			$this->sync_categories();
 		}
 		$courses = moowoodle_moodle_core_function_callback('get_courses');
 		$this->update_posts($courses, 'course', 'course_cat', 'moowoodle_term');
-		if (isset($sync_now_options['sync_all_product']) && $sync_now_options['sync_all_product'] == "enable") {
+		if (isset($sync_now_options['sync_all_product']) && $sync_now_options['sync_all_product'] == "Enable") {
 			$this->update_posts($courses, 'product', 'product_cat', 'woocommerce_term');
 		}
 		do_action('moowoodle_after_sync');

@@ -286,7 +286,7 @@ class MooWoodle_Settings {
 				echo '<label scope="row" class="mw-form-label ' . esc_attr($field_id) . '"><p>' . $field['title'] . '</p></label>';
 			}
 			if (isset($field_id) && $field_id == 'test_connect_nolabel') {
-				echo '<label class="mw-form-label " for=""><p>Mooowoodle ' . __('Test Connection', 'moowoodle') . '</p></label>';
+				echo '<label class="mw-form-label " for=""><p>' . __('Connection Testing', 'moowoodle') . '</p></label>';
 			}
 
 			if (!str_contains($field_id, 'nolabel')) {
