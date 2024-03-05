@@ -261,8 +261,8 @@ class MooWoodle_Testconnection {
 		if (!is_wp_error($response) && $response != null && $response['response']['code'] == 200) {
 			if (is_string($response['body'])) {
 				$response_arr = json_decode($response['body'], true);
-				if (json_last_error() === JSON_ERROR_NONE) {
-					if (is_null($response_arr) || !array_key_exists('exception', $response_arr)) {
+				if ($response_arr !== null || json_last_error() === JSON_ERROR_NONE) {
+					if (!array_key_exists('exception', $response_arr)) {
 						return 'success';
 					} else {
 						if (str_contains($response_arr['message'], 'Access control exception')) {
@@ -274,7 +274,7 @@ class MooWoodle_Testconnection {
 						$error_massage = $response_arr['message'] . ' ' . $url_check . $response_arr['debuginfo'];
 					}
 				} else {
-					$error_massage = __('Response is not JSON decodeable', 'moowoodle');
+					$error_massage = __('Invalid JSON response', 'moowoodle');
 				}
 			} else {
 				$error_massage = __('Not String response', 'moowoodle');
