@@ -13,7 +13,7 @@ class MooWoodle_Sync {
 		if (filter_input(INPUT_POST, 'synccoursenow', FILTER_DEFAULT) === null) {
 			return;
 		}
-		$sync_now_options = isset( $_POST['moowoodle_synchronize_now'] ) ? array_map('sanitize_key', $_POST['moowoodle_synchronize_now']) : array();
+		$sync_now_options = sanitize_post($_POST['moowoodle_synchronize_now']);
 		if (isset($sync_now_options['sync_courses_category']) && $sync_now_options['sync_courses_category'] == "Enable") {
 			$this->sync_categories();
 		}

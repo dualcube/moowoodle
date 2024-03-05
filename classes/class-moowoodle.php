@@ -116,9 +116,8 @@ class MooWoodle {
 		$this->MW_log('');
 	}
 	function mwdl_admin_init() {
-		$previous_plugin_version = get_option('dc_moowoodle_plugin_db_version');
         /* Migrate MooWoodle data */
-        do_mwdl_data_migrate($previous_plugin_version, $this->version);
+        do_mwdl_data_migrate();
 	}
 	/**
 	 * Load Localisation files.

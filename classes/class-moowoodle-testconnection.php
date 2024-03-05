@@ -7,7 +7,7 @@ class MooWoodle_Testconnection {
 		$this->response_data['message'] = __('Failed, please check the', 'moowoodle') . '<a href="' . admin_url("admin.php?page=moowoodle-settings&tab=moowoodle-log") . '"> ' . __('error log', 'moowoodle') . ' </a>';
 		$this->user_data['email'] = 'moowoodletestuser@gmail.com';
 		$this->user_data['username'] = 'moowoodletestuser';
-		$this->user_data['password'] = 'Moowoodle@123';
+		$this->user_data['password'] = 'MooWoodle@123';
 		$this->user_data['auth'] = 'manual';
 		$a = get_locale();
 		$b = strtolower($a);
