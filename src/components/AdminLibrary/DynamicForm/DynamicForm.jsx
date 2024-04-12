@@ -18,8 +18,6 @@ const DynamicForm = (props) => {
   const settingChanged = useRef(false);
   const [modelOpen, setModelOpen] = useState(false);
 
-  console.log(setting);
-
   // Submit the setting to backend when setting Change.
   useEffect(() => {
     if (settingChanged.current) {
@@ -77,7 +75,7 @@ const DynamicForm = (props) => {
         }
     } else {
         let prevData = setting[key] || [];
-        if ( ! prevData || prevData == 'enabled' || prevData == true ) {
+        if ( ! prevData || typeof prevData == 'string' || prevData == true ) {
           prevData = [ key ];
         }
         prevData = prevData.filter((data) => data != event.target.value);
@@ -632,7 +630,7 @@ const DynamicForm = (props) => {
           >
             <p>{inputField.label}</p>
           </label>
-          <div className="settings-input-content">{input}{appLocalizer.pro_active == 'free' && props.proSetting?.includes( inputField.key ) && <span className="admin-pro-tag">pro</span> }</div>
+          <div className="settings-input-content">{input}{ ! appLocalizer.pro_active && props.proSetting?.includes( inputField.key ) && <span className="admin-pro-tag">pro</span> }</div>
         </div>
       );
     });

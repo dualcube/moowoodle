@@ -15,9 +15,9 @@ export default {
             label: __("Customize New User Registration Email", 'moowoodle'),
             options: [
                 {
-                    key: "enable",
-                    label:  __('Enable', 'moowoodle'), 
-                    value: "enable"
+                    key: "moowoodle_create_user_custom_mail",
+                    label:  __('Enable', 'moowoodle'),
+                    value: "moowoodle_create_user_custom_mail"
                 }
             ]
         }

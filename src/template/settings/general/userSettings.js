@@ -15,9 +15,9 @@ export default {
             label: __("Force Override Moodle User Profile", 'moowoodle'),
             options: [
                 {
-                    key: "enable",
+                    key: "update_moodle_user",
                     label:  __('Enable', 'moowoodle'), 
-                    value: "enable"
+                    value: "update_moodle_user"
                 }
             ]
         }

@@ -56,6 +56,23 @@ class Admin {
 			true
 		);
 
+		// Get all tab setting's database value
+        $settings_databases_value = [];
+
+        $tabs_names = [
+			'moowoodle-connection',
+			'moowoodle-system',
+			'moowoodle-user-information',
+			'moowoodle-display',
+			'moowoodle-sso',
+			'moowoodle-notification'
+		];
+
+        foreach( $tabs_names as $tab_name ) {
+			$option_name = str_replace( '-', '_', $tab_name . '_settings' );
+            $settings_databases_value[ $tab_name ] = (object) MooWoodle()->setting->get_option( $option_name );
+        }
+
 		wp_localize_script(
 			'mwd-build-admin-frontend',
 			'appLocalizer',
@@ -64,14 +81,7 @@ class Admin {
 				'side_banner_img' => esc_url(plugins_url()) .'/moowoodle/assets/images/logo-moowoodle-pro.png',
 				'library' => Library::moowoodle_get_options(),
 				'porAdv' => MOOWOODLE_PRO_ADV,
-				'preSettings' => [
-					'moowoodle-display' => MooWoodle()->setting->get_option( 'moowoodle_display_settings' ),
-					// '' => '',
-					// '' => '',
-					// '' => '',
-					// '' => ''
-				],
-				
+				'preSettings' => $settings_databases_value,
 				'MW_Log' => MW_LOGS.'/error.txt',
 				'rest_url' => esc_url_raw(rest_url()),
                 'nonce'	=> wp_create_nonce('wp_rest'),

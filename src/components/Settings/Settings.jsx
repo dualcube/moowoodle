@@ -27,8 +27,6 @@ const Settings = () => {
 
     // Render the dinamic form.
     const getForm = (currentTab) => {
-        console.log(appLocalizer.preSettings);
-        console.log(currentTab);
 
         // get the setting context
         const { setting, settingName, setSetting } = useSetting();
@@ -65,7 +63,7 @@ const Settings = () => {
                     tabData={ settingsArray }
                     currentTab={ location.get( 'sub-tab' ) }
                     getForm={getForm}
-                    BannerSection = {appLocalizer.pro_active === 'free' && BannerSection}
+                    BannerSection = { ! appLocalizer.pro_active && BannerSection}
                     prepareUrl={(subTab) => `?page=moowoodle#&tab=moowoodle-settings&sub-tab=${subTab}` }
                 />
             </SettingProvider>

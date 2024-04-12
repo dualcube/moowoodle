@@ -16287,7 +16287,6 @@ const DynamicForm = props => {
   const [countryState, setCountryState] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const settingChanged = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(false);
   const [modelOpen, setModelOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
-  console.log(setting);
 
   // Submit the setting to backend when setting Change.
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
@@ -16342,7 +16341,7 @@ const DynamicForm = props => {
       }
     } else {
       let prevData = setting[key] || [];
-      if (!prevData || prevData == 'enabled' || prevData == true) {
+      if (!prevData || typeof prevData == 'string' || prevData == true) {
         prevData = [key];
       }
       prevData = prevData.filter(data => data != event.target.value);
@@ -16795,7 +16794,7 @@ const DynamicForm = props => {
         htmlFor: inputField.key
       }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, inputField.label)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "settings-input-content"
-      }, input, appLocalizer.pro_active == 'free' && props.proSetting?.includes(inputField.key) && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      }, input, !appLocalizer.pro_active && props.proSetting?.includes(inputField.key) && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
         className: "admin-pro-tag"
       }, "pro")));
     });
@@ -17401,10 +17400,8 @@ const Customizer = props => {
     title: "Change Colors",
     className: "btn-customizer-menu-items",
     onClick: e => setSelect("color")
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
-    className: "color-img",
-    src: _assets_images_Color_jpg__WEBPACK_IMPORTED_MODULE_3__,
-    alt: ""
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "color-img"
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     title: "Border Style",
     className: "btn-customizer-menu-items",
@@ -18251,91 +18248,83 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-// const questions = [
-//   {
-//     id: 1,
-//     question: 'Popular Articles',
-//     answer: 'Suspendisse ipsum elit, hendrerit id eleifend at, condimentum et mauris. Curabitur et libero vel arcu dignissim pulvinar ut ac leo. In sit amet orci et erat accumsan interdum.',
-//   },
-//     {
-//     id: 2,
-//     question: 'Fix problems & request removals',
-//     answer: 'Suspendisse ipsum elit, hendrerit id eleifend at, condimentum et mauris. Curabitur et libero vel arcu dignissim pulvinar ut ac leo. In sit amet orci et erat accumsan interdum.',
-//   },
-//     {
-//     id: 3,
-//     question: 'Browse the web',
-//     answer: 'Suspendisse ipsum elit, hendrerit id eleifend at, condimentum et mauris. Curabitur et libero vel arcu dignissim pulvinar ut ac leo. In sit amet orci et erat accumsan interdum.',
-//   },
-//       {
-//     id: 4,
-//     question: 'Search on your phone or tablet',
-//     answer: 'Suspendisse ipsum elit, hendrerit id eleifend at, condimentum et mauris. Curabitur et libero vel arcu dignissim pulvinar ut ac leo. In sit amet orci et erat accumsan interdum.',
-//   },
-
-// ]
-
-// function FAQ(props) {    
-//     const [searchTerm, setSearchTerm] = React.useState('');
-//     const [searchResults, setSearchResults] = React.useState([]);
-//     const handleSearchChange = e => {
-//       setSearchTerm(e.target.value);
-//     };
-
-//     React.useEffect(() => {
-//       const results = props.data.filter(item=>
-//         item.question.toLowerCase().includes(searchTerm)
-//       );
-//       setSearchResults(results);
-//     }, [searchTerm]);
-
-//     return (    
-//       <div className='container'>
-//         <h2 className="heading">How can we help you?</h2>
-//         <section className='faq'>
-//          {searchResults.map(item => <Question question={item.question} answer={item.answer} />)}
-//         </section>      
-//       </div>
-//     )
-//   }
-
-//   const Question = props => {
-//     const [isActive, setActive] = React.useState(false);
-//     const handleClick = (id) => {
-//      setActive(!isActive)
-//    }
-//      return(
-//        <div className="question-wrapper">
-//        <div className='question' id={props.id}>
-//          <h3>{props.question}</h3>
-//          <button onClick={() => handleClick(props.id)}>
-//            <svg className={isActive? 'active' : ''} viewBox="0 0 320 512" width="100" title="angle-down">
-//      <path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z" />
-//    </svg>
-//          </button>     
-//        </div>
-//        <div className={isActive? 'answer active' : 'answer'}>{props.answer}</div>
-//        </div>
-//      )
-//    }
-
+const questions = [{
+  id: 1,
+  question: 'Popular Articles',
+  answer: 'Suspendisse ipsum elit, hendrerit id eleifend at, condimentum et mauris. Curabitur et libero vel arcu dignissim pulvinar ut ac leo. In sit amet orci et erat accumsan interdum.'
+}, {
+  id: 2,
+  question: 'Fix problems & request removals',
+  answer: 'Suspendisse ipsum elit, hendrerit id eleifend at, condimentum et mauris. Curabitur et libero vel arcu dignissim pulvinar ut ac leo. In sit amet orci et erat accumsan interdum.'
+}, {
+  id: 3,
+  question: 'Browse the web',
+  answer: 'Suspendisse ipsum elit, hendrerit id eleifend at, condimentum et mauris. Curabitur et libero vel arcu dignissim pulvinar ut ac leo. In sit amet orci et erat accumsan interdum.'
+}, {
+  id: 4,
+  question: 'Search on your phone or tablet',
+  answer: 'Suspendisse ipsum elit, hendrerit id eleifend at, condimentum et mauris. Curabitur et libero vel arcu dignissim pulvinar ut ac leo. In sit amet orci et erat accumsan interdum.'
+}];
+function FAQ(props) {
+  const [searchTerm, setSearchTerm] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+  const [searchResults, setSearchResults] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const handleSearchChange = e => {
+    setSearchTerm(e.target.value);
+  };
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    const results = props.data.filter(item => item.question.toLowerCase().includes(searchTerm));
+    setSearchResults(results);
+  }, [searchTerm]);
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "container"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
+    className: "heading"
+  }, "How can we help you?"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
+    className: "faq"
+  }, searchResults.map(item => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Question, {
+    question: item.question,
+    answer: item.answer
+  }))));
+}
+const Question = props => {
+  const [isActive, setActive] = react__WEBPACK_IMPORTED_MODULE_0___default().useState(false);
+  const handleClick = id => {
+    setActive(!isActive);
+  };
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "question-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "question",
+    id: props.id
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, props.question), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    onClick: () => handleClick(props.id)
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
+    className: isActive ? 'active' : '',
+    viewBox: "0 0 320 512",
+    width: "100",
+    title: "angle-down"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+    d: "M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z"
+  })))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: isActive ? 'answer active' : 'answer'
+  }, props.answer));
+};
 const Support = () => {
-  const url = "https://www.youtube.com/embed/cgfeZH5z2dM?si=3zjG13RDOSiX2m1b";
+  const url = "https://www.youtube.com/embed/fL7wPVYopTU?si=zS1TSj-YU-yx2Nr9";
   const supportLink = [{
-    title: "Data Entry 1",
-    icon: "icon1",
-    description: "Description for Data Entry 1",
+    title: "Get in Touch with Support",
+    icon: "mail",
+    description: "Reach out to the support team for assistance or guidance.",
     link: "link1"
   }, {
-    title: "Data Entry 2",
-    icon: "icon2",
-    description: "Description for Data Entry 2",
-    link: "link2"
+    title: "Explore Documentation",
+    icon: "submission-message",
+    description: "Understand the plugin and its settings.",
+    link: "https://multivendorx.com/docs/knowledgebase/products-stock-manager-notifier-for-woocommerce/"
   }, {
-    title: "Data Entry 3",
-    icon: "icon3",
-    description: "Description for Data Entry 3",
+    title: "Contribute Here",
+    icon: "support",
+    description: "To participation in product enhancement.",
     link: "link3"
   }];
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -18352,7 +18341,7 @@ const Support = () => {
     className: "support-container-wrapper"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "video-support-wrapper"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Check this video to learn how to use \"Product Stock Manager & Notifier for WooCommerce\""), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("iframe", {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("iframe", {
     src: url,
     title: "YouTube video player",
     frameborder: "0",
@@ -18368,7 +18357,7 @@ const Support = () => {
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "icon-bar"
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
-      className: `admin-font ${item.icon}`
+      className: `admin-font font-${item.icon}`
     })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "content"
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
@@ -18377,7 +18366,9 @@ const Support = () => {
     }, item.title), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, item.description))));
   }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "faq-wrapper"
-  }))));
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(FAQ, {
+    data: questions
+  })))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Support);
 
@@ -18427,7 +18418,7 @@ const Tabs = props => {
       to: prepareUrl(tab.id)
     }, tab.icon && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
       className: ` admin-font ${tab.icon} `
-    }), menuCol ? null : tab.name, menuCol ? null : appLocalizer.pro_active == 'free' && tab.proDependent && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    }), menuCol ? null : tab.name, menuCol ? null : !appLocalizer.pro_active && tab.proDependent && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
       class: "admin-pro-tag"
     }, "Pro"));
   };
@@ -18512,7 +18503,7 @@ const Tabs = props => {
   }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
     src: _assets_images_Brand_png__WEBPACK_IMPORTED_MODULE_1__,
     alt: "logo"
-  }), menuCol ? null : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Stock Manager"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+  }), menuCol ? null : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "MooWoodle"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleMenu,
     className: "menu-close"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
@@ -18642,7 +18633,7 @@ function banner() {
       });
     });
   }
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, appLocalizer.pro_active ? banner ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, !appLocalizer.pro_active ? banner ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "custom-banner"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_3__["default"], {
     className: "woo-module-popup",
@@ -18809,9 +18800,6 @@ const Settings = () => {
 
   // Render the dinamic form.
   const getForm = currentTab => {
-    console.log(appLocalizer.preSettings);
-    console.log(currentTab);
-
     // get the setting context
     const {
       setting,
@@ -18841,7 +18829,7 @@ const Settings = () => {
     tabData: settingsArray,
     currentTab: location.get('sub-tab'),
     getForm: getForm,
-    BannerSection: appLocalizer.pro_active === 'free' && _Banner_banner__WEBPACK_IMPORTED_MODULE_4__["default"],
+    BannerSection: !appLocalizer.pro_active && _Banner_banner__WEBPACK_IMPORTED_MODULE_4__["default"],
     prepareUrl: subTab => `?page=moowoodle#&tab=moowoodle-settings&sub-tab=${subTab}`
   })));
 };
@@ -19141,9 +19129,9 @@ __webpack_require__.r(__webpack_exports__);
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('If enabled display start date and end date in shop page.', 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Display Start Date and End Date in Shop Page", 'moowoodle'),
     options: [{
-      key: "enable",
+      key: "start_end_date",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enable', 'moowoodle'),
-      value: "enable"
+      value: "start_end_date"
     }]
   }, {
     key: "my_courses_priority",
@@ -19236,7 +19224,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  id: "moowoodle-system-settings",
+  id: "moowoodle-system",
   priority: 25,
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("System Settings", 'moowoodle'),
   desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("System Settings", 'moowoodle'),
@@ -19253,9 +19241,9 @@ __webpack_require__.r(__webpack_exports__);
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Advance Log", 'moowoodle'),
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('These setting will record all advanced error informations. Please don\'t Enable it if not required, because it will create a large log file.', 'moowoodle'),
     options: [{
-      key: "enable",
+      key: "moowoodle_adv_log",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enable', 'moowoodle'),
-      value: "enable"
+      value: "moowoodle_adv_log"
     }]
   }]
 });
@@ -19289,9 +19277,9 @@ __webpack_require__.r(__webpack_exports__);
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('If enabled, all moodle user\'s profile data (first name, last name, city, address, etc.) will be updated as per their wordpress profile data. Explicitly, for existing user, their data will be overwritten on moodle.', 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Force Override Moodle User Profile", 'moowoodle'),
     options: [{
-      key: "enable",
+      key: "update_moodle_user",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enable', 'moowoodle'),
-      value: "enable"
+      value: "update_moodle_user"
     }]
   }]
 });
@@ -19325,9 +19313,9 @@ __webpack_require__.r(__webpack_exports__);
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`If this option is enabled, default WordPress new user registration emails will be disabled for both admin and user. Our custom New User Registration email will be sent to the newly registered user. You can personalize the content of the MooWoodle New User email from ${appLocalizer.woocom_new_user_mail}`, 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Customize New User Registration Email", 'moowoodle'),
     options: [{
-      key: "enable",
+      key: "moowoodle_create_user_custom_mail",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enable', 'moowoodle'),
-      value: "enable"
+      value: "moowoodle_create_user_custom_mail"
     }]
   }]
 });
@@ -19361,13 +19349,13 @@ __webpack_require__.r(__webpack_exports__);
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Single Sing On", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('If enabled Moodle user\'s will login by WordPress user', 'moowoodle'),
     options: [{
-      key: "enable",
+      key: "moowoodle_sso_eneble",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enable', 'moowoodle'),
-      value: "enable"
+      value: "moowoodle_sso_eneble"
     }]
   }, {
     key: "moowoodle_sso_secret_key",
-    type: "testarea",
+    type: "textarea",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Enter SSO Secret Key it should be same as  ${appLocalizer.moodle_sso_url} SSO Secret Key`, 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("SSO Secret Key", 'moowoodle')
   }]
@@ -31384,7 +31372,7 @@ webpackContext.id = "./src/template/settings sync recursive \\.js$";
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "images/Brand-small.64c17deb.png";
+module.exports = __webpack_require__.p + "images/Brand-small.8d0ad4f7.png";
 
 /***/ }),
 
@@ -31395,7 +31383,7 @@ module.exports = __webpack_require__.p + "images/Brand-small.64c17deb.png";
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "images/Brand.90472ee0.png";
+module.exports = __webpack_require__.p + "images/Brand.3c2867e9.png";
 
 /***/ }),
 

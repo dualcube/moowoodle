@@ -24,7 +24,7 @@ const Tabs = ( props ) => {
                 { tab.icon && <i className={` admin-font ${ tab.icon } `} ></i> }
                 { menuCol ? null : tab.name }
                 { menuCol  ? null :
-                    ( appLocalizer.pro_active == 'free' ) && tab.proDependent &&
+                    ( ! appLocalizer.pro_active ) && tab.proDependent &&
                     <span class="admin-pro-tag">Pro</span> 
                 }
             </Link>
@@ -107,7 +107,7 @@ const Tabs = ( props ) => {
                                 <div className='current-tab-lists-container'>
                                     <div className='brand'>
                                         {menuCol ? <img src={BrandSmall} alt="logo" /> : <img src={Brand} alt="logo" />}
-                                    {menuCol ? null : <p>Stock Manager</p>}
+                                    {menuCol ? null : <p>MooWoodle</p>}
                                         <button onClick={handleMenu} className='menu-close'><i className='admin-font font-cross'></i></button>
                                     </div>
 

@@ -15,9 +15,9 @@ export default {
             label: __("Display Start Date and End Date in Shop Page", 'moowoodle'),
             options: [
                 {
-                    key: "enable",
+                    key: "start_end_date",
                     label:  __('Enable', 'moowoodle'), 
-                    value: "enable"
+                    value: "start_end_date"
                 }
             ]
         },

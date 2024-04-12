@@ -74,11 +74,7 @@ class RestAPI {
         try {
             $settings_data = $request->get_param( 'setting' );
             $settingsname = $request->get_param( 'settingName' );
-            $settingsname = str_replace( "-", "_", $settingsname );
-            $settingsname .= '_settings';
-
-            SM()->util->log($settings_data);
-            SM()->util->log($settingsname);
+            $settingsname = str_replace( "-", "_", $settingsname . "_settings" );
 
             // save the settings in database
             MooWoodle()->setting->update_option( $settingsname, $settings_data );

@@ -288,3 +288,17 @@ a{
   }
 }
 
+button{
+  outline: none;
+  border: none;
+}
+
+a{
+  &:focus{
+   outline: none;
+  }
+ }
+
+ h1,h2,h3,h5,h6,p{
+  margin: 0;
+ }

@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 
 export default {
-    id: "moowoodle-system-settings",
+    id: "moowoodle-system",
     priority: 25,
     name: __("System Settings", 'moowoodle'),
     desc: __("System Settings", 'moowoodle'),
@@ -21,9 +21,9 @@ export default {
             desc: __('These setting will record all advanced error informations. Please don\'t Enable it if not required, because it will create a large log file.', 'moowoodle'),
             options: [
                 {
-                    key: "enable",
+                    key: "moowoodle_adv_log",
                     label:  __('Enable', 'moowoodle'), 
-                    value: "enable"
+                    value: "moowoodle_adv_log"
                 }
             ]
         },

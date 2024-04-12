@@ -11,12 +11,12 @@ const Customizer = (props) => {
       {/* <div className=""> */}
       {/* Heading section */}
       <div className="btn-customizer-menu">
-        <div
+      <div
         title="Change Colors"
           className="btn-customizer-menu-items"
           onClick={(e) => setSelect("color")}
         >
-          <img className="color-img" src={Color} alt="" />
+         <div className="color-img"></div>
         </div>
         <div
         title="Border Style"

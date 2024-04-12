@@ -79,7 +79,7 @@ export default function banner() {
 
     return (
         <>
-            {appLocalizer.pro_active ? 
+            { ! appLocalizer.pro_active ?
                 banner ?
                     <div className="custom-banner">
                         <Dialog

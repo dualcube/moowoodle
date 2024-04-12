@@ -15,15 +15,15 @@ export default {
             label: __('If enabled Moodle user\'s will login by WordPress user', 'moowoodle'),
             options: [
                 {
-                    key: "enable",
+                    key: "moowoodle_sso_eneble",
                     label:  __('Enable', 'moowoodle'), 
-                    value: "enable"
+                    value: "moowoodle_sso_eneble"
                 }
             ]
         },
         {
             key: "moowoodle_sso_secret_key",
-            type: "testarea",
+            type: "textarea",
             desc: __(`Enter SSO Secret Key it should be same as  ${ appLocalizer.moodle_sso_url } SSO Secret Key`, 'moowoodle'),
             label: __("SSO Secret Key", 'moowoodle'),
         }
