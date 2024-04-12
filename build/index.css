@@ -1,0 +1,1284 @@
+/*!*********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/AdminLibrary/DynamicForm/dynamicForm.scss ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************/
+.tab-content .dynamic-fields-wrapper {
+  background-color: #fdfdfe;
+  border: 0.063rem solid #d4d1d9;
+  min-height: 53rem;
+}
+.tab-content .dynamic-fields-wrapper .dynamic-form {
+  padding-top: 2.5rem;
+}
+.tab-content .dynamic-fields-wrapper .dynamic-form .form-group {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+}
+.tab-content .dynamic-fields-wrapper .dynamic-form .form-group .settings-form-label {
+  width: 28%;
+  color: #181718;
+  word-wrap: break-word;
+}
+.tab-content .dynamic-fields-wrapper .dynamic-form .form-group .settings-form-label p {
+  font-size: 0.875rem;
+  color: #181718;
+}
+.tab-content .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content {
+  width: 65%;
+  color: #5e5d60;
+  position: relative;
+  /*pro tag*/
+}
+.tab-content .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content .toggle-checkbox-content {
+  margin-left: auto;
+  position: relative;
+  margin-bottom: 0.625rem;
+}
+.tab-content .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content .toggle-checkbox-content span.admin-pro-tag {
+  left: 3.625rem;
+}
+.tab-content .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content .toggle-checkbox-content::after {
+  content: "";
+  position: absolute;
+  top: 0.55rem;
+  left: 2.3rem;
+  width: 0.25rem;
+  height: 0.25rem;
+  border: 0.0625rem solid #65438f;
+  border-radius: 8rem;
+  transition: 0.3s;
+  z-index: 0;
+}
+.tab-content .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content .toggle-checkbox-content input {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+  display: none;
+}
+.tab-content .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content .toggle-checkbox-content label {
+  cursor: pointer;
+  width: 3.3rem;
+  height: 1.5rem;
+  background: 0 0;
+  display: block;
+  border-radius: 8rem;
+  position: relative;
+  border: 0.125rem solid #d4d1d9;
+}
+.tab-content .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content .toggle-checkbox-content label::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0.5rem;
+  width: 0.17rem;
+  height: 0.57rem;
+  background: #fdfdfe;
+  transition: 0.3s;
+}
+.tab-content .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content .toggle-checkbox-content label::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0.313rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  background: #65438f;
+  border-radius: 90rem;
+  transition: 0.3s;
+  z-index: 1;
+}
+.tab-content .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content .toggle-checkbox-content input:checked + label {
+  background: #65438f;
+  border: 0.125rem solid #65438f;
+}
+.tab-content .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content .toggle-checkbox-content input:checked + label:after {
+  left: calc(100% - 1.313rem);
+  transform: translateY(-50%);
+  background-color: #fdfdfe;
+}
+.tab-content .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content input,
+.tab-content .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content textarea {
+  width: 100%;
+  border: 0.063rem solid #d4d1d9;
+}
+.tab-content .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content span.admin-pro-tag {
+  position: absolute;
+  width: -moz-fit-content;
+  width: fit-content;
+  right: 0.25rem;
+  background: #522c81;
+  color: #fdfdfe;
+  padding: 0.125rem 0.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 0.625rem;
+  font-size: 0.625rem;
+  text-align: center;
+  line-height: 1;
+  text-transform: capitalize;
+}
+.tab-content .dynamic-fields-wrapper .dynamic-form .form-group .settings-metabox-description {
+  margin-top: 0.625rem;
+  font-style: italic;
+  font-size: 0.75rem;
+  color: #8e8b91;
+}
+.tab-content .dynamic-fields-wrapper .setting-section-divider {
+  background-color: #afafaf;
+  height: 0.05rem;
+  margin: 2rem 0;
+}
+
+@media only screen and (max-width: 48.321rem) {
+  .tab-content .dynamic-fields-wrapper .dynamic-form .form-group {
+    flex-direction: column;
+  }
+  .tab-content .dynamic-fields-wrapper .dynamic-form .form-group .settings-form-label {
+    width: 100%;
+  }
+  .tab-content .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content {
+    width: 100%;
+  }
+  .tab-content .dynamic-fields-wrapper .setting-section-divider {
+    margin: 2rem 0;
+  }
+}
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/AdminLibrary/Inputs/Special/ButtonCustomizer.scss ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************/
+.settings-input-content .btn-wrapper .btn-customizer {
+  width: -moz-fit-content;
+  width: fit-content;
+  position: relative;
+  margin-top: 0.5rem;
+}
+.settings-input-content .btn-wrapper .btn-customizer .btn-customizer-menu {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  background: rgb(13, 0, 23);
+  width: -moz-fit-content;
+  width: fit-content;
+  border-radius: 0.15rem;
+  padding: 0.5rem 0;
+}
+.settings-input-content .btn-wrapper .btn-customizer .btn-customizer-menu .btn-customizer-menu-items {
+  padding: 0 0.5rem;
+  border-right: 0.063rem solid rgba(204, 204, 204, 0.3058823529);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.settings-input-content .btn-wrapper .btn-customizer .btn-customizer-menu .btn-customizer-menu-items:last-child {
+  border: none;
+}
+.settings-input-content .btn-wrapper .btn-customizer .btn-customizer-menu .btn-customizer-menu-items .color-img {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 0.25rem;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+}
+.settings-input-content .btn-wrapper .btn-customizer .btn-customizer-menu .btn-customizer-menu-items i {
+  color: #fff;
+  font-size: 1.15rem;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper {
+  position: relative;
+  top: 0.315rem;
+  background: #f8f8f8;
+  width: 100%;
+  padding: 1rem;
+  border: 0.125rem solid rgba(0, 0, 0, 0.125);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .wrapper-close {
+  position: absolute;
+  right: -0.756rem;
+  top: -0.945rem;
+  background: #fff;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.125);
+  border-radius: 50%;
+  width: 1.701rem;
+  height: 1.701rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.25rem;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .color, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .border, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .font, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .size, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .color .simple, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .border .simple, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .font .simple, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .size .simple, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .link .simple {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .color .simple .section, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .border .simple .section, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .font .simple .section, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .size .simple .section, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .link .simple .section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .color .simple .section .lable, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .border .simple .section .lable, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .font .simple .section .lable, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .size .simple .section .lable, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .link .simple .section .lable {
+  color: #000;
+  font-weight: 400;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .color .simple .section .property-section, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .border .simple .section .property-section, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .font .simple .section .property-section, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .size .simple .section .property-section, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .link .simple .section .property-section {
+  display: flex;
+  gap: 0.5rem;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .color .simple .section .property-section input[type=text], .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .border .simple .section .property-section input[type=text], .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .font .simple .section .property-section input[type=text], .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .size .simple .section .property-section input[type=text], .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .link .simple .section .property-section input[type=text] {
+  background: transparent;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .color .simple .section .property-section input[type=color], .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .border .simple .section .property-section input[type=color], .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .font .simple .section .property-section input[type=color], .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .size .simple .section .property-section input[type=color], .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .link .simple .section .property-section input[type=color] {
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 2.646rem;
+  height: 2.016rem;
+  padding: 0;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .color .simple .link-box, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .border .simple .link-box, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .font .simple .link-box, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .size .simple .link-box, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .link .simple .link-box {
+  width: 100%;
+  display: flex;
+  border: 0.063rem solid #d4d1d9;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .color .simple .link-box .link-input, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .border .simple .link-box .link-input, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .font .simple .link-box .link-input, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .size .simple .link-box .link-input, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .link .simple .link-box .link-input {
+  border: none;
+  outline: none;
+  background: transparent;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .color .simple .link-box button, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .border .simple .link-box button, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .font .simple .link-box button, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .size .simple .link-box button, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .link .simple .link-box button {
+  background: transparent;
+  border: none;
+  outline: none;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .color .hover, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .border .hover, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .font .hover, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .size .hover, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .link .hover {
+  background-color: #f2eff5;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .color .hover .section, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .border .hover .section, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .font .hover .section, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .size .hover .section, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .link .hover .section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .color .hover .section .lable, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .border .hover .section .lable, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .font .hover .section .lable, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .size .hover .section .lable, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .link .hover .section .lable {
+  color: #000;
+  font-weight: 400;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .color .hover .section .property-section, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .border .hover .section .property-section, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .font .hover .section .property-section, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .size .hover .section .property-section, .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .link .hover .section .property-section {
+  display: flex;
+  gap: 0.5rem;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .color .hover .section .property-section input[type=text], .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .border .hover .section .property-section input[type=text], .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .font .hover .section .property-section input[type=text], .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .size .hover .section .property-section input[type=text], .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .link .hover .section .property-section input[type=text] {
+  background: transparent;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .color .hover .section .property-section input[type=color], .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .border .hover .section .property-section input[type=color], .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .font .hover .section .property-section input[type=color], .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .size .hover .section .property-section input[type=color], .settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .link .hover .section .property-section input[type=color] {
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 2.646rem;
+  height: 2.016rem;
+  padding: 0;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .link p {
+  font-size: 0.73rem;
+}
+.settings-input-content .btn-wrapper .btn-customizer .customizer-setting-wrapper .link p span {
+  color: red;
+  font-weight: 800;
+  padding-right: 2px;
+}
+.settings-input-content .btn-wrapper .btn-preview {
+  margin-bottom: 0.5rem;
+}
+
+.PB-range-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 0.252rem;
+  border-radius: 0.315rem;
+  background: #D5DBE1;
+  outline: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.PB-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 0.945rem;
+  height: 0.945rem;
+  border-radius: 50%;
+  background-color: #000000;
+  cursor: pointer;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+
+.PB-range-slider::-webkit-slider-thumb:hover {
+  box-shadow: 0rem 0rem 0rem 0.504rem rgba(0, 0, 0, 0.16);
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+
+.PB-range-slider::-moz-range-thumb {
+  width: 0.945rem;
+  height: 0.945rem;
+  border-radius: 50%;
+  background-color: #000000;
+  cursor: pointer;
+}
+
+.PB-range-slider-div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.PB-range-slidervalue {
+  font-weight: 600;
+}
+/*!**********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/PopupContent/popupContent.scss ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************/
+.MuiDialogContent-root:has(.woo-image-overlay)::-webkit-scrollbar {
+  width: 0;
+}
+
+.woo-image-overlay .woo-overlay-content {
+  background: #fff;
+  padding: 0rem 1rem;
+  text-align: center;
+  border-radius: 0.25rem;
+  max-width: 26rem;
+  position: relative;
+}
+.woo-image-overlay .woo-overlay-content .woo-modal.cross {
+  position: absolute;
+  right: 1.5rem;
+  top: 1.5rem;
+  color: #181819;
+}
+.woo-image-overlay h1.banner-header {
+  font-size: 2rem;
+}
+.woo-image-overlay h1.banner-header span.banner-pro-tag {
+  line-height: 0;
+  background: #65438f;
+  color: #f9f8fb !important;
+  padding: 0 0.25rem;
+  border-radius: 0.25rem;
+  margin-left: 0.125rem;
+  box-shadow: 0.25rem 0.25rem 0.875rem rgba(63, 20, 115, 0.25);
+}
+.woo-image-overlay h2 {
+  font-size: 1.5rem;
+  margin: 1rem 0 1.5rem;
+}
+.woo-image-overlay h3 {
+  color: #181819;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.woo-image-overlay .discount-tag {
+  background: #fbedee;
+  color: #e26f76;
+  font-size: 0.875rem;
+  padding: 0.315rem 1.25rem;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 0.5rem auto 1rem;
+  border-radius: 2rem;
+}
+.woo-image-overlay .discount-tag b {
+  font-weight: 600;
+}
+.woo-image-overlay p {
+  color: #5e5d60;
+  font-size: 1rem;
+}
+.woo-image-overlay .woo-banner-offer {
+  margin: 1.5rem 0 1rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #181819;
+}
+.woo-image-overlay .upgrade {
+  color: #181718;
+}
+.woo-image-overlay .woo-banner-content {
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0.02rem;
+  font-weight: 500;
+}
+.woo-image-overlay .woo-banner-content p {
+  font-size: 0.9rem;
+  margin: 0 0 0.25rem;
+  text-align: left;
+  letter-spacing: 0;
+  font-weight: 400;
+  font-style: italic;
+  max-width: 50%;
+  margin: auto;
+}
+.woo-image-overlay a.woo-go-pro-btn {
+  background: #e35047;
+  color: #f9f8fb;
+  text-decoration: none;
+  padding: 0.5rem 1.5rem;
+  line-height: 1.6;
+  border-radius: 0.25rem;
+  font-size: 1.25rem;
+  margin: 2rem auto 0rem;
+  display: block;
+  width: -moz-fit-content;
+  width: fit-content;
+  box-shadow: 0.25rem 0.25rem 1.5rem rgba(227, 80, 71, 0.5);
+}
+
+.MuiPaper-root {
+  padding: 2rem;
+}
+
+.woo-module-dialog-title {
+  text-align: center;
+}
+
+span.stock-manager-pro-tag {
+  position: absolute;
+  right: 0.5rem;
+  background: #522c81;
+  color: #fdfdfe;
+  padding: 0.125rem 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 0.625rem;
+  font-size: 0.625rem;
+  text-align: center;
+  line-height: 1;
+  text-transform: capitalize;
+}
+/*!*******************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/AdminLibrary/Tabs/tabs.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************/
+#moowoodle_root .general-wrapper .container {
+  gap: 1.2rem;
+  background-color: #f2eff5;
+  padding: 2rem 1.5rem;
+  min-height: 54rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper {
+  width: 100%;
+  min-width: 60%;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .tab-description-start {
+  padding: 2rem 2rem;
+  margin-bottom: 0.35rem;
+  background-color: #fdfdfe;
+  border: 0.063rem solid #d4d1d9;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .tab-description-start .tab-name {
+  color: #181718;
+  font-size: 1.5rem;
+  font-weight: 500;
+  padding-bottom: 1rem;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: start;
+  gap: 1rem;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists {
+  height: auto;
+  max-width: 15.75rem;
+  width: 100%;
+  position: sticky;
+  top: 3rem;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .current-tab-lists-container .active-current-tab {
+  position: relative;
+  background-color: rgb(225, 225, 225);
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .current-tab-lists-container .active-current-tab:hover {
+  background-color: rgb(225, 225, 225);
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .current-tab-lists-container a {
+  display: flex;
+  align-items: center;
+  transition: 0.3s;
+  padding: 0.5rem 1.2rem 0.5rem 0.5rem;
+  margin: 0.5rem 0;
+  border-bottom: 0;
+  text-decoration: none;
+  color: #181718;
+  position: relative;
+  box-shadow: none;
+  border-radius: 0.25rem;
+  font-weight: 400;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .current-tab-lists-container a:hover {
+  background-color: #fdfdfe;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .current-tab-lists-container a:hover .tab-menu-dropdown-icon {
+  background-color: #f2eff5;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .current-tab-lists-container a i {
+  padding-right: 0.5rem;
+  color: #9f8ab9;
+  font-size: 1.5rem;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .current-tab-lists-container a .tab-menu-dropdown-icon {
+  margin: 0;
+  margin-left: auto;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  transform: rotate(0);
+  transition: transform 0.3s linear;
+  border-radius: 0.25rem;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .current-tab-lists-container a .tab-menu-dropdown-icon.active {
+  transform: rotate(90deg);
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .current-tab-lists-container a .tab-menu-dropdown-icon i {
+  padding-right: 0;
+  font-size: 0.65rem;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .current-tab-lists-container .tab-wrapper a {
+  margin: 0;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .current-tab-lists-container .subtab-wrapper {
+  padding: 0 0 0 1rem;
+  max-height: 0;
+  height: auto;
+  overflow: hidden;
+  transition: all 0.5s ease;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .current-tab-lists-container .subtab-wrapper.show {
+  padding: 0;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .current-tab-lists-container .subtab-wrapper.active {
+  margin: 0.5rem 0;
+  transition: max-height 1.5s linear;
+  max-height: 60rem;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .current-tab-lists-container .subtab-wrapper a {
+  margin: 0.25rem 0;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .brand {
+  margin: 0.5rem 0 3.75rem;
+  position: relative;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .brand p {
+  font-size: 1rem;
+  margin-top: 0.25rem;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .brand img {
+  max-width: 9.45rem;
+  width: 100%;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .brand .menu-close {
+  display: none;
+  position: absolute;
+  width: 2.52rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.15rem;
+  right: 0;
+  height: 2.52rem;
+  border-radius: 0.5rem;
+  background: #f2eff5;
+  color: #9f8ab9;
+  border: none;
+  outline: none;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .menu-coll-btn {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: 0.3s;
+  padding: 0.5rem 1.2rem 0.5rem 0.5rem;
+  margin: 0.5rem 0;
+  border-bottom: 0;
+  text-decoration: none;
+  color: #181718;
+  position: relative;
+  box-shadow: none;
+  border-radius: 0.25rem;
+  font-weight: 400;
+  width: 100%;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .menu-coll-btn:hover {
+  background-color: #fdfdfe;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .menu-coll-btn i {
+  margin-right: 0.5rem;
+  color: #9f8ab9;
+  font-size: 0.75rem;
+  padding: 0.25rem;
+  border-radius: 50%;
+  color: #fdfdfe;
+  background-color: #9f8ab9;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists.showMenu {
+  max-width: 2.52rem;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists.showMenu .current-tab-lists-container a {
+  padding: 0.5rem;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists.showMenu .current-tab-lists-container a i {
+  padding: 0;
+}
+#moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .tab-content {
+  width: 100%;
+  height: auto;
+  min-height: 63rem;
+  position: relative;
+  border-radius: 0.25rem;
+}
+#moowoodle_root .general-wrapper .container .admin-panel-nav {
+  width: 100%;
+  display: none;
+  align-items: center;
+  justify-content: flex-start;
+  background: #fff;
+  padding: 0.63rem;
+  gap: 0.63rem;
+  border-radius: 0.25rem;
+}
+#moowoodle_root .general-wrapper .container .admin-panel-nav button {
+  width: 2.52rem;
+  height: 2.52rem;
+  font-size: 1.25rem;
+  border: none;
+  outline: none;
+}
+#moowoodle_root .general-wrapper .container .admin-panel-nav .brand img {
+  width: 9.45rem;
+}
+#moowoodle_root .general-wrapper .notic-display-title {
+  background-color: #bf6290;
+  color: #fdfdfe;
+  padding: 0.5rem 1rem;
+  border-radius: 0.12rem;
+  position: fixed;
+  top: 15%;
+  right: 1rem;
+  z-index: 9999;
+}
+#moowoodle_root .general-wrapper .notic-display-title i {
+  margin-right: 0.25rem;
+}
+
+@media only screen and (max-width: 48.321rem) {
+  #moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists {
+    max-width: 100vw;
+    width: 0%;
+    overflow: hidden;
+    position: fixed;
+    height: 100vh;
+    z-index: 100000;
+    top: 0;
+    left: 0;
+  }
+  #moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .current-tab-lists-container {
+    height: 100%;
+    background: white;
+    padding: 2rem;
+    max-width: 22.05rem;
+  }
+  #moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .brand {
+    margin: 0 0 1.5rem;
+  }
+  #moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .brand .menu-close {
+    display: block;
+  }
+  #moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists .menu-coll-btn {
+    display: none;
+  }
+  #moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .current-tab-lists.active {
+    width: 100%;
+  }
+  #moowoodle_root .general-wrapper .container .middle-container-wrapper .middle-child-container .tab-content {
+    width: 100%;
+  }
+  #moowoodle_root .general-wrapper .container .admin-panel-nav {
+    display: flex;
+  }
+}
+/*!*************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/AdminLibrary/Support/support.scss ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************/
+.support-container {
+  padding: 2rem;
+}
+.support-container .support-header-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  flex-direction: column;
+}
+.support-container .support-header-wrapper .support-heading {
+  font-size: 1.25rem;
+  text-wrap: balance;
+  line-height: 1.4;
+  text-align: center;
+}
+.support-container .support-header-wrapper .support-subheading {
+  text-align: center;
+  font-size: 0.9rem;
+}
+.support-container .support-container-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+.support-container .support-container-wrapper .video-support-wrapper {
+  width: 60%;
+  min-width: 18.9rem;
+}
+.support-container .support-container-wrapper .video-support-wrapper p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.support-container .support-container-wrapper .video-support-wrapper iframe {
+  width: 100%;
+  height: 18.9rem;
+}
+.support-container .support-container-wrapper .support-quick-link {
+  width: 40%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+.support-container .support-container-wrapper .support-quick-link .support-quick-link-items {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem 1rem;
+  background-color: #fff;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  transition: all 0.3s linear;
+}
+.support-container .support-container-wrapper .support-quick-link .support-quick-link-items:hover {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.25);
+  transform: scale(1.05);
+}
+.support-container .support-container-wrapper .support-quick-link .support-quick-link-items .icon-bar {
+  max-width: 1.89rem;
+}
+.support-container .support-container-wrapper .support-quick-link .support-quick-link-items .icon-bar i {
+  font-size: 1.5rem;
+  color: #9f8ab9;
+}
+.support-container .support-container-wrapper .support-quick-link .support-quick-link-items .content {
+  width: 100%;
+}
+.support-container .support-container-wrapper .support-quick-link .support-quick-link-items .content a {
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+.support-container .support-container-wrapper .support-quick-link .support-quick-link-items .content p {
+  font-size: 0.85rem;
+}
+.support-container .faq-wrapper .container {
+  background-color: #fff !important;
+}
+.support-container .faq-wrapper .container .faq {
+  width: 100%;
+}
+.support-container .faq-wrapper .heading {
+  color: #65438f;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.support-container .faq-wrapper form {
+  display: flex;
+  width: 35rem;
+  background-color: #fff;
+  align-items: center;
+  margin: 0 auto;
+  border-radius: 1rem;
+}
+.support-container .faq-wrapper form svg {
+  height: 1rem;
+  fill: #9ea6ae;
+  position: fixed;
+  width: 4rem;
+}
+.support-container .faq-wrapper .question-wrapper {
+  border-bottom: 0.063rem solid #dee4f1;
+  padding: 1rem 1rem 1rem 0;
+  transition: 1s;
+}
+.support-container .faq-wrapper .question {
+  display: flex;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #65438f;
+  display: flex;
+  justify-content: space-between;
+}
+.support-container .faq-wrapper .question h3 {
+  font-size: 1.1rem;
+}
+.support-container .faq-wrapper .question svg {
+  width: 0.85rem;
+  height: 1.25rem;
+  fill: #9ea6ae;
+}
+.support-container .faq-wrapper .question svg.active {
+  transform: rotate(180deg);
+}
+.support-container .faq-wrapper .question svg:hover {
+  opacity: 0.8;
+}
+.support-container .faq-wrapper button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+.support-container .faq-wrapper button:focus {
+  outline: none;
+}
+.support-container .faq-wrapper .answer {
+  display: none;
+}
+.support-container .faq-wrapper .answer.active {
+  display: block;
+  text-align: left;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  height: 0%;
+  animation: slidein 0.4s;
+  animation-fill-mode: forwards;
+}
+@keyframes slidein {
+  from {
+    opacity: 0.3;
+    transform: translateY(-20%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+@media only screen and (min-width: 18.9rem) and (max-width: 71.82rem) {
+  .support-container .support-container-wrapper {
+    flex-direction: column;
+  }
+  .support-container .support-container-wrapper .video-support-wrapper {
+    width: 100%;
+  }
+  .support-container .support-container-wrapper .support-quick-link {
+    width: 100%;
+  }
+}
+/*!**********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/Banner/banner.scss ***!
+  \**********************************************************************************************************************************************************************************************************************************************************/
+.custom-banner {
+  width: 100%;
+}
+.custom-banner .woo-carousel-container {
+  padding: 0;
+  position: relative;
+  background: #f2eff5;
+}
+.custom-banner .woo-carousel-container .carousel-container {
+  position: relative;
+  overflow: hidden;
+}
+.custom-banner .woo-carousel-container .carousel-container .pro-slider-cross {
+  cursor: pointer;
+  position: absolute;
+  right: 0.625rem;
+  top: 0.625rem;
+  font-size: 1.25rem;
+}
+.custom-banner .woo-carousel-container .carousel-container .why-go-pro-tag {
+  cursor: pointer;
+  position: absolute;
+  left: -1.75rem;
+  top: 1.563rem;
+  background: #e35047;
+  color: #f9f8fb;
+  padding: 0.25rem 1.5rem;
+  transform: rotate(-45deg);
+}
+.custom-banner .woo-carousel-container .carousel-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.custom-banner .woo-carousel-container .carousel-item {
+  display: none;
+  padding: 0.625rem;
+}
+.custom-banner .woo-carousel-container .carousel-item.active {
+  display: block;
+  transition: 0.5s all ease-in-out;
+}
+.custom-banner .woo-carousel-container .carousel-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 3rem;
+  text-align: left;
+  background-image: url(images/banner-back-color.a9aab399.jpg);
+  background-size: 100% 100%;
+  background-position: center center;
+  background-repeat: no-repeat, no-repeat;
+  color: #f9f8fb;
+  border-radius: 0.25rem;
+  border: 0.06rem solid #d4d1d9;
+  flex-wrap: wrap;
+  transition: 0.5s all ease-in-out;
+  overflow: hidden;
+  max-height: 12rem;
+}
+.custom-banner .woo-carousel-container .carousel-container:hover {
+  background-size: 110% 102%;
+}
+.custom-banner .woo-carousel-container .woo-pro-txt-items {
+  text-align: center;
+}
+.custom-banner .woo-carousel-container .woo-pro-txt-items h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #f9f8fb;
+}
+.custom-banner .woo-carousel-container .woo-pro-txt-items p {
+  margin: 0.5rem 0 1.5rem;
+  font-size: 1rem;
+}
+.custom-banner .woo-carousel-container .woo-pro-txt-items a.woo-btn.btn-red {
+  background-color: #e35047;
+  color: #f9f8fb;
+  border: 0.06rem solid #e35047;
+  transition: all 0.3s ease;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  padding: 0.37rem 2.5rem;
+  cursor: pointer;
+  display: inline-block;
+  white-space: nowrap;
+}
+.custom-banner .woo-carousel-container .carousel-controls {
+  position: absolute;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+.custom-banner .woo-carousel-container .carousel-controls button {
+  color: #65438f;
+  background-color: #c9c5c3;
+  font-size: 0.65rem;
+  border-radius: 50%;
+  margin: 0;
+  line-height: 0.7;
+  height: 1.4rem;
+  width: 1.4rem;
+}
+/*!**********************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/style/common.scss ***!
+  \**********************************************************************************************************************************************************************************************************************************************/
+@font-face {
+  font-family: "admin-font";
+  src: url(fonts/admin-font.21836c01.eot);
+  src: url(fonts/admin-font.21836c01.eot#iefix) format("embedded-opentype"), url(fonts/admin-font.37a159e7.ttf) format("truetype"), url(fonts/admin-font.3e8aab6b.woff) format("woff"), url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiID4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8bWV0YWRhdGE+R2VuZXJhdGVkIGJ5IEljb01vb248L21ldGFkYXRhPgo8ZGVmcz4KPGZvbnQgaWQ9ImFkbWluLWZvbnQiIGhvcml6LWFkdi14PSIxMDI0Ij4KPGZvbnQtZmFjZSB1bml0cy1wZXItZW09IjEwMjQiIGFzY2VudD0iOTYwIiBkZXNjZW50PSItNjQiIC8+CjxtaXNzaW5nLWdseXBoIGhvcml6LWFkdi14PSIxMDI0IiAvPgo8Z2x5cGggdW5pY29kZT0iJiN4MjA7IiBob3Jpei1hZHYteD0iNTEyIiBkPSIiIC8+CjxnbHlwaCB1bmljb2RlPSImI3hlOTAwOyIgZ2x5cGgtbmFtZT0ibWFpbGNoaW1wIiBkPSJNNzY3LjE0NyA0NzYuMTE3YzcuMDQwIDAuODk2IDE0LjE2NSAwLjg5NiAyMS4yMDUgMCAzLjc5NyA4Ljc0NyA0LjQzNyAyMy44MDggMS4wMjQgNDAuMTkyLTUuMTIgMjQuMzYzLTExLjk0NyAzOS4xMjUtMjYuMTU1IDM2LjgyMXMtMTQuNzYzLTE5Ljk2OC05LjY0My00NC4zMzFjMi44NTktMTMuNjk2IDcuOTM2LTI1LjQyOSAxMy41NjgtMzIuNjgzek02NDUuMTIgNDU2LjgzMmMxMC4xOTctNC40OCAxNi40MjctNy40MjQgMTguODU5LTQuODY0IDEuNTc5IDEuNjIxIDEuMTA5IDQuNjkzLTEuMjggOC42NjEtNS4wMzUgOC4yMzUtMTUuMzYgMTYuNTU1LTI2LjMyNSAyMS4yMDUtOC4xMDUgMy40NTgtMTcuNTM0IDUuNDY4LTI3LjQzMyA1LjQ2OC0xNS45MDYgMC0zMC41OTktNS4xOS00Mi40NzktMTMuOTY4bDAuMTk1IDAuMTM4Yy02LjgyNy00Ljk5Mi0xMy4yMjctMTEuOTQ3LTEyLjM3My0xNi4xMjggMC4zNDEtMS4zNjUgMS4zMjMtMi4zODkgMy43MTItMi43MzEgNS42MzItMC42NCAyNS4yMTYgOS4yNTkgNDcuNzg3IDEwLjY2NyAxNS45NTcgMC45ODEgMjkuMTg0LTQuMDExIDM5LjMzOS04LjQ0OHpNNjI0LjY0IDQ0NS4xNDFjLTEzLjIyNy0yLjEzMy0yMC41MjMtNi40ODUtMjUuMjE2LTEwLjUzOS00LjAxMS0zLjQ5OS02LjQ4NS03LjM4MS02LjQ4NS0xMC4xMTJsMS4wMjQtMi40MzIgMi4xNzYtMC44NTNjMi45ODcgMCA5LjcyOCAyLjczMSA5LjcyOCAyLjczMSA4LjgzOCAzLjQzOSAxOS4wNjggNS40MzEgMjkuNzYzIDUuNDMxIDQuNTU1IDAgOS4wMjUtMC4zNjEgMTMuMzg0LTEuMDU3bC0wLjQ4IDAuMDYzYzYuNjEzLTAuNzY4IDkuODEzLTEuMTk1IDExLjIyMSAxLjEwOSAwLjQyNyAwLjY0IDAuOTgxIDIuMDkxLTAuMzQxIDQuMjY3LTMuMTE1IDUuMDM1LTE2LjUxMiAxMy41MjUtMzQuNzczIDExLjM5MnpNNzI1Ljk3MyA0MDIuMjE5YzguOTYtNC40MzcgMTguODU5LTIuNjg4IDIyLjEwMSAzLjg0IDMuMjQzIDYuNjEzLTEuNDUxIDE1LjUzMS0xMC40NTMgMTkuOTI1LTguOTYgNC40MzctMTguODU5IDIuNjg4LTIyLjEwMS0zLjg0LTMuMjQzLTYuNjEzIDEuNDUxLTE1LjUzMSAxMC40NTMtMTkuOTI1ek03ODMuNzg3IDQ1Mi44MjFjLTcuMjk2IDAuMTI4LTEzLjM5Ny03Ljg5My0xMy41MjUtMTcuOTYzLTAuMTcxLTEwLjAyNyA1LjU4OS0xOC4yNjEgMTIuODg1LTE4LjM4OXMxMy4zOTcgNy44OTMgMTMuNTY4IDE3LjkyYzAuMTI4IDEwLjAyNy01LjYzMiAxOC4yNjEtMTIuOTI4IDE4LjQzMnpNMjkyLjk0OSAyNzEuNzg3Yy0xLjc5MiAyLjI2MS00Ljc3OSAxLjU3OS03LjY4IDAuODk2LTIuMDQwLTAuNTY5LTQuMzg4LTAuOTEtNi44MS0wLjkzOWgtMC4wMTdjLTAuMDk3LTAuMDAyLTAuMjEyLTAuMDA0LTAuMzI3LTAuMDA0LTQuOTk5IDAtOS40MTkgMi40NzgtMTIuMSA2LjI3MmwtMC4wMzEgMC4wNDZjLTMuMzI4IDUuMTItMy4xMTUgMTIuNzU3IDAuNTEyIDIxLjUwNGwxLjcwNyAzLjkyNWM1Ljg4OCAxMy4xNDEgMTUuNzAxIDM1LjIgNC42OTMgNTYuMTkyLTguMjc3IDE1Ljc4Ny0yMS44MDMgMjUuNjg1LTM4LjA1OSAyNy43MzMtMS44NjQgMC4yNTItNC4wMTggMC4zOTYtNi4yMDYgMC4zOTYtMTQuMDkzIDAtMjYuNzkzLTUuOTY4LTM1LjcwOS0xNS41MTRsLTAuMDI2LTAuMDI4Yy0xNi4xNzEtMTcuODM1LTE4LjY4OC00Mi4xNTUtMTUuNTMxLTUwLjc3MyAxLjE1Mi0zLjExNSAyLjk0NC00LjAxMSA0LjIyNC00LjE4MSAyLjc3My0wLjM4NCA2LjgyNyAxLjYyMSA5LjM4NyA4LjUzM2wwLjcyNSAyLjIxOWMxLjEwOSAzLjYyNyAzLjI0MyAxMC4zNjggNi42OTkgMTUuNzg3IDUuMzE5IDguMDcwIDE0LjM0MSAxMy4zMjMgMjQuNTkgMTMuMzIzIDUuOTc5IDAgMTEuNTQxLTEuNzg4IDE2LjE4LTQuODU4bC0wLjEwOSAwLjA2OGMxMS4zNDktNy40NjcgMTUuNzAxLTIxLjMzMyAxMC44OC0zNC42MDMtMi41MTctNi44NjktNi41NzEtMTkuOTY4LTUuNjc1LTMwLjcyIDEuODM1LTIxLjg0NSAxNS4yMzItMzAuNTkyIDI3LjIyMS0zMS41NzMgMTEuNjkxLTAuNDI3IDE5Ljg4MyA2LjE4NyAyMS45MzEgMTEuMDA4IDEuMjggMi44MTYgMC4yMTMgNC41NjUtMC40MjcgNS4zMzN6TTk2OC4xNDkgMzExLjcyM2MtMC40MjcgMS41NzktMy4zMjggMTIuMjAzLTcuMzM5IDI1LjAwM2wtOC4xMDcgMjEuNzZjMTYgMjQuMDIxIDE2LjI1NiA0NS40ODMgMTQuMTY1IDU3LjYtMi4zMDQgMTUuMDYxLTguNTMzIDI3LjkwNC0yMS4xNjMgNDEuMTMxLTEyLjU4NyAxMy4zMTItMzguNCAyNi44OC03NC42NjcgMzcuMDM1bC0xOC45ODcgNS4yOTFjLTAuMDg1IDAuNzY4LTAuOTgxIDQ0LjkyOC0xLjgzNSA2My44NzItMC41NTUgMTMuNjUzLTEuNzQ5IDM1LjA3Mi04LjM2MyA1Ni4xMDctNy44OTMgMjguNTQ0LTIxLjYzMiA1My40NjEtMzguODI3IDY5LjQxOSA0Ny4zNiA0OS4xNTIgNzYuOTI4IDEwMy4zMzkgNzYuODQzIDE0OS44MDMtMC4xMjggODkuMzg3LTEwOS42OTYgMTE2LjQ4LTI0NC43MzYgNjAuNDE2bC0yOC41ODctMTIuMTZjLTEzLjM1OSAxMy4xNTgtMzAuNDUxIDI5Ljk0LTQ3LjU2NSA0Ni43bC00LjkxNSA0Ljc5OGMtMTU0LjAyNyAxMzQuNTcxLTYzNS4zNDktNDAxLjQwOC00ODEuNDkzLTUzMS42MjdsMzMuNjY0LTI4LjUwMWMtNi42MDgtMTcuMTk4LTEwLjQzNS0zNy4wOTUtMTAuNDM1LTU3Ljg4NSAwLTYuNTU5IDAuMzgxLTEzLjAzMCAxLjEyMi0xOS4zOWwtMC4wNzMgMC43NzRjMy42MjctMzUuODQgMjIuMDU5LTcwLjE0NCA1MS45NjgtOTYuNjgzIDI4LjM3My0yNS4xNzMgNjUuNzA3LTQxLjE3MyAxMDEuOTMxLTQxLjEzMSA1OS44NjEtMTM4LjI0IDE5Ni42OTMtMjIzLjA2MSAzNTcuMTItMjI3Ljg0IDE3Mi4xMTctNS4xMiAzMTYuNTg3IDc1Ljc3NiAzNzcuMTczIDIyMS4wOTkgMy45NjggMTAuMjQgMjAuNzM2IDU2LjE5MiAyMC43MzYgOTYuNzI1IDAgNDAuNzg5LTIyLjk5NyA1Ny42ODUtMzcuNjMyIDU3LjY4NXpNMjY0LjAyMSAyMDIuOTIzYy00LjE4Mi0wLjc0OS04Ljk5Ny0xLjE3Ny0xMy45MTEtMS4xNzctMC43MiAwLTEuNDM3IDAuMDA5LTIuMTUyIDAuMDI3bDAuMTA2LTAuMDAyYy01MS45NjggMS40MDgtMTA4LjExNyA0OC4yNTYtMTEzLjcwNyAxMDMuODkzLTYuMTg3IDYxLjQ0IDI1LjE3MyAxMDguNzE1IDgwLjY0IDExOS44OTMgNS41NjkgMS4xNjMgMTEuOTY5IDEuODI5IDE4LjUyNCAxLjgyOSAxLjY5MyAwIDMuMzc2LTAuMDQ0IDUuMDQ4LTAuMTMybC0wLjIzNCAwLjAxMGMzMS4xMDQtMS43MDcgNzYuOTI4LTI1LjYgODcuMzgxLTkzLjQ4MyA5LjI1OS02MC4wNzUtNS40NjEtMTIxLjMwMS02MS42OTYtMTMwLjg1OXpNMjA1Ljk5NSA0NjIuMzM2Yy0zNC41Ni02LjY5OS02NS4wMjQtMjYuMzI1LTgzLjYyNy01My40MTktMTEuMTM2IDkuMzAxLTMxLjg3MiAyNy4zMDctMzUuNTQxIDM0LjMwNC0yOS43MzkgNTYuNTMzIDMyLjQyNyAxNjYuNDg1IDc1Ljg2MSAyMjguNTY1IDEwNy4zOTIgMTUzLjQyOSAyNzUuNDEzIDI2OS41NjggMzUzLjI4IDI0OC40OTEgMTIuNjI5LTMuNTg0IDU0LjUyOC01Mi4yMjQgNTQuNTI4LTUyLjIyNHMtNzcuNzgxLTQzLjIyMS0xNDkuOTMxLTEwMy41MDljLTk3LjE5NS03NC45NjUtMTcwLjYyNC0xODMuOTM2LTIxNC41NzEtMzAyLjIwOHpNNzUxLjU3MyAyMjUuODc3YzEuMDcxIDAuNDk1IDEuODAxIDEuNTYxIDEuODAxIDIuNzk3IDAgMC4wODItMC4wMDMgMC4xNjMtMC4wMDkgMC4yNDNsMC4wMDEtMC4wMTFjLTAuMTQ4IDEuNDUzLTEuMzY1IDIuNTc3LTIuODQ1IDIuNTc3LTAuMTEgMC0wLjIxOS0wLjAwNi0wLjMyNi0wLjAxOGwwLjAxMyAwLjAwMWMwIDAtODEuNDA4LTEyLjA3NS0xNTguMzM2IDE2LjE3MSA4LjM2MyAyNy4yNjQgMzAuNjM1IDE3LjQwOCA2NC4zNDEgMTQuNjc3IDguMzExLTAuNTI1IDE4LjAyMy0wLjgyNCAyNy44MDUtMC44MjQgNDUuMzk4IDAgODkuMjkzIDYuNDQgMTMwLjgxOSAxOC40NTZsLTMuMzE3LTAuODIyYzM0LjgxNiAxMC4wMjcgODAuNTU1IDI5Ljc4MSAxMTYuMTM5IDU3Ljg1NiAxMS45NDctMjYuMzY4IDE2LjIxMy01NS4zODEgMTYuMjEzLTU1LjM4MXM5LjI1OSAxLjY2NCAxNy4wMjQtMy4xMTVjNy4yOTYtNC41MjMgMTIuNjcyLTEzLjkwOSA5LjAwMy0zOC4xODctNy40NjctNDUuMzU1LTI2LjcwOS04Mi4xNzYtNTkuMDUxLTExNi4wNTMtMTkuODY2LTIxLjQ4LTQzLjM1Ni0zOS4yNi02OS41NTgtNTIuNDRsLTEuMzk3LTAuNjM3Yy0xMi45NzgtNy4wMjgtMjguMjgxLTEzLjY2OS00NC4xODEtMTkuMDExbC0yLjExMi0wLjYxNmMtMTIxLjk0MS0zOS44OTMtMjQ2Ljc4NCAzLjk2OC0yODcuMDE5IDk4LjEzMy0yLjg5OSA2LjE1Ni01LjY2MSAxMy41NTMtNy44NDMgMjEuMTk0bC0wLjI2MyAxLjA3OGMtMTcuMTA5IDYyLjA4MC0yLjU2IDEzNi41MzMgNDIuOTY1IDE4My40MjQgMi43NzMgMi45ODcgNS42MzIgNi41MjggNS42MzIgMTAuOTIzIDAgMy43MTItMi4zNDcgNy41OTUtNC4zNTIgMTAuMzY4LTE1LjkxNSAyMy4xMjUtNzEuMDgzIDYyLjU0OS01OS45ODkgMTM4LjgzNyA3LjkzNiA1NC44MjcgNTUuODA4IDkzLjM5NyAxMDAuMzk1IDkxLjA5M2wxMS4zMDctMC42NGMxOS4zMjgtMS4xNTIgMzYuMTgxLTMuNjI3IDUyLjEzOS00LjMwOSAyNi42MjQtMS4xNTIgNTAuNTYgMi43MzEgNzguOTMzIDI2LjQxMSA5LjU1NyA3Ljk3OSAxNy4yMzcgMTQuOTMzIDMwLjIwOCAxNy4xMDkgMS4zNjUgMC4yMTMgNC43MzYgMS40NTEgMTEuNTIgMS4xMDkgNy4yNzUtMC4yODYgMTMuOTYzLTIuNTcxIDE5LjU5Ni02LjMxN2wtMC4xNCAwLjA4OGMyMi43NDEtMTUuMTQ3IDI1Ljk0MS01MS44NCAyNy4xMzYtNzguNzIgMC42ODMtMTUuMzYgMi41MTctNTIuMzk1IDMuMTU3LTYzLjA2MSAxLjQ1MS0yNC4zMiA3LjgwOC0yNy43MzMgMjAuNzM2LTMyIDcuMjUzLTIuNDMyIDE0LjAzNy00LjIyNCAyMy45NzktNi45OTcgMzAuMDgwLTguNDkxIDQ3LjkxNS0xNy4wNjcgNTkuMTc5LTI4LjExNyA2Ljc0MS02Ljg2OSA5LjgxMy0xNC4yMDggMTAuNzk1LTIxLjIwNSAzLjU4NC0yNS45NDEtMjAuMDUzLTU3Ljk4NC04Mi42ODgtODcuMDgzLTY4LjQ4LTMxLjgyOS0xNTEuNDY3LTM5Ljg5My0yMDguODUzLTMzLjQ5M2wtMjAuMDk2IDIuMjYxYy00NS45MDkgNi4xODctNzIuMDY0LTUzLjIwNS00NC41NDQtOTMuOTA5IDE3Ljc0OS0yNi4yNCA2Ni4xMzMtNDMuMzA3IDExNC40NzUtNDMuMzA3IDExMC45MzMgMCAxOTYuMTgxIDQ3LjQwMyAyMjcuODgzIDg4LjQwNWwyLjU2IDMuNjI3YzEuNTM2IDIuMzQ3IDAuMjU2IDMuNjI3LTEuNzA3IDIuMzA0LTI1Ljg5OS0xNy43NDktMTQwLjk3MS04OC4yNzctMjY0LjEwNy02Ny4wMjkgMCAwLTE0LjkzMyAyLjQzMi0yOC41ODcgNy43NjUtMTAuODM3IDQuMjI0LTMzLjUzNiAxNC42NzctMzYuMjY3IDM4LjAxNiA5OS4zMjgtMzAuNzYzIDE2MS44MzUtMS42NjQgMTYxLjgzNS0xLjYyMXpNNTk0LjIxOSAyNDQuNDhsMC4wNDMtMC4wNDN6TTQwNC4xODEgNjcyLjQyN2MzOC4xODcgNDQuMjAzIDg1LjE2MyA4Mi42MDMgMTI3LjIzMiAxMDQuMTQ5IDEuNDUxIDAuNzI1IDIuOTg3LTAuODUzIDIuMjE5LTIuMjYxLTMuMzcxLTYuMDU5LTkuODEzLTE5LjA3Mi0xMS44MTktMjguODg1LTAuMDI1LTAuMTEtMC4wMzktMC4yMzUtMC4wMzktMC4zNjQgMC0wLjk0MyAwLjc2NC0xLjcwNyAxLjcwNy0xLjcwNyAwLjM0OCAwIDAuNjcyIDAuMTA0IDAuOTQyIDAuMjgzbC0wLjAwNi0wLjAwNGMyNi4xOTcgMTcuODc3IDcxLjcyMyAzNy4wMzUgMTExLjcwMSAzOS40NjcgMS43MDcgMC4xMjggMi41Ni0yLjA5MSAxLjE1Mi0zLjE1Ny02LjU3MS01LjA3Ny0xMi41MDEtMTEuMDA4LTE3LjUzNi0xNy42MjEtMC4yMTMtMC4yODItMC4zNDItMC42MzgtMC4zNDItMS4wMjUgMC0wLjkyOCAwLjc0LTEuNjgzIDEuNjYyLTEuNzA2aDAuMDAyYzI4LjAzMi0wLjIxMyA2Ny41ODQtMTAuMDI3IDkzLjM1NS0yNC41MzMgMS43MDctMC45ODEgMC41MTItNC4zNTItMS40NTEtMy45MjUtMzguOTk3IDguOTYtMTAyLjgyNyAxNS43ODctMTY5LjEzMS0wLjQyNy01OS4xNzktMTQuNDY0LTEwNC4zNjMtMzYuNzc5LTEzNy4zMDEtNjAuOC0xLjcwNy0xLjIzNy0zLjY2OSAwLjk4MS0yLjM0NyAyLjUxN3oiIC8+CjxnbHlwaCB1bmljb2RlPSImI3hlOTAxOyIgZ2x5cGgtbmFtZT0ibWFpbCIgZD0iTTg1NCA1OTYuNjY3djg2bC0zNDItMjE0LTM0MiAyMTR2LTg2bDM0Mi0yMTJ6TTg1NCA3NjguNjY3cTM0IDAgNTktMjZ0MjUtNjB2LTUxMnEwLTM0LTI1LTYwdC01OS0yNmgtNjg0cS0zNCAwLTU5IDI2dC0yNSA2MHY1MTJxMCAzNCAyNSA2MHQ1OSAyNmg2ODR6IiAvPgo8Z2x5cGggdW5pY29kZT0iJiN4ZTkwMjsiIGdseXBoLW5hbWU9ImZpbGUtc3VibWlzc2lvbiIgZD0iTTM0MiAyOTguNjY3bDE3MCAxNzAgMTcwLTE3MC02MC02Mi02OCA2OHYtMTc2aC04NHYxNzZsLTY4LTY2ek03NjggODQuNjY3djQ3MGgtMjE0djIxNGgtMjk4di02ODRoNTEyek01OTggODUyLjY2N2wyNTYtMjU2di01MTJxMC0zNC0yNi01OXQtNjAtMjVoLTUxMnEtMzQgMC02MCAyNXQtMjYgNTlsMiA2ODRxMCAzNCAyNSA1OXQ1OSAyNWgzNDJ6IiAvPgo8Z2x5cGggdW5pY29kZT0iJiN4ZTkwMzsiIGdseXBoLW5hbWU9InN1Ym1pc3Npb24tbWVzc2FnZSIgZD0iTTU1NCA1NTQuNjY3aDIzNmwtMjM2IDIzNHYtMjM0ek0yNTYgODUyLjY2N2gzNDJsMjU2LTI1NnYtNTEycTAtMzQtMjYtNTl0LTYwLTI1aC01MTJxLTM0IDAtNjAgMjV0LTI2IDU5bDIgNjg0cTAgMzQgMjUgNTl0NTkgMjV6IiAvPgo8Z2x5cGggdW5pY29kZT0iJiN4ZTkwNDsiIGdseXBoLW5hbWU9InNldHRpbmdzIiBkPSJNNzM2IDQyNi42NjdxMCAyMC0yIDMwbDY0IDQ4cTEwIDggMiAyMGwtNjAgMTA0cS02IDEwLTE4IDZsLTc0LTMwcS0yNiAyMC01MCAzMGwtMTIgNzhxLTQgMTItMTQgMTJoLTEyMHEtMTIgMC0xNC0xMmwtMTItODBxLTMyLTE0LTUwLTI4bC03NCAzMHEtMTAgNC0xOC04bC02MC0xMDJxLTItMi0yLTggMC0xMCA0LTEybDY0LTQ4cS0yLTEwLTItMzB0Mi0zMGwtNjQtNDhxLTQtMi00LTEyIDAtNiAyLThsNjAtMTA0cTYtMTAgMTgtNmw3NCAzMHEyNi0yMCA1MC0zMGwxMi03OHE0LTEyIDE0LTEyaDEyMHExMiAwIDE0IDEybDEyIDgwcTMyIDE0IDUwIDI4bDc0LTMwcTEwLTQgMTggOGw2MCAxMDJxOCAxMi0yIDIwbC02NCA0OHEyIDEwIDIgMzB6TTgxMCA4MTAuNjY3cTM2IDAgNjEtMjV0MjUtNjF2LTU5NnEwLTM2LTI1LTYxdC02MS0yNWgtNTk2cS0zNiAwLTYxIDI1dC0yNSA2MXY1OTZxMCAzNiAyNSA2MXQ2MSAyNWg1OTZ6TTUxMiA1MTIuNjY3cTM0IDAgNjAtMjZ0MjYtNjAtMjYtNjAtNjAtMjYtNjAgMjYtMjYgNjAgMjYgNjAgNjAgMjZ6IiAvPgo8Z2x5cGggdW5pY29kZT0iJiN4ZTkwNTsiIGdseXBoLW5hbWU9ImNyb3NzIiBkPSJNNzI2IDI3Mi42NjdsLTE1NCAxNTQgMTU0IDE1NC02MCA2MC0xNTQtMTU0LTE1NCAxNTQtNjAtNjAgMTU0LTE1NC0xNTQtMTU0IDYwLTYwIDE1NCAxNTQgMTU0LTE1NHpNNTEyIDg1Mi42NjdxMTc2IDAgMzAxLTEyNXQxMjUtMzAxLTEyNS0zMDEtMzAxLTEyNS0zMDEgMTI1LTEyNSAzMDEgMTI1IDMwMSAzMDEgMTI1eiIgLz4KPGdseXBoIHVuaWNvZGU9IiYjeGU5MDY7IiBnbHlwaC1uYW1lPSJpY29uLXllcyIgZD0iTTQyNiAyMTIuNjY3bDM4NCAzODQtNjAgNjItMzI0LTMyNC0xNTIgMTUyLTYwLTYwek01MTIgODUyLjY2N3ExNzYgMCAzMDEtMTI1dDEyNS0zMDEtMTI1LTMwMS0zMDEtMTI1LTMwMSAxMjUtMTI1IDMwMSAxMjUgMzAxIDMwMSAxMjV6IiAvPgo8Z2x5cGggdW5pY29kZT0iJiN4ZTkwNzsiIGdseXBoLW5hbWU9ImFycm93LXJpZ2h0IiBkPSJNODI4LjAwNiA1MTJsLTMxMC44MzUgMzEwLjgzNSA3Mi4zOTcgNzIuMzk3IDQzNC40MzItNDM0LjQzMi00MzQuNDMyLTQzNC40MzItNzIuMzk3IDcyLjM5NyAzMTAuODM1IDMxMC44MzVoLTgyOC4wMDZ2MTAyLjR6IiAvPgo8Z2x5cGggdW5pY29kZT0iJiN4ZTkwODsiIGdseXBoLW5hbWU9ImFycm93LWxlZnQiIGQ9Ik0xOTUuOTk0IDUxMmwzMTAuODM1IDMxMC44MzUtNzIuMzk3IDcyLjM5Ny00MzQuNDMyLTQzNC40MzIgNDM0LjQzMi00MzQuNDMyIDcyLjM5NyA3Mi4zOTctMzEwLjgzNSAzMTAuODM1aDgyOC4wMDZ2MTAyLjRoLTgyOC4wMDZ6IiAvPgo8Z2x5cGggdW5pY29kZT0iJiN4ZTkwOTsiIGdseXBoLW5hbWU9ImFycm93LXVwIiBkPSJNNDYwLjggNzc2LjgwNmwtMzEwLjgzNS0zMTAuODM1LTcyLjM5NyA3Mi4zOTcgNDM0LjQzMiA0MzQuNDMyIDQzNC40MzItNDM0LjQzMi03Mi4zOTctNzIuMzk3LTMxMC44MzUgMzEwLjgzNXYtODI4LjAwNmgtMTAyLjR2ODI4LjAwNnoiIC8+CjxnbHlwaCB1bmljb2RlPSImI3hlOTBhOyIgZ2x5cGgtbmFtZT0iYXJyb3ctZG93biIgZD0iTTQ2MC44IDE0NC43OTRsLTMxMC44MzUgMzEwLjgzNS03Mi4zOTctNzIuMzk3IDQzNC40MzItNDM0LjQzMiA0MzQuNDMyIDQzNC40MzItNzIuMzk3IDcyLjM5Ny0zMTAuODM1LTMxMC44MzV2ODI4LjAwNmgtMTAyLjR6IiAvPgo8Z2x5cGggdW5pY29kZT0iJiN4ZTkwYjsiIGdseXBoLW5hbWU9Im1lbnUiIGQ9Ik0xMjggNjgyLjY2N2g3Njh2LTg2aC03Njh2ODZ6TTEyOCAzODQuNjY3djg0aDc2OHYtODRoLTc2OHpNMTI4IDE3MC42Njd2ODZoNzY4di04NmgtNzY4eiIgLz4KPGdseXBoIHVuaWNvZGU9IiYjeGU5MGM7IiBnbHlwaC1uYW1lPSJzZW5kIiBkPSJNODYgNDIuNjY3djI5OGw2NDAgODYtNjQwIDg2djI5OGw4OTYtMzg0eiIgLz4KPGdseXBoIHVuaWNvZGU9IiYjeGU5MGQ7IiBnbHlwaC1uYW1lPSJsaW5rIiBkPSJNNzI2IDY0MC42NjdxODggMCAxNTAtNjN0NjItMTUxLTYyLTE1MS0xNTAtNjNoLTE3MnY4MmgxNzJxNTQgMCA5MyAzOXQzOSA5My0zOSA5My05MyAzOWgtMTcydjgyaDE3MnpNMzQyIDM4NC42Njd2ODRoMzQwdi04NGgtMzQwek0xNjYgNDI2LjY2N3EwLTU0IDM5LTkzdDkzLTM5aDE3MnYtODJoLTE3MnEtODggMC0xNTAgNjN0LTYyIDE1MSA2MiAxNTEgMTUwIDYzaDE3MnYtODJoLTE3MnEtNTQgMC05My0zOXQtMzktOTN6IiAvPgo8Z2x5cGggdW5pY29kZT0iJiN4ZTkwZTsiIGdseXBoLW5hbWU9InJlc2l6ZSIgZD0iTTc2Ny4yNjQgMzMuMTJ2NjEuODI0aDEyNy42MTZ2MTI3LjYxNmg2NS44MjR2LTE4OS40NGgtMTkzLjQ0ek04OTQuODggNzY5LjA1NmgtMTI3LjYxNnY2MS44MjRoMTkzLjQ0di0xODkuNDRoLTY1LjgyNHYxMjcuNjE2ek05Ny4xMiA2NDEuNDRoLTY1Ljc5MnYxODkuNDRoMTkzLjQ0di02MS44MjRoLTEyNy42NDh2LTEyNy42MTZ6TTE1OC45NDQgNzAzLjI2NGg2NzQuMTEydi01NDIuNDk2aC02NzQuMTEydjU0Mi40OTZ6TTIyNC43MzYgMjIyLjU2aDU0Mi40OTZ2NDE4Ljg4aC01NDIuNDk2di00MTguODh6TTI4OC41NzYgNTc1LjYxNmg0MTYuODY0di0yODcuMjY0aC00MTYuODY0djI4Ny4yNjR6TTk3LjEyIDk0Ljk0NGgxMjcuNjE2di02MS44MjRoLTE5My40MDh2MTg5LjQ0aDY1LjgyNHYtMTI3LjYxNnoiIC8+CjxnbHlwaCB1bmljb2RlPSImI3hlOTBmOyIgZ2x5cGgtbmFtZT0iY3JvcC1mcmVlIiBkPSJNODEwIDgxMC42NjdxMzQgMCA2MC0yNnQyNi02MHYtMTcwaC04NnYxNzBoLTE3MHY4NmgxNzB6TTgxMCAxMjguNjY3djE3MGg4NnYtMTcwcTAtMzQtMjYtNjB0LTYwLTI2aC0xNzB2ODZoMTcwek0yMTQgMjk4LjY2N3YtMTcwaDE3MHYtODZoLTE3MHEtMzQgMC02MCAyNnQtMjYgNjB2MTcwaDg2ek0xMjggNzI0LjY2N3EwIDM0IDI2IDYwdDYwIDI2aDE3MHYtODZoLTE3MHYtMTcwaC04NnYxNzB6IiAvPgo8Z2x5cGggdW5pY29kZT0iJiN4ZTkxMDsiIGdseXBoLW5hbWU9InRleHQtZmllbGRzIiBkPSJNOTE4IDU1NC42Njd2LTEyOGgtMTI4di0yOThoLTEyOHYyOThoLTEyOHYxMjhoMzg0ek0xMDYgNzY4LjY2N2g1NTZ2LTEyOGgtMjE0di01MTJoLTEyOHY1MTJoLTIxNHYxMjh6IiAvPgo8Z2x5cGggdW5pY29kZT0iJiN4ZTkxMTsiIGdseXBoLW5hbWU9InN1cHBvcnQiIGQ9Ik01MTIgODUyLjY2N3EtODggMC0xNjUtMzN0LTEzNi05Mi05Mi0xMzYtMzMtMTY1IDMzLTE2NSA5Mi0xMzYgMTM2LTkyIDE2NS0zMyAxNjUgMzMgMTM2IDkyIDkyIDEzNiAzMyAxNjUtMzMgMTY1LTkyIDEzNi0xMzYgOTItMTY1IDMzek04MzAgNTQ4LjY2N2wtMTE4LTQ4cS0xNiA0NC00OSA3N3QtNzcgNDlsNDggMTE4cTY4LTI2IDExOS03N3Q3Ny0xMTl6TTUxMiAyOTguNjY3cS0zNiAwLTY1IDE3dC00NiA0Ni0xNyA2NSAxNyA2NSA0NiA0NiA2NSAxNyA2NS0xNyA0Ni00NiAxNy02NS0xNy02NS00Ni00Ni02NS0xN3pNMzkwIDc0NC42NjdsNTAtMTE4cS00NC0xNi03OC00OXQtNTAtNzlsLTExOCA1MHEyNiA2OCA3NyAxMTl0MTE5IDc3ek0xOTQgMzA0LjY2N2wxMTggNDhxMTYtNDQgNDktNzd0NzktNDlsLTUwLTExOHEtNjggMjYtMTE5IDc3dC03NyAxMTl6TTYzNCAxMDguNjY3bC00OCAxMThxNDQgMTYgNzcgNDl0NDkgNzlsMTE4LTUwcS0yNi02OC03Ny0xMTl0LTExOS03N3oiIC8+CjwvZm9udD48L2RlZnM+PC9zdmc+#admin-font) format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+[class^=font-], [class*=" font-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: "admin-font" !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-resize:before {
+  content: "\e90e";
+}
+
+.font-arrow-down:before {
+  content: "\e90a";
+}
+
+.font-arrow-up:before {
+  content: "\e909";
+}
+
+.font-arrow-right:before {
+  content: "\e907";
+}
+
+.font-arrow-left:before {
+  content: "\e908";
+}
+
+.font-mailchimp:before {
+  content: "\e900";
+}
+
+.font-support:before {
+  content: "\e911";
+}
+
+.font-link:before {
+  content: "\e90d";
+}
+
+.font-crop-free:before {
+  content: "\e90f";
+}
+
+.font-text-fields:before {
+  content: "\e910";
+}
+
+.font-send:before {
+  content: "\e90c";
+}
+
+.font-menu:before {
+  content: "\e90b";
+}
+
+.font-cross:before {
+  content: "\e905";
+}
+
+.font-icon-yes:before {
+  content: "\e906";
+}
+
+.font-mail:before {
+  content: "\e901";
+}
+
+.font-file-submission:before {
+  content: "\e902";
+}
+
+.font-submission-message:before {
+  content: "\e903";
+}
+
+.font-settings:before {
+  content: "\e904";
+}
+
+input, textarea {
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+
+#admin-stockmanager {
+  margin-top: 5px;
+}
+
+.woo-module-popup span.font-cross {
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.woo-container {
+  background-color: #f2eff5;
+  padding: 2rem 1.5rem;
+  min-height: 54rem;
+}
+
+.woo-search-and-multistatus-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 2rem 0;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+.woo-search-and-multistatus-wrap .woo-multistatus-ul {
+  margin: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.woo-search-and-multistatus-wrap .woo-multistatus-ul .woo-multistatus-item.status-active {
+  color: #65438f;
+}
+.woo-search-and-multistatus-wrap .woo-multistatus-ul .woo-multistatus-item {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #5e5d60;
+}
+.woo-search-and-multistatus-wrap .woo-multistatus-ul .woo-multistatus-item button {
+  padding: 0;
+}
+.woo-search-and-multistatus-wrap .woo-multistatus-ul .woo-divider {
+  width: 0.051rem;
+  background-color: #5e5d60;
+  margin: 0 0.4rem;
+  height: 1rem;
+}
+
+.woo-wrap-bulk-all-date {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem 0.5rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.5rem;
+}
+
+.woo-page-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+  justify-content: space-between;
+}
+.woo-page-title p {
+  font-size: 1.5rem;
+  color: #181718;
+  margin-right: 0.7rem;
+}
+.woo-page-title .pull-right {
+  margin: 0.4rem 0 0 auto;
+}
+.woo-page-title .pull-right .woo-btn.btn-purple {
+  background-color: #65438f;
+  border: none;
+  color: #f9f8fb;
+  transition: all 0.3s ease;
+  border-radius: 0.25rem;
+  padding: 0.594rem 1rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+.woo-page-title .pull-right .woo-btn.btn-purple:hover {
+  background-color: #795b9d;
+  color: #f9f8fb;
+}
+.woo-page-title .pull-right .woo-btn.btn-purple:hover {
+  text-decoration: none;
+}
+
+#adminmenu .wp-submenu a {
+  position: relative;
+}
+#adminmenu .wp-submenu li a .stock-manager-pro-tag {
+  right: 0.25rem;
+  padding: 0.125rem 0.5rem !important;
+}
+
+.stock-manager-popup-cross {
+  text-align: right;
+  cursor: pointer;
+}
+
+.woo-middle-container-wrapper {
+  background-color: #fff;
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.313rem;
+  box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.12);
+}
+
+.mvx-container a {
+  color: #65438f;
+  line-height: 1rem;
+  text-decoration: none;
+}
+.mvx-container code {
+  background: #fbf5f8;
+  color: #b74f82;
+  font-style: normal;
+}
+.mvx-container p.mvx-settings-metabox-description-code {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0;
+  background: #fdf9fb;
+  color: #b74f82;
+  border-radius: 0.25rem;
+  position: relative;
+}
+.mvx-container p.mvx-settings-metabox-description-code::before {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 0;
+  width: 0.25rem;
+  border-radius: 0.25rem;
+  background-color: #dfb1c7;
+  height: 100%;
+}
+
+/*# sourceMappingURL=index.css.map*/

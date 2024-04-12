@@ -1,0 +1,213 @@
+.support-container {
+  padding: 2rem;
+
+  .support-header-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    flex-direction: column;
+
+    .support-heading {
+      font-size: 1.25rem;
+      text-wrap: balance;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .support-subheading {
+      text-align: center;
+      font-size: 0.9rem;
+    }
+  }
+
+  .support-container-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 2rem 0;
+
+    .video-support-wrapper {
+      width: 60%;
+      min-width: 18.9rem;
+
+      p {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+
+      iframe {
+        width: 100%;
+        height: 18.9rem;
+      }
+    }
+    .support-quick-link {
+      width: 40%;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 1rem;
+
+      .support-quick-link-items {
+        width: 100%;
+        display: flex;
+        gap: 1rem;
+        padding: 1.25rem 1rem;
+        background-color: #fff;
+        box-shadow: 0 0.125rem 0.25rem rgba($color: #000000, $alpha: 0.125);
+        border-radius: 0.25rem;
+        transition: all 0.3s linear;
+
+        &:hover {
+          box-shadow: 0 0.125rem 0.25rem rgba($color: #000000, $alpha: 0.25);
+          transform: scale(1.05);
+        }
+
+        .icon-bar {
+          max-width: 1.89rem;
+
+          i {
+            font-size: 1.5rem;
+            color: #9f8ab9;
+          }
+        }
+
+        .content {
+          width: 100%;
+
+          a {
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+          }
+
+          p {
+            font-size: 0.85rem;
+          }
+        }
+      }
+    }
+  }
+  
+  .faq-wrapper {
+    $secondary-text-color: #9ea6ae;
+    $details: #dee4f1;
+
+    .container{
+      background-color: #fff !important; // To overrite tab.scss container style
+      .faq{
+        width: 100%;
+      }
+    }
+  
+    .heading {
+      color: #65438f;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+  
+    form {
+      display: flex;
+      width: 35rem;
+      background-color: #fff;
+      align-items: center;
+      margin: 0 auto;
+      border-radius: 1rem;
+  
+      svg {
+        height: 1rem;
+        fill: $secondary-text-color;
+        position: fixed;
+        width: 4rem;
+      }
+    }
+    .question-wrapper {
+      border-bottom: 0.063rem solid $details;
+      padding: 1rem 1rem 1rem 0;
+      transition: 1s;
+    }
+  
+    .question {
+      display: flex;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #65438f;
+      display: flex;
+      justify-content: space-between;
+  
+      h3{
+        font-size: 1.1rem;
+      }
+  
+      svg {
+        width: 0.85rem;
+        height: 1.25rem;
+        fill: $secondary-text-color;
+      }
+  
+      svg.active {
+        transform: rotate(180deg);
+      }
+  
+      svg:hover {
+        opacity: 0.8;
+      }
+    }
+  
+    button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+  
+    button:focus {
+      outline: none;
+    }
+  
+    .answer {
+      display: none;
+    }
+  
+    .answer.active {
+      display: block;
+      text-align: left;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      height: 0%;
+      animation: slidein 0.4s;
+      animation-fill-mode: forwards;
+    }
+  
+    @keyframes slidein {
+      from {
+        opacity: 0.3;
+        transform: translateY(-20%);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0%);
+      }
+    }
+  }
+}
+
+
+@media only screen and (min-width: 18.9rem) and (max-width: 71.82rem){
+  .support-container {
+    .support-container-wrapper{
+      flex-direction: column;
+
+      .video-support-wrapper{
+        width: 100%;
+      }
+
+      .support-quick-link{
+        width: 100%;
+      }
+    }
+  }
+}

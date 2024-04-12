@@ -1,0 +1,49 @@
+{
+    "name": "moowoodle",
+    "version": "3.2.0",
+    "description": "=== MooWoodle ===",
+    "main": "index.js",
+    "directories": {
+        "lib": "lib"
+    },
+    "scripts": {
+        "build": "wp-scripts build",
+        "start": "wp-scripts start"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dualcube/moowoodle"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/dualcube/moowoodleissues"
+    },
+    "homepage": "https://github.com/dualcube/moowoodle#readme",
+    "devDependencies": {
+        "@wordpress/scripts": "^26.17.0"
+    },
+    "dependencies": {
+        "@emotion/react": "^11.11.1",
+        "@emotion/styled": "^11.11.0",
+        "@mui/material": "^5.14.4",
+        "@tinymce/tinymce-react": "^4.3.0",
+        "@wordpress/react-i18n": "^3.50.0",
+        "axios": "^1.4.0",
+        "google-map-react": "^2.2.1",
+        "react": "^18.2.0",
+        "react-csv": "^2.2.2",
+        "react-data-table-component": "^7.5.3",
+        "react-dom": "^18.2.0",
+        "react-multi-date-picker": "^4.1.2",
+        "react-query": "^3.39.3",
+        "react-router-dom": "^6.15.0",
+        "react-select": "^5.7.4",
+        "react-sortablejs": "^6.1.4",
+        "react-spinners": "^0.13.8",
+        "react-table": "^7.8.0",
+        "recharts": "^2.7.3",
+        "rsuite": "^5.37.4",
+        "react-paginate": "^8.2.0"
+    }
+}
