@@ -12,8 +12,6 @@ class Enrollment {
 
 	/**
 	 * Process the oreder when order status is complete.
-	 *
-	 * @access public
 	 * @param int $order_id
 	 * @return void
 	 */
@@ -28,8 +26,6 @@ class Enrollment {
 
 	/**
 	 * Perform enrollment to moodle
-	 *
-	 * @access private
 	 * @return void
 	 */
 	private function process_enrollment() {
@@ -37,8 +33,6 @@ class Enrollment {
 
 	/**
 	 * Get moodle user id. If the user does not exist in moodle then creats an user in moodle.
-	 *
-	 * @access private
 	 * @param bool $create_moodle_user (default: bool)
 	 * @return int
 	 */
@@ -78,10 +72,9 @@ class Enrollment {
 
 		return $moodle_user_id;
 	}
+
 	/**
 	 * Searches for an user in moodle by a specific field.
-	 *
-	 * @access private
 	 * @param string $field
 	 * @param string $values
 	 * @return int
@@ -94,10 +87,9 @@ class Enrollment {
 		}
 		return 0;
 	}
+
 	/**
 	 * Creates an user in moodle.
-	 *
-	 * @access private
 	 * @param int $moodle_user_id (default: int)
 	 * @return int
 	 */
@@ -112,10 +104,9 @@ class Enrollment {
 		}
 		return $moodle_user_id;
 	}
+
 	/**
 	 * Info about an user to be created/updated in moodle.
-	 *
-	 * @access private
 	 * @param int $moodle_user_id (default: int)
 	 * @return array
 	 */
@@ -162,10 +153,9 @@ class Enrollment {
 		$user_data['preferences'][0]['value'] = 1;
 		return apply_filters('moowoodle_moodle_users_data', $user_data, $this->wc_order);
 	}
+
 	/**
 	 * Updates an user info in moodle.
-	 *
-	 * @access private
 	 * @param int $moodle_user_id (default: int)
 	 * @return int
 	 */
@@ -175,10 +165,9 @@ class Enrollment {
 		MooWoodle()->ExternalService->do_request('update_users', array('users' => array($user_data)));
 		return $moodle_user_id;
 	}
+
 	/**
 	 * Enrollment/suspend enrollment of an user in moodle.
-	 *
-	 * @access private
 	 * @param int $moodle_user_id (default: int)
 	 * @param int $suspend (default: int)
 	 * @return void
@@ -205,10 +194,9 @@ class Enrollment {
 		// send confirmation email
 		do_action('moowoodle_after_enrol_moodle_user', $enrolment_data);
 	}
+
 	/**
 	 * Data required for enrollment.
-	 *
-	 * @access private
 	 * @param int $moodle_user_id (default: int)
 	 * @param int $suspend (default: int)
 	 * @return array
@@ -234,11 +222,9 @@ class Enrollment {
 		}
 		return apply_filters('moowoodle_moodle_enrolments_data', $enrolments);
 	}
+
 	/**
 	 * Display WC order thankyou page containt.
-	 *
-	 * @access public
-	 * @param void
 	 * @return void
 	 */
 	public function enrollment_modified_details($order_id) {
@@ -249,11 +235,9 @@ class Enrollment {
 			echo esc_html_e('Order status is :- ', 'moowoodle') . $order->get_status() . '<br>';
 		}
 	}
+
 	/**
 	 * Display course start and end date.
-	 *
-	 * @access public
-	 * @param void
 	 * @return void
 	 */
 	public function add_dates_with_product() {
@@ -271,11 +255,9 @@ class Enrollment {
 			}
 		}
 	}
+
 	/**
 	 * Generate random password.
-	 *
-	 * @access private
-	 * @param void
 	 * @return void
 	 */
 	private function password_generator() {

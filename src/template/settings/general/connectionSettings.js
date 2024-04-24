@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 
 export default {
-    id: "moowoodle-connection",
+    id: "connection",
     priority: 15,
     name: __("Connection Settings", 'moowoodle'),
     desc: __("Connection Settings", 'moowoodle'),

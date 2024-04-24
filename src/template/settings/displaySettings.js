@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 
 export default {
-    id: "moowoodle-display",
+    id: "display",
     priority: 20,
     name: __("Display Settings", 'moowoodle'),
     desc: __("Display Settings", 'moowoodle'),

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import "./dynamicForm.scss";
 import CustomInput from "../Inputs";
+import ConnectButton from "../../ConnectButton/ConnectButton";
 
 // import context.
 import { useSetting } from "../../../contexts/SettingContext";
@@ -53,8 +54,6 @@ const DynamicForm = (props) => {
             updateSetting( key, event.target.value );
         } else if (fromType === 'calender') {
             updateSetting( key, event.join( ',' ) );
-        } else if (fromType === 'select') {
-            updateSetting( key, arrayValue[ event.index ] );
         } else if (fromType === 'multi-select') {
             updateSetting( key, event );
         } else if (fromType === 'wpeditor') {
@@ -96,21 +95,13 @@ const DynamicForm = (props) => {
     updateSetting(key, mulipleOptions);
   };
 
-  const handlMultiSelectDeselectChange = (e, m) => {
+  const handlMultiSelectDeselectChange = ( key, options ) => {
     settingChanged.current = true;
-    if (setting[m.key].length > 0) {
-      updateSetting(m.key, []);
-    } else {
-      const complete_option_value = [];
-      {
-        m.options
-          ? m.options.map((o, index) => {
-              complete_option_value[index] = o;
-            })
-          : "";
-      }
 
-      updateSetting(m.key, complete_option_value);
+    if ( Array.isArray( setting[key] ) && setting[key].length > 0 ) {
+      updateSetting( key, [] );
+    } else {
+      updateSetting( key, options.map( ({value}) => value ));
     }
   };
 
@@ -470,9 +461,6 @@ const DynamicForm = (props) => {
               descClass="settings-metabox-description"
               selectDeselectClass="select-deselect-trigger"
               selectDeselect={inputField.select_deselect}
-              selectDeselectValue={
-                appLocalizer.global_string.select_deselect_all
-              }
               description={inputField.desc}
               inputClass={inputField.key}
               options={inputField.options}
@@ -543,7 +531,7 @@ const DynamicForm = (props) => {
                 handleChange(e, inputField.key, "multiple");
               }}
               onMultiSelectDeselectChange={(e) =>
-                handlMultiSelectDeselectChange(e, inputField)
+                handlMultiSelectDeselectChange( inputField.key, inputField.options )
               }
             />
           );
@@ -614,6 +602,12 @@ const DynamicForm = (props) => {
               buttonText={setting.button_text}
               onChange={(e, key) => handleChange(e, key)}
             />
+          );
+          break;
+        
+        case "connectbutton":
+          input = (
+            <ConnectButton />
           );
           break;
       }

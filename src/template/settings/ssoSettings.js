@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 
 export default {
-    id: "moowoodle-sso",
+    id: "sso",
     priority: 30,
     name: __("SSO ", 'moowoodle'),
     desc: __("SSO ", 'moowoodle'),

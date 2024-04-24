@@ -100,7 +100,7 @@ const Button = (props) => {
   const syncUser = (route) => {
     try {
       handleAxios({preSetting: props.field.preSetting}, route);
-    } catch(error){
+    } catch(error) {
       console.log(error);
     };
   }

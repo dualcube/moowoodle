@@ -17,7 +17,7 @@ class Util {
      * @param string $message
      * @return bool
      */
-	public static function log( $message ) {
+	public static function _log( $message ) {
 		global $wp_filesystem;
 
 		$message = var_export( $message, true );
@@ -52,6 +52,41 @@ class Util {
 			return $wp_filesystem->put_contents( MW_LOGS . "/error.txt", $existing_content . $log_entry );
 		}
 
+		return false;
+	}
+
+	/**
+     * Function to console and debug errors.
+     */
+    public static function log( $str ) {
+        $file = MooWoodle()->plugin_path . 'log/moowoodle.log';
+
+        if ( file_exists( $file ) ) {
+            // Open the file to get existing content
+            $str = var_export( $str, true );
+
+            // Wp_remote_gate replacement required
+            $current = file_get_contents( $file );
+
+            if ( $current ) {
+                // Append a new content to the file
+                $current .= "$str" . "\r\n";
+                $current .= "-------------------------------------\r\n";
+            } else {
+                $current = "$str" . "\r\n";
+                $current .= "-------------------------------------\r\n";
+            }
+            
+            // Write the contents back to the file
+            file_put_contents( $file, $current );
+        }
+    }
+	
+	/**
+	 * Check is MooWoodle Pro is active or not.
+	 * @return bool
+	 */
+	public static function is_pro_active() {
 		return false;
 	}
 }

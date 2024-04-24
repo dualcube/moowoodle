@@ -124,8 +124,7 @@ const Tabs = ( props ) => {
                                                     showHideMenu(content[0].content)
                                                 }
                                                 {
-                                                    // openedSubtab == content[0].content.id &&
-                                                    <div className={`subtab-wrapper ${menuCol && 'show'} ${openedSubtab && 'active'}`}>
+                                                    <div className={`subtab-wrapper ${menuCol && 'show'} ${ openedSubtab == content[0].content.id && 'active'}`}>
                                                         {
                                                             content.slice(1).map(({ type, content }) => {
                                                                 return showTabSection(content);

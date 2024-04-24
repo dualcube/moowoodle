@@ -14,8 +14,6 @@ defined('ABSPATH') || exit;
 class Installer {
 	/**
 	 * Construct installation.
-	 *
-	 * @access public
 	 * @return void
 	 */
     public function __construct() {
@@ -25,10 +23,9 @@ class Installer {
 			do_action('moowoodle_updated');
 		}
     }
+
     /**
 	 * Plugin migration.
-	 *
-	 * @access public
 	 * @return void
 	 */
 	public static function migration() {
@@ -75,10 +72,9 @@ class Installer {
 			update_option('dc_moowoodle_plugin_db_version', MOOWOODLE_PLUGIN_VERSION);
 		}
 	}
+
 	/**
 	 * Create and Update options.
-	 * 
-	 * @access public
 	 * @return void
 	 */
 	private function set_options() {

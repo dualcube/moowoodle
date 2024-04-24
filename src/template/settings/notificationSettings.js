@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 
 export default {
-    id: "moowoodle-notification",
+    id: "notification",
     priority: 40,
     name: __("Notification ", 'moowoodle'),
     desc: __("Notification ", 'moowoodle'),

@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 
 export default {
-    id: "moowoodle-user-information",
+    id: "user-information",
     priority: 20,
     name: __("User Information Exchange Settings", 'moowoodle'),
     desc: __("User Information Exchange Settings", 'moowoodle'),

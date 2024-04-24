@@ -28,14 +28,41 @@ class Admin {
 	 * Add Option page
 	 */
 	public function add_submenu() {
-		$menu = Library::get_settings_menu();
-		foreach ($menu as $menu_slug => $menu_names) {
+		// Array contain moowoodle submenu
+		$submenus = [
+			"all-courses" => [
+				'name' 	 => __("All Courses", 'moowoodle'),
+				'subtab' => ''
+			],
+			"manage-enrolment" => [
+				'name'   => __("Manage Enrolment", 'moowoodle') . MOOWOOLE_PRO_STICKER,
+				'subtab' => ''
+			],
+			"settings" => [
+				'name'   => __("Settings", 'moowoodle'),
+				'subtab' => 'connection'
+			],
+			"synchronization" => [
+				'name'   => __("Synchronization", 'moowoodle'),
+				'subtab' => 'synchronize-datamap'
+			],
+		];
+
+		// Register all submenu
+		foreach ( $submenus as $slug => $submenu ) {
+			// prepare subtab if subtab is exist
+			$subtab = '';
+
+			if ( $submenu[ 'subtab' ] ) {
+				$subtab = '&sub-tab=' . $submenu[ 'subtab' ];
+			}
+
 			add_submenu_page(
 				'moowoodle',
-				$menu_names['name'],
-				$menu_names['name'],
+				$submenu['name'],
+				$submenu['name'],
 				'manage_options',
-				'moowoodle#&tab=' . $menu_slug . '&sub-tab=moowoodle-connection',
+				'moowoodle#&tab=' . $slug . $subtab,
 				'_-return_null'
 			);
 		}
@@ -60,16 +87,19 @@ class Admin {
         $settings_databases_value = [];
 
         $tabs_names = [
-			'moowoodle-connection',
-			'moowoodle-system',
-			'moowoodle-user-information',
-			'moowoodle-display',
-			'moowoodle-sso',
-			'moowoodle-notification'
+			'connection',
+			'system',
+			'user-information',
+			'display',
+			'sso',
+			'notification',
+			'synchronize-datamap',
+			'synchronize-shcedule-course',
+			'synchronize-shcedule-user'
 		];
 
         foreach( $tabs_names as $tab_name ) {
-			$option_name = str_replace( '-', '_', $tab_name . '_settings' );
+			$option_name = str_replace( '-', '_', 'moowoodle_' . $tab_name . '_settings' );
             $settings_databases_value[ $tab_name ] = (object) MooWoodle()->setting->get_option( $option_name );
         }
 
@@ -79,7 +109,6 @@ class Admin {
 			[
 				'apiUrl' => untrailingslashit( get_rest_url() ),
 				'side_banner_img' => esc_url(plugins_url()) .'/moowoodle/assets/images/logo-moowoodle-pro.png',
-				'library' => Library::moowoodle_get_options(),
 				'porAdv' => MOOWOODLE_PRO_ADV,
 				'preSettings' => $settings_databases_value,
 				'MW_Log' => MW_LOGS.'/error.txt',

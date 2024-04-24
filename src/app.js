@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 
 import Settings from "./components/Settings/Settings";
+import Synchronization from "./components/Synchronization/Synchronization";
+// import Courses from "./components/Courses/Courses";
 
-// import AllCourses from "./commponents/SubMenuPage/AllCourses";
+import Courses from "./components/SubMenuPage/AllCourses";
+
 // import ManageEnrolment from "./commponents/SubMenuPage/ManageEnrolment";
 // import Synchronization from "./commponents/SubMenuPage/Synchronization";
 
@@ -30,7 +33,9 @@ const App = () => {
 
     return (
         <>
-            { location.get('tab') === 'moowoodle-settings' && <Settings initialTab='general' /> }
+            { location.get('tab') === 'settings' && <Settings initialTab='general' /> }
+            { location.get('tab') === 'synchronization' && <Synchronization initialTab='connection' /> }
+            { location.get('tab') === 'all-courses' && <Courses /> }
         </>
     );
 }

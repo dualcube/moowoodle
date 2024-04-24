@@ -5,9 +5,7 @@ namespace MooWoodle;
 class Product {
     /**
 	 * Update moodle product data in WordPress WooCommerce.
-	 * if not exist create new product.
-	 * 
-	 * @access public
+	 * if not exist create new product
 	 * @param array $course (moodle course data)
 	 * @return int course id
 	 */

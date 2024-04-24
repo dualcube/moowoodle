@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Tabs from "./../Common/Tabs";
-import logo from "./../../assets/images/logo-moowoodle-pro.png";
+// import Tabs from "./../Common/Tabs";
+// import logo from "./../../assets/images/logo-moowoodle-pro.png";
 import DataTable from 'react-data-table-component';
+
+const MooWoodleAppLocalizer = {};
+
 const LoadingSpinner = () => (
   <tr>
     <td
       style={{ textAlign: "center" }}
     >
       <div className="loading-spinner">
-        <img className="lodaer-img-overlay" src={logo} alt="" />
+        <img className="lodaer-img-overlay" alt="" />
       </div>
     </td>
   </tr>
@@ -234,7 +237,7 @@ const AllCourses = () => {
   return (
     <>
       <div class="mw-middle-child-container">
-        <Tabs />
+        {/* <Tabs /> */}
         <div class="mw-tab-content">
           <div class="mw-dynamic-fields-wrapper">
             <form class="mw-dynamic-form" action="options.php" method="post">

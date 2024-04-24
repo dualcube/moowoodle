@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 
 export default {
-    id: "moowoodle-system",
+    id: "system",
     priority: 25,
     name: __("System Settings", 'moowoodle'),
     desc: __("System Settings", 'moowoodle'),

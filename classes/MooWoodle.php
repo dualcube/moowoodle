@@ -12,6 +12,12 @@ defined('ABSPATH') || exit;
  * @version		3.1.11
  * @package		MooWoodle
  * @author 		DualCube
+ * 
+ * @property Util $util instance of utill class
+ * @property Setting $setting instance of setting class
+ * @property Course $course instance of course class
+ * @property Category $category instance of category class
+ * @property RestAPI $restAPI instance of restapi class
  */
 class MooWoodle {
     /**
@@ -117,19 +123,24 @@ class MooWoodle {
     public function init_classes() {
 		$this->container[ 'util' ]       = new Util();
         $this->container[ 'setting' ]    = new Setting();
-		$this->container[ 'Course' ]     = new Course();
-		$this->container[ 'RestAPI' ]    = new RestAPI();
+		$this->container[ 'course' ]     = new Course();
+		$this->container[ 'category' ]   = new Category();
+		$this->container[ 'restAPI' ]    = new RestAPI();
+
 		$this->container[ 'Template' ]   = new Template();
 		$this->container[ 'Enrollment' ] = new Enrollment();
 		$this->container[ 'Emails' ]     = new Emails();
 		$this->container[ 'Product' ]    = new Product();
-		$this->container[ 'Category' ]   = new Category();
+
+        $this->container[ 'external_service' ]  = new ExternalService();
 		$this->container[ 'MyAccountEndPoint' ] = new MyAccountEndPoint();
 
 		if ( is_admin() ) {
-			$this->container[ 'admin' ]       = new Admin();
+			$this->container[ 'admin' ]        = new Admin();
 		    $this->container[ 'TestConnection' ] = new TestConnection();
 		}
+
+        $this->container['restAPI']->synchronize(null);
     }
 
     /**

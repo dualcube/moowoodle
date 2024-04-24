@@ -13,7 +13,6 @@ class RestAPI {
      * RestAPI construct function
      */
     function __construct() {
-
         // If user is admin
         if ( current_user_can( 'manage_options' ) ) {
             add_action( 'rest_api_init', [ &$this, 'register' ] );
@@ -25,33 +24,32 @@ class RestAPI {
      * @return void
      */
     public function register() {
-
         register_rest_route( MooWoodle()->rest_namespace, '/save-moowoodle-setting', [
-            'methods'             => \WP_REST_Server::EDITABLE,
+            'methods'             => \WP_REST_Server::ALLMETHODS,
             'callback'            =>[ $this, 'save_moowoodle_setting' ],
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
 
-        register_rest_route( MooWoodle()->rest_namespace, '/fetch-all-courses', [
-            'methods'             => \WP_REST_Server::READABLE,
-            'callback'            =>[ $this, 'fetch_all_courses' ],
-            'permission_callback' =>[ $this, 'moowoodle_permission' ],
-        ]);
-
         register_rest_route( MooWoodle()->rest_namespace, '/test-connection', [
-            'methods'             => \WP_REST_Server::EDITABLE,
+            'methods'             => \WP_REST_Server::ALLMETHODS,
             'callback'            =>[ $this, 'test_connection' ],
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
 
+        register_rest_route( MooWoodle()->rest_namespace, '/fetch-all-courses', [
+            'methods'             => \WP_REST_Server::ALLMETHODS,
+            'callback'            =>[ $this, 'fetch_all_courses' ],
+            'permission_callback' =>[ $this, 'moowoodle_permission' ],
+        ]);
+
         register_rest_route( MooWoodle()->rest_namespace, '/sync-course-options', [
-            'methods'             => \WP_REST_Server::EDITABLE,
+            'methods'             => \WP_REST_Server::ALLMETHODS,
             'callback'            =>[ $this, 'synchronize' ],
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
 
         register_rest_route( MooWoodle()->rest_namespace, '/fetch-mw-log', [
-            'methods'             => \WP_REST_Server::READABLE,
+            'methods'             => \WP_REST_Server::ALLMETHODS,
             'callback'            =>[ $this, 'mw_get_log' ],
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
@@ -74,7 +72,7 @@ class RestAPI {
         try {
             $settings_data = $request->get_param( 'setting' );
             $settingsname = $request->get_param( 'settingName' );
-            $settingsname = str_replace( "-", "_", $settingsname . "_settings" );
+            $settingsname = str_replace( "-", "_", "moowoodle_" . $settingsname . "_settings" );
 
             // save the settings in database
             MooWoodle()->setting->update_option( $settingsname, $settings_data );
@@ -89,54 +87,97 @@ class RestAPI {
     }
 
     /**
+     * Test Connection with Moodle server
+     * @param mixed $request rest request object
+     * @return \WP_Error| \WP_REST_Response
+     */
+    public function test_connection( $request ) {
+        $action    = $request->get_param( 'action' );
+        $user_id   = $request->get_param( 'user_id' );
+        $course_id = $request->get_param( 'course_id' );
+        $response  = [];
+
+        switch( $action ) {
+            case 'get_site_info':
+                $response = TestConnection::get_site_info();
+                break;
+            case 'get_course':
+                $response = TestConnection::get_course();
+                break;
+            case 'get_catagory':
+                $response = TestConnection::get_catagory();
+                break;
+            case 'create_user':
+                $response = TestConnection::create_user();
+                break;
+            case 'get_user':
+                $response = TestConnection::get_user();
+                break;
+            case 'update_user':
+                $response = TestConnection::update_user( $user_id );
+                break;
+            case 'enroll_user':
+                $response = TestConnection::enrol_users( $user_id, $course_id );
+                break;
+            case 'unenroll_user':
+                $response = TestConnection::unenrol_users( $user_id, $course_id );
+                break;
+            case 'delete_user':
+                $response = TestConnection::delete_users( $user_id );
+                break;
+            default:
+                $response = [ 'error' => $action . ' Test connection function is not defiend' ];
+        }
+
+        Util::log($response);
+
+        return rest_ensure_response( $response );
+    }
+
+    /**
      * Seve the setting set in react's admin setting page
      * @param mixed $request rest api request object
      * @return \WP_Error | \WP_REST_Response
      */
     public function synchronize( $request ) {
 
-		// get the current setting.
-        $sync_now_options = $request->get_param('data')['preSetting'];
+        // get all category from moodle.
+        $response   = MooWoodle()->external_service->do_request( 'get_categories' );
+        $categories = $response[ 'data' ];
 
-        // initiate Synchronisation
-        // sync category if enabled
-		if ($sync_now_options['sync_courses_category']) {
-			// get all category from moodle.
-			$categories = MooWoodle()->ExternalService->do_request('get_categories');
-
-			// update course and product categories
-			$this->update_categories( $categories, 'course_cat' );
-			$this->update_categories( $categories, 'product_cat' );
-		}
+        // update course and product categories.
+        MooWoodle()->category->update_categories( $categories, 'course_cat' );
+        MooWoodle()->category->update_categories( $categories, 'product_cat' );
 
 		// get all caurses from moodle.
-		$courses = MooWoodle()->ExternalService->do_request('get_courses');
+		$response = MooWoodle()->external_service->do_request( 'get_courses' );
+        $courses  = $response[ 'data' ];
 
-		// update all course and product
-		foreach ( $courses as $course ) {
-			$course_ids = $product_ids = [];
+		// // update all course and product.
+		// foreach ( $courses as $course ) {
+		// 	$course_ids = $product_ids = [];
 
-			// sync courses post data.
-			$course_id = MooWoodle()->Course->update_course( $course );
-			if($course_id) $course_ids[] = $course_id;
+		// 	// sync courses post data.
+		// 	$course_id = MooWoodle()->Course->update_course( $course );
+		// 	if($course_id) $course_ids[] = $course_id;
 
-			// sync product if enable.
-			if ($sync_now_options['sync_all_product']) {
-				$product_id= MooWoodle()->Product->update_product( $course );
-				if($product_id) $product_ids[] = $product_id;
-			}
-		}
+		// 	// sync product if enable.
+		// 	if ($sync_now_options['sync_all_product']) {
+		// 		$product_id= MooWoodle()->Product->update_product( $course );
+		// 		if($product_id) $product_ids[] = $product_id;
+		// 	}
+		// }
 
-		// remove courses that not exist in moodle.
-		MooWoodle()->Course->remove_exclude_ids($course_ids);
+		// // remove courses that not exist in moodle.
+		// MooWoodle()->Course->remove_exclude_ids($course_ids);
 
 
-		if ($sync_now_options['sync_all_product']) {
-			// remove product that not exist in moodle.
-			MooWoodle()->Product->remove_exclude_ids($product_ids);
-		}
+		// if ($sync_now_options['sync_all_product']) {
+		// 	// remove product that not exist in moodle.
+		// 	MooWoodle()->Product->remove_exclude_ids($product_ids);
+		// }
 
-        return rest_ensure_response(apply_filters('moowoodle_after_sync','success',$courses, $sync_now_options));
+        // return rest_ensure_response(apply_filters('moowoodle_after_sync','success',$courses, $sync_now_options));
     }
 
     /**
@@ -146,20 +187,9 @@ class RestAPI {
      */
     public function fetch_all_courses() {
         $response = MooWoodle()->Course->fetch_all_courses(['numberposts' => -1, 'fields' => 'ids']);
-        rest_ensure_response($response);
+        return rest_ensure_response($response);
     }
 
-    /**
-     * Test Connection with moodle server.
-     * @param mixed $request
-     * @return array
-     */
-    public function test_connection($request) {
-        $request_data = $request->get_param('data');
-        $action = $request_data['action'];
-        $response = TestConnection::$action($request_data);
-        rest_ensure_response($response);
-    }
     /**
      * Seve the setting set in react's admin setting page.
      * @param mixed $request
@@ -172,5 +202,4 @@ class RestAPI {
         }
         rest_ensure_response($logs);
     }
-    
 }
