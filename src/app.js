@@ -3,9 +3,9 @@ import { useLocation } from 'react-router-dom';
 
 import Settings from "./components/Settings/Settings";
 import Synchronization from "./components/Synchronization/Synchronization";
-// import Courses from "./components/Courses/Courses";
+import Courses from "./components/Courses/Courses";
 
-import Courses from "./components/SubMenuPage/AllCourses";
+// import Courses from "./components/SubMenuPage/AllCourses";
 
 // import ManageEnrolment from "./commponents/SubMenuPage/ManageEnrolment";
 // import Synchronization from "./commponents/SubMenuPage/Synchronization";

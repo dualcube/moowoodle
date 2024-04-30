@@ -16,6 +16,9 @@ const MapsInput = (props) => {
                     onMouseOut= {(e) => { props.onMouseOut?.(e) }}
                     onFocus=    {(e) => { props.onFocus?.(e) }}
                 />
+                 {
+                    props.proSetting && <span className="admin-pro-tag">pro</span>
+                }
                 <div
                     id=         {props.containerId    || 'maps-container'}
                     className=  {props.containerClass || 'maps-container'}

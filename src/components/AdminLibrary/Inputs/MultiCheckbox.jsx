@@ -22,7 +22,7 @@ const MultiCheckBox = (props) => {
                         <div className={props.inputWrapperClass}>
                             {
                                 props.rightContent &&
-                                <p className={props.rightContentClass}>{option.label}</p>
+                                <p className={props.rightContentClass} dangerouslySetInnerHTML= {{__html: option.label}} ></p>
                             }
                             <div className={props.inputInnerWrapperClass}>
                                 <input
@@ -36,10 +36,13 @@ const MultiCheckBox = (props) => {
                                     onChange={(e) => { props.onChange?.(e) }}
                                 />
                                 <label htmlFor={`${props.idPrefix}-${option.key}`}></label>
+                                {
+                    props.proSetting && <span className="admin-pro-tag">pro</span>
+                }
                             </div>
                             {
                                 ! props.rightContent &&
-                                <p className={props.rightContentClass} dangerouslySetInnerHTML={{ __html: option.label }}></p>
+                                <p className={props.rightContentClass} dangerouslySetInnerHTML= {{__html: option.label}} ></p>
                             }
                             {
                                 option.hints &&
@@ -55,7 +58,8 @@ const MultiCheckBox = (props) => {
             }
             {
                 props.description &&
-                <p className={props.descClass} dangerouslySetInnerHTML= {{__html: props.description}}></p>
+                <p className={props.descClass} dangerouslySetInnerHTML= {{__html: props.description}}>
+                </p>
             }
         </div>
     );

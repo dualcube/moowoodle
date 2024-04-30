@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import DataTable from "react-data-table-component";
 import "./table.scss";
 
-const PENALTI = 28;
+const PENALTY = 28;
 const COOLDOWN = 1;
 
 // Loading table component.
@@ -11,14 +11,14 @@ const LoadingTable = () => {
   const rows = Array.from({ length: 10 }, (_, index) => index);
   return (
     <>
-      <table className="tg">
+      <table className="load-table">
         <tbody>
           {/* Loop to render 10 table rows */}
           {rows.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {/* Loop to render 8 cells in each row */}
               {Array.from({ length: 5 }, (_, cellIndex) => (
-                <td key={cellIndex} className="tg-cly1">
+                <td key={cellIndex} className="load-table-td">
                   <div className="line" />
                 </td>
               ))}
@@ -35,7 +35,7 @@ export const TableCell = (props) => {
     <>
       <div title={props.value} className="table-row-custom">
           <h4>{props.title}</h4>
-          <p>{props.value}</p>
+          { props.children }
       </div>
     </>
   );
@@ -96,7 +96,11 @@ const CustomTable = (props) => {
   // When new data comes, set loading to false.
   useEffect(() => {
     setTotalRows(defaultTotalRows);
-    setLoading(false);
+    if (data === null) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
   }, [data, defaultTotalRows]);
 
   // Code for handle cooldown effect.
@@ -107,7 +111,7 @@ const CustomTable = (props) => {
       return;
     }
     // Set counter by penalti
-    counter.current = PENALTI;
+    counter.current = PENALTY;
     // Clear previous counter.
     if (counterId.current) {
       clearInterval(counterId.current);
@@ -168,11 +172,7 @@ const CustomTable = (props) => {
     selectedCount,
     allSelected,
   }) => {
-    // Check if any row is select or not.
-    // Prevent extra call on page change.
-    if (selectedCount > 0) {
       handleSelect?.(selectedRows, selectedCount, allSelected);
-    }
   };
 
   // Function that handle filter change.
@@ -199,14 +199,13 @@ const CustomTable = (props) => {
               onClick={(e) => { setFilterData({ typeCount: countInfo.key }) }}
               className={countInfo.key == typeCountActive ? 'type-count-active' : ''}
             >
-              {console.log(filterData)}
               { `${countInfo.name} (${countInfo.count})` }
             </div>
           ))
         }
       </div>
       
-      <div className="woo-wrap-bulk-all-date">
+      <div className="wrap-bulk-all-date">
         {/* Render realtime filter */}
         {realtimeFilter &&
           realtimeFilter.map((filter) => {
@@ -221,7 +220,7 @@ const CustomTable = (props) => {
           paginationServer
           selectableRows={selectable}
           columns={columns}
-          data={data}
+          data={data || []}
           // Pagination details.
           paginationTotalRows={totalRows}
           paginationDefaultPage={currentPage}

@@ -16,6 +16,9 @@ const FileInput = (props) => {
                     onMouseOut= {(e) => { props.onMouseOut?.(e) }}
                     onFocus=    {(e) => { props.onFocus?.(e) }}
                 />
+                 {
+                    props.proSetting && <span className="admin-pro-tag">pro</span>
+                }
                 <img
                     src=    {props.imageSrc}
                     width=  {props.imageWidth}

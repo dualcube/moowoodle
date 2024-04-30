@@ -81,6 +81,24 @@ class Util {
             file_put_contents( $file, $current );
         }
     }
+
+	/**
+     * Get other templates ( e.g. product attributes ) passing attributes and including the file.
+     *
+     * @access public
+     * @param mixed $template_name
+     * @param array $args ( default: array() )
+     * @return void
+     */
+    public static function get_template( $template_name, $args = [] ) {
+
+        if ( $args && is_array( $args ) )
+            extract( $args );
+
+        $located = MooWoodle()->plugin_path.'templates/'.$template_name;
+        
+        load_template( $located, TRUE, $args );
+    }
 	
 	/**
 	 * Check is MooWoodle Pro is active or not.

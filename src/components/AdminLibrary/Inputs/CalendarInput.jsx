@@ -11,6 +11,9 @@ const CalendarInput = (props) => {
                     value=      {props.value || ''}
                     onChange=   {(e) => { props.onChange?.(e) }}
                 />
+                 {
+                    props.proSetting && <span className="admin-pro-tag">pro</span>
+                }
             </div>
         </>
     );

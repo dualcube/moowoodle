@@ -47,6 +47,9 @@ const RadioInput = (props) => {
                                         </>
                                     }
                                 </label>
+                                {
+                    props.proSetting && <span className="admin-pro-tag">pro</span>
+                }
                             </div>
                         );
                     })

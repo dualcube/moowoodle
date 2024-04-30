@@ -24,6 +24,9 @@ const ToggleRectangle = (props) => {
                                         >
                                             {options.label}
                                         </label>
+                                        {
+                    props.proSetting && <span className="admin-pro-tag">pro</span>
+                }
                                     </li>
                                 );
                             })

@@ -15804,6 +15804,9 @@ var __assign = (undefined && undefined.__assign) || function () {
 
 
 
+/**
+ * @see {@link https://www.tiny.cloud/docs/tinymce/7/react-ref/} for the TinyMCE React Technical Reference
+ */
 var Editor = /** @class */ (function (_super) {
     __extends(Editor, _super);
     function Editor(props) {
@@ -15898,7 +15901,7 @@ var Editor = /** @class */ (function (_super) {
             if (!tinymce) {
                 throw new Error('tinymce should have been loaded into global scope');
             }
-            var finalInit = __assign(__assign({}, _this.props.init), { selector: undefined, target: target, readonly: _this.props.disabled, inline: _this.inline, plugins: (0,_Utils__WEBPACK_IMPORTED_MODULE_3__.mergePlugins)((_a = _this.props.init) === null || _a === void 0 ? void 0 : _a.plugins, _this.props.plugins), toolbar: (_b = _this.props.toolbar) !== null && _b !== void 0 ? _b : (_c = _this.props.init) === null || _c === void 0 ? void 0 : _c.toolbar, setup: function (editor) {
+            var finalInit = __assign(__assign(__assign(__assign({}, _this.props.init), { selector: undefined, target: target, readonly: _this.props.disabled, inline: _this.inline, plugins: (0,_Utils__WEBPACK_IMPORTED_MODULE_3__.mergePlugins)((_a = _this.props.init) === null || _a === void 0 ? void 0 : _a.plugins, _this.props.plugins), toolbar: (_b = _this.props.toolbar) !== null && _b !== void 0 ? _b : (_c = _this.props.init) === null || _c === void 0 ? void 0 : _c.toolbar }), (_this.props.licenseKey ? { license_key: _this.props.licenseKey } : {})), { setup: function (editor) {
                     _this.editor = editor;
                     _this.bindHandlers({});
                     // When running in inline mode the editor gets the initial value
@@ -16101,7 +16104,7 @@ var Editor = /** @class */ (function (_super) {
             });
         }
         // fallback to the cloud when the tinymceScriptSrc is not specified
-        var channel = this.props.cloudChannel;
+        var channel = this.props.cloudChannel; // `cloudChannel` is in `defaultProps`, so it's always defined.
         var apiKey = this.props.apiKey ? this.props.apiKey : 'no-api-key';
         var cloudTinyJs = "https://cdn.tiny.cloud/1/".concat(apiKey, "/tinymce/").concat(channel, "/tinymce.min.js");
         return [{ src: cloudTinyJs, async: async, defer: defer }];
@@ -16144,7 +16147,7 @@ var Editor = /** @class */ (function (_super) {
     };
     Editor.propTypes = _EditorPropTypes__WEBPACK_IMPORTED_MODULE_4__.EditorPropTypes;
     Editor.defaultProps = {
-        cloudChannel: '6'
+        cloudChannel: '7',
     };
     return Editor;
 }(react__WEBPACK_IMPORTED_MODULE_0__.Component));
@@ -16194,6 +16197,9 @@ var eventPropTypes = {
     onClick: prop_types__WEBPACK_IMPORTED_MODULE_0__.func,
     onContextMenu: prop_types__WEBPACK_IMPORTED_MODULE_0__.func,
     onCommentChange: prop_types__WEBPACK_IMPORTED_MODULE_0__.func,
+    onCompositionEnd: prop_types__WEBPACK_IMPORTED_MODULE_0__.func,
+    onCompositionStart: prop_types__WEBPACK_IMPORTED_MODULE_0__.func,
+    onCompositionUpdate: prop_types__WEBPACK_IMPORTED_MODULE_0__.func,
     onCopy: prop_types__WEBPACK_IMPORTED_MODULE_0__.func,
     onCut: prop_types__WEBPACK_IMPORTED_MODULE_0__.func,
     onDblclick: prop_types__WEBPACK_IMPORTED_MODULE_0__.func,
@@ -16212,6 +16218,7 @@ var eventPropTypes = {
     onGetContent: prop_types__WEBPACK_IMPORTED_MODULE_0__.func,
     onHide: prop_types__WEBPACK_IMPORTED_MODULE_0__.func,
     onInit: prop_types__WEBPACK_IMPORTED_MODULE_0__.func,
+    onInput: prop_types__WEBPACK_IMPORTED_MODULE_0__.func,
     onKeyDown: prop_types__WEBPACK_IMPORTED_MODULE_0__.func,
     onKeyPress: prop_types__WEBPACK_IMPORTED_MODULE_0__.func,
     onKeyUp: prop_types__WEBPACK_IMPORTED_MODULE_0__.func,
@@ -16252,7 +16259,7 @@ var eventPropTypes = {
     onScriptsLoad: prop_types__WEBPACK_IMPORTED_MODULE_0__.func,
     onScriptsLoadError: prop_types__WEBPACK_IMPORTED_MODULE_0__.func,
 };
-var EditorPropTypes = __assign({ apiKey: prop_types__WEBPACK_IMPORTED_MODULE_0__.string, id: prop_types__WEBPACK_IMPORTED_MODULE_0__.string, inline: prop_types__WEBPACK_IMPORTED_MODULE_0__.bool, init: prop_types__WEBPACK_IMPORTED_MODULE_0__.object, initialValue: prop_types__WEBPACK_IMPORTED_MODULE_0__.string, onEditorChange: prop_types__WEBPACK_IMPORTED_MODULE_0__.func, value: prop_types__WEBPACK_IMPORTED_MODULE_0__.string, tagName: prop_types__WEBPACK_IMPORTED_MODULE_0__.string, cloudChannel: prop_types__WEBPACK_IMPORTED_MODULE_0__.string, plugins: prop_types__WEBPACK_IMPORTED_MODULE_0__.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_0__.string, prop_types__WEBPACK_IMPORTED_MODULE_0__.array]), toolbar: prop_types__WEBPACK_IMPORTED_MODULE_0__.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_0__.string, prop_types__WEBPACK_IMPORTED_MODULE_0__.array]), disabled: prop_types__WEBPACK_IMPORTED_MODULE_0__.bool, textareaName: prop_types__WEBPACK_IMPORTED_MODULE_0__.string, tinymceScriptSrc: prop_types__WEBPACK_IMPORTED_MODULE_0__.oneOfType([
+var EditorPropTypes = __assign({ apiKey: prop_types__WEBPACK_IMPORTED_MODULE_0__.string, licenseKey: prop_types__WEBPACK_IMPORTED_MODULE_0__.string, id: prop_types__WEBPACK_IMPORTED_MODULE_0__.string, inline: prop_types__WEBPACK_IMPORTED_MODULE_0__.bool, init: prop_types__WEBPACK_IMPORTED_MODULE_0__.object, initialValue: prop_types__WEBPACK_IMPORTED_MODULE_0__.string, onEditorChange: prop_types__WEBPACK_IMPORTED_MODULE_0__.func, value: prop_types__WEBPACK_IMPORTED_MODULE_0__.string, tagName: prop_types__WEBPACK_IMPORTED_MODULE_0__.string, cloudChannel: prop_types__WEBPACK_IMPORTED_MODULE_0__.string, plugins: prop_types__WEBPACK_IMPORTED_MODULE_0__.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_0__.string, prop_types__WEBPACK_IMPORTED_MODULE_0__.array]), toolbar: prop_types__WEBPACK_IMPORTED_MODULE_0__.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_0__.string, prop_types__WEBPACK_IMPORTED_MODULE_0__.array]), disabled: prop_types__WEBPACK_IMPORTED_MODULE_0__.bool, textareaName: prop_types__WEBPACK_IMPORTED_MODULE_0__.string, tinymceScriptSrc: prop_types__WEBPACK_IMPORTED_MODULE_0__.oneOfType([
         prop_types__WEBPACK_IMPORTED_MODULE_0__.string,
         prop_types__WEBPACK_IMPORTED_MODULE_0__.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_0__.string),
         prop_types__WEBPACK_IMPORTED_MODULE_0__.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_0__.shape({
@@ -16303,15 +16310,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var _components_Settings_Settings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Settings/Settings */ "./src/components/Settings/Settings.jsx");
 /* harmony import */ var _components_Synchronization_Synchronization__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Synchronization/Synchronization */ "./src/components/Synchronization/Synchronization.jsx");
-/* harmony import */ var _components_SubMenuPage_AllCourses__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/SubMenuPage/AllCourses */ "./src/components/SubMenuPage/AllCourses.jsx");
+/* harmony import */ var _components_Courses_Courses__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Courses/Courses */ "./src/components/Courses/Courses.jsx");
 
 
 
 
 
-// import Courses from "./components/Courses/Courses";
 
 
+// import Courses from "./components/SubMenuPage/AllCourses";
 
 // import ManageEnrolment from "./commponents/SubMenuPage/ManageEnrolment";
 // import Synchronization from "./commponents/SubMenuPage/Synchronization";
@@ -16339,9 +16346,256 @@ const App = () => {
     initialTab: "general"
   }), location.get('tab') === 'synchronization' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_Synchronization_Synchronization__WEBPACK_IMPORTED_MODULE_2__["default"], {
     initialTab: "connection"
-  }), location.get('tab') === 'all-courses' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_SubMenuPage_AllCourses__WEBPACK_IMPORTED_MODULE_3__["default"], null));
+  }), location.get('tab') === 'all-courses' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_Courses_Courses__WEBPACK_IMPORTED_MODULE_3__["default"], null));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
+
+/***/ }),
+
+/***/ "./src/components/AdminLibrary/CustomTable/CustomTable.jsx":
+/*!*****************************************************************!*\
+  !*** ./src/components/AdminLibrary/CustomTable/CustomTable.jsx ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TableCell: () => (/* binding */ TableCell),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_data_table_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-data-table-component */ "./node_modules/react-data-table-component/dist/index.cjs.js");
+/* harmony import */ var _table_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./table.scss */ "./src/components/AdminLibrary/CustomTable/table.scss");
+
+
+
+
+const PENALTY = 28;
+const COOLDOWN = 1;
+
+// Loading table component.
+const LoadingTable = () => {
+  // Array to represent 10 rows
+  const rows = Array.from({
+    length: 10
+  }, (_, index) => index);
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", {
+    className: "load-table"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, rows.map((row, rowIndex) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", {
+    key: rowIndex
+  }, Array.from({
+    length: 5
+  }, (_, cellIndex) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+    key: cellIndex,
+    className: "load-table-td"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "line"
+  }))))))));
+};
+const TableCell = props => {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    title: props.value,
+    className: "table-row-custom"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, props.title), props.children));
+};
+const CustomTable = props => {
+  const {
+    data,
+    // dataset for render table
+    columns,
+    // table column
+    selectable,
+    // option for select row column
+    handleSelect,
+    // callback function handle row select
+    handlePagination,
+    // callback function for handle pagination
+    defaultRowsParPage,
+    // default rows per page by user. if not set default is 10
+    defaultCurrentPage,
+    // default current page by user. if not set default is 1
+    defaultTotalRows,
+    // default total rows for the dataset. user should always provide this.
+    perPageOption,
+    // per page option array. user should always provide.
+    realtimeFilter,
+    // filter filds for realtime filter.
+    typeCounts
+  } = props;
+  const [loading, setLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false); // loading state varaible.
+  const [totalRows, setTotalRows] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(defaultTotalRows); // total no of row in dataset.
+  const [rowsPerPage, setRowsPerPage] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(defaultRowsParPage || 10); // rows par page. default is 10.
+  const [currentPage, setCurrentPage] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(defaultCurrentPage || 1); // current page state variable.
+  // Realtime filter state variable
+  const [filterData, setFilterData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({});
+  // Counter variable for cooldown effect
+  const counter = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(0);
+  const counterId = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(0);
+
+  // Get the last fild of column.
+  const sortableFild = columns[columns.length - 1];
+
+  // Chek the last column field is dropdown
+  // If not dropdown then push the dropdown field to the column.
+  if (!sortableFild.isDropDown) {
+    columns.push({
+      name: "",
+      cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "table-dropdown_btn"
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+        onClick: e => handleTableExpand(e.currentTarget)
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
+        class: "admin-font font-arrow-right"
+      }))),
+      isDropDown: true
+    });
+  }
+
+  // Function that handle table expand.
+  const handleTableExpand = e => {
+    e.children[0].classList.toggle('font-arrow-down');
+    e.children[0].classList.toggle('font-arrow-right');
+    const row = e.parentElement.parentElement.parentElement;
+    row.classList.toggle("active");
+  };
+
+  // When new data comes, set loading to false.
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    setTotalRows(defaultTotalRows);
+    if (data === null) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [data, defaultTotalRows]);
+
+  // Code for handle cooldown effect.
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    // Check if filter data is empty then this effect is for first time rendering.
+    // Do nothing in this case.
+    if (Object.keys(filterData).length === 0) {
+      return;
+    }
+    // Set counter by penalti
+    counter.current = PENALTY;
+    // Clear previous counter.
+    if (counterId.current) {
+      clearInterval(counterId.current);
+    }
+    // Create new interval
+    const intervalId = setInterval(() => {
+      counter.current -= COOLDOWN;
+      // Cooldown compleate time for db request.
+      if (counter.current < 0) {
+        // Set the loading
+        setLoading(true);
+        // Call filter function
+        handlePagination?.(rowsPerPage, 1, filterData);
+        // Set current page to one.
+        setCurrentPage(1);
+        // Clear the interval.
+        clearInterval(intervalId);
+        counterId.current = 0;
+      }
+    }, 50);
+    // Store the interval id.
+    counterId.current = intervalId;
+  }, [filterData]);
+
+  // Handle mouse enter function.
+  const handleMouseEnter = () => {
+    props.handleMouseEnter?.();
+  };
+
+  // Handle mouse leave function.
+  const handleMouseLeave = () => {
+    props.handleMouseLeave?.();
+  };
+  const handlePageChange = async newCurrentPage => {
+    // Start the loading...
+    setLoading(true);
+    // Call the function for handle pagination.
+    handlePagination?.(rowsPerPage, newCurrentPage, filterData);
+    // Set state variable
+    setCurrentPage(newCurrentPage);
+  };
+
+  // Function handle rows-per-page change.
+  const handleRowsPerPageChange = async newRowsPerPage => {
+    // Start the loading...
+    setLoading(true);
+    // Call the function for handle pagination.
+    handlePagination?.(newRowsPerPage, currentPage, filterData);
+    // Set state variable.
+    setCurrentPage(1);
+    setRowsPerPage(newRowsPerPage);
+  };
+
+  // Function handle selected row change.
+  const handleOnSelectedRowsChange = async ({
+    selectedRows,
+    selectedCount,
+    allSelected
+  }) => {
+    handleSelect?.(selectedRows, selectedCount, allSelected);
+  };
+
+  // Function that handle filter change.
+  const handleFilterChange = (key, value) => {
+    // Set filter data
+    setFilterData(prevData => {
+      return {
+        ...prevData,
+        [key]: value
+      };
+    });
+  };
+
+  // Contain which type count is currently active.
+  const typeCountActive = filterData.typeCount || 'all';
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: `table-container ${loading ? "table-loading" : ""} ${selectable ? "selectable-table" : ""}`
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "admin-table-wrapper-filter"
+  }, typeCounts && typeCounts.map(countInfo => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    onClick: e => {
+      setFilterData({
+        typeCount: countInfo.key
+      });
+    },
+    className: countInfo.key == typeCountActive ? 'type-count-active' : ''
+  }, `${countInfo.name} (${countInfo.count})`))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wrap-bulk-all-date"
+  }, realtimeFilter && realtimeFilter.map(filter => {
+    return filter.render(handleFilterChange, filterData[filter.name]);
+  })), loading ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(LoadingTable, null) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_data_table_component__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    pagination: true,
+    paginationServer: true,
+    selectableRows: selectable,
+    columns: columns,
+    data: data || []
+    // Pagination details.
+    ,
+    paginationTotalRows: totalRows,
+    paginationDefaultPage: currentPage,
+    paginationPerPage: rowsPerPage,
+    paginationRowsPerPageOptions: perPageOption
+    // Mouse enter leave callback.
+    ,
+    onRowMouseEnter: handleMouseEnter,
+    onRowMouseLeave: handleMouseLeave
+    // Pagination callback.
+    ,
+    onChangePage: handlePageChange,
+    onChangeRowsPerPage: handleRowsPerPageChange
+    // Row select callback.
+    ,
+    onSelectedRowsChange: handleOnSelectedRowsChange
+  }));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CustomTable);
 
 /***/ }),
 
@@ -16360,12 +16614,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _dynamicForm_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dynamicForm.scss */ "./src/components/AdminLibrary/DynamicForm/dynamicForm.scss");
 /* harmony import */ var _Inputs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Inputs */ "./src/components/AdminLibrary/Inputs/index.js");
-/* harmony import */ var _ConnectButton_ConnectButton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../ConnectButton/ConnectButton */ "./src/components/ConnectButton/ConnectButton.jsx");
-/* harmony import */ var _contexts_SettingContext__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../contexts/SettingContext */ "./src/contexts/SettingContext.jsx");
-/* harmony import */ var _services_apiService__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../services/apiService */ "./src/services/apiService.js");
+/* harmony import */ var _contexts_SettingContext__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../contexts/SettingContext */ "./src/contexts/SettingContext.jsx");
+/* harmony import */ var _services_apiService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../services/apiService */ "./src/services/apiService.js");
 /* harmony import */ var _mui_material_Dialog__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/material/Dialog */ "./node_modules/@mui/material/Dialog/Dialog.js");
-/* harmony import */ var _PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../PopupContent/PopupContent */ "./src/components/PopupContent/PopupContent.jsx");
-
+/* harmony import */ var _PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../PopupContent/PopupContent */ "./src/components/PopupContent/PopupContent.jsx");
+/* harmony import */ var _Inputs_Special_FormCustomizer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Inputs/Special/FormCustomizer */ "./src/components/AdminLibrary/Inputs/Special/FormCustomizer.jsx");
 
 
 
@@ -16378,6 +16631,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+// Variable for controll coldown effect submit time
+const PENALTY = 10;
+const COOLDOWN = 1;
 const DynamicForm = props => {
   const {
     modal,
@@ -16387,45 +16645,75 @@ const DynamicForm = props => {
   const {
     setting,
     updateSetting
-  } = (0,_contexts_SettingContext__WEBPACK_IMPORTED_MODULE_4__.useSetting)();
+  } = (0,_contexts_SettingContext__WEBPACK_IMPORTED_MODULE_3__.useSetting)();
   const [successMsg, setSuccessMsg] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("");
   const [countryState, setCountryState] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const settingChanged = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(false);
   const [modelOpen, setModelOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const counter = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(0);
+  const counterId = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(0);
 
   // Submit the setting to backend when setting Change.
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     if (settingChanged.current) {
       settingChanged.current = false;
-      (0,_services_apiService__WEBPACK_IMPORTED_MODULE_5__.sendApiResponse)((0,_services_apiService__WEBPACK_IMPORTED_MODULE_5__.getApiLink)(submitUrl), {
-        setting: setting,
-        settingName: id,
-        vendor_id: props.vendorId || "",
-        announcement_id: props.announcementId || "",
-        knowladgebase_id: props.knowladgebaseId || ""
-      }).then(response => {
-        // Set success messaage for 2second.
-        setSuccessMsg(response.error);
-        setTimeout(() => setSuccessMsg(""), 2000);
 
-        // If response has redirect link then redirect.
-        if (response.redirect_link) {
-          window.location.href = response.data.redirect_link;
+      // Set counter by penalti
+      counter.current = PENALTY;
+      // Clear previous counter.
+      if (counterId.current) {
+        clearInterval(counterId.current);
+      }
+
+      // Create new interval
+      const intervalId = setInterval(() => {
+        counter.current -= COOLDOWN;
+        // Cooldown compleate time for db request.
+        if (counter.current < 0) {
+          (0,_services_apiService__WEBPACK_IMPORTED_MODULE_4__.sendApiResponse)((0,_services_apiService__WEBPACK_IMPORTED_MODULE_4__.getApiLink)(submitUrl), {
+            setting: setting,
+            settingName: id,
+            vendor_id: props.vendorId || "",
+            announcement_id: props.announcementId || "",
+            knowladgebase_id: props.knowladgebaseId || ""
+          }).then(response => {
+            // Set success messaage for 2second.
+            setSuccessMsg(response.error);
+            setTimeout(() => setSuccessMsg(""), 2000);
+
+            // If response has redirect link then redirect.
+            if (response.redirect_link) {
+              window.location.href = response.data.redirect_link;
+            }
+          });
+          clearInterval(intervalId);
+          counterId.current = 0;
         }
-      });
+      }, 50);
+
+      // Store the interval id.
+      counterId.current = intervalId;
     }
   }, [setting]);
-  const handleChange = (event, key, type = 'single', fromType = 'simple', arrayValue = []) => {
-    if (appLocalizer.pro_active && props.proSetting?.includes(key)) {
+  const isProSetting = proDependent => {
+    return proDependent && !appLocalizer.pro_active;
+  };
+  const proSettingChanged = isProSetting => {
+    if (isProSetting && !appLocalizer.pro_active) {
       setModelOpen(true);
-      return;
+      return true;
     }
+    return false;
+  };
+  const handleChange = (event, key, type = 'single', fromType = 'simple', arrayValue = []) => {
     settingChanged.current = true;
     if (type === 'single') {
       if (fromType === 'simple') {
         updateSetting(key, event.target.value);
       } else if (fromType === 'calender') {
         updateSetting(key, event.join(','));
+      } else if (fromType === 'select') {
+        updateSetting(key, arrayValue[event.index]);
       } else if (fromType === 'multi-select') {
         updateSetting(key, event);
       } else if (fromType === 'wpeditor') {
@@ -16491,34 +16779,40 @@ const DynamicForm = props => {
     // Finally, open the modal on click
     frame.open();
   };
+  const isContain = (key, value = null) => {
+    let settingValue = setting[key];
+
+    // If setting value is a array
+    if (Array.isArray(settingValue)) {
+      // Setting value is set
+      if (value === null && settingValue.length) {
+        return true;
+      }
+      return settingValue.includes(value);
+    }
+
+    // Setting value is not a array
+    if (value === null && settingValue) {
+      return true;
+    }
+    return settingValue === value;
+  };
   const renderForm = () => {
     return modal.map((inputField, index) => {
       let value = setting[inputField.key] || "";
       let input = "";
 
-      // Check for dependent input fild
-      if (inputField.depend && !setting[inputField.depend]) {
-        return false;
-      }
-
-      // for select selection
-      if (inputField.depend && setting[inputField.depend] && setting[inputField.depend].value && setting[inputField.depend].value != inputField.dependvalue) {
-        return false;
-      }
-
-      // for radio button selection
-      if (inputField.depend && setting[inputField.depend] && !setting[inputField.depend].value && setting[inputField.depend] != inputField.dependvalue) {
-        return false;
-      }
-
-      // for checkbox selection
-      if (inputField.depend_checkbox && setting[inputField.depend_checkbox] && setting[inputField.depend_checkbox].length === 0) {
-        return false;
-      }
-
-      // for checkbox selection
-      if (inputField.not_depend_checkbox && setting[inputField.not_depend_checkbox] && setting[inputField.not_depend_checkbox].length > 0) {
-        return false;
+      // Filter dependent 
+      if (inputField.dependent) {
+        if (inputField.dependent.set === true && !isContain(inputField.dependent.key)) {
+          return;
+        }
+        if (inputField.dependent.set === false && isContain(inputField.dependent.key)) {
+          return;
+        }
+        if (inputField.dependent.value && isContain(inputField.dependent.key, inputField.dependent.value)) {
+          return;
+        }
       }
 
       // Set input fild based on their type.
@@ -16529,7 +16823,7 @@ const DynamicForm = props => {
         case "email":
         case "number":
           input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Inputs__WEBPACK_IMPORTED_MODULE_2__["default"].BasicInput, {
-            wrapperClass: "setting-form-input",
+            wrapperClass: `setting-form-input`,
             descClass: "settings-metabox-description",
             description: inputField.desc,
             key: inputField.key,
@@ -16538,8 +16832,11 @@ const DynamicForm = props => {
             type: inputField.type,
             placeholder: inputField.placeholder,
             value: value,
+            proSetting: isProSetting(inputField.proSetting),
             onChange: e => {
-              handleChange(e, inputField.key);
+              if (!proSettingChanged(inputField.proSetting)) {
+                handleChange(e, inputField.key);
+              }
             }
           });
           break;
@@ -16554,8 +16851,11 @@ const DynamicForm = props => {
             name: inputField.name,
             placeholder: inputField.placeholder,
             value: value,
+            proSetting: isProSetting(inputField.proSetting),
             onChange: e => {
-              handleChange(e, inputField.key);
+              if (!proSettingChanged(inputField.proSetting)) {
+                handleChange(e, inputField.key);
+              }
             }
           });
           break;
@@ -16566,8 +16866,11 @@ const DynamicForm = props => {
             key: inputField.key,
             name: inputField.name,
             value: value,
+            proSetting: isProSetting(inputField.proSetting),
             onChange: e => {
-              handleChange(e, inputField.key);
+              if (!proSettingChanged(inputField.proSetting)) {
+                handleChange(e, inputField.key);
+              }
             }
           });
           break;
@@ -16586,8 +16889,11 @@ const DynamicForm = props => {
             key: inputField.key,
             name: inputField.name,
             value: value,
+            proSetting: isProSetting(inputField.proSetting),
             onChange: e => {
-              handleChange(e, inputField.key);
+              if (!proSettingChanged(inputField.proSetting)) {
+                handleChange(e, inputField.key);
+              }
             },
             onButtonClick: e => {
               runUploader(inputField.key);
@@ -16605,8 +16911,11 @@ const DynamicForm = props => {
             name: inputField.name,
             type: inputField.type,
             value: value || "#000000",
+            proSetting: isProSetting(inputField.proSetting),
             onChange: e => {
-              handleChange(e, inputField.key);
+              if (!proSettingChanged(inputField.proSetting)) {
+                handleChange(e, inputField.key);
+              }
             }
           });
           break;
@@ -16616,8 +16925,11 @@ const DynamicForm = props => {
             inputClass: "teal",
             multiple: true,
             value: setting[inputField.key]?.split(",") || "",
+            proSetting: isProSetting(inputField.proSetting),
             onChange: e => {
-              handleChange(e, inputField.key, "single", inputField.type);
+              if (!proSettingChanged(inputField.proSetting)) {
+                handleChange(e, inputField.key, "single", inputField.type);
+              }
             }
           });
           break;
@@ -16630,7 +16942,8 @@ const DynamicForm = props => {
             id: "searchStoreAddress",
             placeholder: "Enter store location",
             containerId: "store-maps",
-            containerClass: "store-maps, gmap"
+            containerClass: "store-maps, gmap",
+            proSetting: isProSetting(inputField.proSetting)
           });
           break;
         case "button":
@@ -16648,7 +16961,8 @@ const DynamicForm = props => {
             descClass: "settings-metabox-description",
             description: inputField.desc,
             type: inputField.type,
-            placeholder: inputField.placeholder
+            placeholder: inputField.placeholder,
+            proSetting: isProSetting(inputField.proSetting)
             // onChange={handleChange}
           })));
           break;
@@ -16664,7 +16978,8 @@ const DynamicForm = props => {
             inputClass: inputField.class,
             value: setting[inputField.key],
             options: inputField.options,
-            onChange: handleMultiNumberChange
+            onChange: handleMultiNumberChange,
+            proSetting: isProSetting(inputField.proSetting)
           });
           break;
         case "radio":
@@ -16679,8 +16994,11 @@ const DynamicForm = props => {
             name: inputField.name,
             keyName: inputField.key,
             options: inputField.options,
+            proSetting: isProSetting(inputField.proSetting),
             onChange: e => {
-              handleChange(e, inputField.key);
+              if (!proSettingChanged(inputField.proSetting)) {
+                handleChange(e, inputField.key);
+              }
             }
           });
           break;
@@ -16702,8 +17020,11 @@ const DynamicForm = props => {
             name: inputField.name,
             keyName: inputField.key,
             options: inputField.options,
+            proSetting: isProSetting(inputField.proSetting),
             onChange: e => {
-              handleChange(e, inputField.key);
+              if (!proSettingChanged(inputField.proSetting)) {
+                handleChange(e, inputField.key);
+              }
             }
           });
           break;
@@ -16721,8 +17042,11 @@ const DynamicForm = props => {
             name: inputField.name,
             keyName: inputField.key,
             options: inputField.options,
+            proSetting: isProSetting(inputField.proSetting),
             onChange: e => {
-              handleChange(e, inputField.key);
+              if (!proSettingChanged(inputField.proSetting)) {
+                handleChange(e, inputField.key);
+              }
             }
           });
           break;
@@ -16738,8 +17062,11 @@ const DynamicForm = props => {
             name: inputField.name,
             keyName: inputField.key,
             options: inputField.options,
+            proSetting: isProSetting(inputField.proSetting),
             onChange: e => {
-              handleChange(e, inputField.key);
+              if (!proSettingChanged(inputField.proSetting)) {
+                handleChange(e, inputField.key);
+              }
             }
           });
           break;
@@ -16756,8 +17083,11 @@ const DynamicForm = props => {
             inputClass: inputField.key,
             options: options,
             value: value,
+            proSetting: isProSetting(inputField.proSetting),
             onChange: (e, data) => {
-              handleChange(e, inputField.key, "single", "select", data);
+              if (!proSettingChanged(inputField.proSetting)) {
+                handleChange(e, inputField.key, "single", "select", data);
+              }
             }
           });
           break;
@@ -16767,13 +17097,17 @@ const DynamicForm = props => {
             descClass: "settings-metabox-description",
             selectDeselectClass: "select-deselect-trigger",
             selectDeselect: inputField.select_deselect,
+            selectDeselectValue: appLocalizer.global_string.select_deselect_all,
             description: inputField.desc,
             inputClass: inputField.key,
             options: inputField.options,
             type: "multi-select",
             value: value,
+            proSetting: isProSetting(inputField.proSetting),
             onChange: (e, data) => {
-              handleChange(e, inputField.key, "single", "multi-select", data);
+              if (!proSettingChanged(inputField.proSetting)) {
+                handleChange(e, inputField.key, "single", "multi-select", data);
+              }
             },
             onMultiSelectDeselectChange: e => handlMultiSelectDeselectChange(e, inputField)
           });
@@ -16786,8 +17120,11 @@ const DynamicForm = props => {
             inputClass: inputField.key,
             options: inputField.options,
             value: value,
+            proSetting: isProSetting(inputField.proSetting),
             onChange: (e, data) => {
-              handleChange(e, inputField.key, "single", "country", data);
+              if (!proSettingChanged(inputField.proSetting)) {
+                handleChange(e, inputField.key, "single", "country", data);
+              }
             }
           });
           break;
@@ -16799,8 +17136,11 @@ const DynamicForm = props => {
             inputClass: inputField.key,
             options: countryState,
             value: value,
+            proSetting: isProSetting(inputField.proSetting),
             onChange: (e, data) => {
-              handleChange(e, inputField.key, "single", "select", data);
+              if (!proSettingChanged(inputField.proSetting)) {
+                handleChange(e, inputField.key, "single", "select", data);
+              }
             }
           });
           break;
@@ -16822,8 +17162,11 @@ const DynamicForm = props => {
             rightContent: inputField.right_content,
             options: inputField.options,
             value: value,
+            proSetting: isProSetting(inputField.proSetting),
             onChange: e => {
-              handleChange(e, inputField.key, "multiple");
+              if (!proSettingChanged(inputField.proSetting)) {
+                handleChange(e, inputField.key, "multiple");
+              }
             },
             onMultiSelectDeselectChange: e => handlMultiSelectDeselectChange(inputField.key, inputField.options)
           });
@@ -16845,7 +17188,9 @@ const DynamicForm = props => {
             apiKey: appLocalizer.mvx_tinymce_key,
             value: value,
             onEditorChange: e => {
-              handleChange(e, inputField.key, "simple", "wpeditor");
+              if (!proSettingChanged(inputField.proSetting)) {
+                handleChange(e, inputField.key, "simple", "wpeditor");
+              }
             }
           });
           break;
@@ -16879,25 +17224,48 @@ const DynamicForm = props => {
         case "button_customizer":
           input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Inputs__WEBPACK_IMPORTED_MODULE_2__["default"].ButtonCustomizer, {
             buttonText: setting.button_text,
-            onChange: (e, key) => handleChange(e, key)
+            proSetting: isProSetting(inputField.proSetting),
+            onChange: (e, key) => {
+              if (!proSettingChanged(inputField.proSetting)) {
+                handleChange(e, key);
+              }
+            }
           });
           break;
-        case "connectbutton":
-          input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ConnectButton_ConnectButton__WEBPACK_IMPORTED_MODULE_3__["default"], null);
+        case "form_customizer":
+          input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Inputs_Special_FormCustomizer__WEBPACK_IMPORTED_MODULE_6__["default"], {
+            value: value,
+            buttonText: setting.button_text,
+            proSetting: isProSetting(inputField.proSetting),
+            onChange: (e, key) => {
+              if (!proSettingChanged(inputField.proSetting)) {
+                handleChange(e, key);
+              }
+            }
+          });
+          break;
+        case "api_connect":
+          input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Inputs__WEBPACK_IMPORTED_MODULE_2__["default"].ConnectSelect, {
+            mailchimpKey: inputField.key,
+            selectKey: inputField.selectKey,
+            optionKey: inputField.optionKey,
+            onChange: handleChange,
+            proSettingChanged: () => proSettingChanged(inputField.proSetting),
+            settingChanged: settingChanged,
+            apiLink: inputField.apiLink
+          });
           break;
       }
       return inputField.type === "section" || inputField.label === "no_label" ? input : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         key: "g" + inputField.key,
-        className: "form-group"
+        className: `form-group ${inputField.classes ? inputField.classes : ''}`
       }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
         className: "settings-form-label",
         key: "l" + inputField.key,
         htmlFor: inputField.key
       }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, inputField.label)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         className: "settings-input-content"
-      }, input, !appLocalizer.pro_active && props.proSetting?.includes(inputField.key) && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-        className: "admin-pro-tag"
-      }, "pro")));
+      }, input));
     });
   };
   const handleModelClose = () => {
@@ -16906,15 +17274,15 @@ const DynamicForm = props => {
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "dynamic-fields-wrapper"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    className: "woo-module-popup",
+    className: "admin-module-popup",
     open: modelOpen,
     onClose: handleModelClose,
     "aria-labelledby": "form-dialog-title"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "admin-font font-cross",
     onClick: handleModelClose
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_6__["default"], null)), successMsg && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "notic-display-title"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_5__["default"], null)), successMsg && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "admin-notice-display-title"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
     className: "admin-font font-icon-yes"
   }), successMsg), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", {
@@ -16968,7 +17336,9 @@ const BasicInput = props => {
     onFocus: e => {
       props.onFocus?.(e);
     }
-  }), props.description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+  }), props.proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "admin-pro-tag"
+  }, "pro"), props.description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: props.descClass,
     dangerouslySetInnerHTML: {
       __html: props.description
@@ -17006,7 +17376,9 @@ const CalendarInput = props => {
     onChange: e => {
       props.onChange?.(e);
     }
-  })));
+  }), props.proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "admin-pro-tag"
+  }, "pro")));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CalendarInput);
 
@@ -17050,10 +17422,10 @@ const CheckBox = props => {
       props.onMouseOut?.(e);
     }
   }), props.label && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
-    htmlFor: `woo-toggle-switch-${props.label}`
-  }), props.pro && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "table-content-pro-tag stock-manager-pro-tag"
-  }, "Pro")), props.description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    htmlFor: `admin-toggle-switch-${props.label}`
+  }), props.proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "admin-pro-tag"
+  }, "pro")), props.description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: props.descClass,
     dangerouslySetInnerHTML: {
       __html: props.description
@@ -17104,7 +17476,9 @@ const FileInput = props => {
     onFocus: e => {
       props.onFocus?.(e);
     }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+  }), props.proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "admin-pro-tag"
+  }, "pro"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
     src: props.imageSrc,
     width: props.imageWidth,
     height: props.imageHeight
@@ -17165,7 +17539,9 @@ const MapsInput = props => {
     onFocus: e => {
       props.onFocus?.(e);
     }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }), props.proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "admin-pro-tag"
+  }, "pro"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     id: props.containerId || 'maps-container',
     className: props.containerClass || 'maps-container',
     style: props.containerStyle || {
@@ -17213,8 +17589,11 @@ const MultiCheckBox = props => {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: props.inputWrapperClass
     }, props.rightContent && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
-      className: props.rightContentClass
-    }, option.label), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: props.rightContentClass,
+      dangerouslySetInnerHTML: {
+        __html: option.label
+      }
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: props.inputInnerWrapperClass
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
       className: props.inputClass,
@@ -17229,7 +17608,9 @@ const MultiCheckBox = props => {
       }
     }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
       htmlFor: `${props.idPrefix}-${option.key}`
-    })), !props.rightContent && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    }), props.proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      className: "admin-pro-tag"
+    }, "pro")), !props.rightContent && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
       className: props.rightContentClass,
       dangerouslySetInnerHTML: {
         __html: option.label
@@ -17286,7 +17667,9 @@ const MultiNumInput = props => {
       onChange: e => {
         props.onChange?.(e, props.keyName, option.key, index);
       }
-    })));
+    }), props.proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      className: "admin-pro-tag"
+    }, "pro")));
   })), props.description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: props.descClass,
     dangerouslySetInnerHTML: {
@@ -17348,7 +17731,9 @@ const RadioInput = props => {
       className: props.labelImgClass
     }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: props.labelOverlayClass
-    }, props.labelOverlayText))));
+    }, props.labelOverlayText))), props.proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      className: "admin-pro-tag"
+    }, "pro"));
   }), props.description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: props.descClass,
     dangerouslySetInnerHTML: {
@@ -17487,9 +17872,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _contexts_SettingContext__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../contexts/SettingContext */ "./src/contexts/SettingContext.jsx");
-/* harmony import */ var _assets_images_Color_jpg__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../assets/images/Color.jpg */ "./src/assets/images/Color.jpg");
-/* harmony import */ var _ButtonCustomizer_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ButtonCustomizer.scss */ "./src/components/AdminLibrary/Inputs/Special/ButtonCustomizer.scss");
-
+/* harmony import */ var _ButtonCustomizer_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ButtonCustomizer.scss */ "./src/components/AdminLibrary/Inputs/Special/ButtonCustomizer.scss");
 
 
 
@@ -17501,6 +17884,10 @@ const Customizer = props => {
     setting,
     updateSetting
   } = (0,_contexts_SettingContext__WEBPACK_IMPORTED_MODULE_2__.useSetting)();
+  const [buttonLink, setButtonLink] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(setting.button_link);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    setButtonLink(setting.button_link);
+  }, [setting.button_link]);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "btn-customizer-menu"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -17552,11 +17939,11 @@ const Customizer = props => {
     className: "property-section"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "color",
-    value: setting.button_background_color,
+    value: setting.button_background_color ? setting.button_background_color : '#000000',
     onChange: e => props.onChange(e, "button_background_color")
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "text",
-    value: setting.button_background_color,
+    value: setting.button_background_color ? setting.button_background_color : '#000000',
     onChange: e => props.onChange(e, "button_background_color")
   }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "section"
@@ -17566,11 +17953,11 @@ const Customizer = props => {
     className: "property-section"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "color",
-    value: setting.button_text_color,
+    value: setting.button_text_color ? setting.button_text_color : '#000000',
     onChange: e => props.onChange(e, "button_text_color")
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "text",
-    value: setting.button_text_color,
+    value: setting.button_text_color ? setting.button_text_color : '#000000',
     onChange: e => props.onChange(e, "button_text_color")
   })))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "hover",
@@ -17588,11 +17975,11 @@ const Customizer = props => {
     className: "property-section"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "color",
-    value: setting.button_background_color_onhover,
+    value: setting.button_background_color_onhover ? setting.button_background_color_onhover : '#000000',
     onChange: e => props.onChange(e, "button_background_color_onhover")
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "text",
-    value: setting.button_background_color_onhover,
+    value: setting.button_background_color_onhover ? setting.button_background_color_onhover : '#000000',
     onChange: e => props.onChange(e, "button_background_color_onhover")
   }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "section"
@@ -17602,11 +17989,11 @@ const Customizer = props => {
     className: "property-section"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "color",
-    value: setting.button_text_color_onhover,
+    value: setting.button_text_color_onhover ? setting.button_text_color_onhover : '#000000',
     onChange: e => props.onChange(e, "button_text_color_onhover")
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "text",
-    value: setting.button_text_color_onhover,
+    value: setting.button_text_color_onhover ? setting.button_text_color_onhover : '#000000',
     onChange: e => props.onChange(e, "button_text_color_onhover")
   }))))), select === "border" && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "border"
@@ -17620,12 +18007,12 @@ const Customizer = props => {
     className: "property-section"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "color",
-    value: setting.button_border_color,
+    value: setting.button_border_color ? setting.button_border_color : '#000000',
     onChange: e => props.onChange(e, "button_border_color")
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     onChange: e => props.onChange(e, "button_border_color"),
     type: "text",
-    value: setting.button_border_color
+    value: setting.button_border_color ? setting.button_border_color : '#000000'
   }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "section"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
@@ -17637,11 +18024,11 @@ const Customizer = props => {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     className: "PB-range-slider",
     type: "range",
-    value: setting.button_border_size,
+    value: setting.button_border_size ? setting.button_border_size : 0,
     onChange: e => props.onChange(e, "button_border_size")
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     class: "PB-range-slidervalue"
-  }, "50px")))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, setting.button_border_size ? setting.button_border_size : 0, "px")))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "section"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "lable"
@@ -17652,11 +18039,11 @@ const Customizer = props => {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     className: "PB-range-slider",
     type: "range",
-    value: setting.button_border_radious,
+    value: setting.button_border_radious ? setting.button_border_radious : 0,
     onChange: e => props.onChange(e, "button_border_radious")
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     class: "PB-range-slidervalue"
-  }, "50px"))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, setting.button_border_radious ? setting.button_border_radious : 0, "px"))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "hover"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "section"
@@ -17666,17 +18053,30 @@ const Customizer = props => {
     className: "property-section"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "color",
-    value: setting.button_border_color_onhover,
+    value: setting.button_border_color_onhover ? setting.button_border_color_onhover : '#000000',
     onChange: e => props.onChange(e, "button_border_color_onhover")
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "text",
-    value: setting.button_border_color_onhover,
+    value: setting.button_border_color_onhover ? setting.button_border_color_onhover : '#000000',
     onChange: e => props.onChange(e, "button_border_color_onhover")
   }))))), select === "font" && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "font"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "simple"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "section"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "lable"
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Button text", "woocommerce-stock-manager")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "property-section"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "PB-range-slider-div"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    className: "PB-range-slider",
+    type: "text",
+    value: setting.button_text,
+    onChange: e => props.onChange(e, "button_text")
+  })))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "section"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "lable"
@@ -17687,11 +18087,11 @@ const Customizer = props => {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     className: "PB-range-slider",
     type: "range",
-    value: setting.button_font_size,
+    value: setting.button_font_size ? setting.button_font_size : 12,
     onChange: e => props.onChange(e, "button_font_size")
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     class: "PB-range-slidervalue"
-  }, "50px")))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, setting.button_font_size ? setting.button_font_size : 12, "px")))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "section"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "lable"
@@ -17705,11 +18105,11 @@ const Customizer = props => {
     max: 900,
     step: 100,
     type: "range",
-    value: setting.button_font_width,
+    value: setting.button_font_width ? setting.button_font_width : 400,
     onChange: e => props.onChange(e, "button_font_width")
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     class: "PB-range-slidervalue"
-  }, "50px")))))), select === "size" && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, setting.button_font_width ? setting.button_font_width : 400)))))), select === "size" && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "size"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "simple"
@@ -17724,11 +18124,11 @@ const Customizer = props => {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     className: "PB-range-slider",
     type: "range",
-    value: setting.button_padding,
+    value: setting.button_padding ? setting.button_padding : 0,
     onChange: e => props.onChange(e, "button_padding")
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     class: "PB-range-slidervalue"
-  }, "50px")))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, setting.button_padding ? setting.button_padding : 0, "px")))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "section"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "lable"
@@ -17737,11 +18137,11 @@ const Customizer = props => {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     className: "PB-range-slider",
     type: "range",
-    value: setting.button_margin,
+    value: setting.button_margin ? setting.button_margin : 0,
     onChange: e => props.onChange(e, "button_margin")
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     class: "PB-range-slidervalue"
-  }, "50px")), " "))), select === "link" && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, setting.button_margin ? setting.button_margin : 0, "px"))))), select === "link" && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "link"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "simple"
@@ -17750,14 +18150,21 @@ const Customizer = props => {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     className: "link-input",
     type: "text",
+    value: buttonLink,
+    onChange: e => setButtonLink(e.target.value),
     placeholder: "Paste your url/link"
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    onClick: e => {
+      e.preventDefault();
+      e.target.value = buttonLink;
+      props.onChange(e, 'button_link');
+    }
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
     className: "admin-font font-send"
   })))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "*"), "Keep it blank for default button behavior"))));
 };
 const ButtonCustomizer = props => {
   const {
-    buttonText,
     onChange
   } = props;
   const [hoverOn, setHoverOn] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
@@ -17777,22 +18184,31 @@ const ButtonCustomizer = props => {
     padding: setting.button_padding + 'px',
     margin: setting.button_margin + 'px'
   };
+  const buttonRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    document.body.addEventListener("click", event => {
+      if (!buttonRef?.current.contains(event.target)) {
+        setHoverOn(false);
+      }
+    });
+  }, []);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    ref: buttonRef,
     className: "btn-wrapper"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    className: "btn-preview",
-    style: style,
     onClick: e => {
       e.preventDefault();
       setHoverOn(!hoverOn);
     },
+    className: `btn-preview ${hoverOn && 'active'}`,
+    style: style,
     onMouseEnter: e => {
       setButtonHoverOn(true);
     },
     onMouseLeave: e => {
       setButtonHoverOn(false);
     }
-  }, buttonText), hoverOn && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, setting.button_text), hoverOn && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "btn-customizer"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Customizer, {
     onChange: props.onChange,
@@ -17800,6 +18216,212 @@ const ButtonCustomizer = props => {
   }))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ButtonCustomizer);
+
+/***/ }),
+
+/***/ "./src/components/AdminLibrary/Inputs/Special/ConnectSelect.jsx":
+/*!**********************************************************************!*\
+  !*** ./src/components/AdminLibrary/Inputs/Special/ConnectSelect.jsx ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _BasicInput__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../BasicInput */ "./src/components/AdminLibrary/Inputs/BasicInput.jsx");
+/* harmony import */ var _SelectInput__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../SelectInput */ "./src/components/AdminLibrary/Inputs/SelectInput.jsx");
+/* harmony import */ var _services_apiService__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../services/apiService */ "./src/services/apiService.js");
+/* harmony import */ var _contexts_SettingContext__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../contexts/SettingContext */ "./src/contexts/SettingContext.jsx");
+/* harmony import */ var _ConnectSelect_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ConnectSelect.scss */ "./src/components/AdminLibrary/Inputs/Special/ConnectSelect.scss");
+
+
+
+
+
+
+
+const ConnectSelect = props => {
+  const {
+    mailchimpKey,
+    optionKey,
+    settingChanged
+  } = props;
+
+  // State varaible for list of options
+  const {
+    setting,
+    updateSetting
+  } = (0,_contexts_SettingContext__WEBPACK_IMPORTED_MODULE_4__.useSetting)();
+  const [sellectOption, setSelectOption] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(setting[optionKey] || []);
+  const [loadings, setLoadings] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [showOption, setShowOption] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [mailchimpErrorMessage, setMailchimpErrorMessage] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+  const updateSelectOption = async () => {
+    if (!setting[mailchimpKey]) {
+      setMailchimpErrorMessage('Kindly use a proper MailChimp key.');
+    } else {
+      setLoadings(true);
+      setMailchimpErrorMessage('');
+      const options = await (0,_services_apiService__WEBPACK_IMPORTED_MODULE_3__.getApiResponse)((0,_services_apiService__WEBPACK_IMPORTED_MODULE_3__.getApiLink)(props.apiLink));
+      settingChanged.current = true;
+      updateSetting(optionKey, options);
+      setSelectOption(options);
+      setLoadings(false);
+      setShowOption(true);
+    }
+  };
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "connect-main-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_BasicInput__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    wrapperClass: "setting-form-input",
+    descClass: "settings-metabox-description",
+    type: 'text',
+    value: setting[mailchimpKey],
+    proSetting: false,
+    onChange: e => {
+      if (!props.proSettingChanged()) {
+        props.onChange(e, mailchimpKey);
+      }
+    }
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "button-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    onClick: e => {
+      e.preventDefault();
+      if (!props.proSettingChanged()) {
+        updateSelectOption();
+      }
+    }
+  }, "Fetch List"), loadings && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "loader"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "three-body__dot"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "three-body__dot"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "three-body__dot"
+  }))), (sellectOption.length || showOption) && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SelectInput__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    onChange: e => {
+      e = {
+        target: {
+          value: e.value
+        }
+      };
+      if (!props.proSettingChanged()) {
+        props.onChange(e, props.selectKey);
+      }
+    },
+    options: sellectOption,
+    value: props.value
+  }));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ConnectSelect);
+
+/***/ }),
+
+/***/ "./src/components/AdminLibrary/Inputs/Special/FormCustomizer.jsx":
+/*!***********************************************************************!*\
+  !*** ./src/components/AdminLibrary/Inputs/Special/FormCustomizer.jsx ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _FormCustomizer_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FormCustomizer.scss */ "./src/components/AdminLibrary/Inputs/Special/FormCustomizer.scss");
+/* harmony import */ var _ButtonCustomizer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ButtonCustomizer */ "./src/components/AdminLibrary/Inputs/Special/ButtonCustomizer.jsx");
+/* harmony import */ var _contexts_SettingContext__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../contexts/SettingContext */ "./src/contexts/SettingContext.jsx");
+
+
+
+
+
+const FormCustomizer = props => {
+  const [currentHoverOn, setCurrentHoverOn] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+  const [currentEditSection, setCurrentEditSection] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+  const buttonRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
+  const {
+    setting
+  } = (0,_contexts_SettingContext__WEBPACK_IMPORTED_MODULE_3__.useSetting)();
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    document.body.addEventListener("click", event => {
+      if (!buttonRef?.current?.contains(event.target)) {
+        setCurrentHoverOn('');
+        setCurrentEditSection('');
+      }
+    });
+  }, []);
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "fromcustomizer-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wrapper-content"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "label-section"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    ref: currentHoverOn === 'description' ? buttonRef : null,
+    className: currentHoverOn === 'description' && 'active',
+    onClick: e => setCurrentHoverOn('description'),
+    onChange: e => props.onChange(e, 'alert_text'),
+    value: setting.alert_text
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "form-section"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    ref: currentHoverOn === 'email_input' ? buttonRef : null,
+    className: "input-section"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    readOnly: true,
+    onClick: e => setCurrentHoverOn('email_input'),
+    className: currentHoverOn === 'email_input' && 'active',
+    type: "email",
+    placeholder: setting.email_placeholder_text
+  }), currentHoverOn === 'email_input' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "input-editor",
+    onClick: e => setCurrentEditSection('text')
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Edit"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
+    className: "admin-font font-edit"
+  })))),
+  // Email input has select
+  currentHoverOn === 'email_input' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null,
+  // Text section has select
+  currentEditSection === 'text' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "setting-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "setting-nav"
+  }, "..."), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    onClick: e => {
+      e.preventDefault();
+      setCurrentEditSection('');
+    },
+    className: "wrapper-close"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
+    class: "admin-font font-cross"
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "setting-section-dev"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    class: "label"
+  }, "Placeholder text"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "property-section"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "text",
+    value: setting.email_placeholder_text,
+    onChange: e => props.onChange(e, 'email_placeholder_text')
+  })))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "button-section"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ButtonCustomizer__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    buttonText: props.buttonText,
+    proSetting: props.proSetting,
+    onChange: props.onChange
+  }))))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FormCustomizer);
 
 /***/ }),
 
@@ -17845,7 +18467,9 @@ const TextArea = props => {
     onFocus: e => {
       props.onFocus?.(e);
     }
-  }), props.description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+  }), props.proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "admin-pro-tag"
+  }, "pro"), props.description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: props.descClass,
     dangerouslySetInnerHTML: {
       __html: props.description
@@ -17892,7 +18516,9 @@ const ToggleRectangle = props => {
     }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
       key: options.key,
       htmlFor: `${props.idPrefix}-${options.key}`
-    }, options.label));
+    }, options.label), props.proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      className: "admin-pro-tag"
+    }, "pro"));
   }))), props.description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: props.descClass,
     dangerouslySetInnerHTML: {
@@ -18289,6 +18915,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Util_Table_jsx__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./Util/Table.jsx */ "./src/components/AdminLibrary/Inputs/Util/Table.jsx");
 /* harmony import */ var _Util_WpEditor_jsx__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./Util/WpEditor.jsx */ "./src/components/AdminLibrary/Inputs/Util/WpEditor.jsx");
 /* harmony import */ var _Special_ButtonCustomizer_jsx__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./Special/ButtonCustomizer.jsx */ "./src/components/AdminLibrary/Inputs/Special/ButtonCustomizer.jsx");
+/* harmony import */ var _Special_ConnectSelect_jsx__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./Special/ConnectSelect.jsx */ "./src/components/AdminLibrary/Inputs/Special/ConnectSelect.jsx");
 // Normal input component import
 
 
@@ -18312,12 +18939,14 @@ __webpack_require__.r(__webpack_exports__);
 
 // Spacial component import
 
+
 // Export Component's object as default.
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   BasicInput: _BasicInput_jsx__WEBPACK_IMPORTED_MODULE_0__["default"],
   ButtonCustomizer: _Special_ButtonCustomizer_jsx__WEBPACK_IMPORTED_MODULE_19__["default"],
   CalendarInput: _CalendarInput_jsx__WEBPACK_IMPORTED_MODULE_1__["default"],
   CheckBox: _CheckBox_jsx__WEBPACK_IMPORTED_MODULE_2__["default"],
+  ConnectSelect: _Special_ConnectSelect_jsx__WEBPACK_IMPORTED_MODULE_20__["default"],
   FileInput: _FileInput_jsx__WEBPACK_IMPORTED_MODULE_3__["default"],
   MapsInput: _MapsInput_jsx__WEBPACK_IMPORTED_MODULE_4__["default"],
   MultiNumInput: _MultiNumInput_jsx__WEBPACK_IMPORTED_MODULE_5__["default"],
@@ -18355,85 +18984,35 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const questions = [{
-  id: 1,
-  question: 'Popular Articles',
-  answer: 'Suspendisse ipsum elit, hendrerit id eleifend at, condimentum et mauris. Curabitur et libero vel arcu dignissim pulvinar ut ac leo. In sit amet orci et erat accumsan interdum.'
-}, {
-  id: 2,
-  question: 'Fix problems & request removals',
-  answer: 'Suspendisse ipsum elit, hendrerit id eleifend at, condimentum et mauris. Curabitur et libero vel arcu dignissim pulvinar ut ac leo. In sit amet orci et erat accumsan interdum.'
-}, {
-  id: 3,
-  question: 'Browse the web',
-  answer: 'Suspendisse ipsum elit, hendrerit id eleifend at, condimentum et mauris. Curabitur et libero vel arcu dignissim pulvinar ut ac leo. In sit amet orci et erat accumsan interdum.'
-}, {
-  id: 4,
-  question: 'Search on your phone or tablet',
-  answer: 'Suspendisse ipsum elit, hendrerit id eleifend at, condimentum et mauris. Curabitur et libero vel arcu dignissim pulvinar ut ac leo. In sit amet orci et erat accumsan interdum.'
-}];
-function FAQ(props) {
-  const [searchTerm, setSearchTerm] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
-  const [searchResults, setSearchResults] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
-  const handleSearchChange = e => {
-    setSearchTerm(e.target.value);
-  };
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    const results = props.data.filter(item => item.question.toLowerCase().includes(searchTerm));
-    setSearchResults(results);
-  }, [searchTerm]);
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "container"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
-    className: "heading"
-  }, "How can we help you?"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
-    className: "faq"
-  }, searchResults.map(item => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Question, {
-    question: item.question,
-    answer: item.answer
-  }))));
-}
-const Question = props => {
-  const [isActive, setActive] = react__WEBPACK_IMPORTED_MODULE_0___default().useState(false);
-  const handleClick = id => {
-    setActive(!isActive);
-  };
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "question-wrapper"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "question",
-    id: props.id
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, props.question), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    onClick: () => handleClick(props.id)
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
-    className: isActive ? 'active' : '',
-    viewBox: "0 0 320 512",
-    width: "100",
-    title: "angle-down"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
-    d: "M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z"
-  })))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: isActive ? 'answer active' : 'answer'
-  }, props.answer));
-};
 const Support = () => {
-  const url = "https://www.youtube.com/embed/fL7wPVYopTU?si=zS1TSj-YU-yx2Nr9";
-  const supportLink = [{
-    title: "Get in Touch with Support",
-    icon: "mail",
-    description: "Reach out to the support team for assistance or guidance.",
-    link: "link1"
+  const url = "https://www.youtube.com/embed/cgfeZH5z2dM?si=3zjG13RDOSiX2m1b";
+  const [faqs, setFaqs] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([{
+    question: "Why am I not receiving any emails when a customer subscribes for an out-of-stock product?",
+    answer: "Please install a plugin like Email Log and perform a test subscription.",
+    open: true
   }, {
-    title: "Explore Documentation",
-    icon: "submission-message",
-    description: "Understand the plugin and its settings.",
-    link: "https://multivendorx.com/docs/knowledgebase/products-stock-manager-notifier-for-woocommerce/"
+    question: "Why is the out-of-stock form not appearing?",
+    answer: "There might be a theme conflict issue. To troubleshoot, switch to a default theme like Twenty Twenty-Four and check if the form appears.",
+    open: false
   }, {
-    title: "Contribute Here",
-    icon: "support",
-    description: "To participation in product enhancement.",
-    link: "link3"
-  }];
+    question: "Does Product Stock Manager & Notifier support product variations?",
+    answer: "Yes, product variations are fully supported and editable from the Inventory Manager. Product Stock Manager & Notifier handles variable products with ease and uses an expandable feature to make managing variations clear and straightforward.",
+    open: false
+  }, {
+    question: "Do you support Google reCaptcha for the out-of-stock form?",
+    answer: 'Yes, <a href="https://multivendorx.com/woocommerce-product-stock-manager-notifier-pro/?utm_source=WordPressAdmin&utm_medium=PluginSettings&utm_campaign=productsstockmanager" target="_blank">Product Stock Manager & Notifier Pro</a> has support for reCaptcha.',
+    open: false
+  }]);
+  const toggleFAQ = index => {
+    setFaqs(faqs.map((faq, i) => {
+      if (i === index) {
+        faq.open = !faq.open;
+      } else {
+        faq.open = false;
+      }
+      return faq;
+    }));
+  };
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "dynamic-fields-wrapper"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -18445,9 +19024,9 @@ const Support = () => {
   }, "Thank you for using Product Stock Manager & Notifier for WooCommerce"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: "support-subheading"
   }, "We want to help you enjoy a wonderful experience with all of our products.")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "support-container-wrapper"
+    className: "video-faq-wrapper"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "video-support-wrapper"
+    className: "video-section"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("iframe", {
     src: url,
     title: "YouTube video player",
@@ -18456,26 +19035,21 @@ const Support = () => {
     referrerpolicy: "strict-origin-when-cross-origin",
     allowfullscreen: true
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "support-quick-link"
-  }, supportLink?.map((item, index) => {
-    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      key: index,
-      className: "support-quick-link-items"
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "icon-bar"
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
-      className: `admin-font font-${item.icon}`
-    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "content"
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-      href: item.link,
-      target: "_blank"
-    }, item.title), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, item.description))));
-  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "faq-wrapper"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(FAQ, {
-    data: questions
-  })))));
+    className: "faq-section"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "faqs"
+  }, faqs.map((faq, index) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "faq " + (faq.open ? "open" : ""),
+    key: index,
+    onClick: () => toggleFAQ(index)
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "faq-question"
+  }, faq.question), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "faq-answer",
+    dangerouslySetInnerHTML: {
+      __html: faq.answer
+    }
+  })))))))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Support);
 
@@ -18514,43 +19088,73 @@ const Tabs = props => {
     BannerSection
   } = props;
   const [menuCol, setMenuCol] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
-  const [openedSubtab, setOpenedSubtab] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+  const [openedSubtab, setOpenedSubtab] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("");
   const showTabSection = tab => {
     return tab.link ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
       href: tab.link
-    }, tab.icon && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, tab.icon && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
       className: `admin-font ${tab.icon}`
-    }), menuCol ? null : tab.name) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
-      className: currentTab === tab.id ? 'active-current-tab' : '',
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+      className: "menu-name"
+    }, menuCol ? null : tab.name), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+      className: "menu-desc"
+    }, menuCol ? null : tab.desc))) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
+      className: currentTab === tab.id ? "active-current-tab" : "",
       to: prepareUrl(tab.id)
-    }, tab.icon && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, tab.icon && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
       className: ` admin-font ${tab.icon} `
-    }), menuCol ? null : tab.name, menuCol ? null : !appLocalizer.pro_active && tab.proDependent && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    }), menuCol ? null : !appLocalizer.pro_active && tab.proDependent && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
       class: "admin-pro-tag"
-    }, "Pro"));
+    }, "Pro")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+      className: "menu-name"
+    }, menuCol ? null : tab.name), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+      className: "menu-desc"
+    }, menuCol ? null : tab.desc)));
   };
+  const supportLink = [{
+    title: "Get in touch with Support",
+    icon: "mail",
+    description: "Reach out to the support team for assistance or guidance.",
+    link: "https://multivendorx.com/contact-us/?utm_source=WordPressAdmin&utm_medium=PluginSettings&utm_campaign=productsstockmanager"
+  }, {
+    title: "Explore Documentation",
+    icon: "submission-message",
+    description: "Understand the plugin and its settings.",
+    link: "https://multivendorx.com/docs/knowledgebase/products-stock-manager-notifier-for-woocommerce/?utm_source=WordPressAdmin&utm_medium=PluginSettings&utm_campaign=productsstockmanager"
+  }, {
+    title: "Contribute Here",
+    icon: "support",
+    description: "To participation in product enhancement.",
+    link: "https://github.com/multivendorx/woocommerce-product-stock-alert/issues"
+  }];
   const showHideMenu = tab => {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
-      className: currentTab === tab.id ? 'active-current-tab' : '',
+      className: currentTab === tab.id ? "active-current-tab" : "",
       onClick: e => {
         e.preventDefault();
         if (openedSubtab == tab.id) {
-          setOpenedSubtab('');
+          setOpenedSubtab("");
         } else {
           setOpenedSubtab(tab.id);
         }
       }
-    }, tab.icon && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, tab.icon && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
       className: ` admin-font ${tab.icon} `
-    }), menuCol ? null : tab.name, menuCol ? null : openedSubtab == tab.id ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "drop-down-section"
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+      className: "menu-name"
+    }, menuCol ? null : tab.name), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+      className: "menu-desc"
+    }, menuCol ? null : tab.desc)), menuCol ? null : openedSubtab == tab.id ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
       className: "tab-menu-dropdown-icon active"
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
-      className: "admin-font font-arrow-right"
+      className: "admin-font font-keyboard_arrow_down"
     })) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
       className: "tab-menu-dropdown-icon"
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
-      className: "admin-font font-arrow-right"
-    })));
+      className: "admin-font font-keyboard_arrow_down"
+    }))));
   };
 
   // Get the description of the current tab.
@@ -18559,67 +19163,53 @@ const Tabs = props => {
       content,
       type
     }) => {
-      if (type === 'file') {
-        return content.id === currentTab && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      if (type === "file") {
+        return content.id === currentTab && content.id !== "support" && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
           className: "tab-description-start"
         }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+          className: "child"
+        }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
+          className: `admin-font ${content.icon}`
+        })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
           className: "tab-name"
-        }, content.name), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, content.desc));
-      } else if (type === 'folder') {
-        // Get tabdescription from child by recursion
+        }, content.name), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+          className: "tab-desc"
+        }, content.desc))));
+      } else if (type === "folder") {
+        // Get tab description from child by recursion
         return getTabDescription(content);
       }
     });
-  };
-  const handleMenu = () => {
-    let menudiv = document.getElementById('current-tab-lists');
-    menudiv.classList.toggle('active');
   };
   const handleMenuShow = () => {
     setMenuCol(!menuCol);
   };
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: ` general-wrapper ${props.queryName} `
-  }, HeaderSection && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(HeaderSection, null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "container"
-  }, BannerSection && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(BannerSection, null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("nav", {
-    className: "admin-panel-nav"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    onClick: handleMenu
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
-    className: "admin-font font-menu"
-  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "brand"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
-    src: _assets_images_Brand_png__WEBPACK_IMPORTED_MODULE_1__,
-    alt: "logo"
-  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: `middle-container-wrapper ${props.horizontally ? 'horizontal-tabs' : 'vertical-tabs'}`
+  }, HeaderSection && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(HeaderSection, null), BannerSection && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(BannerSection, null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: `middle-container-wrapper ${props.horizontally ? "horizontal-tabs" : "vertical-tabs"}`
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "middle-child-container"
+    className: `${menuCol ? "showMenu" : ""} middle-child-container`
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     id: "current-tab-lists",
-    className: `${menuCol ? 'showMenu' : ''} current-tab-lists`
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "current-tab-lists-container"
+    className: "current-tab-lists"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "brand"
-  }, menuCol ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    className: "logo",
+    src: menuCol ? _assets_images_Brand_small_png__WEBPACK_IMPORTED_MODULE_2__ : _assets_images_Brand_png__WEBPACK_IMPORTED_MODULE_1__,
+    alt: "Logo"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    className: "logo-small",
     src: _assets_images_Brand_small_png__WEBPACK_IMPORTED_MODULE_2__,
-    alt: "logo"
-  }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
-    src: _assets_images_Brand_png__WEBPACK_IMPORTED_MODULE_1__,
-    alt: "logo"
-  }), menuCol ? null : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "MooWoodle"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    onClick: handleMenu,
-    className: "menu-close"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
-    className: "admin-font font-cross"
-  }))), tabData.map(({
+    alt: "Logo"
+  }), menuCol ? null : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Stock Manager")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "current-tab-lists-container"
+  }, tabData.map(({
     type,
     content
   }) => {
-    if (type !== 'folder') {
+    if (type !== "folder") {
       return showTabSection(content);
     }
 
@@ -18627,7 +19217,7 @@ const Tabs = props => {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "tab-wrapper"
     }, showHideMenu(content[0].content), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: `subtab-wrapper ${menuCol && 'show'} ${openedSubtab == content[0].content.id && 'active'}`
+      className: `subtab-wrapper ${menuCol && "show"} ${openedSubtab == content[0].content.id && "active"}`
     }, content.slice(1).map(({
       type,
       content
@@ -18639,9 +19229,22 @@ const Tabs = props => {
     onClick: handleMenuShow
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
     className: "admin-font font-arrow-left"
-  })), menuCol ? null : 'Collapse'))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  })), menuCol ? null : "Collapse"))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "tab-content"
-  }, getTabDescription(tabData), getForm(currentTab)))))));
+  }, getTabDescription(tabData), getForm(currentTab)))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "support-card"
+  }, supportLink.map((item, index) => {
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+      href: item.link,
+      target: "_blank",
+      className: "card-item"
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
+      className: `admin-font font-${item.icon}`
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+      href: item.link,
+      target: "_blank"
+    }, item.title), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, item.description)));
+  }))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Tabs);
 
@@ -18810,157 +19413,259 @@ function banner() {
 
 /***/ }),
 
-/***/ "./src/components/ConnectButton/ConnectButton.jsx":
-/*!********************************************************!*\
-  !*** ./src/components/ConnectButton/ConnectButton.jsx ***!
-  \********************************************************/
+/***/ "./src/components/Courses/Courses.jsx":
+/*!********************************************!*\
+  !*** ./src/components/Courses/Courses.jsx ***!
+  \********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ Course)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 /* harmony import */ var _services_apiService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/apiService */ "./src/services/apiService.js");
+/* harmony import */ var _AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../AdminLibrary/CustomTable/CustomTable */ "./src/components/AdminLibrary/CustomTable/CustomTable.jsx");
+/* harmony import */ var _Banner_banner__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Banner/banner */ "./src/components/Banner/banner.jsx");
 
 
 
-const ConnectButton = props => {
+
+
+
+
+function Course() {
   const {
     __
   } = wp.i18n;
-  const connectTaskStarted = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(false);
-  const additionalData = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)({});
-  const taskNumber = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(0);
-  const [taskSequence, setTaskSequence] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const [data, setData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const [selectedRows, setSelectedRows] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const [totalRows, setTotalRows] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
+  const bulkSelectRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
 
-  // Sleep for a given time.
-  const sleep = time => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve();
-      }, time);
+  /**
+   * Function that request data from backend
+   * @param {*} rowsPerPage 
+   * @param {*} currentPage 
+   */
+  function requestData(rowsPerPage = 10, currentPage = 1) {
+    //Fetch the data to show in the table
+    (0,axios__WEBPACK_IMPORTED_MODULE_4__["default"])({
+      method: "post",
+      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('courses'),
+      headers: {
+        "X-WP-Nonce": appLocalizer.nonce
+      },
+      data: {
+        page: currentPage,
+        perpage: rowsPerPage
+      }
+    }).then(response => {
+      // const data = JSON.parse(response.data);
+      setData(response.data);
     });
+  }
+
+  /**
+   * Callback function for request data from rest api.
+   * @param {*} rowsPerPage 
+   * @param {*} currentPage 
+   * @param {*} filterData 
+   */
+  const requestApiForData = (rowsPerPage, currentPage, filterData = {}) => {
+    requestData(rowsPerPage, currentPage);
   };
 
-  // Sequence task
-  const tasks = [{
-    'action': 'get_site_info',
-    'message': __('Connecting to Moodle', 'moowoodle')
+  /**
+   * Handle single row action
+   * @param {*} actionName 
+   * @param {*} courseId 
+   * @param {*} rowId 
+   * @param {*} rowIndex 
+   */
+  const handleSingleAction = (actionName, courseId, moodleCourseId) => {
+    if (appLocalizer.pro_active) {
+      (0,axios__WEBPACK_IMPORTED_MODULE_4__["default"])({
+        method: 'post',
+        url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)(`course-bulk-action`),
+        headers: {
+          'X-WP-Nonce': appLocalizer.nonce
+        },
+        data: {
+          selected_action: actionName,
+          course_ids: [{
+            course_id: courseId,
+            moodle_course_id: moodleCourseId
+          }]
+        }
+      }).then(response => {
+        console.log(response);
+      }).catch(error => {
+        console.error('Error:', error);
+      });
+    } else {
+      console.log("pro banner");
+    }
+  };
+  const handleBulkAction = event => {
+    if (appLocalizer.pro_active) {
+      if (!selectedRows.length) {
+        return window.alert(__('Select rows', 'moowoodle'));
+      }
+      if (!bulkSelectRef.current.value) {
+        return window.alert(__('Select bulk action', 'moowoodle'));
+      }
+      (0,axios__WEBPACK_IMPORTED_MODULE_4__["default"])({
+        method: 'post',
+        url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)(`course-bulk-action`),
+        headers: {
+          'X-WP-Nonce': appLocalizer.nonce
+        },
+        data: {
+          selected_action: bulkSelectRef.current.value,
+          course_ids: selectedRows.map(row => {
+            return {
+              course_id: row.id,
+              moodle_course_id: row.moodle_course_id
+            };
+          })
+        }
+      }).then(response => {
+        console.log(response);
+      }).catch(error => {
+        console.error('Error:', error);
+      });
+    } else {
+      console.log("pro banner");
+    }
+  };
+  const handleRowSelect = (selectedRows, selectedCount, allSelect) => {
+    setSelectedRows(selectedRows);
+  };
+
+  // Get the total no of data present in database
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    (0,axios__WEBPACK_IMPORTED_MODULE_4__["default"])({
+      method: "post",
+      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('courses'),
+      headers: {
+        "X-WP-Nonce": appLocalizer.nonce
+      },
+      data: {
+        count: true
+      }
+    }).then(response => {
+      setTotalRows(response.data);
+    });
+  }, []);
+
+  // Get the initial data for render
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    requestData();
+  }, []);
+
+  //columns for the data table
+  const columns = [{
+    name: __('Course Name', 'moowoodle'),
+    selector: row => row.course_name,
+    cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+      href: row.moodle_url,
+      alt: "moowoodle_url"
+    }, row.course_name)),
+    sortable: true
   }, {
-    'action': 'get_course',
-    'message': __('Courses Fetch', 'moowoodle'),
-    'cache': 'course_id'
+    name: __('Product Name', 'moowoodle'),
+    selector: row => row.products,
+    cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, null, Object.keys(row.products).length ? Object.entries(row.products).map(([name, url], index) => {
+      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+        key: index,
+        href: url
+      }, " ", name, " ");
+    }) : "-")
   }, {
-    'action': 'get_catagory',
-    'message': __('Catagory Fetch', 'moowoodle')
+    name: __('Category Name', 'moowoodle'),
+    selector: row => row.category_name,
+    cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+      href: row.category_url,
+      alt: "category_url"
+    }, row.category_name)),
+    sortable: true
   }, {
-    'action': 'create_user',
-    'message': __('User Creation', 'moowoodle')
+    name: __('Enrolled Users', 'moowoodle'),
+    cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, null, row.enroled_user)
   }, {
-    'action': 'get_user',
-    'message': __('User Fetch', 'moowoodle'),
-    'cache': 'user_id'
+    name: __('Date', 'moowoodle'),
+    cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, null, row.date)
   }, {
-    'action': 'update_user',
-    'message': __('User Update', 'moowoodle')
-  }, {
-    'action': 'enroll_user',
-    'message': __('User Enroll', 'moowoodle')
-  }, {
-    'action': 'unenroll_user',
-    'message': __('User Unenroll', 'moowoodle')
-  }, {
-    'action': 'delete_user',
-    'message': __('User Remove', 'moowoodle')
+    name: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      dangerouslySetInnerHTML: {
+        __html: __('Actions')
+      }
+    }),
+    cell: (row, rowIndex) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      class: "moowoodle-course-actions"
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+      class: `sync-single-course button-primary`,
+      title: __('Sync Couse Data'),
+      onClick: e => {
+        handleSingleAction('sync_courses', row.id, row.moodle_course_id);
+      }
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
+      class: "dashicons dashicons-update"
+    })), Object.keys(row.products).length ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+      class: `update-existed-single-product button-secondary `,
+      title: __('Sync Course Data & Update Product'),
+      onClick: e => {
+        handleSingleAction('update_product', row.id, row.moodle_course_id);
+      }
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
+      class: "dashicons dashicons-admin-links"
+    })) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+      class: `create-single-product button-secondary`,
+      title: __('Create Product'),
+      onClick: e => {
+        handleSingleAction('create_product', row.id, row.moodle_course_id);
+      }
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
+      class: "dashicons dashicons-cloud-upload"
+    })))
   }];
-  const startConnectionTask = async () => {
-    // Connection task is already running
-    if (connectTaskStarted.current) {
-      return;
-    }
-    connectTaskStarted.current = true;
-    setTaskSequence([]);
-    await doSequencialTask();
-    connectTaskStarted.current = false;
-  };
-  const doSequencialTask = async () => {
-    // There is no task to display
-    if (taskNumber.current >= tasks.length) {
-      return;
-    }
-    const currentTask = tasks[taskNumber.current];
-
-    // Set the task sequence to current task.
-    setTaskSequence(taskes => {
-      return [...taskes, {
-        name: currentTask.action,
-        message: currentTask.message,
-        status: 'running'
-      }];
-    });
-    await sleep(2000);
-    const response = await (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.sendApiResponse)((0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('test-connection'), {
-      action: currentTask.action,
-      ...additionalData.current
-    });
-
-    // Evelute task status
-    let taskStatus = 'success';
-
-    // Collect course id
-    if (currentTask.cache === 'course_id') {
-      const validCourse = response?.courses?.[1];
-      if (!validCourse) {
-        taskStatus = 'falid';
-      } else {
-        additionalData.current['course_id'] = validCourse.id;
-      }
-    }
-    // Collect user id
-    else if (currentTask.cache === 'user_id') {
-      const validUser = response?.data?.users?.[0];
-      if (!validUser) {
-        taskStatus = 'falid';
-      } else {
-        additionalData.current['user_id'] = validUser.id;
-      }
-    }
-    // Check where it is a success of failure
-    else if (!response.success) {
-      taskStatus = 'faild';
-    }
-
-    // Update task status
-    setTaskSequence(tasks => {
-      const updatedTask = [...tasks];
-      updatedTask[updatedTask.length - 1]['status'] = taskStatus;
-      return updatedTask;
-    });
-
-    // If task status is not success exist from task sequence
-    if (taskStatus === 'faild') {
-      return;
-    }
-    taskNumber.current++;
-
-    // Call next task recursively
-    await doSequencialTask();
-  };
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    onClick: e => {
-      e.preventDefault();
-      startConnectionTask();
-    }
-  }, __('Connection test', 'moowoodle')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, taskSequence.map(task => {
-    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: task.status
-    }, task.message);
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "course-container-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "page-title"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, __("All Course", "moowoodle"))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "course-bulk-action"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, __('Select bulk action')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
+    name: "action",
+    ref: bulkSelectRef
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+    value: ""
+  }, __('Bulk Actions')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+    value: "sync_courses"
+  }, __('Sync Course')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+    value: "create_product"
+  }, __('Create Product')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+    value: "update_product"
+  }, __('Update Product'))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    name: "bulk-action-apply",
+    onClick: handleBulkAction
+  }, __('Apply'))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "admin-table-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    data: data,
+    columns: columns,
+    handlePagination: requestApiForData,
+    defaultRowsParPage: 10,
+    defaultTotalRows: totalRows,
+    perPageOption: [10, 25, 50],
+    selectable: true,
+    handleSelect: handleRowSelect
   })));
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ConnectButton);
+}
 
 /***/ }),
 
@@ -19093,299 +19798,6 @@ const Settings = () => {
   })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Settings);
-
-/***/ }),
-
-/***/ "./src/components/SubMenuPage/AllCourses.jsx":
-/*!***************************************************!*\
-  !*** ./src/components/SubMenuPage/AllCourses.jsx ***!
-  \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var react_data_table_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-data-table-component */ "./node_modules/react-data-table-component/dist/index.cjs.js");
-
-
-
-// import Tabs from "./../Common/Tabs";
-// import logo from "./../../assets/images/logo-moowoodle-pro.png";
-
-const MooWoodleAppLocalizer = {};
-const LoadingSpinner = () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
-  style: {
-    textAlign: "center"
-  }
-}, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-  className: "loading-spinner"
-}, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
-  className: "lodaer-img-overlay",
-  alt: ""
-}))));
-const AllCourses = () => {
-  const {
-    __
-  } = wp.i18n;
-  const [successMsg, setSuccessMsg] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
-  const [courses, setCourses] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
-  const [selectedRows, setSelectedRows] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
-  const [loading, setLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true);
-  const columns = [{
-    name: __('Course Name'),
-    selector: row => row.course_name,
-    cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-      href: row.moodle_url
-    }, row.course_name),
-    sortable: true
-  }, {
-    name: __('Short Name'),
-    selector: row => row.course_short_name,
-    sortable: true
-  }, {
-    name: 'Product Name',
-    selector: row => row.product,
-    cell: row => Object.keys(row.product).length !== 0 ? Object.entries(row.product).map(([productName, productURL], index) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-      key: index,
-      href: productURL
-    }, productName), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null))) : '-',
-    sortable: true
-  }, {
-    name: __('Category Name'),
-    selector: row => row.catagory_name,
-    cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-      href: row.catagory_url
-    }, row.catagory_name),
-    sortable: true
-  }, {
-    name: __('Enrolled Users'),
-    selector: row => row.enroled_user,
-    sortable: true
-  }, {
-    name: __('Date'),
-    selector: row => row.date
-  }, {
-    name: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      dangerouslySetInnerHTML: {
-        __html: __('Actions') + MooWoodleAppLocalizer.pro_sticker
-      }
-    }),
-    selector: row => row.course_name,
-    cell: (row, rowIndex) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      class: "moowoodle-course-actions"
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-      type: "button",
-      name: "sync_courses",
-      class: `${MooWoodleAppLocalizer.pro_popup_overlay} sync-single-course button-primary`,
-      title: __('Sync Couse Data'),
-      onClick: e => {
-        handleSingleSyncCourse('sync_courses', row.moodle_course_id, row.id, rowIndex);
-      }
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
-      class: "dashicons dashicons-update"
-    })), Object.keys(row.product).length !== 0 ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-      type: "button",
-      name: "sync_update_product",
-      class: `${MooWoodleAppLocalizer.pro_popup_overlay} update-existed-single-product button-secondary `,
-      title: __('Sync Course Data & Update Product'),
-      onClick: e => {
-        handleSingleSyncCourse('sync_update_product', row.moodle_course_id, row.id, rowIndex);
-      }
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
-      class: "dashicons dashicons-admin-links"
-    })) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-      type: "button",
-      name: "sync_create_product",
-      class: `${MooWoodleAppLocalizer.pro_popup_overlay} create-single-product button-secondary`,
-      title: __('Create Product'),
-      onClick: e => {
-        handleSingleSyncCourse('sync_create_product', row.moodle_course_id, row.id, rowIndex);
-      }
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
-      class: "dashicons dashicons-cloud-upload"
-    }))))
-  }];
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    // Fetch data from the WordPress REST API
-    const fetchData = async () => {
-      try {
-        const response = await axios__WEBPACK_IMPORTED_MODULE_2__["default"].get(`${MooWoodleAppLocalizer.rest_url}moowoodle/v1/fetch-all-courses`, {
-          headers: {
-            "X-WP-Nonce": MooWoodleAppLocalizer.nonce
-          }
-        });
-        setCourses(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-  const handleSingleSyncCourse = async (action, moodleCourseIds, CourseIds, rowIndex) => {
-    if (!MooWoodleAppLocalizer.porAdv) {
-      (0,axios__WEBPACK_IMPORTED_MODULE_2__["default"])({
-        method: 'post',
-        url: `${MooWoodleAppLocalizer.rest_url}moowoodle/v1/all-course-bulk-action`,
-        headers: {
-          'X-WP-Nonce': MooWoodleAppLocalizer.nonce
-        },
-        data: {
-          selectedAction: action,
-          moodleCourseIds: [moodleCourseIds],
-          CourseIds: [CourseIds]
-        }
-      }).then(response => {
-        const updatedCourses = [...courses];
-        console.log(updatedCourses);
-        updatedCourses[rowIndex] = response.data[0];
-        console.log(updatedCourses);
-        setCourses(updatedCourses);
-        setSuccessMsg("Synced");
-        setTimeout(() => {
-          setSuccessMsg('');
-        }, 2050);
-      }).catch(error => {
-        console.error('Error:', error);
-      });
-    }
-  };
-  const handleSelectedRowsChange = selecteRowsData => {
-    // You can set state or dispatch with something like Redux so we can use the retrieved data
-    setSelectedRows(selecteRowsData.selectedRows);
-  };
-  const handleBulkAction = async () => {
-    // Get the selected option from the dropdown
-    const selectedAction = document.getElementById("bulk-action-selector-top").value;
-    console.log('Selected action:', selectedAction);
-    const CourseIds = selectedRows.map(row => row.id);
-    // Extract moodle_course_id from selectedRows
-    const moodleCourseIds = selectedRows.map(row => row.moodle_course_id);
-    console.log(moodleCourseIds);
-    if (!MooWoodleAppLocalizer.porAdv) {
-      (0,axios__WEBPACK_IMPORTED_MODULE_2__["default"])({
-        method: 'post',
-        url: `${MooWoodleAppLocalizer.rest_url}moowoodle/v1/all-course-bulk-action`,
-        headers: {
-          'X-WP-Nonce': MooWoodleAppLocalizer.nonce
-        },
-        data: {
-          selectedAction: selectedAction,
-          moodleCourseIds: moodleCourseIds,
-          CourseIds: CourseIds
-        }
-      }).then(response => {
-        const updatedCourses = courses.map(course => {
-          const updatedCourse = response.data.find(data => data.moodle_course_id === course.moodle_course_id);
-          if (updatedCourse) {
-            return updatedCourse; // Replace the course data with updatedCourse data
-          } else {
-            return course; // If not found, keep the original course data
-          }
-        });
-        setCourses(updatedCourses);
-        console.log(updatedCourses);
-        // setCourses(updatedCourses);
-        setSuccessMsg("Synced");
-        setTimeout(() => {
-          setSuccessMsg('');
-        }, 2050);
-      }).catch(error => {
-        console.error('Error:', error);
-      });
-    }
-  };
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "mw-middle-child-container"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "mw-tab-content"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "mw-dynamic-fields-wrapper"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", {
-    class: "mw-dynamic-form",
-    action: "options.php",
-    method: "post"
-  }, successMsg && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "mw-notic-display-title setting-display"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
-    className: "mw-font dashicons dashicons-saved"
-  }), successMsg), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    id: "moowoodle-link-course-table",
-    class: "mw-section-wraper"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "mw-section-child-wraper"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "mw-header-search-wrap"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "mw-section-header"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, __('Courses')))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "mw-section-containt"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "mw-form-group"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "mw-input-content"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "mw-course-table-content "
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "moowoodle-table-fuilter"
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "search-bulk-action"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: `${MooWoodleAppLocalizer.pro_popup_overlay} mw-filter-bulk`
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
-    htmlFor: "bulk-action-selector-top",
-    className: "screen-reader-text"
-  }, __('Select bulk action')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
-    name: "action",
-    id: "bulk-action-selector-top"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-    value: "-1"
-  }, __('Bulk Actions')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-    value: "sync_courses"
-  }, __('Sync Course')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-    value: "sync_create_product"
-  }, __('Create Product')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-    value: "sync_update_product"
-  }, __('Update Product'))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    className: `button-secondary bulk-action-select-apply ${MooWoodleAppLocalizer.pro_popup_overlay}`,
-    name: "bulk-action-apply",
-    type: "button",
-    onClick: handleBulkAction
-  }, __('Apply')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    dangerouslySetInnerHTML: {
-      __html: MooWoodleAppLocalizer.pro_sticker
-    }
-  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "mw-header-search-section"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
-    class: "moowoodle-course-search"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
-    class: "dashicons dashicons-search"
-  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-    type: "search",
-    class: "moowoodle-search-input",
-    placeholder: "Search Course",
-    "aria-controls": "moowoodle_table"
-  })))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_data_table_component__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    columns: columns,
-    data: courses,
-    selectableRows: true,
-    onSelectedRowsChange: handleSelectedRowsChange,
-    progressPending: loading,
-    progressComponent: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(LoadingSpinner, null)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
-    className: "mw-sync-paragraph"
-  }, __('Cannot find your course in this list?'), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-    href: `${MooWoodleAppLocalizer.admin_url}admin.php?page=moowoodle#&tab=moowoodle-synchronization&sub-tab=moowoodle-sync-now`
-  }, __('Synchronize Moodle Courses from here.')))))))))))));
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AllCourses);
 
 /***/ }),
 
@@ -21293,6 +21705,19 @@ function memoizeOne(resultFn, isEqual) {
 
 /***/ }),
 
+/***/ "./src/components/AdminLibrary/CustomTable/table.scss":
+/*!************************************************************!*\
+  !*** ./src/components/AdminLibrary/CustomTable/table.scss ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
 /***/ "./src/components/AdminLibrary/DynamicForm/dynamicForm.scss":
 /*!******************************************************************!*\
   !*** ./src/components/AdminLibrary/DynamicForm/dynamicForm.scss ***!
@@ -21310,6 +21735,32 @@ __webpack_require__.r(__webpack_exports__);
 /*!**************************************************************************!*\
   !*** ./src/components/AdminLibrary/Inputs/Special/ButtonCustomizer.scss ***!
   \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/components/AdminLibrary/Inputs/Special/ConnectSelect.scss":
+/*!***********************************************************************!*\
+  !*** ./src/components/AdminLibrary/Inputs/Special/ConnectSelect.scss ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/components/AdminLibrary/Inputs/Special/FormCustomizer.scss":
+/*!************************************************************************!*\
+  !*** ./src/components/AdminLibrary/Inputs/Special/FormCustomizer.scss ***!
+  \************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -33202,17 +33653,6 @@ module.exports = __webpack_require__.p + "images/Brand.3c2867e9.png";
 
 /***/ }),
 
-/***/ "./src/assets/images/Color.jpg":
-/*!*************************************!*\
-  !*** ./src/assets/images/Color.jpg ***!
-  \*************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-module.exports = __webpack_require__.p + "images/Color.caa7acf3.jpg";
-
-/***/ }),
-
 /***/ "react":
 /*!************************!*\
   !*** external "React" ***!
@@ -39217,7 +39657,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const headersToObject = (thing) => thing instanceof _AxiosHeaders_js__WEBPACK_IMPORTED_MODULE_0__["default"] ? thing.toJSON() : thing;
+const headersToObject = (thing) => thing instanceof _AxiosHeaders_js__WEBPACK_IMPORTED_MODULE_0__["default"] ? { ...thing } : thing;
 
 /**
  * Config-specific merge-function which creates a new config-object
@@ -39622,7 +40062,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   VERSION: () => (/* binding */ VERSION)
 /* harmony export */ });
-const VERSION = "1.6.7";
+const VERSION = "1.6.8";
 
 /***/ }),
 

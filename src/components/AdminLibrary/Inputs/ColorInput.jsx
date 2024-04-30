@@ -10,6 +10,9 @@ export default function ColorInput(props) {
             onChange={(e) => { props.onChange?.(e) }}
             value={props.value || '#000000'}
         />
+         {
+                    props.proSetting && <span className="admin-pro-tag">pro</span>
+                }
     </div>
   )
 }

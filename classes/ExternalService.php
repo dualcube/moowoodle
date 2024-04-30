@@ -105,7 +105,7 @@ class ExternalService {
 
 		// convert moodle response to array.
 		$response = json_decode( $response['body'], true );
-
+		
 		// if array convertion failed
 		if( json_last_error() !== JSON_ERROR_NONE ) {
 			return [ 'error' => __('Response is not JSON decodeable', 'moowoodle') ];

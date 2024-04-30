@@ -27,269 +27,278 @@ $border-radius-large: 0.5rem;
 
 $animation-duration: 2s;
 
-.admin-table-wrapper {
-  .table-container {
+.load-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  border-color: $border-color;
+  width: 100%;
+
+  td {
+    padding: $padding-small;
+    border-style: solid;
+    border-width: $border-width-medium;
+    overflow: hidden;
+    word-break: normal;
+    border-color: $border-color;
+    color: $font-color;
+    background-color: $background-color;
+    flex-grow: 1;
+
+    &:first-child {
+      display: block;
+    }
+  }
+
+  tr:first-child .load-table-td {
+    font-weight: normal;
+    padding: $padding-small;
+    border-style: solid;
+    border-width: $border-width-medium;
+    overflow: hidden;
+    word-break: normal;
+    border-color: $border-color;
+    color: $font-color;
+    background-color: $head-row-background;
+  }
+}
+
+.line {
+  float: left;
+  width: 100%;
+  height: $line-height-small;
+  margin-top: $padding-small;
+  border-radius: $border-radius-medium;
+  background-image: $shine-background;
+  background-size: 37.8rem;
+  animation: shine-lines $animation-duration infinite ease-out;
+}
+
+@keyframes shine-lines {
+  0% {
+    background-position: -$line-height-small;
+  }
+  40%,
+  100% {
+    background-position: 8.82rem;
+  }
+}
+
+
+$menu-btn-color: #522c81;
+$body-background: #f9f9f9;
+$color-white: #fff;
+$menu-color: #f9f8fb;
+$color-active: #65438f;
+
+.koyZDM{
+  overflow: visible !important; // To overwrite default react data table css
+}
+.rdt_Table{
+    border-radius: 0.25rem;
+    overflow: hidden;
+    box-shadow: 0 0 1rem rgba($color: #000000, $alpha: 0.125);
     width: 100%;
+    z-index: 1;
 
-    nav div.lcunyj svg {
-      display: none;
+    *{
+      font-size: 0.938rem;
     }
 
-    .admin-table-wrapper-filter {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 0.75rem;
-      gap: 0.75rem;
-
-      div.type-count-active {
-        color: $primary-color;
-      }
-    }
-
-    * {
-      font-size: 1rem;
-    }
-
-    .tg {
-      border-collapse: collapse;
-      border-spacing: 0;
-      border-color: $border-color;
-      width: 100%;
-
-      .rdt_TableCell {
-        padding: $padding-small;
-        border-style: solid;
-        border-width: $border-width-medium;
-        overflow: hidden;
-        word-break: normal;
-        border-color: $border-color;
-        color: $font-color;
-        background-color: $background-color;
-
-        &:first-child {
-          display: block;
-        }
-      }
-
-      tr:first-child .rdt_TableCell {
-        font-weight: normal;
-        padding: $padding-small;
-        border-style: solid;
-        border-width: $border-width-medium;
-        overflow: hidden;
-        word-break: normal;
-        border-color: $border-color;
-        color: $font-color;
-        background-color: $head-row-background;
-      }
-    }
-
-    .line {
-      float: left;
-      max-width: $line-height-small;
-      width: 100%;
-      height: $line-height-small;
-      margin-top: $padding-small;
-      border-radius: $border-radius-medium;
-      background-image: $shine-background;
-      background-size: 37.8rem;
-      animation: shine-lines $animation-duration infinite ease-out;
-    }
-
-    @keyframes shine-lines {
-      0% {
-        background-position: -$line-height-small;
-      }
-      40%,
-      100% {
-        background-position: 8.82rem;
-      }
-    }
-
-    .rdt_TableHead {
-      border-radius: $border-radius-small;
-    }
-
-    /* Loading table animation end here */
-
-    .rdt_Table .rdt_TableHeadRow {
-      border: $border-width-small solid $border-color;
-      border-bottom: none;
-      background: $head-row-background;
-      border-top-right-radius: $border-radius-large;
-      border-top-left-radius: $border-radius-large;
-
-      .rdt_TableCol:last-child {
-        display: none;
-      }
-    }
-
-    .rdt_TableBody .rdt_TableRow {
-      border-left: $border-width-small solid $border-color;
-      border-right: $border-width-small solid $border-color;
-      position: relative;
-
-      .rdt_TableBody .rdt_TableRow:nth-child(even) {
-        background: $even-row-color;
-      }
-
-      .rdt_TableCell:last-child {
-        max-width: 2.52rem;
-        min-width: 2.52rem;
-        top: $padding-small;
-        right: $padding-medium;
-        padding: 0;
-        width: 100%;
-        flex-grow: unset;
-        position: absolute;
-        display: none;
-      }
-
-      .rdt_TableCell .table-row-custom {
-        display: flex;
-        align-items: center;
-        text-wrap: nowrap;
-        overflow: hidden;
-        height: 100%;
-
-        h4 {
-          display: none;
-          margin: 0;
-          max-width: 9.45rem;
-          width: 100%;
-        }
-
-        p {
-          margin: 0;
-        }
-      }
-
-      .table-dropdown_btn {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        button {
-          cursor: pointer;
-          width: 100%;
-          outline: none;
-          border: none;
-          padding: 0.25rem 0.1rem;
-          border-radius: $border-radius-small;
-          background: transparent;
-
-          i{
-            font-size: 0.75rem;
-          }
-        }
-      }
-    }
-
-    @media only screen and (max-width: 79.002rem) {
-      .rdt_TableHeadRow {
-        padding: $padding-small;
-      }
-
-      .rdt_TableHeadRow .rdt_TableCol {
-        min-width: 3.15rem;
-        width: 100%;
-        display: none;
-
-        &:first-child,
-        &:nth-child(2),
-        &:nth-child(3) {
-          display: block;
-        }
-      }
-
-      .rdt_TableBody .rdt_TableRow {
-        padding: $padding-small;
-        display: block;
-        max-height: 3rem;
-        transition: max-height 0.3s linear;
-        overflow: hidden;
-
-        .rdt_TableCell {
-          width: 100%;
-          display: inline-block;
-          min-width: 3.15rem;
-          background-color: $background-secondary-color;
-          height: $line-height-medium;
-
-          &:first-child,
-          &:nth-child(2),
-          &:nth-child(3) {
-            width: 33%;
-            background: transparent !important;
-            margin-bottom: 0.5rem;
-
-            .table-row-custom h4 {
-              display: none;
+    .rdt_TableHead{
+      border-radius: 0.25rem;
+      background-color: $color-white;
+      font-size: 0.9rem;
+      
+      .rdt_TableHeadRow{
+        padding: 0.313rem;
+        font-weight: 400;
+        .rdt_TableCol{
+          padding: 0 0.5rem;
+          &:first-child {
+            min-width: 2.25rem;
+            max-width: 2.25rem;
+            input[type=checkbox]{
+              margin: 0;
             }
           }
-          &:nth-child(3) {
-            max-width: 9.45rem;
-            width: 100%;
+          &:last-child{
+            display: none;
+          }
+        }
+      }
+    }
+
+    .rdt_TableBody {
+      .rdt_TableRow {
+        background: $color-white;
+        position: relative;
+        padding: 0 0.313rem;
+        &:nth-child(odd) {
+          background: $body-background;
+        }
+
+        .rdt_TableCell {
+          font-size: 0.85rem;
+          padding: 0.313rem 0.5rem;
+          font-size: 0.95rem;
+          &:first-child {
+            min-width: 2.5rem;
+            max-width: 2.5rem;
           }
 
-          &:last-child {
+          &:last-child{
+            position: absolute;
+            top: 1.15rem;
+            right: 0.938rem;
+            display: none;
+            border-radius: 0.188rem;
+            width: 3rem !important; // To overwrite default table cell width / height
+            height: 3rem !important; // To overwrite default table cell width / height
+
+            .table-dropdown_btn{
+              width: 100%;
+              button{
+                width: 100%;
+                height: 1.563rem;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                
+                i{
+                  font-size: 0.75rem !important; // To overwrite default table font size
+                }
+              }
+            }
+          }
+
+         .table-row-custom{
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 0.5rem;
+           h4 {
+            display: none;
+            font-size: 0.95rem;
+            font-weight: 400;
+            min-width: 7.5rem;
+            text-align: left;
+          }
+
+          img{
+            width: 3.15rem;
+            height: 3.15rem;
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+            box-shadow: 0 0 .125rem rgba($color: #000000, $alpha: 0.125);
+          }
+        }
+        }
+      }
+    }
+}
+
+
+.rdt_Pagination{
+  display: grid !important;
+  grid-template-columns: 8.19rem 1fr 8.19rem 10.08rem;
+  place-content: center;
+.sc-lmoLKH.lcunyj{
+  select{
+    &:focus{
+      border: none;
+      color: $color-active;
+      box-shadow: none;
+    }
+  }
+  svg{
+    display: none;
+  }
+}
+}
+
+@media only screen and (max-width: 85.365rem) {
+  .rdt_Table{
+      .rdt_TableHead{
+        .rdt_TableHeadRow{
+          display: flex;
+
+          .rdt_TableCol{
+            display: none;
+
+            &:nth-child(1),
+            &:nth-child(2),
+            &:nth-child(3) {
+              display: inline-flex; 
+              max-width: 33%!important; // To overwrite default table width for only responsive device
+              min-width: 5% !important; // To overwrite default table width for only responsive device
+            }
+          }
+        }
+      }
+      .rdt_TableBody{
+        .rdt_TableRow{
+          display: flex;
+          position: relative;
+          max-height: 4.25rem;
+          transition: max-height 0.4s linear;
+          overflow: hidden;
+          flex-wrap: wrap;
+          padding: 0 0.313rem 0.313rem;
+
+          &.active{
+            max-height: 62.5rem;
+          }
+
+          .rdt_TableCell{
+            min-width: 100% !important; // force to set width for laptop screen
             display: flex;
-            background-color: rgb(229, 229, 229);
-          }
+            background: rgb(238, 238, 238);
 
-          .table-row-custom h4 {
-            display: block;
-            font-weight: 500;
-          }
-        }
-      }
+            &:nth-child(1),
+            &:nth-child(2),
+            &:nth-child(3) {
+              background: transparent;
+              display: inline-flex !important; // force to set display type for laptop screen
+              max-width: 33%!important; // To overwrite default table cell size only responsive device
+              min-width: 5% !important; // To overwrite default table cell size only responsive device
 
-      .rdt_TableBody .rdt_TableRow.active {
-        max-height: 35.875rem;
-      }
+              .table-row-custom{
+                padding: 0;
+                h4{
+                  display: none;
+                }
+              }
+            }
 
-      .selectable-table {
-        .rdt_TableRow .rdt_TableCell:first-child {
-          min-width: 1.89rem;
-          max-width: 3.15rem;
-          width: auto !important;
-        }
+            &:last-child{
+              display: flex;
+              padding: 0;
+              width: 2.205rem !important; // To overwrite as a drop-down button width
+              min-width: 1.26rem !important; // To overwrite as a drop-down button width
+              height: 1.89rem !important; // To overwrite as a drop-down button height
+            }
 
-        .rdt_TableHeadRow .rdt_TableCol:first-child {
-          min-width: 1.89rem;
-          max-width: 0.15rem;
-          width: auto !important;
-        }
-      }
-    }
-
-    @media only screen and (max-width: 37.8rem) {
-      .rdt_TableBody .rdt_TableRow {
-        .rdt_TableCell {
-          &:nth-child(3) {
-            max-width: 6.3rem;
-            width: 100%;
-          }
-        }
-      }
-    }
-    @media only screen and (max-width: 27.72rem) {
-      .rdt_TableBody .rdt_TableRow {
-        .rdt_TableCell {
-          &:nth-child(3) {
-            max-width: 3.15rem;
-            width: 100%;
+            .table-row-custom{
+              max-width: 18.75rem;
+              position: relative;
+              word-wrap: unset;
+              text-wrap: nowrap;
+              overflow: hidden;
+              padding: 0.313rem 0.625rem;
+              h4{
+                display: block;
+              }
+            }
           }
         }
       }
-    }
-    @media only screen and (max-width: 23.31rem) {
-      .rdt_TableBody .rdt_TableRow .rdt_TableCell .table-row-custom * {
-        font-size: 0.85rem !important;
-      }
-    }
+  }
+}
+
+
+@media screen and (max-width:37.737rem) {
+  .rdt_Pagination{
+    display: flex !important;
   }
 }

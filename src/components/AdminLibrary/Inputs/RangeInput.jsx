@@ -14,6 +14,9 @@ export default function RangeInput(props) {
                 value={props.value}
                 onChange={(e) => { props.onChange?.(e) }}
             />
+             {
+                    props.proSetting && <span className="admin-pro-tag">pro</span>
+                }
             <output className={props.outputClass}>{props.value ? props.value : 0}px</output>
         </div>
     </div>

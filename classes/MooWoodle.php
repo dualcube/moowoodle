@@ -15,8 +15,9 @@ defined('ABSPATH') || exit;
  * 
  * @property Util $util instance of utill class
  * @property Setting $setting instance of setting class
- * @property Course $course instance of course class
- * @property Category $category instance of category class
+ * @property Core\Course $course instance of course class
+ * @property Core\Category $category instance of category class
+ * @property Core\Product $product instance of product class
  * @property RestAPI $restAPI instance of restapi class
  */
 class MooWoodle {
@@ -121,26 +122,21 @@ class MooWoodle {
      * @return void
      */
     public function init_classes() {
-		$this->container[ 'util' ]       = new Util();
-        $this->container[ 'setting' ]    = new Setting();
-		$this->container[ 'course' ]     = new Course();
-		$this->container[ 'category' ]   = new Category();
-		$this->container[ 'restAPI' ]    = new RestAPI();
-
-		$this->container[ 'Template' ]   = new Template();
-		$this->container[ 'Enrollment' ] = new Enrollment();
-		$this->container[ 'Emails' ]     = new Emails();
-		$this->container[ 'Product' ]    = new Product();
-
-        $this->container[ 'external_service' ]  = new ExternalService();
-		$this->container[ 'MyAccountEndPoint' ] = new MyAccountEndPoint();
-
-		if ( is_admin() ) {
-			$this->container[ 'admin' ]        = new Admin();
-		    $this->container[ 'TestConnection' ] = new TestConnection();
+        if ( is_admin() ) {
+			$this->container[ 'admin' ] = new Admin();
 		}
 
-        $this->container['restAPI']->synchronize(null);
+		$this->container[ 'util' ] = new Util();
+        $this->container[ 'setting' ] = new Setting();
+		$this->container[ 'restAPI' ] = new RestAPI();
+		$this->container[ 'emails' ] = new Emails\Emails();
+		$this->container[ 'course' ] = new Core\Course();
+		$this->container[ 'category' ] = new Core\Category();
+		$this->container[ 'product' ] = new Core\Product();
+        $this->container[ 'external_service' ] = new ExternalService();
+
+		$this->container[ 'enrollment' ] = new Enrollment();
+		$this->container[ 'MyAccountEndPoint' ] = new MyAccountEndPoint();
     }
 
     /**
@@ -148,7 +144,7 @@ class MooWoodle {
      * @return void
      */
     public function is_woocommerce_loaded() {
-        if ( !did_action( 'woocommerce_loaded' ) || is_admin() ) {
+        if ( ! did_action( 'woocommerce_loaded' ) && is_admin() ) {
         	add_action( 'admin_notices', [ $this , 'woocommerce_admin_notice' ] );
         }
     }

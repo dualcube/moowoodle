@@ -36,21 +36,21 @@ class RestAPI {
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
 
-        register_rest_route( MooWoodle()->rest_namespace, '/fetch-all-courses', [
-            'methods'             => \WP_REST_Server::ALLMETHODS,
-            'callback'            =>[ $this, 'fetch_all_courses' ],
-            'permission_callback' =>[ $this, 'moowoodle_permission' ],
-        ]);
-
         register_rest_route( MooWoodle()->rest_namespace, '/sync-course-options', [
             'methods'             => \WP_REST_Server::ALLMETHODS,
             'callback'            =>[ $this, 'synchronize' ],
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
 
-        register_rest_route( MooWoodle()->rest_namespace, '/fetch-mw-log', [
+        register_rest_route( MooWoodle()->rest_namespace, '/courses', [
             'methods'             => \WP_REST_Server::ALLMETHODS,
-            'callback'            =>[ $this, 'mw_get_log' ],
+            'callback'            =>[ $this, 'get_courses' ],
+            'permission_callback' =>[ $this, 'moowoodle_permission' ],
+        ]);
+
+        register_rest_route( MooWoodle()->rest_namespace, '/fetch-log', [
+            'methods'             => \WP_REST_Server::ALLMETHODS,
+            'callback'            =>[ $this, 'get_log' ],
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
     }
@@ -153,53 +153,109 @@ class RestAPI {
 		$response = MooWoodle()->external_service->do_request( 'get_courses' );
         $courses  = $response[ 'data' ];
 
-		// // update all course and product.
-		// foreach ( $courses as $course ) {
-		// 	$course_ids = $product_ids = [];
+        MooWoodle()->course->update_courses( $courses );
+        MooWoodle()->product->update_products( $courses );
 
-		// 	// sync courses post data.
-		// 	$course_id = MooWoodle()->Course->update_course( $course );
-		// 	if($course_id) $course_ids[] = $course_id;
-
-		// 	// sync product if enable.
-		// 	if ($sync_now_options['sync_all_product']) {
-		// 		$product_id= MooWoodle()->Product->update_product( $course );
-		// 		if($product_id) $product_ids[] = $product_id;
-		// 	}
-		// }
-
-		// // remove courses that not exist in moodle.
-		// MooWoodle()->Course->remove_exclude_ids($course_ids);
-
-
-		// if ($sync_now_options['sync_all_product']) {
-		// 	// remove product that not exist in moodle.
-		// 	MooWoodle()->Product->remove_exclude_ids($product_ids);
-		// }
-
-        // return rest_ensure_response(apply_filters('moowoodle_after_sync','success',$courses, $sync_now_options));
+        return rest_ensure_response( true );
     }
 
     /**
-     * Seve the setting set in react's admin setting page.
+     * Fetch all course
      * @param mixed $request
-     * @return array
+     * @return \WP_Error|\WP_REST_Response
      */
-    public function fetch_all_courses() {
-        $response = MooWoodle()->Course->fetch_all_courses(['numberposts' => -1, 'fields' => 'ids']);
-        return rest_ensure_response($response);
-    }
+    public function get_courses( $request ) {
+        $count_courses = $request->get_param( 'count' );
+        $page          = $request->get_param( 'page' );
+        $per_page      = $request->get_param( 'perpage' );
 
-    /**
-     * Seve the setting set in react's admin setting page.
-     * @param mixed $request
-     * @return array
-     */
-    public function mw_get_log() {
-        $logs = [];
-        if (file_exists(MW_LOGS . "/error.txt")) {
-            $logs = explode("\n", wp_remote_retrieve_body(wp_remote_get(get_site_url(null, str_replace(ABSPATH, '', MW_LOGS) . "/error.txt"))));
+        // Get the courses
+        $course_ids = MooWoodle()->course->get_courses([
+            'fields'      => 'ids',
+            'numberposts' => -1,
+        ]);
+
+        // Set response as number of courses if count request is set.
+        if ( $count_courses ) {
+            return rest_ensure_response( count( $course_ids ) );
         }
-        rest_ensure_response($logs);
+
+        $formatted_courses = [];
+
+		foreach ( $course_ids as $course_id ) {
+			// get course all post meta.
+			$course_meta = array_map( 'current', get_post_meta( $course_id, '', true ) );
+
+			//get term object by course category id.
+			$term = MooWoodle()->category->get_category( $course_meta[ '_category_id' ], 'course_cat' );
+
+            $products = wc_get_products([
+                'meta_query' => [
+                    [
+                        'key'   => 'linked_course_id',
+                        'value' => $course_id,
+                    ]
+                ]
+            ]);
+
+            $synced_products = [];
+            $count_enrolment = 0;
+
+			foreach ( $products as $product ) {
+				$synced_products[ $product->get_name() ] = add_query_arg( [ 'post' => $product->get_id() , 'action' => 'edit' ], admin_url( 'post.php' ) );
+                $count_enrolment += (int) $product->get_meta( 'total_sales' );
+			}
+
+            // Prepare date
+            $course_startdate = $course_meta[ '_course_startdate' ];
+            $course_enddate   = $course_meta[ '_course_enddate' ];
+
+			$date = wp_date( 'M j, Y', $course_startdate );
+			
+            // Append course end date if exist.
+            if ( $course_enddate ) {
+				$date .= ' - ' . wp_date( 'M j, Y  ', $course_enddate );
+			}
+
+            // Get moowoodle course id
+            $moodle_course_id = $course_meta[ 'moodle_course_id' ];
+
+            // Prepare url
+            $moodle_url   = esc_url( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . '/course/edit.php?id=' . $moodle_course_id;
+            $category_url = add_query_arg( [ 'course_cat' => $term->slug, 'post_type' => 'course' ], admin_url( 'edit.php' ) );
+
+            /**
+             * Filter for add additional data.
+             * @var array formatted course data.
+             */
+			$formatted_courses[] = apply_filters( 'moowoodle_formatted_course', [
+				'id'                => $course_id,
+				'moodle_url'        => $moodle_url,
+				'moodle_course_id'  => $moodle_course_id,
+				'course_short_name' => $course_meta[ '_course_short_name' ],
+				'course_name'       => get_the_title( $course_id ),
+				'products'          => $synced_products,
+				'category_name'     => $term->name,
+				'category_url'      => $category_url,
+				'enroled_user'      => $count_enrolment,
+				'date'              => $date,
+			]);
+		}
+
+        return rest_ensure_response( $formatted_courses );
+    }
+
+    /**
+     * Seve the setting set in react's admin setting page.
+     * @param mixed $request
+     * @return \WP_Error|\WP_REST_Response
+     */
+    public function get_log() {
+        $logs = [];
+        if ( file_exists( MW_LOGS . "/error.txt" ) ) {
+            $logs = explode( "\n", wp_remote_retrieve_body(wp_remote_get(get_site_url(null, str_replace(ABSPATH, '', MW_LOGS) . "/error.txt"))));
+        }
+        
+        return rest_ensure_response($logs);
     }
 }

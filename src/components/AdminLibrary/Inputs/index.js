@@ -21,12 +21,14 @@ import Table from './Util/Table.jsx';
 import WpEditor from './Util/WpEditor.jsx';
 // Spacial component import
 import ButtonCustomizer from './Special/ButtonCustomizer.jsx';
+import ConnectSelect from './Special/ConnectSelect.jsx';
 // Export Component's object as default.
 export default {
     BasicInput,
     ButtonCustomizer,
     CalendarInput,
     CheckBox,
+    ConnectSelect,
     FileInput,
     MapsInput,
     MultiNumInput,

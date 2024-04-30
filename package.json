@@ -27,13 +27,14 @@
         "@emotion/react": "^11.11.1",
         "@emotion/styled": "^11.11.0",
         "@mui/material": "^5.14.4",
-        "@tinymce/tinymce-react": "^4.3.0",
+        "@tinymce/tinymce-react": "^5.0.1",
         "@wordpress/react-i18n": "^3.50.0",
-        "axios": "^1.4.0",
+        "axios": "^1.6.8",
         "google-map-react": "^2.2.1",
         "react": "^18.2.0",
         "react-csv": "^2.2.2",
         "react-data-table-component": "^7.5.3",
+        "react-date-range": "^2.0.1",
         "react-dom": "^18.2.0",
         "react-multi-date-picker": "^4.1.2",
         "react-query": "^3.39.3",
@@ -42,8 +43,6 @@
         "react-sortablejs": "^6.1.4",
         "react-spinners": "^0.13.8",
         "react-table": "^7.8.0",
-        "recharts": "^2.7.3",
-        "rsuite": "^5.37.4",
-        "react-paginate": "^8.2.0"
-    }
+        "recharts": "^2.7.3"
+      }
 }

@@ -24,6 +24,9 @@ const MultiNumInput = (props) => {
                                             }
                                             onChange={(e) => { props.onChange?.(e, props.keyName, option.key, index) }}
                                         />
+                                         {
+                    props.proSetting && <span className="admin-pro-tag">pro</span>
+                }
                                     </div>
                                 </div>
                             );

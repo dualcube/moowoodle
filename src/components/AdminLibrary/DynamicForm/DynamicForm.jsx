@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import "./dynamicForm.scss";
 import CustomInput from "../Inputs";
-import ConnectButton from "../../ConnectButton/ConnectButton";
 
 // import context.
 import { useSetting } from "../../../contexts/SettingContext";
@@ -10,6 +9,11 @@ import { useSetting } from "../../../contexts/SettingContext";
 import { getApiLink, sendApiResponse } from "../../../services/apiService";
 import Dialog from "@mui/material/Dialog";
 import Popoup from "../../PopupContent/PopupContent";
+import FormCustomizer from "../Inputs/Special/FormCustomizer";
+
+// Variable for controll coldown effect submit time
+const PENALTY  = 10;
+const COOLDOWN = 1;
 
 const DynamicForm = (props) => {
   const { modal, submitUrl, id } = props.setting;
@@ -19,41 +23,76 @@ const DynamicForm = (props) => {
   const settingChanged = useRef(false);
   const [modelOpen, setModelOpen] = useState(false);
 
+  const counter = useRef(0);
+  const counterId = useRef(0);
+
   // Submit the setting to backend when setting Change.
   useEffect(() => {
     if (settingChanged.current) {
       settingChanged.current = false;
 
-      sendApiResponse(getApiLink(submitUrl), {
-        setting: setting,
-        settingName: id,
-        vendor_id: props.vendorId || "",
-        announcement_id: props.announcementId || "",
-        knowladgebase_id: props.knowladgebaseId || "",
-      }).then((response) => {
-        // Set success messaage for 2second.
-        setSuccessMsg(response.error);
-        setTimeout(() => setSuccessMsg(""), 2000);
+      // Set counter by penalti
+      counter.current = PENALTY;
+      // Clear previous counter.
+      if (counterId.current) {
+        clearInterval(counterId.current);
+      }
 
-        // If response has redirect link then redirect.
-        if (response.redirect_link) {
-          window.location.href = response.data.redirect_link;
+      // Create new interval
+      const intervalId = setInterval(() => {
+        counter.current -= COOLDOWN;
+        // Cooldown compleate time for db request.
+        if (counter.current < 0) {
+          sendApiResponse(getApiLink(submitUrl), {
+            setting: setting,
+            settingName: id,
+            vendor_id: props.vendorId || "",
+            announcement_id: props.announcementId || "",
+            knowladgebase_id: props.knowladgebaseId || "",
+          }).then((response) => {
+            // Set success messaage for 2second.
+            setSuccessMsg(response.error);
+            setTimeout(() => setSuccessMsg(""), 2000);
+    
+            // If response has redirect link then redirect.
+            if (response.redirect_link) {
+              window.location.href = response.data.redirect_link;
+            }
+          });
+
+          clearInterval(intervalId);
+          counterId.current = 0;
         }
-      });
+      }, 50);
+    
+      // Store the interval id.
+      counterId.current = intervalId;
     }
   }, [setting]);
 
-  const handleChange = (event, key, type = 'single', fromType = 'simple', arrayValue = []) => {
-    if ( appLocalizer.pro_active && props.proSetting?.includes( key ) ) {
-        setModelOpen(true);
-        return;
+  const isProSetting = (proDependent) => {
+    return proDependent && !appLocalizer.pro_active;
+  }
+
+  const proSettingChanged = (isProSetting) => {
+    if (isProSetting && !appLocalizer.pro_active) {
+      setModelOpen(true);
+      return true;
     }
+    return false;
+  }
+
+
+  const handleChange = (event, key, type = 'single', fromType = 'simple', arrayValue = []) => {
     settingChanged.current = true;
+
     if ( type === 'single' ) {
         if (fromType === 'simple') {
             updateSetting( key, event.target.value );
         } else if (fromType === 'calender') {
             updateSetting( key, event.join( ',' ) );
+        } else if (fromType === 'select') {
+            updateSetting( key, arrayValue[ event.index ] );
         } else if (fromType === 'multi-select') {
             updateSetting( key, event );
         } else if (fromType === 'wpeditor') {
@@ -73,15 +112,15 @@ const DynamicForm = (props) => {
             setCountryState( country_list_array );
         }
     } else {
-        let prevData = setting[key] || [];
-        if ( ! prevData || typeof prevData == 'string' || prevData == true ) {
-          prevData = [ key ];
-        }
-        prevData = prevData.filter((data) => data != event.target.value);
-        if ( event.target.checked ) {
-            prevData.push( event.target.value );
-        }
-        updateSetting( key, prevData );
+      let prevData = setting[key] || [];
+      if ( ! prevData || typeof prevData == 'string' || prevData == true ) {
+        prevData = [ key ];
+      }
+      prevData = prevData.filter((data) => data != event.target.value);
+      if ( event.target.checked ) {
+        prevData.push( event.target.value );
+      }
+      updateSetting( key, prevData );
     }
 }
 
@@ -125,52 +164,43 @@ const DynamicForm = (props) => {
     frame.open();
   };
 
+  const isContain = ( key, value = null ) => {
+    let settingValue = setting[key];
+    
+    // If setting value is a array
+    if (Array.isArray(settingValue)) {
+      // Setting value is set
+      if (value === null && settingValue.length ) {
+        return true;
+      }
+      
+      return settingValue.includes( value )
+    }
+    
+    // Setting value is not a array
+    if (value === null && settingValue) {
+      return true;
+    }
+
+    return settingValue === value;
+  }
+
   const renderForm = () => {
     return modal.map((inputField, index) => {
       let value = setting[inputField.key] || "";
       let input = "";
 
-      // Check for dependent input fild
-      if (inputField.depend && !setting[inputField.depend]) {
-        return false;
-      }
-
-      // for select selection
-      if (
-        inputField.depend &&
-        setting[inputField.depend] &&
-        setting[inputField.depend].value &&
-        setting[inputField.depend].value != inputField.dependvalue
-      ) {
-        return false;
-      }
-
-      // for radio button selection
-      if (
-        inputField.depend &&
-        setting[inputField.depend] &&
-        !setting[inputField.depend].value &&
-        setting[inputField.depend] != inputField.dependvalue
-      ) {
-        return false;
-      }
-
-      // for checkbox selection
-      if (
-        inputField.depend_checkbox &&
-        setting[inputField.depend_checkbox] &&
-        setting[inputField.depend_checkbox].length === 0
-      ) {
-        return false;
-      }
-
-      // for checkbox selection
-      if (
-        inputField.not_depend_checkbox &&
-        setting[inputField.not_depend_checkbox] &&
-        setting[inputField.not_depend_checkbox].length > 0
-      ) {
-        return false;
+      // Filter dependent 
+      if ( inputField.dependent ) {
+        if ( inputField.dependent.set === true && ! isContain( inputField.dependent.key) ) {
+          return;
+        }
+        if ( inputField.dependent.set === false && isContain( inputField.dependent.key) ) {
+          return;
+        }
+        if ( inputField.dependent.value && isContain( inputField.dependent.key, inputField.dependent.value ) ) {
+          return;
+        }
       }
 
       // Set input fild based on their type.
@@ -182,7 +212,7 @@ const DynamicForm = (props) => {
         case "number":
           input = (
             <CustomInput.BasicInput
-              wrapperClass="setting-form-input"
+              wrapperClass={`setting-form-input`}
               descClass="settings-metabox-description"
               description={inputField.desc}
               key={inputField.key}
@@ -191,8 +221,11 @@ const DynamicForm = (props) => {
               type={inputField.type}
               placeholder={inputField.placeholder}
               value={value}
+              proSetting={isProSetting(inputField.proSetting)}
               onChange={(e) => {
-                handleChange(e, inputField.key);
+                if ( ! proSettingChanged( inputField.proSetting ) ) {
+                  handleChange(e, inputField.key);
+                }
               }}
             />
           );
@@ -210,8 +243,11 @@ const DynamicForm = (props) => {
               name={inputField.name}
               placeholder={inputField.placeholder}
               value={value}
+              proSetting={isProSetting(inputField.proSetting)}
               onChange={(e) => {
-                handleChange(e, inputField.key);
+                if ( ! proSettingChanged( inputField.proSetting ) ) {
+                  handleChange(e, inputField.key);
+                }
               }}
             />
           );
@@ -225,8 +261,11 @@ const DynamicForm = (props) => {
               key={inputField.key}
               name={inputField.name}
               value={value}
+              proSetting={isProSetting(inputField.proSetting)}
               onChange={(e) => {
-                handleChange(e, inputField.key);
+                if ( ! proSettingChanged( inputField.proSetting ) ) {
+                  handleChange(e, inputField.key);
+                }
               }}
             />
           );
@@ -248,8 +287,11 @@ const DynamicForm = (props) => {
               key={inputField.key}
               name={inputField.name}
               value={value}
+              proSetting={isProSetting(inputField.proSetting)}
               onChange={(e) => {
-                handleChange(e, inputField.key);
+                if ( ! proSettingChanged( inputField.proSetting ) ) {
+                  handleChange(e, inputField.key);
+                }
               }}
               onButtonClick={(e) => {
                 runUploader(inputField.key);
@@ -270,8 +312,11 @@ const DynamicForm = (props) => {
               name={inputField.name}
               type={inputField.type}
               value={value || "#000000"}
+              proSetting={isProSetting(inputField.proSetting)}
               onChange={(e) => {
-                handleChange(e, inputField.key);
+                if ( ! proSettingChanged( inputField.proSetting ) ) {
+                  handleChange(e, inputField.key);
+                }
               }}
             />
           );
@@ -284,8 +329,11 @@ const DynamicForm = (props) => {
               inputClass="teal"
               multiple={true}
               value={setting[inputField.key]?.split(",") || ""}
+              proSetting={isProSetting(inputField.proSetting)}
               onChange={(e) => {
-                handleChange(e, inputField.key, "single", inputField.type);
+                if ( ! proSettingChanged( inputField.proSetting ) ) {
+                  handleChange(e, inputField.key, "single", inputField.type);
+                }
               }}
             />
           );
@@ -302,6 +350,7 @@ const DynamicForm = (props) => {
               placeholder="Enter store location"
               containerId="store-maps"
               containerClass="store-maps, gmap"
+              proSetting={isProSetting(inputField.proSetting)}
             />
           );
           break;
@@ -319,6 +368,7 @@ const DynamicForm = (props) => {
                   description={inputField.desc}
                   type={inputField.type}
                   placeholder={inputField.placeholder}
+                  proSetting={isProSetting(inputField.proSetting)}
                   // onChange={handleChange}
                 />
               </div>
@@ -340,6 +390,7 @@ const DynamicForm = (props) => {
               value={setting[inputField.key]}
               options={inputField.options}
               onChange={handleMultiNumberChange}
+              proSetting={isProSetting(inputField.proSetting)}
             />
           );
           break;
@@ -357,8 +408,11 @@ const DynamicForm = (props) => {
               name={inputField.name}
               keyName={inputField.key}
               options={inputField.options}
+              proSetting={isProSetting(inputField.proSetting)}
               onChange={(e) => {
-                handleChange(e, inputField.key);
+                if ( ! proSettingChanged( inputField.proSetting ) ) {
+                  handleChange(e, inputField.key);
+                }
               }}
             />
           );
@@ -383,8 +437,11 @@ const DynamicForm = (props) => {
               name={inputField.name}
               keyName={inputField.key}
               options={inputField.options}
+              proSetting={isProSetting(inputField.proSetting)}
               onChange={(e) => {
-                handleChange(e, inputField.key);
+                if ( ! proSettingChanged( inputField.proSetting ) ) {
+                  handleChange(e, inputField.key);
+                }
               }}
             />
           );
@@ -405,8 +462,11 @@ const DynamicForm = (props) => {
               name={inputField.name}
               keyName={inputField.key}
               options={inputField.options}
+              proSetting={isProSetting(inputField.proSetting)}
               onChange={(e) => {
-                handleChange(e, inputField.key);
+                if ( ! proSettingChanged( inputField.proSetting ) ) {
+                  handleChange(e, inputField.key);
+                }
               }}
             />
           );
@@ -425,8 +485,11 @@ const DynamicForm = (props) => {
               name={inputField.name}
               keyName={inputField.key}
               options={inputField.options}
+              proSetting={isProSetting(inputField.proSetting)}
               onChange={(e) => {
-                handleChange(e, inputField.key);
+                if ( ! proSettingChanged( inputField.proSetting ) ) {
+                  handleChange(e, inputField.key);
+                }
               }}
             />
           );
@@ -447,8 +510,11 @@ const DynamicForm = (props) => {
               inputClass={inputField.key}
               options={options}
               value={value}
+              proSetting={isProSetting(inputField.proSetting)}
               onChange={(e, data) => {
-                handleChange(e, inputField.key, "single", "select", data);
+                if ( ! proSettingChanged( inputField.proSetting ) ) {
+                  handleChange(e, inputField.key, "single", "select", data);
+                }
               }}
             />
           );
@@ -461,13 +527,19 @@ const DynamicForm = (props) => {
               descClass="settings-metabox-description"
               selectDeselectClass="select-deselect-trigger"
               selectDeselect={inputField.select_deselect}
+              selectDeselectValue={
+                appLocalizer.global_string.select_deselect_all
+              }
               description={inputField.desc}
               inputClass={inputField.key}
               options={inputField.options}
               type="multi-select"
               value={value}
+              proSetting={isProSetting(inputField.proSetting)}
               onChange={(e, data) => {
-                handleChange(e, inputField.key, "single", "multi-select", data);
+                if ( ! proSettingChanged( inputField.proSetting ) ) {
+                  handleChange(e, inputField.key, "single", "multi-select", data);
+                }
               }}
               onMultiSelectDeselectChange={(e) =>
                 handlMultiSelectDeselectChange(e, inputField)
@@ -485,8 +557,11 @@ const DynamicForm = (props) => {
               inputClass={inputField.key}
               options={inputField.options}
               value={value}
+              proSetting={isProSetting(inputField.proSetting)}
               onChange={(e, data) => {
-                handleChange(e, inputField.key, "single", "country", data);
+                if ( ! proSettingChanged( inputField.proSetting ) ) {
+                  handleChange(e, inputField.key, "single", "country", data);
+                }
               }}
             />
           );
@@ -501,8 +576,11 @@ const DynamicForm = (props) => {
               inputClass={inputField.key}
               options={countryState}
               value={value}
+              proSetting={isProSetting(inputField.proSetting)}
               onChange={(e, data) => {
-                handleChange(e, inputField.key, "single", "select", data);
+                if ( ! proSettingChanged( inputField.proSetting ) ) {
+                  handleChange(e, inputField.key, "single", "select", data);
+                }
               }}
             />
           );
@@ -527,8 +605,11 @@ const DynamicForm = (props) => {
               rightContent={inputField.right_content}
               options={inputField.options}
               value={value}
+              proSetting={isProSetting(inputField.proSetting)}
               onChange={(e) => {
-                handleChange(e, inputField.key, "multiple");
+                if ( ! proSettingChanged( inputField.proSetting ) ) {
+                  handleChange(e, inputField.key, "multiple");
+                }
               }}
               onMultiSelectDeselectChange={(e) =>
                 handlMultiSelectDeselectChange( inputField.key, inputField.options )
@@ -558,7 +639,9 @@ const DynamicForm = (props) => {
               apiKey={appLocalizer.mvx_tinymce_key}
               value={value}
               onEditorChange={(e) => {
-                handleChange(e, inputField.key, "simple", "wpeditor");
+                if ( ! proSettingChanged( inputField.proSetting ) ) {
+                  handleChange(e, inputField.key, "simple", "wpeditor");
+                }
               }}
             />
           );
@@ -600,23 +683,53 @@ const DynamicForm = (props) => {
           input = (
             <CustomInput.ButtonCustomizer
               buttonText={setting.button_text}
-              onChange={(e, key) => handleChange(e, key)}
+              proSetting={isProSetting(inputField.proSetting)}
+              onChange={(e, key) => {
+                if ( ! proSettingChanged( inputField.proSetting ) ) {
+                  handleChange(e, key);
+                }
+              }}
             />
           );
           break;
-        
-        case "connectbutton":
+
+          case "form_customizer":
+            input = (
+              <FormCustomizer
+                value={value}
+                buttonText={setting.button_text}
+                proSetting={isProSetting(inputField.proSetting)}
+                onChange={(e, key) => {
+                  if ( ! proSettingChanged( inputField.proSetting ) ) {
+                    handleChange(e, key);
+                  }
+                }}
+              />
+            );
+            break;
+
+        case "api_connect":
           input = (
-            <ConnectButton />
+            <CustomInput.ConnectSelect
+              mailchimpKey={inputField.key}
+              selectKey={inputField.selectKey}
+              optionKey={inputField.optionKey}
+              onChange={handleChange}
+              proSettingChanged={
+                () => proSettingChanged(inputField.proSetting)
+              }
+              settingChanged={settingChanged}
+              apiLink={inputField.apiLink}
+            />
           );
           break;
-      }
+        }
 
       return inputField.type === "section" ||
         inputField.label === "no_label" ? (
         input
       ) : (
-        <div key={"g" + inputField.key} className="form-group">
+        <div key={"g" + inputField.key} className={ `form-group ${ inputField.classes ? inputField.classes : '' }` }>
           <label
             className="settings-form-label"
             key={"l" + inputField.key}
@@ -624,7 +737,7 @@ const DynamicForm = (props) => {
           >
             <p>{inputField.label}</p>
           </label>
-          <div className="settings-input-content">{input}{ ! appLocalizer.pro_active && props.proSetting?.includes( inputField.key ) && <span className="admin-pro-tag">pro</span> }</div>
+          <div className="settings-input-content">{input}</div>
         </div>
       );
     });
@@ -638,7 +751,7 @@ const DynamicForm = (props) => {
     <>
       <div className="dynamic-fields-wrapper">
         <Dialog
-          className="woo-module-popup"
+          className="admin-module-popup"
           open={modelOpen}
           onClose={handleModelClose}
           aria-labelledby="form-dialog-title"
@@ -650,7 +763,7 @@ const DynamicForm = (props) => {
           <Popoup />
         </Dialog>
         {successMsg && (
-          <div className="notic-display-title">
+          <div className="admin-notice-display-title">
             <i className="admin-font font-icon-yes"></i>
             {successMsg}
           </div>

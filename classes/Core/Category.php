@@ -1,6 +1,6 @@
 <?php
 
-namespace MooWoodle;
+namespace MooWoodle\Core;
 
 class Category {
 
@@ -30,7 +30,7 @@ class Category {
 		if ( is_wp_error( $terms ) ) {
 			return null;
 		}
-
+		
 		return $terms[0];
 	}
 

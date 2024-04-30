@@ -1,23 +1,16 @@
 <?php
 
-namespace MooWoodle;
+namespace MooWoodle\Core;
 
 class Course {
-	
 	public function __construct() {
 		// Register 'course' in post DB.
 		$this->register_course_post_type();
 		$this->register_course_taxonomy();
 
-		//add Link Moodle Course in WooCommerce edit product tab.
+		// Add Link Moodle Course in WooCommerce edit product tab.
 		add_filter( 'woocommerce_product_data_tabs', [ &$this, 'moowoodle_linked_course_tab' ], 99, 1 );
 		add_action( 'woocommerce_product_data_panels', [ &$this, 'moowoodle_linked_course_panals' ] );
-		
-		// add subcription product notice .
-		add_filter( 'woocommerce_product_class', [ &$this, 'product_type_subcription_warning' ], 10, 2);
-		
-		// Course meta save with WooCommerce product save
-		add_action( 'woocommerce_process_product_meta', [ &$this, 'save_product_meta_data' ] );
 	}
 
 	/**
@@ -93,7 +86,7 @@ class Course {
 	 * @param array $args
 	 * @return array $courses
 	 */
-	public static function get_courses ( $args = [] ) {
+	public function get_courses ( $args = [] ) {
 		$args = array_merge([
 			'post_type'   => 'course',
 			'post_status' => 'publish'
@@ -103,55 +96,24 @@ class Course {
 	}
 
 	/**
-     * Get All Caurse data.
-     * @return \WP_Error| \WP_REST_Response
-     */
-    public function fetch_courses( $args = [] ) {
-		// get courses from post
-		$courses = $this->get_courses($args);
-		$formatted_courses = [];
-		foreach ($courses as $course_id) {
-			// get course all post meta.
-			$course_meta = array_map('current', get_post_meta($course_id,'',true));
-			$course_enddate = $course_meta['_course_enddate'];
-			//get term object by course category id.
-			$term = MooWoodle()->Category->get_category($course_meta['_category_id'], 'course_cat');
-			$moodle_course_id = $course_meta['moodle_course_id'];
-			$synced_products = [];
-			// get all products lincked with course.
-			$products = get_posts(['post_type' => 'product', 'numberposts' => -1, 'post_status' => 'publish', 'meta_key' => 'linked_course_id', 'meta_value' => $course_id]);
-			$count_enrolment = 0;
-			foreach ($products as $product) {
-				$synced_products[esc_html(get_the_title($product))] = add_query_arg( [ 'post' => $product->ID , 'action' => 'edit'],admin_url('post.php'));
-				$count_enrolment = $count_enrolment + (int) get_post_meta($product->ID, 'total_sales', true);
-			}
-			$date = wp_date('M j, Y', $course_meta['_course_startdate']);
-			if ($course_enddate) {
-				$date .= ' - ' . wp_date('M j, Y  ', $course_enddate);
-			}
-			$formatted_courses[] = [
-				'id' => $course_id,
-				'moodle_course_id' => $moodle_course_id,
-				'moodle_url' => esc_url(get_option('moowoodle_general_settings')["moodle_url"]) . 'course/edit.php?id=' . $moodle_course_id,
-				'course_name' => esc_html(get_the_title($course_id)),
-				'course_short_name' => $course_meta['_course_short_name'],
-				'product' => $synced_products,
-				'catagory_name' => esc_html($term->name),
-				'catagory_url' => add_query_arg(['course_cat' => $term->slug, 'post_type' => 'course'], admin_url('edit.php')),
-				'enroled_user' => $count_enrolment,
-				'date' => $date,
-			];
-		}
-		return $formatted_courses;
-	}
-
-	/**
 	 * Update all course
 	 * @param mixed $courses
 	 * @return void
 	 */
 	public function update_courses( $courses ) {
-		
+		$updated_ids = [];
+
+		foreach ( $courses as $course ) {
+			// sync courses post data.
+			$course_id = $this->update_course( $course );
+
+			if ( $course_id ) {
+				$updated_ids[] = $course_id;
+			}
+		}
+
+		// remove courses that not exist in moodle.
+		$this->remove_exclude_ids( $updated_ids );
 	}
 	
 	/**
@@ -160,7 +122,7 @@ class Course {
 	 * @param array $course (moodle course data)
 	 * @return int course id
 	 */
-	public static function update_course( $course ) {
+	public function update_course( $course ) {
 		if ( empty( $course ) || $course['format'] == 'site' ) return 0;
 
 		// get the course id linked with moodle.
@@ -171,7 +133,8 @@ class Course {
 				'meta_compare' 	=> '=',
 				'fields'	 	=> 'ids'
 			]
-		)[0];
+		);
+		$course_id = $course_id ? $course_id[0] : 0;
 		
 		// prepare argument for update or create course.
 		$args = [
@@ -184,27 +147,27 @@ class Course {
 
 		// if course already exist update course
 		// otherwise create new course.
-		if ( $course_id > 0 ) {
+		if ( $course_id ) {
 			$args[ 'ID' ] = $course_id;
-			$new_post_id = wp_update_post($args);
+			$new_course_id = wp_update_post( $args );
 		} else {	
-			$new_post_id = wp_insert_post($args);
+			$new_course_id = wp_insert_post( $args );
 		}
 		
 		// update course meta data.
-		update_post_meta( $new_post_id, '_course_short_name', sanitize_text_field($course['shortname']));
-		update_post_meta( $new_post_id, '_course_idnumber', sanitize_text_field($course['idnumber']));
-		update_post_meta( $new_post_id, '_course_startdate', $course['startdate']);
-		update_post_meta( $new_post_id, '_course_enddate', $course['enddate']);
-		update_post_meta( $new_post_id, 'moodle_course_id', (int) $course['id']);
-		update_post_meta( $new_post_id, '_category_id', (int) $course['categoryid']);
-		update_post_meta( $new_post_id, '_visibility', $course['visible']) ? 'visible' : 'hidden';
+		update_post_meta( $new_course_id, '_course_short_name', sanitize_text_field( $course[ 'shortname' ] ) );
+		update_post_meta( $new_course_id, '_course_idnumber', sanitize_text_field( $course[ 'idnumber' ] ) );
+		update_post_meta( $new_course_id, '_course_startdate', $course[ 'startdate' ] );
+		update_post_meta( $new_course_id, '_course_enddate', $course[ 'enddate' ] );
+		update_post_meta( $new_course_id, 'moodle_course_id', ( int ) $course[ 'id' ] );
+		update_post_meta( $new_course_id, '_category_id', ( int ) $course[ 'categoryid' ] );
+		update_post_meta( $new_course_id, '_visibility', $course[ 'visible' ] ) ? 'visible' : 'hidden';
 
 		// set course category id.
-		$term = MooWoodle()->Category->get_category($course['id'], 'course_cat');
-		if ($term) wp_set_post_terms($new_post_id, $term->term_id, 'course_cat');
+		$term = MooWoodle()->category->get_category( $course[ 'categoryid' ], 'course_cat' );
+		if ( $term ) wp_set_post_terms( $new_course_id, $term->term_id, 'course_cat' );
 		
-		return $new_post_id;
+		return $new_course_id;
 	}
 	
 	/**
@@ -212,7 +175,7 @@ class Course {
 	 * @param array $exclude_ids (course post ids)
 	 * @return void
 	 */
-	public static function remove_exclude_ids( $exclude_ids ) {
+	public function remove_exclude_ids( $exclude_ids ) {
 		$posts =  get_posts(
 			[
 				'post_type' 	=> 'course',
@@ -224,7 +187,7 @@ class Course {
 
 		// delete posts.
 		foreach ($posts as $post) {
-			wp_delete_post($post->ID, false);
+			wp_delete_post( $post->ID, false );
 		}
 	}
 
@@ -234,13 +197,12 @@ class Course {
 	 * @param mixed $course_name
 	 * @return string
 	 */
-	public static function get_course_url( $moodle_course_id, $course_name ) {
+	public function get_course_url( $moodle_course_id, $course_name ) {
 		$course 	   = $moodle_course_id;
 		$class 		   = "moowoodle";
 		$target 	   = '_blank';
 		$content 	   = $course_name;
-		$conn_settings = get_option('moowoodle_general_settings');
-		$redirect_uri  = $conn_settings['moodle_url'] . "/course/view.php?id=" . $course;
+		$redirect_uri  = MooWoodle()->setting->get_setting( 'moodle_url' ) . "/course/view.php?id=" . $course;
 		$url 		   = '<a target="' . esc_attr( $target ) . '" class="' . esc_attr( $class ) . '" href="' . $redirect_uri . '">' . $content . '</a>';
 		
 		return $url;
@@ -298,55 +260,5 @@ class Course {
 		<?php
 		// Nonce field (for security)
 		echo '<input type="hidden" name="product_meta_nonce" value="' . wp_create_nonce() . '"></div>';
-	}
-
-	/**
-	 * Add meta box panal.
-	 * @return void
-	 */
-	public function product_type_subcription_warning( $php_classname, $product_type ) {
-		// Get all active plugins
-		$active_plugins = get_option( 'active_plugins', [] );
-		if ( is_multisite() ) {
-			$active_plugins = array_merge( $active_plugins, get_site_option( 'active_sitewide_plugins', [] ) );
-		}
-
-		if (
-			in_array( 'woocommerce-subscriptions/woocommerce-subscriptions.php', $active_plugins )
-			|| array_key_exists( 'woocommerce-product/woocommerce-subscriptions.php', $active_plugins )
-			|| in_array('woocommerce-product-bundles/woocommerce-product-bundles.php', $active_plugins)
-			|| array_key_exists('woocommerce-product-bundles/woocommerce-product-bundles.php', $active_plugins)
-		) {
-			add_action( 'admin_notices', function() {
-				if ( MOOWOODLE_PRO_ADV ) {
-					echo '<div class="notice notice-warning is-dismissible"><p>' . __('WooComerce Subbcription and WooComerce Product Bundles is supported only with ', 'moowoodle') . '<a href="' . MOOWOODLE_PRO_SHOP_URL . '">' . __('MooWoodle Pro', 'moowoodle') . '</></p></div>';
-				}
-			});
-		}
-
-		return $php_classname;
-	}
-
-	/**
-	 * Save product meta.
-	 * @param int $post_id
-	 * @return int | void
-	 */
-	public function save_product_meta_data( $post_id ) {
-		// Security check
-		if (
-			! filter_input( INPUT_POST, 'product_meta_nonce', FILTER_DEFAULT ) === null
-			|| ! wp_verify_nonce( filter_input( INPUT_POST, 'product_meta_nonce', FILTER_DEFAULT ) )
-			|| ! current_user_can( 'edit_product', $post_id ) ) {
-			return $post_id;
-		}
-
-		$course_id = filter_input( INPUT_POST, 'course_id', FILTER_DEFAULT );
-
-		if ( $course_id ) {
-			update_post_meta( $post_id, 'linked_course_id', wp_kses_post( $course_id ) );
-			update_post_meta( $post_id, '_sku', 'course-' . get_post_meta( $course_id, '_sku', true ) );
-			update_post_meta( $post_id, 'moodle_course_id', get_post_meta( $course_id, 'moodle_course_id', true ) );
-		}
 	}
 }
