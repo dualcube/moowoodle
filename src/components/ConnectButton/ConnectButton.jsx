@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { sendApiResponse, getApiLink } from "../../services/apiService";
+import './ConnectButton.scss';
 
 const ConnectButton = (props) => {
     const { __ } = wp.i18n;
@@ -129,7 +130,7 @@ const ConnectButton = (props) => {
         }
         // Check where it is a success of failure
         else if ( ! response.success ) {
-            taskStatus = 'faild';
+            taskStatus = 'failed';
         }
         
         // Update task status
@@ -140,7 +141,7 @@ const ConnectButton = (props) => {
         });
 
         // If task status is not success exist from task sequence
-        if ( taskStatus === 'faild' ) {
+        if ( taskStatus === 'failed' ) {
             return;
         }
 
@@ -151,19 +152,27 @@ const ConnectButton = (props) => {
     }
     
     return (
-        <div>
-            <button
-                onClick={(e) => {
-                    e.preventDefault();
-                    startConnectionTask();
-                }}
-            >
-                {__('Connection test', 'moowoodle')}
-            </button>
-            <div>
+        <div className="connection-test-wrapper">
+            <div className="section-connection-test">
+                <button 
+                // className="disable"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        startConnectionTask();
+                    }}
+                >
+                    {__('Connection test', 'moowoodle')}
+                </button>
+                <div class="loader">
+                    <div class="three-body__dot"></div>
+                    <div class="three-body__dot"></div>
+                    <div class="three-body__dot"></div>
+                </div>
+            </div>
+            <div className="fetch-details-wrapper">
                 {taskSequence.map((task) => {
                     return (
-                        <div className={task.status}>{ task.message }</div>
+                        <div className={`${task.status} details-status-row`}>{ task.message } {task.status !== "running" && <i className={`admin-font ${task.status === "failed" ? "font-cross" : "font-icon-yes"}`}></i>}</div>
                     );
                 })}
             </div>

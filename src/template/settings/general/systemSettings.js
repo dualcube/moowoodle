@@ -10,7 +10,7 @@ export default {
     modal: [
         {
             key: "moodle_timeout",
-            type: "textarea",
+            type: "text",
             desc: __('Set Curl connection time out in sec.', 'moowoodle'),
             label: __("Timeout", 'moowoodle'),
         },

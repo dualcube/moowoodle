@@ -6,6 +6,7 @@ import CustomTable, {
 } from "../AdminLibrary/CustomTable/CustomTable";
 import Banner from "../Banner/banner";
 import { useRef } from "react";
+import './courses.scss';
 
 export default function Course() {
     const { __ } = wp.i18n;
@@ -166,7 +167,7 @@ export default function Course() {
             name: __('Category Name', 'moowoodle'),
             selector: row => row.category_name,
             cell: (row) => (
-                <TableCell>
+                <TableCell title={'Category Name'}>
                     <a href={ row.category_url } alt="category_url">
                         { row.category_name }
                     </a>
@@ -177,7 +178,7 @@ export default function Course() {
         {
             name: __('Enrolled Users', 'moowoodle'),
             cell: (row) => (
-                <TableCell>
+                <TableCell title={'Enrolled Users'}>
                     { row.enroled_user }
                 </TableCell>
             )
@@ -185,7 +186,7 @@ export default function Course() {
         {
             name: __('Date', 'moowoodle'),
             cell: (row) => (
-                <TableCell>
+                <TableCell title={'Date'}>
                     { row.date }
                 </TableCell>
             )
@@ -244,7 +245,7 @@ export default function Course() {
 
     return (
         <div className="course-container-wrapper">
-            <div className="page-title">
+            <div className="admin-page-title">
                 <p>{__("All Course", "moowoodle")}</p>
             </div>
             <div className="course-bulk-action">

@@ -3,14 +3,14 @@ import { __ } from '@wordpress/i18n';
 export default {
     id: "synchronize-datamap",
     priority: 10,
-    name: __("Synchrinize Data Map", 'moowoodle'),
-    desc: __("Synchrinize Data Map", 'moowoodle'),
+    name: __("Synchronize Data Map", 'moowoodle'),
+    desc: __("Synchronize Data Map", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     modal: [
         {
             key: "sync-user-options",
-            type: "checkbox",
+            type: "checkbox-default",
             desc: __("Determine User Information to Synchronize in Moodle-WordPress User synchronization. Please be aware that this setting does not apply to newly created users.", 'moowoodle'),
             label: __("User Information", 'moowoodle'),
             select_deselect: true,
@@ -39,7 +39,7 @@ export default {
         },
         {
             key: "sync-course-options",
-            type: "checkbox",
+            type: "checkbox-default",
             desc: __("Select Option For Course Sync.", 'moowoodle'),
             label: __("Course Information", 'moowoodle'),
             select_deselect: true,

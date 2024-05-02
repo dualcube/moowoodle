@@ -1,0 +1,147 @@
+$menu-btn-color: #522c81;
+$body-background: #f9f9f9;
+$color-white: #fff;
+$menu-color: #f9f8fb;
+$color-active: #65438f;
+
+.course-container-wrapper {
+  .admin-page-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    position: relative;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+
+    p {
+      font-size: 1.5rem;
+    }
+
+    .download-btn-subscriber-list {
+      border-radius: 0.25rem;
+      background-color: $color-active;
+      padding: 0.5rem 1rem;
+
+      a {
+        color: $color-white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        text-decoration: none;
+
+        .dashicons-before {
+          &::before {
+            padding: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .course-bulk-action{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    align-items: center;
+
+    label{
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    select{
+        background-color: transparent !important;
+        border: 0.115rem solid rgba(0, 0, 0, 0.125) !important;
+        border-radius: 0.25rem !important;
+        padding: 0.125rem 1.5rem 0.15rem 0.5rem;
+
+        &:hover, &:active{
+            box-shadow: none;
+        }
+    }
+
+   button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 0.25rem;
+    background-color: #65438f;
+    padding: 0.5rem 1rem;
+    height: fit-content;
+    color: #fff;
+   }
+  }
+
+  .moowoodle-course-actions{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    
+    button{
+      box-shadow: 0 0 1rem rgba($color: #000000, $alpha: 0.025);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:first-child{
+        background-color: $color-active;
+      }
+
+      &:last-child{
+        background-color: rgba($color: $color-active, $alpha: 0.6);
+        color: $color-white;
+      }
+      
+      i{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
+  .rdt_Table{
+    a{
+      color: $color-active;
+    }
+  }
+
+  .rdt_TableCol{
+    .rdt_TableCol_Sortable{
+      & > span{
+        font-size: 0.75rem;
+        padding: 3px
+      }
+    }
+  }
+
+  .rdt_Pagination{
+    .sc-lnsjTu.epZUJV{
+      & > svg{
+        display: none;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 85.365rem){
+  .rdt_Table{
+    .rdt_TableBody{
+      .rdt_TableRow{
+        .rdt_TableCell{
+          &:nth-child(1),
+          &:nth-child(2),
+          &:nth-child(3){
+            height: 4.25rem !important;
+          }
+        }
+      }
+    }
+  }
+}
