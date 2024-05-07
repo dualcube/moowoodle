@@ -16616,9 +16616,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Inputs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Inputs */ "./src/components/AdminLibrary/Inputs/index.js");
 /* harmony import */ var _contexts_SettingContext__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../contexts/SettingContext */ "./src/contexts/SettingContext.jsx");
 /* harmony import */ var _services_apiService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../services/apiService */ "./src/services/apiService.js");
-/* harmony import */ var _mui_material_Dialog__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/material/Dialog */ "./node_modules/@mui/material/Dialog/Dialog.js");
+/* harmony import */ var _mui_material_Dialog__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/material/Dialog */ "./node_modules/@mui/material/Dialog/Dialog.js");
 /* harmony import */ var _PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../PopupContent/PopupContent */ "./src/components/PopupContent/PopupContent.jsx");
 /* harmony import */ var _Inputs_Special_FormCustomizer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Inputs/Special/FormCustomizer */ "./src/components/AdminLibrary/Inputs/Special/FormCustomizer.jsx");
+/* harmony import */ var _ConnectButton_ConnectButton__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../ConnectButton/ConnectButton */ "./src/components/ConnectButton/ConnectButton.jsx");
 
 
 
@@ -16628,6 +16629,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 // import services function
+
 
 
 
@@ -17221,38 +17223,34 @@ const DynamicForm = props => {
           break;
 
         // Special input type project specific
-        case "button_customizer":
-          input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Inputs__WEBPACK_IMPORTED_MODULE_2__["default"].ButtonCustomizer, {
-            buttonText: setting.button_text,
-            proSetting: isProSetting(inputField.proSetting),
-            onChange: (e, key) => {
-              if (!proSettingChanged(inputField.proSetting)) {
-                handleChange(e, key);
-              }
-            }
-          });
+        case "testconnection":
+          input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ConnectButton_ConnectButton__WEBPACK_IMPORTED_MODULE_7__["default"], null);
           break;
-        case "form_customizer":
-          input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Inputs_Special_FormCustomizer__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        case "checkbox-default":
+          input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Inputs__WEBPACK_IMPORTED_MODULE_2__["default"].MultiCheckBox, {
+            wrapperClass: "checkbox-list-side-by-side",
+            descClass: "settings-metabox-description",
+            description: inputField.desc,
+            selectDeselectClass: "select-deselect-trigger",
+            inputWrapperClass: "toggle-checkbox-header",
+            inputInnerWrapperClass: "default-checkbox",
+            inputClass: inputField.class,
+            hintOuterClass: "dashicons dashicons-info",
+            hintInnerClass: "hover-tooltip",
+            idPrefix: "toggle-switch",
+            selectDeselect: inputField.select_deselect,
+            selectDeselectValue: "Select / Deselect All",
+            rightContentClass: "settings-metabox-description",
+            rightContent: inputField.right_content,
+            options: inputField.options,
             value: value,
-            buttonText: setting.button_text,
             proSetting: isProSetting(inputField.proSetting),
-            onChange: (e, key) => {
+            onChange: e => {
               if (!proSettingChanged(inputField.proSetting)) {
-                handleChange(e, key);
+                handleChange(e, inputField.key, "multiple");
               }
-            }
-          });
-          break;
-        case "api_connect":
-          input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Inputs__WEBPACK_IMPORTED_MODULE_2__["default"].ConnectSelect, {
-            mailchimpKey: inputField.key,
-            selectKey: inputField.selectKey,
-            optionKey: inputField.optionKey,
-            onChange: handleChange,
-            proSettingChanged: () => proSettingChanged(inputField.proSetting),
-            settingChanged: settingChanged,
-            apiLink: inputField.apiLink
+            },
+            onMultiSelectDeselectChange: e => handlMultiSelectDeselectChange(inputField.key, inputField.options)
           });
           break;
       }
@@ -17273,7 +17271,7 @@ const DynamicForm = props => {
   };
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "dynamic-fields-wrapper"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_8__["default"], {
     className: "admin-module-popup",
     open: modelOpen,
     onClose: handleModelClose,
@@ -17581,7 +17579,9 @@ const MultiCheckBox = props => {
     onClick: e => {
       props.onMultiSelectDeselectChange?.(e);
     }
-  }, props.selectDeselectValue)), props.options.map(option => {
+  }, props.selectDeselectValue)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wrapper"
+  }, props.options.map(option => {
     let checked = false;
     if (props.value && props.value.length > 0) {
       checked = props.value.indexOf(option.value) >= 0;
@@ -17620,7 +17620,7 @@ const MultiCheckBox = props => {
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: props.hintInnerClass
     }, option.hints)));
-  }), props.description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+  })), props.description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: props.descClass,
     dangerouslySetInnerHTML: {
       __html: props.description
@@ -19203,7 +19203,7 @@ const Tabs = props => {
     className: "logo-small",
     src: _assets_images_Brand_small_png__WEBPACK_IMPORTED_MODULE_2__,
     alt: "Logo"
-  }), menuCol ? null : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Stock Manager")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }), menuCol ? null : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "MooWoodle")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "current-tab-lists-container"
   }, tabData.map(({
     type,
@@ -19344,19 +19344,19 @@ function banner() {
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, !appLocalizer.pro_active ? banner ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "custom-banner"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    className: "woo-module-popup",
+    className: "admin-module-popup",
     open: modal,
     onClose: handleClose,
     "aria-labelledby": "form-dialog-title"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "mvx-font font-cross stock-manager-popup-cross",
+    className: "admin-font font-cross stock-manager-popup-cross",
     onClick: handleClose
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_1__["default"], null)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "woo-carousel-container"
+    className: "admin-carousel-container"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "carousel-container"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "mvx-font font-cross pro-slider-cross",
+    class: "admin-font font-cross pro-slider-cross",
     onClick: handleCloseBanner
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "why-go-pro-tag",
@@ -19366,50 +19366,228 @@ function banner() {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
     className: "carousel-item active"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "woo-pro-txt-items"
+    className: "admin-pro-txt-items"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Double Opt-In ", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Experience the power of Double Opt-In for our Stock Alert Form - Guaranteed precision in every notification!", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
     href: appLocalizer.pro_url,
-    className: "woo-btn btn-red"
+    target: "_blank",
+    className: "admin-btn btn-red"
   }, "View Pricing"))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
     class: "carousel-item"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "woo-pro-txt-items"
+    className: "admin-pro-txt-items"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Your Subscription Hub", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Subscription Dashboard - Easily monitor and download lists of out-of-stock subscribers for seamless management.", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
     href: appLocalizer.pro_url,
-    className: "woo-btn btn-red"
+    target: "_blank",
+    className: "admin-btn btn-red"
   }, "View Pricing"))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
     class: "carousel-item"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "woo-pro-txt-items"
+    className: "admin-pro-txt-items"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Mailchimp Bridge", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Seamlessly link WooCommerce out-of-stock subscriptions with Mailchimp for effective marketing.", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
     href: appLocalizer.pro_url,
-    className: "woo-btn btn-red"
+    target: "_blank",
+    className: "admin-btn btn-red"
   }, "View Pricing"))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
     class: "carousel-item"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "woo-pro-txt-items"
+    className: "admin-pro-txt-items"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Unsubscribe Notifications", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "User-Initiated Unsubscribe from In-Stock Notifications.", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
     href: appLocalizer.pro_url,
-    className: "woo-btn btn-red"
+    target: "_blank",
+    className: "admin-btn btn-red"
   }, "View Pricing"))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
     class: "carousel-item"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "woo-pro-txt-items"
+    className: "admin-pro-txt-items"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Ban Spam Emails ", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Email and Domain Blacklist for Spam Prevention.", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
     href: appLocalizer.pro_url,
-    className: "woo-btn btn-red"
+    target: "_blank",
+    className: "admin-btn btn-red"
   }, "View Pricing"))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "carousel-controls"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     id: "prevBtn"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
-    className: "mvx-font font-arrow-left"
+    className: "admin-font font-arrow-left"
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     id: "nextBtn"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
-    className: "mvx-font font-arrow-right"
+    className: "admin-font font-arrow-right"
   }))))) : '' : '');
 }
+
+/***/ }),
+
+/***/ "./src/components/ConnectButton/ConnectButton.jsx":
+/*!********************************************************!*\
+  !*** ./src/components/ConnectButton/ConnectButton.jsx ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _services_apiService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/apiService */ "./src/services/apiService.js");
+/* harmony import */ var _ConnectButton_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ConnectButton.scss */ "./src/components/ConnectButton/ConnectButton.scss");
+
+
+
+
+const ConnectButton = props => {
+  const {
+    __
+  } = wp.i18n;
+  const connectTaskStarted = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(false);
+  const additionalData = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)({});
+  const taskNumber = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(0);
+  const [taskSequence, setTaskSequence] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+
+  // Sleep for a given time.
+  const sleep = time => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve();
+      }, time);
+    });
+  };
+
+  // Sequence task
+  const tasks = [{
+    'action': 'get_site_info',
+    'message': __('Connecting to Moodle', 'moowoodle')
+  }, {
+    'action': 'get_course',
+    'message': __('Courses Fetch', 'moowoodle'),
+    'cache': 'course_id'
+  }, {
+    'action': 'get_catagory',
+    'message': __('Catagory Fetch', 'moowoodle')
+  }, {
+    'action': 'create_user',
+    'message': __('User Creation', 'moowoodle')
+  }, {
+    'action': 'get_user',
+    'message': __('User Fetch', 'moowoodle'),
+    'cache': 'user_id'
+  }, {
+    'action': 'update_user',
+    'message': __('User Update', 'moowoodle')
+  }, {
+    'action': 'enroll_user',
+    'message': __('User Enroll', 'moowoodle')
+  }, {
+    'action': 'unenroll_user',
+    'message': __('User Unenroll', 'moowoodle')
+  }, {
+    'action': 'delete_user',
+    'message': __('User Remove', 'moowoodle')
+  }];
+  const startConnectionTask = async () => {
+    // Connection task is already running
+    if (connectTaskStarted.current) {
+      return;
+    }
+    connectTaskStarted.current = true;
+    setTaskSequence([]);
+    await doSequencialTask();
+    connectTaskStarted.current = false;
+  };
+  const doSequencialTask = async () => {
+    // There is no task to display
+    if (taskNumber.current >= tasks.length) {
+      return;
+    }
+    const currentTask = tasks[taskNumber.current];
+
+    // Set the task sequence to current task.
+    setTaskSequence(taskes => {
+      return [...taskes, {
+        name: currentTask.action,
+        message: currentTask.message,
+        status: 'running'
+      }];
+    });
+    await sleep(2000);
+    const response = await (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.sendApiResponse)((0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('test-connection'), {
+      action: currentTask.action,
+      ...additionalData.current
+    });
+
+    // Evelute task status
+    let taskStatus = 'success';
+
+    // Collect course id
+    if (currentTask.cache === 'course_id') {
+      const validCourse = response?.courses?.[1];
+      if (!validCourse) {
+        taskStatus = 'falid';
+      } else {
+        additionalData.current['course_id'] = validCourse.id;
+      }
+    }
+    // Collect user id
+    else if (currentTask.cache === 'user_id') {
+      const validUser = response?.data?.users?.[0];
+      if (!validUser) {
+        taskStatus = 'falid';
+      } else {
+        additionalData.current['user_id'] = validUser.id;
+      }
+    }
+    // Check where it is a success of failure
+    else if (!response.success) {
+      taskStatus = 'failed';
+    }
+
+    // Update task status
+    setTaskSequence(tasks => {
+      const updatedTask = [...tasks];
+      updatedTask[updatedTask.length - 1]['status'] = taskStatus;
+      return updatedTask;
+    });
+
+    // If task status is not success exist from task sequence
+    if (taskStatus === 'failed') {
+      return;
+    }
+    taskNumber.current++;
+
+    // Call next task recursively
+    await doSequencialTask();
+  };
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "connection-test-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "section-connection-test"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    // className="disable"
+    onClick: e => {
+      e.preventDefault();
+      startConnectionTask();
+    }
+  }, __('Connection test', 'moowoodle')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "loader"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "three-body__dot"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "three-body__dot"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "three-body__dot"
+  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "fetch-details-wrapper"
+  }, taskSequence.map(task => {
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `${task.status} details-status-row`
+    }, task.message, " ", task.status !== "running" && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
+      className: `admin-font ${task.status === "failed" ? "font-cross" : "font-icon-yes"}`
+    }));
+  })));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ConnectButton);
 
 /***/ }),
 
@@ -19426,10 +19604,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 /* harmony import */ var _services_apiService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/apiService */ "./src/services/apiService.js");
 /* harmony import */ var _AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../AdminLibrary/CustomTable/CustomTable */ "./src/components/AdminLibrary/CustomTable/CustomTable.jsx");
 /* harmony import */ var _Banner_banner__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Banner/banner */ "./src/components/Banner/banner.jsx");
+/* harmony import */ var _courses_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./courses.scss */ "./src/components/Courses/courses.scss");
+
 
 
 
@@ -19453,7 +19633,7 @@ function Course() {
    */
   function requestData(rowsPerPage = 10, currentPage = 1) {
     //Fetch the data to show in the table
-    (0,axios__WEBPACK_IMPORTED_MODULE_4__["default"])({
+    (0,axios__WEBPACK_IMPORTED_MODULE_5__["default"])({
       method: "post",
       url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('courses'),
       headers: {
@@ -19488,7 +19668,7 @@ function Course() {
    */
   const handleSingleAction = (actionName, courseId, moodleCourseId) => {
     if (appLocalizer.pro_active) {
-      (0,axios__WEBPACK_IMPORTED_MODULE_4__["default"])({
+      (0,axios__WEBPACK_IMPORTED_MODULE_5__["default"])({
         method: 'post',
         url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)(`course-bulk-action`),
         headers: {
@@ -19518,7 +19698,7 @@ function Course() {
       if (!bulkSelectRef.current.value) {
         return window.alert(__('Select bulk action', 'moowoodle'));
       }
-      (0,axios__WEBPACK_IMPORTED_MODULE_4__["default"])({
+      (0,axios__WEBPACK_IMPORTED_MODULE_5__["default"])({
         method: 'post',
         url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)(`course-bulk-action`),
         headers: {
@@ -19548,7 +19728,7 @@ function Course() {
 
   // Get the total no of data present in database
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    (0,axios__WEBPACK_IMPORTED_MODULE_4__["default"])({
+    (0,axios__WEBPACK_IMPORTED_MODULE_5__["default"])({
       method: "post",
       url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('courses'),
       headers: {
@@ -19588,17 +19768,23 @@ function Course() {
   }, {
     name: __('Category Name', 'moowoodle'),
     selector: row => row.category_name,
-    cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+    cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, {
+      title: 'Category Name'
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
       href: row.category_url,
       alt: "category_url"
     }, row.category_name)),
     sortable: true
   }, {
     name: __('Enrolled Users', 'moowoodle'),
-    cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, null, row.enroled_user)
+    cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, {
+      title: 'Enrolled Users'
+    }, row.enroled_user)
   }, {
     name: __('Date', 'moowoodle'),
-    cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, null, row.date)
+    cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, {
+      title: 'Date'
+    }, row.date)
   }, {
     name: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       dangerouslySetInnerHTML: {
@@ -19636,7 +19822,7 @@ function Course() {
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "course-container-wrapper"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "page-title"
+    className: "admin-page-title"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, __("All Course", "moowoodle"))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "course-bulk-action"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, __('Select bulk action')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
@@ -20256,17 +20442,17 @@ __webpack_require__.r(__webpack_exports__);
   submitUrl: "save-moowoodle-setting",
   modal: [{
     key: "moodle_url",
-    type: "textarea",
+    type: "text",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enter the Moodle Site URL', 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Moodle Site URL", 'moowoodle')
   }, {
     key: "moodle_access_token",
-    type: "textarea",
+    type: "text",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Moodle Access Token", 'moowoodle'),
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Enter Moodle Access Token. You can generate the Access Token from - Dashboard => Site administration => Server => Web services => ${appLocalizer.moodle_tokens_url}`, 'moowoodle')
   }, {
     key: "test_connection",
-    type: "connectbutton",
+    type: "testconnection",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Refer to the ${appLocalizer.setupguide} to complete all necessary configurations on the Moodle site, and subsequently, perform a Test Connection to verify the functionality of all services.`, 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Mooowoodle Test Connection", 'moowoodle')
   }]
@@ -20321,7 +20507,7 @@ __webpack_require__.r(__webpack_exports__);
   submitUrl: "save-moowoodle-setting",
   modal: [{
     key: "moodle_timeout",
-    type: "textarea",
+    type: "text",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Set Curl connection time out in sec.', 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Timeout", 'moowoodle')
   }, {
@@ -20444,7 +20630,7 @@ __webpack_require__.r(__webpack_exports__);
     }]
   }, {
     key: "moowoodle_sso_secret_key",
-    type: "textarea",
+    type: "text",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Enter SSO Secret Key it should be same as  ${appLocalizer.moodle_sso_url} SSO Secret Key`, 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("SSO Secret Key", 'moowoodle')
   }]
@@ -20697,13 +20883,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   id: "synchronize-datamap",
   priority: 10,
-  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchrinize Data Map", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchrinize Data Map", 'moowoodle'),
+  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchronize Data Map", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchronize Data Map", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   modal: [{
     key: "sync-user-options",
-    type: "checkbox",
+    type: "checkbox-default",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Determine User Information to Synchronize in Moodle-WordPress User synchronization. Please be aware that this setting does not apply to newly created users.", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("User Information", 'moowoodle'),
     select_deselect: true,
@@ -20726,7 +20912,7 @@ __webpack_require__.r(__webpack_exports__);
     }]
   }, {
     key: "sync-course-options",
-    type: "checkbox",
+    type: "checkbox-default",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select Option For Course Sync.", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Course Information", 'moowoodle'),
     select_deselect: true,
@@ -21800,6 +21986,32 @@ __webpack_require__.r(__webpack_exports__);
 /*!*******************************************!*\
   !*** ./src/components/Banner/banner.scss ***!
   \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/components/ConnectButton/ConnectButton.scss":
+/*!*********************************************************!*\
+  !*** ./src/components/ConnectButton/ConnectButton.scss ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/components/Courses/courses.scss":
+/*!*********************************************!*\
+  !*** ./src/components/Courses/courses.scss ***!
+  \*********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";

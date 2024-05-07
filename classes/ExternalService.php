@@ -84,6 +84,7 @@ class ExternalService {
 	 * @return array $response
 	 */
 	private function check_connection( $response ) {
+		Util::log($response);
 		if ( $response == null ) {
 			return [ 'error' => 'Response is not avialable' ];
 		}

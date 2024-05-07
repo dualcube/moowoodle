@@ -23,7 +23,7 @@ export default {
         },
         {
             key: "moowoodle_sso_secret_key",
-            type: "textarea",
+            type: "text",
             desc: __(`Enter SSO Secret Key it should be same as  ${ appLocalizer.moodle_sso_url } SSO Secret Key`, 'moowoodle'),
             label: __("SSO Secret Key", 'moowoodle'),
         }

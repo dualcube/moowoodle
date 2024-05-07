@@ -12,6 +12,7 @@ const MultiCheckBox = (props) => {
                     </div>
                 </>
             }
+            <div className="wrapper">
             {
                 props.options.map((option) => {
                     let checked = false;
@@ -56,6 +57,7 @@ const MultiCheckBox = (props) => {
                     );
                 })
             }
+            </div>
             {
                 props.description &&
                 <p className={props.descClass} dangerouslySetInnerHTML= {{__html: props.description}}>

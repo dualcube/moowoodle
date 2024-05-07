@@ -10,6 +10,7 @@ import { getApiLink, sendApiResponse } from "../../../services/apiService";
 import Dialog from "@mui/material/Dialog";
 import Popoup from "../../PopupContent/PopupContent";
 import FormCustomizer from "../Inputs/Special/FormCustomizer";
+import ConnectButton from "../../ConnectButton/ConnectButton";
 
 // Variable for controll coldown effect submit time
 const PENALTY  = 10;
@@ -679,50 +680,42 @@ const DynamicForm = (props) => {
           break;
 
         // Special input type project specific
-        case "button_customizer":
-          input = (
-            <CustomInput.ButtonCustomizer
-              buttonText={setting.button_text}
-              proSetting={isProSetting(inputField.proSetting)}
-              onChange={(e, key) => {
-                if ( ! proSettingChanged( inputField.proSetting ) ) {
-                  handleChange(e, key);
-                }
-              }}
-            />
-          );
-          break;
-
-          case "form_customizer":
-            input = (
-              <FormCustomizer
-                value={value}
-                buttonText={setting.button_text}
-                proSetting={isProSetting(inputField.proSetting)}
-                onChange={(e, key) => {
-                  if ( ! proSettingChanged( inputField.proSetting ) ) {
-                    handleChange(e, key);
-                  }
-                }}
-              />
-            );
+          case "testconnection":
+            input = <ConnectButton />
             break;
 
-        case "api_connect":
-          input = (
-            <CustomInput.ConnectSelect
-              mailchimpKey={inputField.key}
-              selectKey={inputField.selectKey}
-              optionKey={inputField.optionKey}
-              onChange={handleChange}
-              proSettingChanged={
-                () => proSettingChanged(inputField.proSetting)
-              }
-              settingChanged={settingChanged}
-              apiLink={inputField.apiLink}
-            />
-          );
-          break;
+            case "checkbox-default":
+              input = (
+                <CustomInput.MultiCheckBox
+                  wrapperClass="checkbox-list-side-by-side"
+                  descClass="settings-metabox-description"
+                  description={inputField.desc}
+                  selectDeselectClass="select-deselect-trigger"
+                  inputWrapperClass="toggle-checkbox-header"
+                  inputInnerWrapperClass="default-checkbox"
+                  inputClass={inputField.class}
+                  hintOuterClass="dashicons dashicons-info"
+                  hintInnerClass="hover-tooltip"
+                  idPrefix="toggle-switch"
+                  selectDeselect={inputField.select_deselect}
+                  selectDeselectValue="Select / Deselect All"
+                  rightContentClass="settings-metabox-description"
+                  rightContent={inputField.right_content}
+                  options={inputField.options}
+                  value={value}
+                  proSetting={isProSetting(inputField.proSetting)}
+                  onChange={(e) => {
+                    if ( ! proSettingChanged( inputField.proSetting ) ) {
+                      handleChange(e, inputField.key, "multiple");
+                    }
+                  }}
+                  onMultiSelectDeselectChange={(e) =>
+                    handlMultiSelectDeselectChange( inputField.key, inputField.options )
+                  }
+                />
+              );
+              break;
+    
         }
 
       return inputField.type === "section" ||

@@ -12,8 +12,9 @@ $button-padding: 0.37rem 2.5rem;
 
 .custom-banner {
   width: 100%;
+  margin-bottom: 0.75rem;
 
-  .woo-carousel-container {
+  .admin-carousel-container {
     padding: 0;
     position: relative;
     background: $background-color;
@@ -28,6 +29,7 @@ $button-padding: 0.37rem 2.5rem;
         right: $padding;
         top: $padding;
         font-size: 1.25rem;
+        color: #c9c5c3;
       }
 
       .why-go-pro-tag {
@@ -65,7 +67,6 @@ $button-padding: 0.37rem 2.5rem;
       gap: 1rem;
       padding: $container-padding;
       text-align: left;
-      background-image: url(../../assets/images/banner-back-color.jpg);
       background-size: 100% 100%;
       background-position: center center;
       background-repeat: no-repeat, no-repeat;
@@ -82,21 +83,22 @@ $button-padding: 0.37rem 2.5rem;
       }
     }
 
-    .woo-pro-txt-items {
+    .admin-pro-txt-items {
       text-align: center;
 
       h3 {
         font-size: 1.25rem;
         font-weight: 500;
-        color: $text-color;
+        color: #000;
       }
-
+      
       p {
-        margin: 0.5rem 0 1.5rem;
+        margin: 0.5rem 0 1.5rem !important; // To overwrite default common.scss margin
         font-size: 1rem;
+        color: #000;
       }
 
-      a.woo-btn.btn-red {
+      a.admin-btn.btn-red {
         background-color: $accent-color;
         color: $text-color;
         border: 0.06rem solid $accent-color;
@@ -120,14 +122,17 @@ $button-padding: 0.37rem 2.5rem;
       left: 50%;
 
       button {
-        color: $primary-color;
+        color: #65438f;
         background-color: #c9c5c3;
         font-size: 0.65rem;
         border-radius: 50%;
         margin: 0;
-        line-height: 0.7;
+        line-height: 0;
         height: 1.4rem;
         width: 1.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
   }

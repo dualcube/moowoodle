@@ -181,6 +181,11 @@ $theme-color: #522c81;
               max-height: 0;
               overflow: hidden;
               transition: max-height 0.3s linear  ;
+
+              a{
+                width: 100%;
+                box-sizing: border-box;
+              }
               
               &.active{
                 max-height: 50rem;

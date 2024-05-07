@@ -147,7 +147,7 @@ const Tabs = (props) => {
               <div className="brand">
                 <img className="logo" src={menuCol ? BrandSmall : Brand} alt="Logo" />
                 <img className="logo-small" src={BrandSmall} alt="Logo" />
-                {menuCol ? null : <p>Stock Manager</p>}
+                {menuCol ? null : <p>MooWoodle</p>}
               </div>
               <div className="current-tab-lists-container">
                 {tabData.map(({ type, content }) => {
