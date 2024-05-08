@@ -7,6 +7,7 @@ export default {
     desc: __("Synchrinize Shcedule Course", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
+    proDependent: true,
     modal: [
         {
             key: "course_sync_direction",
@@ -19,7 +20,8 @@ export default {
                     label: __('Moodle to Wordpress', 'moowoodle'),
                     value: "moodle_to_wordpress",
                 }
-            ]
+            ],
+            proSetting: true,
         },
         {
             key: "course_schedule_interval",
@@ -57,7 +59,8 @@ export default {
                     label: __("Month", 'moowoodle'),
                     value: "month",
                 }
-            ]
+            ],
+            proSetting: true,
         },
         {
             key: "course_sync_action",
@@ -80,7 +83,8 @@ export default {
                     label: __('Update Products', 'moowoodle'),
                     value: "update",
                 }
-            ]
+            ],
+            proSetting: true,
         }
     ]
 };

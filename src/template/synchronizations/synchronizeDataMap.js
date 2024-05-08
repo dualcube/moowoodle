@@ -35,7 +35,8 @@ export default {
                     label: __('Password', 'moowoodle'),
                     value: "sync_password",
                 }
-            ]
+            ],
+            proSetting: true,
         },
         {
             key: "sync-course-options",
@@ -58,6 +59,7 @@ export default {
                     key: "sync_image",
                     label: __("This function copies course images and sets them as WooCommerce product images.", 'moowoodle'),
                     value: "sync_image",
+                    proSetting: true,
                 },
             ]
         }

@@ -16758,7 +16758,9 @@ const DynamicForm = props => {
     if (Array.isArray(setting[key]) && setting[key].length > 0) {
       updateSetting(key, []);
     } else {
-      updateSetting(key, options.map(({
+      updateSetting(key, options.filter(option => {
+        return !isProSetting(option.proSetting);
+      }).map(({
         value
       }) => value));
     }
@@ -17074,10 +17076,6 @@ const DynamicForm = props => {
           break;
         case "select":
           let options = inputField.options;
-          // Check if option present in applocalizer.
-          if (typeof options === "string") {
-            options = appLocalizer[options];
-          }
           input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Inputs__WEBPACK_IMPORTED_MODULE_2__["default"].SelectInput, {
             wrapperClass: "form-select-field-wrapper",
             descClass: "settings-metabox-description",
@@ -17086,32 +17084,12 @@ const DynamicForm = props => {
             options: options,
             value: value,
             proSetting: isProSetting(inputField.proSetting),
-            onChange: (e, data) => {
+            onChange: data => {
               if (!proSettingChanged(inputField.proSetting)) {
-                handleChange(e, inputField.key, "single", "select", data);
+                settingChanged.current = true;
+                updateSetting(inputField.key, data.value);
               }
             }
-          });
-          break;
-        case "multi-select":
-          input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Inputs__WEBPACK_IMPORTED_MODULE_2__["default"].SelectInput, {
-            wrapperClass: "settings-from-multi-select",
-            descClass: "settings-metabox-description",
-            selectDeselectClass: "select-deselect-trigger",
-            selectDeselect: inputField.select_deselect,
-            selectDeselectValue: appLocalizer.global_string.select_deselect_all,
-            description: inputField.desc,
-            inputClass: inputField.key,
-            options: inputField.options,
-            type: "multi-select",
-            value: value,
-            proSetting: isProSetting(inputField.proSetting),
-            onChange: (e, data) => {
-              if (!proSettingChanged(inputField.proSetting)) {
-                handleChange(e, inputField.key, "single", "multi-select", data);
-              }
-            },
-            onMultiSelectDeselectChange: e => handlMultiSelectDeselectChange(e, inputField)
           });
           break;
         case "country":
@@ -17170,7 +17148,12 @@ const DynamicForm = props => {
                 handleChange(e, inputField.key, "multiple");
               }
             },
-            onMultiSelectDeselectChange: e => handlMultiSelectDeselectChange(inputField.key, inputField.options)
+            onMultiSelectDeselectChange: e => {
+              if (!proSettingChanged(inputField.proSetting)) {
+                handlMultiSelectDeselectChange(inputField.key, inputField.options);
+              }
+            },
+            proChanged: () => setModelOpen(true)
           });
           break;
         case "table":
@@ -17250,7 +17233,12 @@ const DynamicForm = props => {
                 handleChange(e, inputField.key, "multiple");
               }
             },
-            onMultiSelectDeselectChange: e => handlMultiSelectDeselectChange(inputField.key, inputField.options)
+            onMultiSelectDeselectChange: e => {
+              if (!proSettingChanged(inputField.proSetting)) {
+                handlMultiSelectDeselectChange(inputField.key, inputField.options);
+              }
+            },
+            proChanged: () => setModelOpen(true)
           });
           break;
       }
@@ -17604,6 +17592,9 @@ const MultiCheckBox = props => {
       value: option.value,
       checked: checked,
       onChange: e => {
+        if (option.proSetting) {
+          return props.proChanged();
+        }
         props.onChange?.(e);
       }
     }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
@@ -17619,7 +17610,9 @@ const MultiCheckBox = props => {
       className: props.hintOuterClass
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: props.hintInnerClass
-    }, option.hints)));
+    }, option.hints)), option.proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      className: "admin-pro-tag"
+    }, "pro"));
   })), props.description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: props.descClass,
     dangerouslySetInnerHTML: {
@@ -17814,7 +17807,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const SelectInput = props => {
   const optionsData = [];
-  let defaulValue = undefined;
+  let defaulValue = '';
   props.options.forEach((option, index) => {
     optionsData[index] = {
       value: option.value,
@@ -19444,6 +19437,7 @@ const ConnectButton = props => {
   const connectTaskStarted = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(false);
   const additionalData = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)({});
   const taskNumber = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(0);
+  const [loading, setLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [taskSequence, setTaskSequence] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
 
   // Sleep for a given time.
@@ -19492,9 +19486,11 @@ const ConnectButton = props => {
       return;
     }
     connectTaskStarted.current = true;
+    setLoading(true);
     setTaskSequence([]);
     await doSequencialTask();
     connectTaskStarted.current = false;
+    setLoading(false);
   };
   const doSequencialTask = async () => {
     // There is no task to display
@@ -19511,7 +19507,7 @@ const ConnectButton = props => {
         status: 'running'
       }];
     });
-    await sleep(2000);
+    await sleep(2500);
     const response = await (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.sendApiResponse)((0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('test-connection'), {
       action: currentTask.action,
       ...additionalData.current
@@ -19569,7 +19565,7 @@ const ConnectButton = props => {
       e.preventDefault();
       startConnectionTask();
     }
-  }, __('Connection test', 'moowoodle')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, __('Connection test', 'moowoodle')), loading && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "loader"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "three-body__dot"
@@ -20077,7 +20073,6 @@ const Synchronization = () => {
       setSetting
     } = (0,_contexts_SettingContext__WEBPACK_IMPORTED_MODULE_6__.useSetting)();
     const settingModal = (0,_utiles_settingUtil__WEBPACK_IMPORTED_MODULE_9__.getSettingById)(settingsArray, currentTab);
-    console.log(settingsArray);
     if (settingName != currentTab) {
       setSetting(currentTab, appLocalizer.preSettings[currentTab] || {});
     }
@@ -20413,7 +20408,13 @@ __webpack_require__.r(__webpack_exports__);
     type: "select",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Select below which menu the My Courses Menu will be displayed', 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("My Courses Menu Position", 'moowoodle'),
-    options: []
+    options: Object.entries(appLocalizer.accountmenu).map(([key, name], index) => {
+      return {
+        key: index,
+        label: name,
+        value: index
+      };
+    })
   }]
 });
 
@@ -20582,6 +20583,7 @@ __webpack_require__.r(__webpack_exports__);
   desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Notification ", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
+  proDependent: true,
   modal: [{
     key: "moowoodle_create_user_custom_mail",
     type: "checkbox",
@@ -20589,9 +20591,9 @@ __webpack_require__.r(__webpack_exports__);
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Customize New User Registration Email", 'moowoodle'),
     options: [{
       key: "moowoodle_create_user_custom_mail",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enable', 'moowoodle'),
       value: "moowoodle_create_user_custom_mail"
-    }]
+    }],
+    proSetting: true
   }]
 });
 
@@ -20618,6 +20620,7 @@ __webpack_require__.r(__webpack_exports__);
   desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("SSO ", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
+  proDependent: true,
   modal: [{
     key: "moowoodle_sso_eneble",
     type: "checkbox",
@@ -20625,14 +20628,15 @@ __webpack_require__.r(__webpack_exports__);
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('If enabled Moodle user\'s will login by WordPress user', 'moowoodle'),
     options: [{
       key: "moowoodle_sso_eneble",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enable', 'moowoodle'),
       value: "moowoodle_sso_eneble"
-    }]
+    }],
+    proSetting: true
   }, {
     key: "moowoodle_sso_secret_key",
     type: "text",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Enter SSO Secret Key it should be same as  ${appLocalizer.moodle_sso_url} SSO Secret Key`, 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("SSO Secret Key", 'moowoodle')
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("SSO Secret Key", 'moowoodle'),
+    proSetting: true
   }]
 });
 
@@ -20709,6 +20713,7 @@ __webpack_require__.r(__webpack_exports__);
   desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchrinize Shcedule Course", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
+  proDependent: true,
   modal: [{
     key: "course_sync_direction",
     type: "select",
@@ -20718,7 +20723,8 @@ __webpack_require__.r(__webpack_exports__);
       key: "moodle_to_wordpress",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Moodle to Wordpress', 'moowoodle'),
       value: "moodle_to_wordpress"
-    }]
+    }],
+    proSetting: true
   }, {
     key: "course_schedule_interval",
     type: "select",
@@ -20748,7 +20754,8 @@ __webpack_require__.r(__webpack_exports__);
       key: "month",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Month", 'moowoodle'),
       value: "month"
-    }]
+    }],
+    proSetting: true
   }, {
     key: "course_sync_action",
     type: "select",
@@ -20766,7 +20773,8 @@ __webpack_require__.r(__webpack_exports__);
       key: "update",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Update Products', 'moowoodle'),
       value: "update"
-    }]
+    }],
+    proSetting: true
   }]
 });
 
@@ -20817,6 +20825,7 @@ __webpack_require__.r(__webpack_exports__);
   desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchrinize Shcedule User", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
+  proDependent: true,
   modal: [{
     key: "user_sync_direction",
     type: "select",
@@ -20830,7 +20839,8 @@ __webpack_require__.r(__webpack_exports__);
       key: "moodle_to_wordpress",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Moodle to Wordpress', 'moowoodle'),
       value: "moodle_to_wordpress"
-    }]
+    }],
+    proSetting: true
   }, {
     key: "user_schedule_interval",
     type: "select",
@@ -20860,7 +20870,8 @@ __webpack_require__.r(__webpack_exports__);
       key: "month",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Month", 'moowoodle'),
       value: "month"
-    }]
+    }],
+    proSetting: true
   }]
 });
 
@@ -20909,7 +20920,8 @@ __webpack_require__.r(__webpack_exports__);
       key: "sync_password",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Password', 'moowoodle'),
       value: "sync_password"
-    }]
+    }],
+    proSetting: true
   }, {
     key: "sync-course-options",
     type: "checkbox-default",
@@ -20927,7 +20939,8 @@ __webpack_require__.r(__webpack_exports__);
     }, {
       key: "sync_image",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This function copies course images and sets them as WooCommerce product images.", 'moowoodle'),
-      value: "sync_image"
+      value: "sync_image",
+      proSetting: true
     }]
   }]
 });

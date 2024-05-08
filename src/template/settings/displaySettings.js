@@ -26,7 +26,13 @@ export default {
             type: "select",
             desc: __('Select below which menu the My Courses Menu will be displayed', 'moowoodle'),
             label: __("My Courses Menu Position", 'moowoodle'),
-            options: []
+            options: Object.entries(appLocalizer.accountmenu).map(( [key, name ], index) => {
+                return {
+                    key: index,
+                    label: name,
+                    value: index
+                }
+            }),
         }
     ]
 };

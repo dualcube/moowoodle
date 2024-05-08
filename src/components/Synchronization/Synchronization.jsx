@@ -33,7 +33,7 @@ const Synchronization = () => {
         const { setting, settingName, setSetting } = useSetting();
         
         const settingModal = getSettingById( settingsArray, currentTab );
-        console.log(settingsArray);
+
         if ( settingName != currentTab ) {
             setSetting( currentTab, appLocalizer.preSettings[currentTab] || {} );
         }

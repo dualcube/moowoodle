@@ -7,6 +7,7 @@ export default {
     desc: __("SSO ", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
+    proDependent: true,
     modal: [
         {
             key: "moowoodle_sso_eneble",
@@ -16,16 +17,17 @@ export default {
             options: [
                 {
                     key: "moowoodle_sso_eneble",
-                    label:  __('Enable', 'moowoodle'), 
                     value: "moowoodle_sso_eneble"
                 }
-            ]
+            ],
+            proSetting: true,
         },
         {
             key: "moowoodle_sso_secret_key",
             type: "text",
             desc: __(`Enter SSO Secret Key it should be same as  ${ appLocalizer.moodle_sso_url } SSO Secret Key`, 'moowoodle'),
             label: __("SSO Secret Key", 'moowoodle'),
+            proSetting: true,
         }
     ]
 };

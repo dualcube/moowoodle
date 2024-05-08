@@ -8,6 +8,7 @@ const ConnectButton = (props) => {
     const connectTaskStarted = useRef(false);
     const additionalData = useRef({});
     const taskNumber = useRef(0);
+    const [loading, setLoading] = useState(false);
     const [taskSequence, setTaskSequence] = useState([]);
 
     // Sleep for a given time.
@@ -68,11 +69,14 @@ const ConnectButton = (props) => {
         }
         
         connectTaskStarted.current = true;
+        setLoading(true);
+
         setTaskSequence([]);
 
         await doSequencialTask();
 
         connectTaskStarted.current = false;
+        setLoading(false);
     }
 
     const doSequencialTask = async () => {
@@ -95,7 +99,7 @@ const ConnectButton = (props) => {
             ];
         });
 
-        await sleep(2000);
+        await sleep(2500);
 
         const response = await sendApiResponse(
             getApiLink('test-connection'),
@@ -163,11 +167,14 @@ const ConnectButton = (props) => {
                 >
                     {__('Connection test', 'moowoodle')}
                 </button>
-                <div class="loader">
-                    <div class="three-body__dot"></div>
-                    <div class="three-body__dot"></div>
-                    <div class="three-body__dot"></div>
-                </div>
+                {
+                    loading &&
+                    <div class="loader">
+                        <div class="three-body__dot"></div>
+                        <div class="three-body__dot"></div>
+                        <div class="three-body__dot"></div>
+                    </div>
+                }
             </div>
             <div className="fetch-details-wrapper">
                 {taskSequence.map((task) => {

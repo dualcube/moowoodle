@@ -34,12 +34,17 @@ const MultiCheckBox = (props) => {
                                     name=       {option.name || 'basic-input'}
                                     value=      {option.value}
                                     checked=    {checked}
-                                    onChange={(e) => { props.onChange?.(e) }}
+                                    onChange={(e) => {
+                                        if (option.proSetting) {
+                                            return props.proChanged();
+                                        }
+                                        props.onChange?.(e)
+                                    }}
                                 />
                                 <label htmlFor={`${props.idPrefix}-${option.key}`}></label>
                                 {
-                    props.proSetting && <span className="admin-pro-tag">pro</span>
-                }
+                                    props.proSetting && <span className="admin-pro-tag">pro</span>
+                                }
                             </div>
                             {
                                 ! props.rightContent &&
@@ -52,6 +57,9 @@ const MultiCheckBox = (props) => {
                                         {option.hints}
                                     </div>
                                 </span>
+                            }
+                            {
+                                option.proSetting && <span className="admin-pro-tag">pro</span>
                             }
                         </div>
                     );

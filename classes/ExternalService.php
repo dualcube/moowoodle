@@ -57,7 +57,11 @@ class ExternalService {
 		$response = null;
 		if ( ! empty( $moodle_base_url ) && ! empty( $moodle_access_token ) && $function_name ) {
 			$request_query  = http_build_query( $request_param );
-			$response       = wp_remote_post( $request_url, [ 'body' => $request_query, 'timeout' => MooWoodle()->setting->get_setting( 'moodle_timeout' ) ] );
+
+			$timeout 		= MooWoodle()->setting->get_setting( 'moodle_timeout' );
+			$timeout		= $timeout ? $timeout : '10';
+			
+			$response       = wp_remote_post( $request_url, [ 'body' => $request_query, 'timeout' => $timeout ] );
 			
             // Log the response relult.
             if ( MooWoodle()->setting->get_setting( 'moowoodle_adv_log' ) ) {

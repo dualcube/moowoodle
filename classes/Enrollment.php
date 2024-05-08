@@ -60,9 +60,10 @@ class Enrollment {
 			$moodle_user_id = $this->create_moodle_user();
 		} else {
 			// User id is availeble update user id.
-
-			$conn_settings = get_option('moowoodle_general_settings');
-			$should_user_update = $conn_settings['update_moodle_user'] ?? '';
+			$should_user_update = in_array(
+				'update_moodle_user',
+				MooWoodle()->setting->get_setting( 'update_moodle_user', [] )
+			);
 
 			if ( $should_user_update ) {
 				$this->update_moodle_user( $moodle_user_id );
@@ -314,17 +315,22 @@ class Enrollment {
 	public function add_dates_with_product() {
 		global $product;
 
-		$startdate = get_post_meta($product->get_id(), '_course_startdate', true);
-		$enddate = get_post_meta($product->get_id(), '_course_enddate', true);
-		$display_settings = get_option('moowoodle_display_settings');
+		$startdate 		= get_post_meta( $product->get_id(), '_course_startdate', true );
+		$enddate 		= get_post_meta( $product->get_id(), '_course_enddate', true );
+
+		$start_end_date = in_array(
+			'start_end_date',
+			MooWoodle()->setting->get_setting( 'start_end_date' )
+		);
 		
-		if (isset($display_settings['start_end_date']) && $display_settings['start_end_date'] == "Enable") {
-			if ($startdate) {
-				echo esc_html_e("Start Date : ", 'moowoodle') . esc_html_e(gmdate('Y-m-d', $startdate), 'moowoodle');
+		if ( $start_end_date ) {
+			if ( $startdate ) {
+				echo esc_html_e( "Start Date : ", 'moowoodle' ) . esc_html_e( gmdate( 'Y-m-d', $startdate ), 'moowoodle' );
 				print_r("<br>");
 			}
-			if ($enddate) {
-				echo esc_html_e("End Date : ", 'moowoodle') . esc_html_e(gmdate('Y-m-d', $enddate), 'moowoodle');
+
+			if ( $enddate ) {
+				echo esc_html_e( "End Date : ", 'moowoodle' ) . esc_html_e( gmdate( 'Y-m-d', $enddate ), 'moowoodle' );
 			}
 		}
 	}

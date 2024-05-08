@@ -141,8 +141,10 @@ const DynamicForm = (props) => {
     if ( Array.isArray( setting[key] ) && setting[key].length > 0 ) {
       updateSetting( key, [] );
     } else {
-      updateSetting( key, options.map( ({value}) => value ));
-    }
+      updateSetting(key, options.filter((option) => {
+        return ! isProSetting( option.proSetting );
+      }).map(({ value }) => value));
+    }   
   };
 
   const runUploader = (key) => {
@@ -498,11 +500,6 @@ const DynamicForm = (props) => {
 
         case "select":
           let options = inputField.options;
-          // Check if option present in applocalizer.
-          if (typeof options === "string") {
-            options = appLocalizer[options];
-          }
-
           input = (
             <CustomInput.SelectInput
               wrapperClass="form-select-field-wrapper"
@@ -512,39 +509,12 @@ const DynamicForm = (props) => {
               options={options}
               value={value}
               proSetting={isProSetting(inputField.proSetting)}
-              onChange={(e, data) => {
-                if ( ! proSettingChanged( inputField.proSetting ) ) {
-                  handleChange(e, inputField.key, "single", "select", data);
+              onChange={(data) => {
+                if (!proSettingChanged(inputField.proSetting)) {
+                  settingChanged.current = true;
+                  updateSetting(inputField.key, data.value)
                 }
               }}
-            />
-          );
-          break;
-
-        case "multi-select":
-          input = (
-            <CustomInput.SelectInput
-              wrapperClass="settings-from-multi-select"
-              descClass="settings-metabox-description"
-              selectDeselectClass="select-deselect-trigger"
-              selectDeselect={inputField.select_deselect}
-              selectDeselectValue={
-                appLocalizer.global_string.select_deselect_all
-              }
-              description={inputField.desc}
-              inputClass={inputField.key}
-              options={inputField.options}
-              type="multi-select"
-              value={value}
-              proSetting={isProSetting(inputField.proSetting)}
-              onChange={(e, data) => {
-                if ( ! proSettingChanged( inputField.proSetting ) ) {
-                  handleChange(e, inputField.key, "single", "multi-select", data);
-                }
-              }}
-              onMultiSelectDeselectChange={(e) =>
-                handlMultiSelectDeselectChange(e, inputField)
-              }
             />
           );
           break;
@@ -608,13 +578,16 @@ const DynamicForm = (props) => {
               value={value}
               proSetting={isProSetting(inputField.proSetting)}
               onChange={(e) => {
-                if ( ! proSettingChanged( inputField.proSetting ) ) {
+                if (!proSettingChanged(inputField.proSetting)) {
                   handleChange(e, inputField.key, "multiple");
                 }
               }}
-              onMultiSelectDeselectChange={(e) =>
-                handlMultiSelectDeselectChange( inputField.key, inputField.options )
-              }
+              onMultiSelectDeselectChange={(e) => {
+                if (!proSettingChanged(inputField.proSetting)) {
+                  handlMultiSelectDeselectChange(inputField.key, inputField.options)
+                }
+              }}
+              proChanged={() => setModelOpen(true) }
             />
           );
           break;
@@ -705,13 +678,16 @@ const DynamicForm = (props) => {
                   value={value}
                   proSetting={isProSetting(inputField.proSetting)}
                   onChange={(e) => {
-                    if ( ! proSettingChanged( inputField.proSetting ) ) {
+                    if (!proSettingChanged(inputField.proSetting)) {
                       handleChange(e, inputField.key, "multiple");
                     }
                   }}
-                  onMultiSelectDeselectChange={(e) =>
-                    handlMultiSelectDeselectChange( inputField.key, inputField.options )
-                  }
+                  onMultiSelectDeselectChange={(e) => {
+                    if (!proSettingChanged(inputField.proSetting)) {
+                      handlMultiSelectDeselectChange(inputField.key, inputField.options)
+                    }
+                  }}
+                  proChanged={() => setModelOpen(true) }
                 />
               );
               break;

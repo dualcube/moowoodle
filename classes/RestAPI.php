@@ -141,19 +141,27 @@ class RestAPI {
      */
     public function synchronize( $request ) {
 
+        $sync_setting = MooWoodle()->setting->get_setting('sync-course-options');
+        $sync_setting = is_array( $sync_setting ) ? $sync_setting : [];
+
         // get all category from moodle.
         $response   = MooWoodle()->external_service->do_request( 'get_categories' );
         $categories = $response[ 'data' ];
 
         // update course and product categories.
-        MooWoodle()->category->update_categories( $categories, 'course_cat' );
-        MooWoodle()->category->update_categories( $categories, 'product_cat' );
+        if ( in_array( 'sync_courses_category', $sync_setting ) ) {
+            MooWoodle()->category->update_categories( $categories, 'course_cat' );
+            MooWoodle()->category->update_categories( $categories, 'product_cat' );
+        }
 
 		// get all caurses from moodle.
 		$response = MooWoodle()->external_service->do_request( 'get_courses' );
         $courses  = $response[ 'data' ];
 
-        MooWoodle()->course->update_courses( $courses );
+        if ( in_array( 'sync_courses', $sync_setting ) ) {
+            MooWoodle()->course->update_courses( $courses );
+        }
+        
         MooWoodle()->product->update_products( $courses );
 
         return rest_ensure_response( true );

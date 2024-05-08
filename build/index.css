@@ -172,6 +172,7 @@ input[type=radio] {
   width: fit-content;
   display: inline-flex;
   margin-right: 15px;
+  position: relative;
 }
 
 .toggle-checkbox-header {

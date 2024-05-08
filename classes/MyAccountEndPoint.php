@@ -35,7 +35,11 @@ class MyAccountEndPoint {
 
 		$menu_name     = __( 'My Courses', 'moowoodle' );
 		$menu_link     = [ $this->endpoint_slug => $menu_name ];
-		$menu_priority = 0;
+		$menu_priority = MooWoodle()->setting->get_setting( 'my_courses_priority' );
+
+		if( ! $menu_priority ) {
+			$menu_priority = 0;
+		}
 
 		// Merge mycourse menu in priotity position
 		$menu_links = array_slice( $menu_links, 0, $menu_priority + 1, true )

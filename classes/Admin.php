@@ -132,9 +132,10 @@ class Admin {
 				'apiUrl' 	  => untrailingslashit( get_rest_url() ),
                 'nonce'		  => wp_create_nonce('wp_rest'),
 				'preSettings' => $settings_databases_value,
-				'pro_active'  => Util::is_pro_active(), 
+				'pro_active'  => Util::is_pro_active(),
 				'pro_sticker' => MOOWOOLE_PRO_STICKER,
 				'shop_url'    => MOOWOODLE_PRO_SHOP_URL,
+				'accountmenu' => wc_get_account_menu_items(),
 			],
 		);
 	}

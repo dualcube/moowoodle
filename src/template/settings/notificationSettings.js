@@ -7,6 +7,7 @@ export default {
     desc: __("Notification ", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
+    proDependent: true,
     modal: [
         {
             key: "moowoodle_create_user_custom_mail",
@@ -16,10 +17,10 @@ export default {
             options: [
                 {
                     key: "moowoodle_create_user_custom_mail",
-                    label:  __('Enable', 'moowoodle'),
                     value: "moowoodle_create_user_custom_mail"
                 }
-            ]
+            ],
+            proSetting: true,
         }
     ]
 };
