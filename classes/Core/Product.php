@@ -149,7 +149,7 @@ class Product {
 			|| array_key_exists('woocommerce-product-bundles/woocommerce-product-bundles.php', $active_plugins)
 		) {
 			add_action( 'admin_notices', function() {
-				if ( MOOWOODLE_PRO_ADV ) {
+				if ( MooWoodle()->util->is_pro_active() ) {
 					echo '<div class="notice notice-warning is-dismissible"><p>' . __('WooComerce Subbcription and WooComerce Product Bundles is supported only with ', 'moowoodle') . '<a href="' . MOOWOODLE_PRO_SHOP_URL . '">' . __('MooWoodle Pro', 'moowoodle') . '</></p></div>';
 				}
 			});

@@ -3,8 +3,8 @@ import { __ } from '@wordpress/i18n';
 export default {
     id: "display",
     priority: 20,
-    name: __("Course Information Display", 'moowoodle'),
-    desc: __("Manage learner access to course information", 'moowoodle'),
+    name: __("Display Settings", 'moowoodle'),
+    desc: __("Display Settings", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     modal: [

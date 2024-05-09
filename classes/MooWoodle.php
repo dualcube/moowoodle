@@ -98,7 +98,7 @@ class MooWoodle {
 
         // add link on pugin 'active' button
         if ( is_admin() && !defined( 'DOING_AJAX' ) ) {
-            add_filter( 'plugin_action_links_' . plugin_basename( MOOWOODLE_FILE ), [ $this , 'plugin_links' ] );
+            add_filter( 'plugin_action_links_' . plugin_basename( $this->file ), [ $this , 'plugin_links' ] );
         }
 
         // Init required classes.
@@ -106,9 +106,6 @@ class MooWoodle {
 
 		// Init Text Domain
 		$this->load_plugin_textdomain();
-
-		// Create Log File.
-		Util::log('');
 
         /**
          * Actiion hook after moowoodle loaded.

@@ -16616,10 +16616,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Inputs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Inputs */ "./src/components/AdminLibrary/Inputs/index.js");
 /* harmony import */ var _contexts_SettingContext__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../contexts/SettingContext */ "./src/contexts/SettingContext.jsx");
 /* harmony import */ var _services_apiService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../services/apiService */ "./src/services/apiService.js");
-/* harmony import */ var _mui_material_Dialog__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/material/Dialog */ "./node_modules/@mui/material/Dialog/Dialog.js");
+/* harmony import */ var _mui_material_Dialog__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/material/Dialog */ "./node_modules/@mui/material/Dialog/Dialog.js");
 /* harmony import */ var _PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../PopupContent/PopupContent */ "./src/components/PopupContent/PopupContent.jsx");
 /* harmony import */ var _Inputs_Special_FormCustomizer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Inputs/Special/FormCustomizer */ "./src/components/AdminLibrary/Inputs/Special/FormCustomizer.jsx");
 /* harmony import */ var _ConnectButton_ConnectButton__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../ConnectButton/ConnectButton */ "./src/components/ConnectButton/ConnectButton.jsx");
+/* harmony import */ var _Log_Log__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Log/Log */ "./src/components/Log/Log.jsx");
 
 
 
@@ -16629,6 +16630,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 // import services function
+
 
 
 
@@ -17209,6 +17211,9 @@ const DynamicForm = props => {
         case "testconnection":
           input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ConnectButton_ConnectButton__WEBPACK_IMPORTED_MODULE_7__["default"], null);
           break;
+        case "log":
+          input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Log_Log__WEBPACK_IMPORTED_MODULE_8__["default"], null);
+          break;
         case "checkbox-default":
           input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Inputs__WEBPACK_IMPORTED_MODULE_2__["default"].MultiCheckBox, {
             wrapperClass: "checkbox-list-side-by-side",
@@ -17259,7 +17264,7 @@ const DynamicForm = props => {
   };
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "dynamic-fields-wrapper"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_8__["default"], {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: "admin-module-popup",
     open: modelOpen,
     onClose: handleModelClose,
@@ -19849,6 +19854,104 @@ function Course() {
 
 /***/ }),
 
+/***/ "./src/components/Log/Log.jsx":
+/*!************************************!*\
+  !*** ./src/components/Log/Log.jsx ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var _services_apiService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/apiService */ "./src/services/apiService.js");
+
+
+
+
+const Log = props => {
+  const [data, setData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    (0,axios__WEBPACK_IMPORTED_MODULE_2__["default"])({
+      method: "post",
+      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('fetch-log'),
+      headers: {
+        "X-WP-Nonce": appLocalizer.nonce
+      },
+      data: {
+        logcount: 100
+      }
+    }).then(response => {
+      // const data = JSON.parse(response.data);
+      setData(response.data);
+    });
+  }, []);
+  const handleDownloadLog = event => {
+    event.preventDefault();
+    (0,axios__WEBPACK_IMPORTED_MODULE_2__["default"])({
+      url: appLocalizer.log_url,
+      method: 'GET',
+      responseType: 'blob'
+    }).then(response => {
+      // Create a blob from the response
+      const blob = new Blob([response.data], {
+        type: response.headers['content-type']
+      });
+
+      // Create a URL for the blob
+      const url = window.URL.createObjectURL(blob);
+
+      // Create a link element
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'error.txt'); // Set the file name
+
+      // Trigger the download
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      document.body.removeChild(link);
+    }).catch(error => {
+      console.error('Error downloading file:', error);
+    });
+  };
+  const handleClearLog = event => {
+    event.preventDefault();
+    console.log('handle clear log');
+    (0,axios__WEBPACK_IMPORTED_MODULE_2__["default"])({
+      method: "post",
+      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('fetch-log'),
+      headers: {
+        "X-WP-Nonce": appLocalizer.nonce
+      },
+      data: {
+        logcount: 100,
+        clear: true
+      }
+    }).then(response => {
+      // const data = JSON.parse(response.data);
+      setData(response.data);
+    });
+  };
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, "LOG"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    className: "",
+    onClick: handleDownloadLog
+  }, "Download"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    className: "",
+    onClick: handleClearLog
+  }, "Clear All")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, data.map(log => {
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, log);
+  }))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Log);
+
+/***/ }),
+
 /***/ "./src/components/PopupContent/PopupContent.jsx":
 /*!******************************************************!*\
   !*** ./src/components/PopupContent/PopupContent.jsx ***!
@@ -20070,11 +20173,8 @@ const SyncNow = props => {
     onClick: handleCourseSync
   }, "All Course"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: ""
-  })), syncStatus.length && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, syncStatus.map(status => {
-    {
-      console.log(status);
-    }
-    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, status.action), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, " ", status.current / status.total * 100));
+  })), syncStatus.length > 0 && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, syncStatus.map(status => {
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, status.action), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, " ", status.current / status.total * 100, " % "));
   })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SyncNow);
@@ -20553,6 +20653,7 @@ __webpack_require__.r(__webpack_exports__);
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Log", "moowoodle"),
   desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Advance log", "moowoodle"),
   icon: 'font-support',
+  submitUrl: "save-moowoodle-setting",
   modal: [{
     key: "moowoodle_adv_log",
     type: "checkbox",
@@ -20560,12 +20661,12 @@ __webpack_require__.r(__webpack_exports__);
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('These setting will record all advanced error informations. Please don\'t Enable it if not required, because it will create a large log file.', 'moowoodle'),
     options: [{
       key: "moowoodle_adv_log",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enable', 'moowoodle'),
       value: "moowoodle_adv_log"
     }]
   }, {
     key: "moowoodle_adv_log",
-    type: "log"
+    type: "log",
+    classes: "log-section"
   }]
 });
 

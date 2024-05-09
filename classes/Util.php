@@ -17,7 +17,7 @@ class Util {
      * @param string $message
      * @return bool
      */
-	public static function _log( $message ) {
+	public static function log( $message, $clear = true ) {
 		global $wp_filesystem;
 
 		$message = var_export( $message, true );
@@ -29,8 +29,8 @@ class Util {
 		}
 
 		// log folder create
-		if ( ! file_exists( MW_LOGS . "/error.txt" ) ) {
-			wp_mkdir_p( MW_LOGS );
+		if ( ! file_exists( MOOWOODLE_LOGS ) ) {
+			wp_mkdir_p( MOOWOODLE_LOGS_DIR );
 			$message = "MooWoodle Log file Created\n";
 		}
 
@@ -41,15 +41,15 @@ class Util {
 
 		// Write Log
 		if( $message != '' ) {
-			$log_entry = gmdate( "d/m/Y H:i:s", time() ) . ': ' . $message;
-			$existing_content = $wp_filesystem->get_contents( get_site_url( null, str_replace( ABSPATH, '', MW_LOGS ) . "/error.txt" ) );
+			$log_entry 		  = gmdate( "d/m/Y H:i:s", time() ) . ': ' . $message;
+			$existing_content = $wp_filesystem->get_contents( get_site_url( null, str_replace( ABSPATH, '', MOOWOODLE_LOGS ) ) );
 			
 			// Append existing content
 			if ( ! empty( $existing_content ) ) {
 				$log_entry = "\n" . $log_entry;
 			}
 
-			return $wp_filesystem->put_contents( MW_LOGS . "/error.txt", $existing_content . $log_entry );
+			return $wp_filesystem->put_contents( MOOWOODLE_LOGS, $existing_content . $log_entry );
 		}
 
 		return false;
@@ -58,7 +58,7 @@ class Util {
 	/**
      * Function to console and debug errors.
      */
-    public static function log( $str ) {
+    public static function _log( $str ) {
         $file = MooWoodle()->plugin_path . 'log/moowoodle.log';
 
         if ( file_exists( $file ) ) {

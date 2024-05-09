@@ -4,7 +4,7 @@ export default {
     id: "sso",
     priority: 30,
     name: __("Single Sing On", 'moowoodle'),
-    desc: __("Manage seamless login and logout synchronization ", 'moowoodle'),
+    desc: __("Single Sing On", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     proDependent: true,

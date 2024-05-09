@@ -6,6 +6,7 @@ export default {
     name: __("Log", "moowoodle"),
     desc: __("Advance log", "moowoodle"),
     icon: 'font-support',
+    submitUrl: "save-moowoodle-setting",
     modal: [
         {
             key: "moowoodle_adv_log",
@@ -15,7 +16,6 @@ export default {
             options: [
                 {
                     key: "moowoodle_adv_log",
-                    label:  __('Enable', 'moowoodle'), 
                     value: "moowoodle_adv_log"
                 }
             ]
@@ -23,6 +23,7 @@ export default {
         {
             key: "moowoodle_adv_log",
             type: "log",
+            classes: "log-section",
         },
     ]
 };

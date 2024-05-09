@@ -136,6 +136,7 @@ class Admin {
 				'pro_sticker' => MOOWOOLE_PRO_STICKER,
 				'shop_url'    => MOOWOODLE_PRO_SHOP_URL,
 				'accountmenu' => wc_get_account_menu_items(),
+				'log_url'     => get_site_url( null, str_replace( ABSPATH, '', MOOWOODLE_LOGS ) ),
 			],
 		);
 	}

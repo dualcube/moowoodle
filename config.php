@@ -12,11 +12,11 @@ define( 'MOOWOODLE_SUPPORT_URL', 'https://wordpress.org/support/plugin/moowoodle
 define( 'MOOWOODLE_DUALCUBE_URL', 'http://dualcube.com' );
 
 define( 'EMU2_I18N_DOMAIN', 'moowoodle' );
-define( 'MW_LOGS', ( trailingslashit( wp_upload_dir(null, false)['basedir'] ) . 'mw-logs' ) );
-define( 'MOOWOODLE_FILE', __FILE__ );
+define( 'MOOWOODLE_LOGS_DIR', ( trailingslashit( wp_upload_dir(null, false)['basedir'] ) . 'mw-logs' ) );
+define( 'MOOWOODLE_LOGS', ( trailingslashit( wp_upload_dir(null, false)['basedir'] ) . 'mw-logs/error.txt' ) );
+
 define( 'MOOWOODLE_PLUGIN_URL', trailingslashit( plugins_url( '', __FILE__ ) ) );
-define( 'MOOWOODLE_PLUGIN_PUTH', trailingslashit( dirname( __FILE__ ) ) );
-define( 'MOOWOODLE_PRO_ADV', !defined('MOOWOODLE_PRO_PLUGIN_TOKEN'));
+define( 'MOOWOODLE_PRO_ADV', ! defined( 'MOOWOODLE_PRO_PLUGIN_TOKEN' ) );
 define( 'MOOWOOLE_PRO_STICKER', MOOWOODLE_PRO_ADV ? '<span class="mw-pro-tag">Pro</span>' : '' );
 
 define( 'MOOWOODLE_SCRIPT_DEBUG', true );

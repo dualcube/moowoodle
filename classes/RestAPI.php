@@ -135,8 +135,6 @@ class RestAPI {
                 $response = [ 'error' => $action . ' Test connection function is not defiend' ];
         }
 
-        Util::log($response);
-
         return rest_ensure_response( $response );
     }
 
@@ -304,12 +302,23 @@ class RestAPI {
      * @param mixed $request
      * @return \WP_Error|\WP_REST_Response
      */
-    public function get_log() {
+    public function get_log( $request ) {
+        $log_count = $request->get_param( 'logcount' );
+        $log_count = $log_count ? $log_count : 100;
+
+        $clear     = $request->get_param( 'clear' );
+
+        if ( $clear ) {
+            wp_delete_file( MOOWOODLE_LOGS );
+            return rest_ensure_response( true );
+        }
+
         $logs = [];
-        if ( file_exists( MW_LOGS . "/error.txt" ) ) {
-            $logs = explode( "\n", wp_remote_retrieve_body(wp_remote_get(get_site_url(null, str_replace(ABSPATH, '', MW_LOGS) . "/error.txt"))));
+
+        if ( file_exists( MOOWOODLE_LOGS ) ) {
+            $logs = explode( "\n", wp_remote_retrieve_body( wp_remote_get( get_site_url( null, str_replace( ABSPATH, '', MOOWOODLE_LOGS ) ) ) ) );
         }
         
-        return rest_ensure_response($logs);
+        return rest_ensure_response( array_reverse( array_slice( $logs, - $log_count ) ) );
     }
 }

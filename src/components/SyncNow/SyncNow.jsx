@@ -92,15 +92,14 @@ const SyncNow = (props) => {
                 </div>
             </div>
             {
-                syncStatus.length && 
+                syncStatus.length > 0 &&
                 <div>
                     {
                         syncStatus.map((status) => {
-                            {console.log(status)}
                             return (
                                 <>
                                     <h4>{status.action}</h4>
-                                    <p> { status.current / status.total * 100 }</p>
+                                    <p> { status.current / status.total * 100 } % </p>
                                 </>
                             );
                         })

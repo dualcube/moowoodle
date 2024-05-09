@@ -4,7 +4,7 @@ export default {
     id: "notification",
     priority: 40,
     name: __("Notification ", 'moowoodle'),
-    desc: __("Customize New User email content", 'moowoodle'),
+    desc: __("Notification ", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     proDependent: true,
