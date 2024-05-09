@@ -20,7 +20,7 @@ const Log = (props) => {
         });
     }, [] );
 
-    const handleDownloadLog = (event) => {
+  const handleDownloadLog = (event) => {
         event.preventDefault();
         axios({
             url: appLocalizer.log_url,
@@ -50,7 +50,7 @@ const Log = (props) => {
         });
     }
 
-    const handleClearLog = (event) => {
+  const handleClearLog = (event) => {
         event.preventDefault();
 
         console.log('handle clear log');axios({
@@ -67,21 +67,29 @@ const Log = (props) => {
         });
     }
 
-    return (
-        <div>
-            <h2>LOG</h2>
-            <div>
-                <button
-                    className=""
-                    onClick={handleDownloadLog}
-                >Download</button>
+  return (
+    <div>
+      <h2>LOG</h2>
+      <div className="button-section">
+        <button onClick={handleDownloadLog} class="download-btn">
+          Download
+        </button>
 
-                <button
-                    className=""
-                    onClick={handleClearLog}
-                >Clear All</button>
-            </div>
-            <div>
+        <button className="button-clear" onClick={handleClearLog}>
+          <span class="text">Clear</span>
+          <span class="icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path>
+            </svg>
+          </span>
+        </button>
+      </div>
+      <div className="log-container-wrapper">
                 <p>
                     {
                         data.map((log) => {
@@ -89,9 +97,9 @@ const Log = (props) => {
                         })
                     }
                 </p>
-            </div>
-        </div>
-    );
-}
+      </div>
+    </div>
+  );
+};
 
 export default Log;

@@ -1,10 +1,10 @@
 import { __ } from '@wordpress/i18n';
 
 export default {
-    id: "synchronize-shcedule-course",
+    id: "synchronize-schedule-course",
     priority: 30,
     name: __("Course", 'moowoodle'),
-    desc: __("Specify the course synchronization direction and schedule interval.", 'moowoodle'),
+    desc: __("Control course sync direction and schedule interval", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     proDependent: true,

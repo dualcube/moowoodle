@@ -2,33 +2,33 @@ import React, { useState, useEffect } from "react";
 import "./support.scss";
 
 const Support = () => {
-  const url = "https://www.youtube.com/embed/cgfeZH5z2dM?si=3zjG13RDOSiX2m1b";
+  const url = "https://www.youtube.com/embed/fL7wPVYopTU?si=BZeP1WwCxBSSoM7h";
 
   const [faqs, setFaqs] = useState([
     {
       question:
-        "Why am I not receiving any emails when a customer subscribes for an out-of-stock product?",
+        "How do I resolve a timeout error when WordPress connects with Moodle?",
       answer:
-        "Please install a plugin like Email Log and perform a test subscription.",
+        "When encountering a timeout error during WordPress-Moodle communication, adjust timeout settings in your server configuration to accommodate longer communication durations.",
       open: true,
     },
     {
-      question: "Why is the out-of-stock form not appearing?",
+      question: "How can I troubleshoot connection errors during Test connection?",
       answer:
-        "There might be a theme conflict issue. To troubleshoot, switch to a default theme like Twenty Twenty-Four and check if the form appears.",
+        "Navigate to the \"Log\" menu, where you can use the \"Log\" feature to troubleshoot connectivity issues between your store and Moodle. This tool helps identify necessary changes for resolution.",
       open: false,
     },
     {
       question:
-        "Does Product Stock Manager & Notifier support product variations?",
+        "Why aren't my customers receiving enrollment emails?",
       answer:
-        "Yes, product variations are fully supported and editable from the Inventory Manager. Product Stock Manager & Notifier handles variable products with ease and uses an expandable feature to make managing variations clear and straightforward.",
+        "Install a plugin like Email Log to check if New Enrollment emails are logged. If logged, your email functionality is working fine; if not, contact your email server administrator for assistance.",
       open: false,
     },
     {
-      question: "Do you support Google reCaptcha for the out-of-stock form?",
+      question: "Can I set course expiration dates using MooWoodle?",
       answer:
-        'Yes, <a href="https://multivendorx.com/woocommerce-product-stock-manager-notifier-pro/?utm_source=WordPressAdmin&utm_medium=PluginSettings&utm_campaign=productsstockmanager" target="_blank">Product Stock Manager & Notifier Pro</a> has support for reCaptcha.',
+        'Course-related functionalities, including setting expiration dates, are managed within Moodle itself; MooWoodle does not control these aspects.',
       open: false,
     },
   ]);
@@ -53,8 +53,7 @@ const Support = () => {
         <div className="support-container">
           <div className="support-header-wrapper">
             <h1 className="support-heading">
-              Thank you for using Product Stock Manager & Notifier for
-              WooCommerce
+              Thank you for using MooWoodle
             </h1>
             <p className="support-subheading">
               We want to help you enjoy a wonderful experience with all of our

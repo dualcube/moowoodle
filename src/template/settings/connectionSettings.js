@@ -3,8 +3,8 @@ import { __ } from '@wordpress/i18n';
 export default {
     id: "connection",
     priority: 10,
-    name: __("Connection Settings", 'moowoodle'),
-    desc: __("Configure parameters for connecting Moodle with WordPress", 'moowoodle'),
+    name: __("General", 'moowoodle'),
+    desc: __("Configure Moodle connection with WordPress", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     modal: [

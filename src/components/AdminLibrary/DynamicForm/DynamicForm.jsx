@@ -672,7 +672,7 @@ const DynamicForm = (props) => {
               inputWrapperClass="toggle-checkbox-header"
               inputInnerWrapperClass="default-checkbox"
               inputClass={inputField.class}
-              hintOuterClass=""
+              hintOuterClass="checkbox-description"
               hintInnerClass="hover-tooltip"
               idPrefix="toggle-switch"
               selectDeselect={inputField.select_deselect}

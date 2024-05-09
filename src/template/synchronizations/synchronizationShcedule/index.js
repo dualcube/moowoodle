@@ -1,9 +1,9 @@
 import { __ } from '@wordpress/i18n';
 
 export default {
-    id: "synchronization-shcedule",
+    id: "synchronization-schedule",
     priority: 20,
-    name: __("Synchronization Shcedule", 'moowoodle'),
-    desc: __("Synchronization Shcedule", 'moowoodle'),
+    name: __("Synchronization Schedule", 'moowoodle'),
+    desc: __("Synchronization Schedule", 'moowoodle'),
     icon: "font-settings",
 };
