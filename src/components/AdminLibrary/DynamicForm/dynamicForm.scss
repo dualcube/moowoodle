@@ -28,6 +28,10 @@ $color-active: #65438f;
         width: 70%;
         position: relative;
 
+        .select-input-section{
+          position: relative;
+        }
+
         .toggle-checkbox-content {
           position: relative;
           margin-bottom: 0.625rem;
@@ -109,6 +113,14 @@ $color-active: #65438f;
         }
         .settings-metabox-description {
           margin-top: 0.625rem;
+          font-style: italic;
+          color: rgba(114, 114, 117, 0.6);
+          font-size: 0.813rem;
+          line-height: 1.5714285714;
+        }
+
+        .checkbox-description{
+          width: 100%;
           font-style: italic;
           color: rgba(114, 114, 117, 0.6);
           font-size: 0.813rem;
@@ -202,6 +214,7 @@ input[type="radio"] {
       display: inline-flex;
       margin-right: 15px;
       position: relative;
+      flex-wrap: wrap;
     }
   }
 }
@@ -210,7 +223,8 @@ input[type="radio"] {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 1rem;
+  column-gap: 1rem;
+  row-gap: 0.5rem;
   margin-bottom: 0.75rem;
 
   .settings-metabox-description{

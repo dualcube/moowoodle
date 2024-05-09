@@ -24,6 +24,10 @@ export default {
             key: "moowoodle_adv_log",
             type: "log",
             classes: "log-section",
+            dependent: {
+                key: "moowoodle_adv_log",
+                set: true
+            }
         },
     ]
 };
