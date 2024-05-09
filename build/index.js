@@ -20609,52 +20609,6 @@ const getTemplateData = (tamplate = 'settings') => {
 
 /***/ }),
 
-/***/ "./src/template/settings/connectionSettings.js":
-/*!*****************************************************!*\
-  !*** ./src/template/settings/connectionSettings.js ***!
-  \*****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  id: "connection",
-  priority: 10,
-  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("General", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Configure Moodle connection with WordPress", 'moowoodle'),
-  icon: "font-mail",
-  submitUrl: "save-moowoodle-setting",
-  modal: [{
-    key: "moodle_url",
-    type: "text",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enter the Moodle Site URL', 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Moodle Site URL", 'moowoodle')
-  }, {
-    key: "moodle_access_token",
-    type: "text",
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Moodle Access Token", 'moowoodle'),
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Enter Moodle Access Token. You can generate the Access Token from - Dashboard => Site administration => Server => Web services => ${appLocalizer.moodle_tokens_url}`, 'moowoodle')
-  }, {
-    key: "test_connection",
-    type: "testconnection",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Refer to the ${appLocalizer.setupguide} to complete all necessary configurations on the Moodle site, and subsequently, perform a Test Connection to verify the functionality of all services.`, 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("MooWoodle Test Connection", 'moowoodle')
-  }, {
-    key: "moodle_timeout",
-    type: "text",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Set Curl connection time out in sec.', 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Timeout", 'moowoodle')
-  }]
-});
-
-/***/ }),
-
 /***/ "./src/template/settings/displaySettings.js":
 /*!**************************************************!*\
   !*** ./src/template/settings/displaySettings.js ***!
@@ -20703,6 +20657,52 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/template/settings/generalSettings.js":
+/*!**************************************************!*\
+  !*** ./src/template/settings/generalSettings.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  id: "general",
+  priority: 10,
+  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("General", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Configure Moodle connection with WordPress", 'moowoodle'),
+  icon: "font-mail",
+  submitUrl: "save-moowoodle-setting",
+  modal: [{
+    key: "moodle_url",
+    type: "text",
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enter the Moodle Site URL', 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Moodle Site URL", 'moowoodle')
+  }, {
+    key: "moodle_access_token",
+    type: "text",
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Moodle Access Token", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Enter Moodle Access Token. You can generate the Access Token from - Dashboard => Site administration => Server => Web services => ${appLocalizer.moodle_tokens_url}`, 'moowoodle')
+  }, {
+    key: "test_connection",
+    type: "testconnection",
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Refer to the ${appLocalizer.setupguide} to complete all necessary configurations on the Moodle site, and subsequently, perform a Test Connection to verify the functionality of all services.`, 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("MooWoodle Test Connection", 'moowoodle')
+  }, {
+    key: "moodle_timeout",
+    type: "text",
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Set Curl connection time out in sec.', 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Timeout", 'moowoodle')
+  }]
+});
+
+/***/ }),
+
 /***/ "./src/template/settings/log.js":
 /*!**************************************!*\
   !*** ./src/template/settings/log.js ***!
@@ -20736,11 +20736,7 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "moowoodle_adv_log",
     type: "log",
-    classes: "log-section",
-    dependent: {
-      key: "moowoodle_adv_log",
-      set: true
-    }
+    classes: "log-section"
   }]
 });
 
@@ -20985,7 +20981,7 @@ __webpack_require__.r(__webpack_exports__);
   id: "synchronization-schedule",
   priority: 20,
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchronization Schedule", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchronization Schedule", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Tailor synchronization schedule for users and courses.", 'moowoodle'),
   icon: "font-settings"
 });
 
@@ -21006,10 +21002,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  id: "synchronize-schedule-user",
+  id: "synchronize-shcedule-user",
   priority: 25,
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("User", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Control user sync direction and schedule interval.", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Admins can select user sync direction and schedule interval for user synchronization.", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   proDependent: true,
@@ -21082,7 +21078,7 @@ __webpack_require__.r(__webpack_exports__);
   id: "synchronize-datamap",
   priority: 10,
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Data Map", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Data Map", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select the data to map for users or courses.", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   modal: [{
@@ -34014,8 +34010,8 @@ var index =  react__WEBPACK_IMPORTED_MODULE_0__.useLayoutEffect ;
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var map = {
-	"./connectionSettings.js": "./src/template/settings/connectionSettings.js",
 	"./displaySettings.js": "./src/template/settings/displaySettings.js",
+	"./generalSettings.js": "./src/template/settings/generalSettings.js",
 	"./log.js": "./src/template/settings/log.js",
 	"./notificationSettings.js": "./src/template/settings/notificationSettings.js",
 	"./ssoSettings.js": "./src/template/settings/ssoSettings.js",

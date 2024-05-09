@@ -4,6 +4,6 @@ export default {
     id: "synchronization-schedule",
     priority: 20,
     name: __("Synchronization Schedule", 'moowoodle'),
-    desc: __("Synchronization Schedule", 'moowoodle'),
+    desc: __("Tailor synchronization schedule for users and courses.", 'moowoodle'),
     icon: "font-settings",
 };

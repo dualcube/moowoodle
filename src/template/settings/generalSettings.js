@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 
 export default {
-    id: "connection",
+    id: "general",
     priority: 10,
     name: __("General", 'moowoodle'),
     desc: __("Configure Moodle connection with WordPress", 'moowoodle'),
