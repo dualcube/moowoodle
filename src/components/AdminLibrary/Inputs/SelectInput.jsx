@@ -19,28 +19,28 @@ const SelectInput = (props) => {
         <>
             <div className={props.wrapperClass}>
                 <div className='select-input-section'>
-                    {
-                        props.selectDeselect &&
-                        <>
-                            <div
-                                className={props.selectDeselectClass}
-                                onClick={(e) => { props.onMultiSelectDeselectChange?.(e) }}
-                            >
-                                {props.selectDeselectValue}
-                            </div>
-                        </>
-                    }
-                    <Select
-                        className={props.inputClass}
-                        value={defaulValue}
-                        options={optionsData}
-                        onChange={(e) => { props.onChange?.(e) }}
-                        onClick= {(e) => { props.onClick?.(e) }}
-                        isMulti={props.type === 'multi-select'}
-                    ></Select>
-                    {
-                        props.proSetting && <span className="admin-pro-tag">pro</span>
-                    }
+                {
+                    props.selectDeselect &&
+                    <>
+                        <div
+                            className={props.selectDeselectClass}
+                            onClick={(e) => { props.onMultiSelectDeselectChange?.(e) }}
+                        >
+                            {props.selectDeselectValue}
+                        </div>
+                    </>
+                }
+                <Select
+                    className={props.inputClass}
+                    value={defaulValue}
+                    options={optionsData}
+                    onChange={(e) => { props.onChange?.(e) }}
+                    onClick= {(e) => { props.onClick?.(e) }}
+                    isMulti={props.type === 'multi-select'}
+                ></Select>
+                {
+                    props.proSetting && <span className="admin-pro-tag">pro</span>
+                }
                 </div>
                 {
                     props.description &&

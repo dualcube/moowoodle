@@ -44,7 +44,7 @@ class Admin {
 			],
 			"settings" => [
 				'name'   => __("Settings", 'moowoodle'),
-				'subtab' => 'connection'
+				'subtab' => 'general'
 			],
 			"synchronization" => [
 				'name'   => __("Synchronization", 'moowoodle'),
@@ -109,11 +109,10 @@ class Admin {
         $settings_databases_value = [];
 
         $tabs_names = [
-			'connection',
-			'system',
-			'user-information',
+			'general',
 			'display',
 			'sso',
+			'log',
 			'notification',
 			'synchronize-datamap',
 			'synchronize-shcedule-course',
