@@ -23,7 +23,6 @@
   position: relative;
 }
 .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content .toggle-checkbox-content {
-  margin-left: auto;
   position: relative;
   margin-bottom: 0.625rem;
 }
@@ -35,7 +34,7 @@
 .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content .toggle-checkbox-content::after {
   content: "";
   position: absolute;
-  top: 0.55rem;
+  top: 50%;
   left: 2.3rem;
   width: 0.25rem;
   height: 0.25rem;
@@ -43,6 +42,7 @@
   border-radius: 8rem;
   transition: 0.3s;
   z-index: 0;
+  transform: translateY(-50%);
 }
 .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content .toggle-checkbox-content input {
   height: 0;
@@ -1812,7 +1812,13 @@ span.stock-manager-pro-tag {
   justify-content: center;
 }
 .course-container-wrapper .rdt_Table a {
-  color: #65438f;
+  color: rgba(0, 0, 0, 0.87);
+}
+.course-container-wrapper .rdt_Table .rdt_TableHead .rdt_TableHeadRow .rdt_TableCol:nth-child(6) {
+  min-width: 17rem !important;
+}
+.course-container-wrapper .rdt_Table .rdt_TableRow .rdt_TableCell:nth-child(6) {
+  min-width: 17rem !important;
 }
 .course-container-wrapper .rdt_TableCol .rdt_TableCol_Sortable > span {
   font-size: 0.75rem;
@@ -2067,6 +2073,9 @@ span.admin-pro-tag {
     height: 1.3125rem;
     width: 1.3125rem;
   }
+}
+.setting-form-input span.admin-pro-tag {
+  top: 26% !important;
 }
 
 /*# sourceMappingURL=index.css.map*/

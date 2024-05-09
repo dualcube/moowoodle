@@ -2,15 +2,235 @@
 -------------------------------------
 ''
 -------------------------------------
-''
+array (
+  'headers' => 
+  \WpOrg\Requests\Utility\CaseInsensitiveDictionary::__set_state(array(
+     'data' => 
+    array (
+      'date' => 'Thu, 09 May 2024 05:22:30 GMT',
+      'server' => 'Apache/2.4.56 (Win64) OpenSSL/1.1.1t PHP/8.2.4',
+      'x-powered-by' => 'PHP/8.2.4',
+      'cache-control' => 'private, must-revalidate, pre-check=0, post-check=0, max-age=0',
+      'expires' => 'Thu, 01 Jan 1970 00:00:00 GMT',
+      'pragma' => 'no-cache',
+      'accept-ranges' => 'none',
+      'access-control-allow-origin' => '*',
+      'content-length' => '217',
+      'content-type' => 'application/json',
+    ),
+  )),
+  'body' => '[{"id":1,"name":"Category 1","idnumber":null,"description":"","descriptionformat":1,"parent":0,"sortorder":10000,"coursecount":5,"visible":1,"visibleold":1,"timemodified":1713165000,"depth":1,"path":"\\/1","theme":""}]',
+  'response' => 
+  array (
+    'code' => 200,
+    'message' => 'OK',
+  ),
+  'cookies' => 
+  array (
+  ),
+  'filename' => NULL,
+  'http_response' => 
+  \WP_HTTP_Requests_Response::__set_state(array(
+     'data' => NULL,
+     'headers' => NULL,
+     'status' => NULL,
+     'response' => 
+    \WpOrg\Requests\Response::__set_state(array(
+       'body' => '[{"id":1,"name":"Category 1","idnumber":null,"description":"","descriptionformat":1,"parent":0,"sortorder":10000,"coursecount":5,"visible":1,"visibleold":1,"timemodified":1713165000,"depth":1,"path":"\\/1","theme":""}]',
+       'raw' => 'HTTP/1.1 200 OK
+Date: Thu, 09 May 2024 05:22:30 GMT
+Server: Apache/2.4.56 (Win64) OpenSSL/1.1.1t PHP/8.2.4
+X-Powered-By: PHP/8.2.4
+Cache-Control: private, must-revalidate, pre-check=0, post-check=0, max-age=0
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Pragma: no-cache
+Accept-Ranges: none
+Access-Control-Allow-Origin: *
+Content-Length: 217
+Connection: close
+Content-Type: application/json
+
+[{"id":1,"name":"Category 1","idnumber":null,"description":"","descriptionformat":1,"parent":0,"sortorder":10000,"coursecount":5,"visible":1,"visibleold":1,"timemodified":1713165000,"depth":1,"path":"\\/1","theme":""}]',
+       'headers' => 
+      \WpOrg\Requests\Response\Headers::__set_state(array(
+         'data' => 
+        array (
+          'date' => 
+          array (
+            0 => 'Thu, 09 May 2024 05:22:30 GMT',
+          ),
+          'server' => 
+          array (
+            0 => 'Apache/2.4.56 (Win64) OpenSSL/1.1.1t PHP/8.2.4',
+          ),
+          'x-powered-by' => 
+          array (
+            0 => 'PHP/8.2.4',
+          ),
+          'cache-control' => 
+          array (
+            0 => 'private, must-revalidate, pre-check=0, post-check=0, max-age=0',
+          ),
+          'expires' => 
+          array (
+            0 => 'Thu, 01 Jan 1970 00:00:00 GMT',
+          ),
+          'pragma' => 
+          array (
+            0 => 'no-cache',
+          ),
+          'accept-ranges' => 
+          array (
+            0 => 'none',
+          ),
+          'access-control-allow-origin' => 
+          array (
+            0 => '*',
+          ),
+          'content-length' => 
+          array (
+            0 => '217',
+          ),
+          'content-type' => 
+          array (
+            0 => 'application/json',
+          ),
+        ),
+      )),
+       'status_code' => 200,
+       'protocol_version' => 1.1,
+       'success' => true,
+       'redirects' => 0,
+       'url' => 'http://localhost/moodle-2/webservice/rest/server.php?wstoken=469b0af4b8eb6cc8ae01480457114904&wsfunction=core_course_get_categories&moodlewsrestformat=json',
+       'history' => 
+      array (
+      ),
+       'cookies' => 
+      \WpOrg\Requests\Cookie\Jar::__set_state(array(
+         'cookies' => 
+        array (
+        ),
+      )),
+    )),
+     'filename' => NULL,
+  )),
+)
 -------------------------------------
 ''
 -------------------------------------
-''
--------------------------------------
-''
--------------------------------------
-''
+array (
+  'headers' => 
+  \WpOrg\Requests\Utility\CaseInsensitiveDictionary::__set_state(array(
+     'data' => 
+    array (
+      'date' => 'Thu, 09 May 2024 05:22:30 GMT',
+      'server' => 'Apache/2.4.56 (Win64) OpenSSL/1.1.1t PHP/8.2.4',
+      'x-powered-by' => 'PHP/8.2.4',
+      'cache-control' => 'private, must-revalidate, pre-check=0, post-check=0, max-age=0',
+      'expires' => 'Thu, 01 Jan 1970 00:00:00 GMT',
+      'pragma' => 'no-cache',
+      'accept-ranges' => 'none',
+      'access-control-allow-origin' => '*',
+      'content-length' => '3893',
+      'content-type' => 'application/json',
+    ),
+  )),
+  'body' => '[{"id":1,"shortname":"moodle2","categoryid":0,"categorysortorder":1,"fullname":"Moodle-2","displayname":"Moodle-2","idnumber":"","summary":"","summaryformat":0,"format":"site","showgrades":1,"newsitems":3,"startdate":0,"enddate":0,"numsections":1,"maxbytes":0,"showreports":0,"visible":1,"groupmode":0,"groupmodeforce":0,"defaultgroupingid":0,"timecreated":1713164999,"timemodified":1713165561,"enablecompletion":0,"completionnotify":0,"lang":"","forcetheme":"","courseformatoptions":[{"name":"numsections","value":1}],"showactivitydates":false,"showcompletionconditions":null},{"id":2,"shortname":"course1","categoryid":1,"categorysortorder":10005,"fullname":"My Course 1","displayname":"My Course 1","idnumber":"","summary":"","summaryformat":1,"format":"topics","showgrades":1,"newsitems":5,"startdate":1713218400,"enddate":1744754400,"numsections":4,"maxbytes":0,"showreports":0,"visible":1,"hiddensections":1,"groupmode":0,"groupmodeforce":0,"defaultgroupingid":0,"timecreated":1713165654,"timemodified":1713165654,"enablecompletion":1,"completionnotify":0,"lang":"","forcetheme":"","courseformatoptions":[{"name":"hiddensections","value":1},{"name":"coursedisplay","value":0}],"showactivitydates":true,"showcompletionconditions":true},{"id":3,"shortname":"course2","categoryid":1,"categorysortorder":10004,"fullname":"My Course 2","displayname":"My Course 2","idnumber":"","summary":"","summaryformat":1,"format":"topics","showgrades":1,"newsitems":5,"startdate":1713218400,"enddate":1744754400,"numsections":4,"maxbytes":0,"showreports":0,"visible":1,"hiddensections":1,"groupmode":0,"groupmodeforce":0,"defaultgroupingid":0,"timecreated":1713165692,"timemodified":1713165692,"enablecompletion":1,"completionnotify":0,"lang":"","forcetheme":"","courseformatoptions":[{"name":"hiddensections","value":1},{"name":"coursedisplay","value":0}],"showactivitydates":true,"showcompletionconditions":true},{"id":4,"shortname":"course3","categoryid":1,"categorysortorder":10003,"fullname":"My Course 3","displayname":"My Course 3","idnumber":"","summary":"","summaryformat":1,"format":"topics","showgrades":1,"newsitems":5,"startdate":1713218400,"enddate":1744754400,"numsections":4,"maxbytes":0,"showreports":0,"visible":1,"hiddensections":1,"groupmode":0,"groupmodeforce":0,"defaultgroupingid":0,"timecreated":1713165722,"timemodified":1713165722,"enablecompletion":1,"completionnotify":0,"lang":"","forcetheme":"","courseformatoptions":[{"name":"hiddensections","value":1},{"name":"coursedisplay","value":0}],"showactivitydates":true,"showcompletionconditions":true},{"id":5,"shortname":"course4","categoryid":1,"categorysortorder":10002,"fullname":"My Course 4","displayname":"My Course 4","idnumber":"","summary":"","summaryformat":1,"format":"topics","showgrades":1,"newsitems":5,"startdate":1713218400,"enddate":1744754400,"numsections":4,"maxbytes":0,"showreports":0,"visible":1,"hiddensections":1,"groupmode":0,"groupmodeforce":0,"defaultgroupingid":0,"timecreated":1713165745,"timemodified":1713165745,"enablecompletion":1,"completionnotify":0,"lang":"","forcetheme":"","courseformatoptions":[{"name":"hiddensections","value":1},{"name":"coursedisplay","value":0}],"showactivitydates":true,"showcompletionconditions":true},{"id":6,"shortname":"course5","categoryid":1,"categorysortorder":10001,"fullname":"My Course 5","displayname":"My Course 5","idnumber":"","summary":"","summaryformat":1,"format":"topics","showgrades":1,"newsitems":5,"startdate":1713218400,"enddate":1744754400,"numsections":4,"maxbytes":0,"showreports":0,"visible":1,"hiddensections":1,"groupmode":0,"groupmodeforce":0,"defaultgroupingid":0,"timecreated":1713165765,"timemodified":1713165765,"enablecompletion":1,"completionnotify":0,"lang":"","forcetheme":"","courseformatoptions":[{"name":"hiddensections","value":1},{"name":"coursedisplay","value":0}],"showactivitydates":true,"showcompletionconditions":true}]',
+  'response' => 
+  array (
+    'code' => 200,
+    'message' => 'OK',
+  ),
+  'cookies' => 
+  array (
+  ),
+  'filename' => NULL,
+  'http_response' => 
+  \WP_HTTP_Requests_Response::__set_state(array(
+     'data' => NULL,
+     'headers' => NULL,
+     'status' => NULL,
+     'response' => 
+    \WpOrg\Requests\Response::__set_state(array(
+       'body' => '[{"id":1,"shortname":"moodle2","categoryid":0,"categorysortorder":1,"fullname":"Moodle-2","displayname":"Moodle-2","idnumber":"","summary":"","summaryformat":0,"format":"site","showgrades":1,"newsitems":3,"startdate":0,"enddate":0,"numsections":1,"maxbytes":0,"showreports":0,"visible":1,"groupmode":0,"groupmodeforce":0,"defaultgroupingid":0,"timecreated":1713164999,"timemodified":1713165561,"enablecompletion":0,"completionnotify":0,"lang":"","forcetheme":"","courseformatoptions":[{"name":"numsections","value":1}],"showactivitydates":false,"showcompletionconditions":null},{"id":2,"shortname":"course1","categoryid":1,"categorysortorder":10005,"fullname":"My Course 1","displayname":"My Course 1","idnumber":"","summary":"","summaryformat":1,"format":"topics","showgrades":1,"newsitems":5,"startdate":1713218400,"enddate":1744754400,"numsections":4,"maxbytes":0,"showreports":0,"visible":1,"hiddensections":1,"groupmode":0,"groupmodeforce":0,"defaultgroupingid":0,"timecreated":1713165654,"timemodified":1713165654,"enablecompletion":1,"completionnotify":0,"lang":"","forcetheme":"","courseformatoptions":[{"name":"hiddensections","value":1},{"name":"coursedisplay","value":0}],"showactivitydates":true,"showcompletionconditions":true},{"id":3,"shortname":"course2","categoryid":1,"categorysortorder":10004,"fullname":"My Course 2","displayname":"My Course 2","idnumber":"","summary":"","summaryformat":1,"format":"topics","showgrades":1,"newsitems":5,"startdate":1713218400,"enddate":1744754400,"numsections":4,"maxbytes":0,"showreports":0,"visible":1,"hiddensections":1,"groupmode":0,"groupmodeforce":0,"defaultgroupingid":0,"timecreated":1713165692,"timemodified":1713165692,"enablecompletion":1,"completionnotify":0,"lang":"","forcetheme":"","courseformatoptions":[{"name":"hiddensections","value":1},{"name":"coursedisplay","value":0}],"showactivitydates":true,"showcompletionconditions":true},{"id":4,"shortname":"course3","categoryid":1,"categorysortorder":10003,"fullname":"My Course 3","displayname":"My Course 3","idnumber":"","summary":"","summaryformat":1,"format":"topics","showgrades":1,"newsitems":5,"startdate":1713218400,"enddate":1744754400,"numsections":4,"maxbytes":0,"showreports":0,"visible":1,"hiddensections":1,"groupmode":0,"groupmodeforce":0,"defaultgroupingid":0,"timecreated":1713165722,"timemodified":1713165722,"enablecompletion":1,"completionnotify":0,"lang":"","forcetheme":"","courseformatoptions":[{"name":"hiddensections","value":1},{"name":"coursedisplay","value":0}],"showactivitydates":true,"showcompletionconditions":true},{"id":5,"shortname":"course4","categoryid":1,"categorysortorder":10002,"fullname":"My Course 4","displayname":"My Course 4","idnumber":"","summary":"","summaryformat":1,"format":"topics","showgrades":1,"newsitems":5,"startdate":1713218400,"enddate":1744754400,"numsections":4,"maxbytes":0,"showreports":0,"visible":1,"hiddensections":1,"groupmode":0,"groupmodeforce":0,"defaultgroupingid":0,"timecreated":1713165745,"timemodified":1713165745,"enablecompletion":1,"completionnotify":0,"lang":"","forcetheme":"","courseformatoptions":[{"name":"hiddensections","value":1},{"name":"coursedisplay","value":0}],"showactivitydates":true,"showcompletionconditions":true},{"id":6,"shortname":"course5","categoryid":1,"categorysortorder":10001,"fullname":"My Course 5","displayname":"My Course 5","idnumber":"","summary":"","summaryformat":1,"format":"topics","showgrades":1,"newsitems":5,"startdate":1713218400,"enddate":1744754400,"numsections":4,"maxbytes":0,"showreports":0,"visible":1,"hiddensections":1,"groupmode":0,"groupmodeforce":0,"defaultgroupingid":0,"timecreated":1713165765,"timemodified":1713165765,"enablecompletion":1,"completionnotify":0,"lang":"","forcetheme":"","courseformatoptions":[{"name":"hiddensections","value":1},{"name":"coursedisplay","value":0}],"showactivitydates":true,"showcompletionconditions":true}]',
+       'raw' => 'HTTP/1.1 200 OK
+Date: Thu, 09 May 2024 05:22:30 GMT
+Server: Apache/2.4.56 (Win64) OpenSSL/1.1.1t PHP/8.2.4
+X-Powered-By: PHP/8.2.4
+Cache-Control: private, must-revalidate, pre-check=0, post-check=0, max-age=0
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Pragma: no-cache
+Accept-Ranges: none
+Access-Control-Allow-Origin: *
+Content-Length: 3893
+Connection: close
+Content-Type: application/json
+
+[{"id":1,"shortname":"moodle2","categoryid":0,"categorysortorder":1,"fullname":"Moodle-2","displayname":"Moodle-2","idnumber":"","summary":"","summaryformat":0,"format":"site","showgrades":1,"newsitems":3,"startdate":0,"enddate":0,"numsections":1,"maxbytes":0,"showreports":0,"visible":1,"groupmode":0,"groupmodeforce":0,"defaultgroupingid":0,"timecreated":1713164999,"timemodified":1713165561,"enablecompletion":0,"completionnotify":0,"lang":"","forcetheme":"","courseformatoptions":[{"name":"numsections","value":1}],"showactivitydates":false,"showcompletionconditions":null},{"id":2,"shortname":"course1","categoryid":1,"categorysortorder":10005,"fullname":"My Course 1","displayname":"My Course 1","idnumber":"","summary":"","summaryformat":1,"format":"topics","showgrades":1,"newsitems":5,"startdate":1713218400,"enddate":1744754400,"numsections":4,"maxbytes":0,"showreports":0,"visible":1,"hiddensections":1,"groupmode":0,"groupmodeforce":0,"defaultgroupingid":0,"timecreated":1713165654,"timemodified":1713165654,"enablecompletion":1,"completionnotify":0,"lang":"","forcetheme":"","courseformatoptions":[{"name":"hiddensections","value":1},{"name":"coursedisplay","value":0}],"showactivitydates":true,"showcompletionconditions":true},{"id":3,"shortname":"course2","categoryid":1,"categorysortorder":10004,"fullname":"My Course 2","displayname":"My Course 2","idnumber":"","summary":"","summaryformat":1,"format":"topics","showgrades":1,"newsitems":5,"startdate":1713218400,"enddate":1744754400,"numsections":4,"maxbytes":0,"showreports":0,"visible":1,"hiddensections":1,"groupmode":0,"groupmodeforce":0,"defaultgroupingid":0,"timecreated":1713165692,"timemodified":1713165692,"enablecompletion":1,"completionnotify":0,"lang":"","forcetheme":"","courseformatoptions":[{"name":"hiddensections","value":1},{"name":"coursedisplay","value":0}],"showactivitydates":true,"showcompletionconditions":true},{"id":4,"shortname":"course3","categoryid":1,"categorysortorder":10003,"fullname":"My Course 3","displayname":"My Course 3","idnumber":"","summary":"","summaryformat":1,"format":"topics","showgrades":1,"newsitems":5,"startdate":1713218400,"enddate":1744754400,"numsections":4,"maxbytes":0,"showreports":0,"visible":1,"hiddensections":1,"groupmode":0,"groupmodeforce":0,"defaultgroupingid":0,"timecreated":1713165722,"timemodified":1713165722,"enablecompletion":1,"completionnotify":0,"lang":"","forcetheme":"","courseformatoptions":[{"name":"hiddensections","value":1},{"name":"coursedisplay","value":0}],"showactivitydates":true,"showcompletionconditions":true},{"id":5,"shortname":"course4","categoryid":1,"categorysortorder":10002,"fullname":"My Course 4","displayname":"My Course 4","idnumber":"","summary":"","summaryformat":1,"format":"topics","showgrades":1,"newsitems":5,"startdate":1713218400,"enddate":1744754400,"numsections":4,"maxbytes":0,"showreports":0,"visible":1,"hiddensections":1,"groupmode":0,"groupmodeforce":0,"defaultgroupingid":0,"timecreated":1713165745,"timemodified":1713165745,"enablecompletion":1,"completionnotify":0,"lang":"","forcetheme":"","courseformatoptions":[{"name":"hiddensections","value":1},{"name":"coursedisplay","value":0}],"showactivitydates":true,"showcompletionconditions":true},{"id":6,"shortname":"course5","categoryid":1,"categorysortorder":10001,"fullname":"My Course 5","displayname":"My Course 5","idnumber":"","summary":"","summaryformat":1,"format":"topics","showgrades":1,"newsitems":5,"startdate":1713218400,"enddate":1744754400,"numsections":4,"maxbytes":0,"showreports":0,"visible":1,"hiddensections":1,"groupmode":0,"groupmodeforce":0,"defaultgroupingid":0,"timecreated":1713165765,"timemodified":1713165765,"enablecompletion":1,"completionnotify":0,"lang":"","forcetheme":"","courseformatoptions":[{"name":"hiddensections","value":1},{"name":"coursedisplay","value":0}],"showactivitydates":true,"showcompletionconditions":true}]',
+       'headers' => 
+      \WpOrg\Requests\Response\Headers::__set_state(array(
+         'data' => 
+        array (
+          'date' => 
+          array (
+            0 => 'Thu, 09 May 2024 05:22:30 GMT',
+          ),
+          'server' => 
+          array (
+            0 => 'Apache/2.4.56 (Win64) OpenSSL/1.1.1t PHP/8.2.4',
+          ),
+          'x-powered-by' => 
+          array (
+            0 => 'PHP/8.2.4',
+          ),
+          'cache-control' => 
+          array (
+            0 => 'private, must-revalidate, pre-check=0, post-check=0, max-age=0',
+          ),
+          'expires' => 
+          array (
+            0 => 'Thu, 01 Jan 1970 00:00:00 GMT',
+          ),
+          'pragma' => 
+          array (
+            0 => 'no-cache',
+          ),
+          'accept-ranges' => 
+          array (
+            0 => 'none',
+          ),
+          'access-control-allow-origin' => 
+          array (
+            0 => '*',
+          ),
+          'content-length' => 
+          array (
+            0 => '3893',
+          ),
+          'content-type' => 
+          array (
+            0 => 'application/json',
+          ),
+        ),
+      )),
+       'status_code' => 200,
+       'protocol_version' => 1.1,
+       'success' => true,
+       'redirects' => 0,
+       'url' => 'http://localhost/moodle-2/webservice/rest/server.php?wstoken=469b0af4b8eb6cc8ae01480457114904&wsfunction=core_course_get_courses&moodlewsrestformat=json',
+       'history' => 
+      array (
+      ),
+       'cookies' => 
+      \WpOrg\Requests\Cookie\Jar::__set_state(array(
+         'cookies' => 
+        array (
+        ),
+      )),
+    )),
+     'filename' => NULL,
+  )),
+)
 -------------------------------------
 ''
 -------------------------------------

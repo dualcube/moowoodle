@@ -36,9 +36,15 @@ class RestAPI {
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
 
-        register_rest_route( MooWoodle()->rest_namespace, '/sync-course-options', [
+        register_rest_route( MooWoodle()->rest_namespace, '/sync-course', [
             'methods'             => \WP_REST_Server::ALLMETHODS,
             'callback'            =>[ $this, 'synchronize' ],
+            'permission_callback' =>[ $this, 'moowoodle_permission' ],
+        ]);
+
+        register_rest_route( MooWoodle()->rest_namespace, '/sync-status', [
+            'methods'             => \WP_REST_Server::ALLMETHODS,
+            'callback'            =>[ $this, 'get_sync_status' ],
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
 
@@ -140,17 +146,32 @@ class RestAPI {
      * @return \WP_Error | \WP_REST_Response
      */
     public function synchronize( $request ) {
+        Util::flush_sync_status();
 
-        $sync_setting = MooWoodle()->setting->get_setting('sync-course-options');
+        $sync_setting = MooWoodle()->setting->get_setting( 'sync-course-options' );
         $sync_setting = is_array( $sync_setting ) ? $sync_setting : [];
-
-        // get all category from moodle.
-        $response   = MooWoodle()->external_service->do_request( 'get_categories' );
-        $categories = $response[ 'data' ];
-
+        
         // update course and product categories.
         if ( in_array( 'sync_courses_category', $sync_setting ) ) {
+
+            // get all category from moodle.
+            $response   = MooWoodle()->external_service->do_request( 'get_categories' );
+            $categories = $response[ 'data' ];
+
+            Util::set_sync_status( [
+                'action'    => __( 'Update Course Category', 'moowoodle' ),
+                'total'     => count( $categories ),
+                'current'   => 0
+            ] );
+
             MooWoodle()->category->update_categories( $categories, 'course_cat' );
+
+            Util::set_sync_status( [
+                'action'    => __( 'Update Product Category', 'moowoodle' ),
+                'total'     => count( $categories ),
+                'current'   => 0
+            ] );
+
             MooWoodle()->category->update_categories( $categories, 'product_cat' );
         }
 
@@ -159,12 +180,37 @@ class RestAPI {
         $courses  = $response[ 'data' ];
 
         if ( in_array( 'sync_courses', $sync_setting ) ) {
+            Util::set_sync_status( [
+                'action'    => __( 'Update Course', 'moowoodle' ),
+                'total'     => count( $courses ),
+                'current'   => 0
+            ] );
+
             MooWoodle()->course->update_courses( $courses );
         }
         
-        MooWoodle()->product->update_products( $courses );
+        Util::set_sync_status( [
+            'action'    => __( 'Update Product', 'moowoodle' ),
+            'total'     => count( $courses ),
+            'current'   => 0
+        ] );
 
-        return rest_ensure_response( true );
+        MooWoodle()->product->update_products( $courses );
+        
+        // Retrive the sync status and flush it
+        $sync_status = Util::get_sync_status();
+        Util::flush_sync_status();
+
+        return rest_ensure_response( $sync_status );
+    }
+
+    /**
+     * Get sync status
+     * @param mixed $reques
+     * @return \WP_Error|\WP_REST_Response
+     */
+    public function get_sync_status( $reques ) {
+        return rest_ensure_response( Util::get_sync_status() );
     }
 
     /**

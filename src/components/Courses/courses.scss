@@ -108,7 +108,25 @@ $color-active: #65438f;
 
   .rdt_Table{
     a{
-      color: $color-active;
+      color: rgba($color: #000000, $alpha: 0.87);
+    }
+
+    .rdt_TableHead {
+      .rdt_TableHeadRow {
+        .rdt_TableCol{
+          &:nth-child(6){
+            min-width: 17rem !important; // To overwrite default table css
+          }
+        }
+      }
+    }
+
+    .rdt_TableRow{
+      .rdt_TableCell{
+        &:nth-child(6){
+          min-width: 17rem !important; // To overwrite default table css
+        }
+      }
     }
   }
 

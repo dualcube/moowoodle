@@ -29,7 +29,6 @@ $color-active: #65438f;
         position: relative;
 
         .toggle-checkbox-content {
-          margin-left: auto;
           position: relative;
           margin-bottom: 0.625rem;
 
@@ -41,7 +40,7 @@ $color-active: #65438f;
           &::after {
             content: "";
             position: absolute;
-            top: 0.55rem;
+            top: 50%;
             left: 2.3rem;
             width: 0.25rem;
             height: 0.25rem;
@@ -49,6 +48,7 @@ $color-active: #65438f;
             border-radius: 8rem;
             transition: 0.3s;
             z-index: 0;
+            transform: translateY(-50%);
           }
 
           input {

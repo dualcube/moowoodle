@@ -2,9 +2,9 @@ import { __ } from '@wordpress/i18n';
 
 export default {
     id: "connection",
-    priority: 15,
+    priority: 10,
     name: __("Connection Settings", 'moowoodle'),
-    desc: __("Connection Settings", 'moowoodle'),
+    desc: __("Configure parameters for connecting Moodle with WordPress", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     modal: [
@@ -24,7 +24,13 @@ export default {
             key: "test_connection",
             type: "testconnection",
             desc: __(`Refer to the ${ appLocalizer.setupguide } to complete all necessary configurations on the Moodle site, and subsequently, perform a Test Connection to verify the functionality of all services.`, 'moowoodle'),
-            label: __("Mooowoodle Test Connection", 'moowoodle'),
+            label: __("MooWoodle Test Connection", 'moowoodle'),
+        },
+        {
+            key: "moodle_timeout",
+            type: "text",
+            desc: __('Set Curl connection time out in sec.', 'moowoodle'),
+            label: __("Timeout", 'moowoodle'),
         },
     ]
 };

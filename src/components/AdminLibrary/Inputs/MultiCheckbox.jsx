@@ -53,9 +53,7 @@ const MultiCheckBox = (props) => {
                             {
                                 option.hints &&
                                 <span className={props.hintOuterClass}>
-                                    <div className={props.hintInnerClass}>
-                                        {option.hints}
-                                    </div>
+                                    {option.hints}
                                 </span>
                             }
                             {

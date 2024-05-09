@@ -17218,7 +17218,7 @@ const DynamicForm = props => {
             inputWrapperClass: "toggle-checkbox-header",
             inputInnerWrapperClass: "default-checkbox",
             inputClass: inputField.class,
-            hintOuterClass: "dashicons dashicons-info",
+            hintOuterClass: "",
             hintInnerClass: "hover-tooltip",
             idPrefix: "toggle-switch",
             selectDeselect: inputField.select_deselect,
@@ -17608,9 +17608,7 @@ const MultiCheckBox = props => {
       }
     }), option.hints && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
       className: props.hintOuterClass
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: props.hintInnerClass
-    }, option.hints)), option.proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    }, option.hints), option.proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
       className: "admin-pro-tag"
     }, "pro"));
   })), props.description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
@@ -19996,11 +19994,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var _mui_material_Dialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mui/material/Dialog */ "./node_modules/@mui/material/Dialog/Dialog.js");
+/* harmony import */ var _PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../PopupContent/PopupContent */ "./src/components/PopupContent/PopupContent.jsx");
+/* harmony import */ var _services_apiService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/apiService */ "./src/services/apiService.js");
+
+
+
+
+
 
 const SyncNow = props => {
-  const handleUserSync = event => {};
-  const handleCourseSync = event => {};
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+  const [modelOpen, setModelOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [syncCourseStart, setSyncCourseStart] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [syncUserStart, setSyncUserStart] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [syncStatus, setSyncStatus] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const syncStart = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(false);
+  const fetchSyncStatus = () => {
+    (0,axios__WEBPACK_IMPORTED_MODULE_3__["default"])({
+      method: "post",
+      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)('sync-status'),
+      headers: {
+        "X-WP-Nonce": appLocalizer.nonce
+      }
+    }).then(response => {
+      if (syncStart.current) {
+        setSyncStatus(response.data);
+        setTimeout(() => {
+          fetchSyncStatus();
+        }, 0);
+      }
+    });
+  };
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (syncStart) {
+      fetchSyncStatus();
+    }
+  }, [syncStart.current]);
+  const handleUserSync = event => {
+    if (!appLocalizer.pro_active) {
+      return setModelOpen(true);
+    }
+  };
+  const handleCourseSync = event => {
+    if (syncCourseStart) {
+      return;
+    }
+    syncStart.current = true;
+    setSyncCourseStart(true);
+    (0,axios__WEBPACK_IMPORTED_MODULE_3__["default"])({
+      method: "post",
+      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)('sync-course'),
+      headers: {
+        "X-WP-Nonce": appLocalizer.nonce
+      }
+    }).then(response => {
+      setSyncStatus(response.data);
+      setSyncCourseStart(false);
+      syncStart.current = false;
+    });
+  };
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    className: "admin-module-popup",
+    open: modelOpen,
+    onClose: () => setModelOpen(false),
+    "aria-labelledby": "form-dialog-title"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "admin-font font-cross",
+    onClick: () => setModelOpen(false)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_1__["default"], null)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleUserSync
   }, "All User"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: ""
@@ -20008,6 +20070,11 @@ const SyncNow = props => {
     onClick: handleCourseSync
   }, "All Course"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: ""
+  })), syncStatus.length && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, syncStatus.map(status => {
+    {
+      console.log(status);
+    }
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, status.action), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, " ", status.current / status.total * 100));
   })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SyncNow);
@@ -20372,6 +20439,52 @@ const getTemplateData = (tamplate = 'settings') => {
 
 /***/ }),
 
+/***/ "./src/template/settings/connectionSettings.js":
+/*!*****************************************************!*\
+  !*** ./src/template/settings/connectionSettings.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  id: "connection",
+  priority: 10,
+  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Connection Settings", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Configure parameters for connecting Moodle with WordPress", 'moowoodle'),
+  icon: "font-mail",
+  submitUrl: "save-moowoodle-setting",
+  modal: [{
+    key: "moodle_url",
+    type: "text",
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enter the Moodle Site URL', 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Moodle Site URL", 'moowoodle')
+  }, {
+    key: "moodle_access_token",
+    type: "text",
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Moodle Access Token", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Enter Moodle Access Token. You can generate the Access Token from - Dashboard => Site administration => Server => Web services => ${appLocalizer.moodle_tokens_url}`, 'moowoodle')
+  }, {
+    key: "test_connection",
+    type: "testconnection",
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Refer to the ${appLocalizer.setupguide} to complete all necessary configurations on the Moodle site, and subsequently, perform a Test Connection to verify the functionality of all services.`, 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("MooWoodle Test Connection", 'moowoodle')
+  }, {
+    key: "moodle_timeout",
+    type: "text",
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Set Curl connection time out in sec.', 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Timeout", 'moowoodle')
+  }]
+});
+
+/***/ }),
+
 /***/ "./src/template/settings/displaySettings.js":
 /*!**************************************************!*\
   !*** ./src/template/settings/displaySettings.js ***!
@@ -20420,10 +20533,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/template/settings/general/connectionSettings.js":
-/*!*************************************************************!*\
-  !*** ./src/template/settings/general/connectionSettings.js ***!
-  \*************************************************************/
+/***/ "./src/template/settings/log.js":
+/*!**************************************!*\
+  !*** ./src/template/settings/log.js ***!
+  \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -20435,83 +20548,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  id: "connection",
-  priority: 15,
-  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Connection Settings", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Connection Settings", 'moowoodle'),
-  icon: "font-mail",
-  submitUrl: "save-moowoodle-setting",
+  id: 'log',
+  priority: 50,
+  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Log", "moowoodle"),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Advance log", "moowoodle"),
+  icon: 'font-support',
   modal: [{
-    key: "moodle_url",
-    type: "text",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enter the Moodle Site URL', 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Moodle Site URL", 'moowoodle')
-  }, {
-    key: "moodle_access_token",
-    type: "text",
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Moodle Access Token", 'moowoodle'),
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Enter Moodle Access Token. You can generate the Access Token from - Dashboard => Site administration => Server => Web services => ${appLocalizer.moodle_tokens_url}`, 'moowoodle')
-  }, {
-    key: "test_connection",
-    type: "testconnection",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Refer to the ${appLocalizer.setupguide} to complete all necessary configurations on the Moodle site, and subsequently, perform a Test Connection to verify the functionality of all services.`, 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Mooowoodle Test Connection", 'moowoodle')
-  }]
-});
-
-/***/ }),
-
-/***/ "./src/template/settings/general/index.js":
-/*!************************************************!*\
-  !*** ./src/template/settings/general/index.js ***!
-  \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  id: "moowoodle-general",
-  priority: 10,
-  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("General", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("General", 'moowoodle'),
-  icon: "font-settings"
-});
-
-/***/ }),
-
-/***/ "./src/template/settings/general/systemSettings.js":
-/*!*********************************************************!*\
-  !*** ./src/template/settings/general/systemSettings.js ***!
-  \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  id: "system",
-  priority: 25,
-  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("System Settings", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("System Settings", 'moowoodle'),
-  icon: "font-mail",
-  submitUrl: "save-moowoodle-setting",
-  modal: [{
-    key: "moodle_timeout",
-    type: "text",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Set Curl connection time out in sec.', 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Timeout", 'moowoodle')
-  }, {
     key: "moowoodle_adv_log",
     type: "checkbox",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Advance Log", 'moowoodle'),
@@ -20521,42 +20563,9 @@ __webpack_require__.r(__webpack_exports__);
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enable', 'moowoodle'),
       value: "moowoodle_adv_log"
     }]
-  }]
-});
-
-/***/ }),
-
-/***/ "./src/template/settings/general/userSettings.js":
-/*!*******************************************************!*\
-  !*** ./src/template/settings/general/userSettings.js ***!
-  \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  id: "user-information",
-  priority: 20,
-  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("User Information Exchange Settings", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("User Information Exchange Settings", 'moowoodle'),
-  icon: "font-mail",
-  submitUrl: "save-moowoodle-setting",
-  modal: [{
-    key: "update_moodle_user",
-    type: "checkbox",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('If enabled, all moodle user\'s profile data (first name, last name, city, address, etc.) will be updated as per their wordpress profile data. Explicitly, for existing user, their data will be overwritten on moodle.', 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Force Override Moodle User Profile", 'moowoodle'),
-    options: [{
-      key: "update_moodle_user",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enable', 'moowoodle'),
-      value: "update_moodle_user"
-    }]
+  }, {
+    key: "moowoodle_adv_log",
+    type: "log"
   }]
 });
 
@@ -20616,8 +20625,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   id: "sso",
   priority: 30,
-  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("SSO ", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("SSO ", 'moowoodle'),
+  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Single Sing On", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Single Sing On", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   proDependent: true,
@@ -20658,7 +20667,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   id: 'support',
-  priority: 50,
+  priority: 60,
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Support", "woocommerce-stock-manager"),
   desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Configure basic product manager settings.", "woocommerce-stock-manager"),
   icon: 'font-support',
@@ -20709,8 +20718,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   id: "synchronize-shcedule-course",
   priority: 30,
-  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchrinize Shcedule Course", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchrinize Shcedule Course", 'moowoodle'),
+  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Course", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Specify the course synchronization direction and schedule interval.", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   proDependent: true,
@@ -20758,20 +20767,23 @@ __webpack_require__.r(__webpack_exports__);
     proSetting: true
   }, {
     key: "course_sync_action",
-    type: "select",
+    type: "checkbox-default",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Action Required", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Action Required", 'moowoodle'),
     options: [{
       key: "create_update",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Create and Update Products', 'moowoodle'),
+      hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This feature allows you to update previously created product information using Moodle course data. NOTE: This action will overwrite all existing product details with those from Moodle course details.', 'moowoodle'),
       value: "create_update"
     }, {
       key: "create",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Create Products', 'moowoodle'),
+      hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This functionality enables automatic creation of new products based on Moodle course data if they do not already exist in WordPress.', 'moowoodle'),
       value: "create"
     }, {
       key: "update",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Update Products', 'moowoodle'),
+      hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This feature allows you to update previously created product information using Moodle course data. NOTE: This action will overwrite all existing product details with those from Moodle course details.', 'moowoodle'),
       value: "update"
     }],
     proSetting: true
@@ -20821,8 +20833,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   id: "synchronize-shcedule-user",
   priority: 25,
-  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchrinize Shcedule User", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchrinize Shcedule User", 'moowoodle'),
+  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("User", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Admins can select user sync direction and schedule interval for user synchronization.", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   proDependent: true,
@@ -20845,7 +20857,7 @@ __webpack_require__.r(__webpack_exports__);
     key: "user_schedule_interval",
     type: "select",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select Option For User Synchronization Schedule Interval.", 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("User Synchronization Schedule Interval", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Schedule Interval", 'moowoodle'),
     options: [{
       key: "realtime",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Realtime", 'moowoodle'),
@@ -20894,11 +20906,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   id: "synchronize-datamap",
   priority: 10,
-  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchronize Data Map", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchronize Data Map", 'moowoodle'),
+  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Data Map", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Data Map", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   modal: [{
+    key: "update_moodle_user",
+    type: "checkbox",
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('If enabled, all moodle user\'s profile data (first name, last name, city, address, etc.) will be updated as per their wordpress profile data. Explicitly, for existing user, their data will be overwritten on moodle.', 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Force Override Moodle User Profile", 'moowoodle'),
+    options: [{
+      key: "update_moodle_user",
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enable', 'moowoodle'),
+      value: "update_moodle_user"
+    }]
+  }, {
     key: "sync-user-options",
     type: "checkbox-default",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Determine User Information to Synchronize in Moodle-WordPress User synchronization. Please be aware that this setting does not apply to newly created users.", 'moowoodle'),
@@ -20930,15 +20952,18 @@ __webpack_require__.r(__webpack_exports__);
     select_deselect: true,
     options: [{
       key: "sync_courses",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This function will retrieve all Moodle course data and synchronize it with the courses listed in WordPress.", 'moowoodle'),
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Moodle Courses', 'moowoodle'),
+      hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This function will retrieve all Moodle course data and synchronize it with the courses listed in WordPress.", 'moowoodle'),
       value: "sync_courses"
     }, {
       key: "sync_courses_category",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This feature will scan the entire Moodle course category structure and synchronize it with the WordPress category listings.", 'moowoodle'),
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Moodle Course Categories', 'moowoodle'),
+      hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This feature will scan the entire Moodle course category structure and synchronize it with the WordPress category listings.", 'moowoodle'),
       value: "sync_courses_category"
     }, {
       key: "sync_image",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This function copies course images and sets them as WooCommerce product images.", 'moowoodle'),
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Course Images', 'moowoodle'),
+      hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This function copies course images and sets them as WooCommerce product images.", 'moowoodle'),
       value: "sync_image",
       proSetting: true
     }]
@@ -33788,11 +33813,9 @@ var index =  react__WEBPACK_IMPORTED_MODULE_0__.useLayoutEffect ;
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var map = {
+	"./connectionSettings.js": "./src/template/settings/connectionSettings.js",
 	"./displaySettings.js": "./src/template/settings/displaySettings.js",
-	"./general/connectionSettings.js": "./src/template/settings/general/connectionSettings.js",
-	"./general/index.js": "./src/template/settings/general/index.js",
-	"./general/systemSettings.js": "./src/template/settings/general/systemSettings.js",
-	"./general/userSettings.js": "./src/template/settings/general/userSettings.js",
+	"./log.js": "./src/template/settings/log.js",
 	"./notificationSettings.js": "./src/template/settings/notificationSettings.js",
 	"./ssoSettings.js": "./src/template/settings/ssoSettings.js",
 	"./support.js": "./src/template/settings/support.js"

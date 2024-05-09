@@ -43,9 +43,11 @@ class Product {
         foreach ( $courses as $course ) {
             $product_id = self::update_product( $course );
 
-            if( $product_id ) {
+            if ( $product_id ) {
                 $updated_ids[] = $product_id;
             }
+
+			\MooWoodle\Util::increment_sync_count();
 		}
 
         self::remove_exclude_ids( $updated_ids );

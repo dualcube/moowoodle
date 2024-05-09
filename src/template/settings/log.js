@@ -1,19 +1,12 @@
 import { __ } from '@wordpress/i18n';
 
 export default {
-    id: "system",
-    priority: 25,
-    name: __("System Settings", 'moowoodle'),
-    desc: __("System Settings", 'moowoodle'),
-    icon: "font-mail",
-    submitUrl: "save-moowoodle-setting",
+    id: 'log',
+    priority: 50,
+    name: __("Log", "moowoodle"),
+    desc: __("Advance log", "moowoodle"),
+    icon: 'font-support',
     modal: [
-        {
-            key: "moodle_timeout",
-            type: "text",
-            desc: __('Set Curl connection time out in sec.', 'moowoodle'),
-            label: __("Timeout", 'moowoodle'),
-        },
         {
             key: "moowoodle_adv_log",
             type: "checkbox",
@@ -26,6 +19,10 @@ export default {
                     value: "moowoodle_adv_log"
                 }
             ]
+        },
+        {
+            key: "moowoodle_adv_log",
+            type: "log",
         },
     ]
 };

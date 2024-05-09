@@ -3,8 +3,8 @@ import { __ } from '@wordpress/i18n';
 export default {
     id: "synchronize-shcedule-user",
     priority: 25,
-    name: __("Synchrinize Shcedule User", 'moowoodle'),
-    desc: __("Synchrinize Shcedule User", 'moowoodle'),
+    name: __("User", 'moowoodle'),
+    desc: __("Admins can select user sync direction and schedule interval for user synchronization.", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     proDependent: true,
@@ -32,7 +32,7 @@ export default {
             key: "user_schedule_interval",
             type: "select",
             desc: __("Select Option For User Synchronization Schedule Interval.", 'moowoodle'),
-            label: __("User Synchronization Schedule Interval", 'moowoodle'),
+            label: __("Schedule Interval", 'moowoodle'),
             options: [
                 {
                     key: "realtime",

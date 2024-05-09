@@ -107,4 +107,47 @@ class Util {
 	public static function is_pro_active() {
 		return false;
 	}
+
+	/**
+	 * Set moowoodle sync status
+	 * @param mixed $status
+	 * @return void
+	 */
+	public static function set_sync_status(  $status ) {
+		$status_history   = get_transient( 'moowoodle_sync_status' );
+		$status_history   = is_array( $status_history ) ? $status_history : [];
+		$status_history[] = $status;
+
+		set_transient( 'moowoodle_sync_status', $status_history, 3600 );
+	}
+
+	/**
+	 * Get moowoodle sync status
+	 * @return mixed
+	 */
+	public static function get_sync_status() {
+		return get_transient( 'moowoodle_sync_status' );
+	}
+
+	/**
+	 * Increment sync count
+	 * @return void
+	 */
+	public static function increment_sync_count( ) {
+		$sync_status 	= get_transient( 'moowoodle_sync_status' );
+		$current_action = count( $sync_status ) - 1;
+
+		// Update the current action count
+		$sync_status[ $current_action ][ 'current' ]++;
+
+		set_transient( 'moowoodle_sync_status',  $sync_status, 3600 );
+	}
+
+	/**
+	 * Flush the sync status history
+	 * @return void
+	 */
+	public static function flush_sync_status() {
+		set_transient( 'moowoodle_sync_status', [] );
+	}
 }

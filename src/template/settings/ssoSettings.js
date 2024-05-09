@@ -3,8 +3,8 @@ import { __ } from '@wordpress/i18n';
 export default {
     id: "sso",
     priority: 30,
-    name: __("SSO ", 'moowoodle'),
-    desc: __("SSO ", 'moowoodle'),
+    name: __("Single Sing On", 'moowoodle'),
+    desc: __("Single Sing On", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     proDependent: true,

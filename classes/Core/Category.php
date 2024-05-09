@@ -56,6 +56,8 @@ class Category {
 				if ( $categorie_id ) {
 					$updated_ids[] = $categorie_id;
 				}
+
+				\MooWoodle\Util::increment_sync_count();
 			}
 		}
 
