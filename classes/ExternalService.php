@@ -65,7 +65,7 @@ class ExternalService {
 			
             // Log the response relult.
             if ( MooWoodle()->setting->get_setting( 'moowoodle_adv_log' ) ) {
-				MooWoodle()->util->log( "\n\n\t\tmoowoodle moodle_url:" . $request_url . '&' . $request_query . "\n\t\tmoowoodle response:" . wp_json_encode( $response ) . "\n\n");
+				MooWoodle()->util->log( "moowoodle moodle_url:" . $request_url . '&' . $request_query . "\n\t\tmoowoodle response:" . wp_json_encode( $response ) . "\n\n");
 			}
 		}
 
@@ -74,7 +74,7 @@ class ExternalService {
 
 		// log the error
 		if ( isset( $response[ 'error' ] ) ) {
-			MooWoodle()->util->log( "\n\t\tmoowoodle error: " . $response[ 'error' ] . "\n" );
+			MooWoodle()->util->log( "moowoodle error: " . $response[ 'error' ] . "\n" );
 			return null;
 		}
 

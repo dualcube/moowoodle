@@ -4,7 +4,7 @@ export default {
     id: "synchronize-datamap",
     priority: 10,
     name: __("Data Map", 'moowoodle'),
-    desc: __("Data Map", 'moowoodle'),
+    desc: __("Select the data to map for users or courses.", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     modal: [

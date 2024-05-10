@@ -17,9 +17,12 @@ class Installer {
 	 * @return void
 	 */
     public function __construct() {
-        if (get_option('moowoodle_version') != MOOWOODLE_PLUGIN_VERSION) {
+        if ( get_option( 'moowoodle_version' ) != MOOWOODLE_PLUGIN_VERSION ) {
+			
+			$this->set_default_settings();
+			
 			$this->migration();
-			$this->set_options();
+			
 			do_action('moowoodle_updated');
 		}
     }
@@ -77,8 +80,8 @@ class Installer {
 	 * Create and Update options.
 	 * @return void
 	 */
-	private function set_options() {
-		add_option('moowoodle_version', MOOWOODLE_PLUGIN_VERSION);
+	private function set_default_settings() {
+		add_option( 'moowoodle_version', MOOWOODLE_PLUGIN_VERSION );
 		update_option('woocommerce_registration_generate_username', 'no');
 		update_option('woocommerce_enable_guest_checkout', 'no');
 	}

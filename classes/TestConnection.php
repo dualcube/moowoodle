@@ -34,19 +34,19 @@ class TestConnection {
 			$missing_functions = array_diff($webservice_functions, $register_functions);
 
 			if ($missing_functions) {
-				MooWoodle()->util->log('\n\n\t\t It seems that Moodle external web service functions [' . implode(', ', $missing_functions) . '] not configured correctly.');
+				MooWoodle()->util->log('It seems that Moodle external web service functions [' . implode(', ', $missing_functions) . '] not configured correctly.');
 			}
 
 			// Check missing setting on pro active
 			if (MooWoodle()->util->is_pro_active()) {
 				if (!in_array('auth_moowoodle_user_sync_get_all_users_data', $missing_functions))
-					MooWoodle()->util->log("\n\n\t\t It seems that you are using MooWoodle Pro but Moodle external web service functions 'auth_moowoodle_user_sync_get_all_users_data' is not configured correctly.\n\n");
+					MooWoodle()->util->log("It seems that you are using MooWoodle Pro but Moodle external web service functions 'auth_moowoodle_user_sync_get_all_users_data' is not configured correctly.\n\n");
 
 				if (!in_array('auth_moowoodle_user_sync', $missing_functions))
-					MooWoodle()->util->log("\n\n\t\t It seems that you are using MooWoodle Pro but Moodle external web service functions 'auth_moowoodle_user_sync' is not configured correctly.\n\n");
+					MooWoodle()->util->log("It seems that you are using MooWoodle Pro but Moodle external web service functions 'auth_moowoodle_user_sync' is not configured correctly.\n\n");
 
 				if ($response['downloadfiles'] != 1)
-					MooWoodle()->util->log("\n\n\t\t It seems that you are using MooWoodle Pro but Moodle external web service is not configured correctly. Please edit your Moodle External service and enable 'Can download files' (you can find it from 'Show more...' options)\n\n");
+					MooWoodle()->util->log("It seems that you are using MooWoodle Pro but Moodle external web service is not configured correctly. Please edit your Moodle External service and enable 'Can download files' (you can find it from 'Show more...' options)\n\n");
 			}
 
 			update_option('moowoodle_moodle_site_name', $response['sitename']);

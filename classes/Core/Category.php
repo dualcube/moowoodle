@@ -108,7 +108,7 @@ class Category {
 
 			return $category[ 'id' ];
 		} else {
-			MooWoodle()->util->log( "\n\t\tmoowoodle url:" . $term->get_error_message() . "\n");
+			MooWoodle()->util->log( "moowoodle url:" . $term->get_error_message() . "\n");
 		}
 
 		return null;

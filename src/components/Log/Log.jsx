@@ -21,7 +21,7 @@ const Log = (props) => {
         });
     }, [] );
 
-  const handleDownloadLog = (event) => {
+    const handleDownloadLog = (event) => {
         event.preventDefault();
         axios({
             url: appLocalizer.log_url,
@@ -51,7 +51,7 @@ const Log = (props) => {
         });
     }
 
-  const handleClearLog = (event) => {
+    const handleClearLog = (event) => {
         event.preventDefault();
 
         console.log('handle clear log');axios({
@@ -89,7 +89,7 @@ const Log = (props) => {
             </svg>
           </span>
         </button>
-      </div>
+            </div>
       <div className="log-container-wrapper">
         <div>
             {

@@ -68,12 +68,11 @@ class Setting {
          */
         $this->settings_keys = apply_filters( 'moowoodle_register_settings_keys', [
             'moowoodle_extra_settings',
-            'moowoodle_connection_settings',
-            'moowoodle_system_settings',
-            'moowoodle_user_information_settings',
+            'moowoodle_general_settings',
             'moowoodle_display_settings',
             'moowoodle_sso_settings',
             'moowoodle_notification_settings',
+            'moowoodle_log_settings',
             'moowoodle_synchronize_shcedule_course_settings',
             'moowoodle_synchronize_shcedule_user_settings',
             'moowoodle_synchronize_datamap_settings',
