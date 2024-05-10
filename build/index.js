@@ -19942,7 +19942,9 @@ const Log = props => {
       setData(response.data);
     });
   };
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, "LOG"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "section-log-container"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, "LOG"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "button-section"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleDownloadLog,
@@ -19963,15 +19965,13 @@ const Log = props => {
     d: "M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"
   }))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "log-container-wrapper"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, data.map(log => {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, data.map(log => {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, log);
-  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "click-to-copy"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     class: "Btn"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    class: "text"
-  }, "Copy"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     class: "svgIcon"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
     fill: "white",
@@ -19980,7 +19980,7 @@ const Log = props => {
     xmlns: "http://www.w3.org/2000/svg"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
     d: "M280 64h40c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128C0 92.7 28.7 64 64 64h40 9.6C121 27.5 153.3 0 192 0s71 27.5 78.4 64H280zM64 112c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16H320c8.8 0 16-7.2 16-16V128c0-8.8-7.2-16-16-16H304v24c0 13.3-10.7 24-24 24H192 104c-13.3 0-24-10.7-24-24V112H64zm128-8a24 24 0 1 0 0-48 24 24 0 1 0 0 48z"
-  })))))));
+  }))))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Log);
 

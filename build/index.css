@@ -1010,13 +1010,18 @@ span.stock-manager-pro-tag {
 .log-section .settings-input-content {
   width: 100% !important;
 }
-.log-section .settings-input-content .button-section {
+.log-section .settings-input-content .section-log-container {
+  position: relative;
+  max-width: 700px;
+  width: 100%;
+}
+.log-section .settings-input-content .section-log-container .button-section {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   margin: 0.5rem 0;
 }
-.log-section .settings-input-content .button-section .download-btn {
+.log-section .settings-input-content .section-log-container .button-section .download-btn {
   display: inline-block;
   position: relative;
   padding: 10px 25px;
@@ -1031,31 +1036,31 @@ span.stock-manager-pro-tag {
   border-radius: 0.25rem;
   cursor: pointer;
 }
-.log-section .settings-input-content .button-section .download-btn:hover {
+.log-section .settings-input-content .section-log-container .button-section .download-btn:hover {
   background-color: #65438f;
   color: white;
 }
-.log-section .settings-input-content .button-section .download-btn:hover:before {
+.log-section .settings-input-content .section-log-container .button-section .download-btn:hover:before {
   border-color: #cdefbd;
 }
-.log-section .settings-input-content .button-section .download-btn:hover:after {
+.log-section .settings-input-content .section-log-container .button-section .download-btn:hover:after {
   border-top-color: #cdefbd;
   animation-play-state: running;
 }
-.log-section .settings-input-content .button-section .download-btn:before, .log-section .settings-input-content .button-section .download-btn:after {
+.log-section .settings-input-content .section-log-container .button-section .download-btn:before, .log-section .settings-input-content .section-log-container .button-section .download-btn:after {
   content: " ";
   display: block;
   position: absolute;
   left: 15px;
   top: 52%;
 }
-.log-section .settings-input-content .button-section .download-btn:before {
+.log-section .settings-input-content .section-log-container .button-section .download-btn:before {
   width: 10px;
   height: 2px;
   border-style: solid;
   border-width: 0 2px 2px;
 }
-.log-section .settings-input-content .button-section .download-btn:after {
+.log-section .settings-input-content .section-log-container .button-section .download-btn:after {
   width: 0;
   height: 0;
   margin-left: 3px;
@@ -1084,7 +1089,7 @@ span.stock-manager-pro-tag {
     opacity: 0.4;
   }
 }
-.log-section .settings-input-content .button-section .button-clear {
+.log-section .settings-input-content .section-log-container .button-section .button-clear {
   padding: 8px 1rem;
   cursor: pointer;
   display: flex;
@@ -1096,67 +1101,61 @@ span.stock-manager-pro-tag {
   gap: 0.75rem;
   transition: all 0.3s linear;
 }
-.log-section .settings-input-content .button-section .button-clear:hover {
+.log-section .settings-input-content .section-log-container .button-section .button-clear:hover {
   background-color: rgba(227, 79, 71, 0.8392156863);
 }
-.log-section .settings-input-content .button-section .button-clear .icon {
+.log-section .settings-input-content .section-log-container .button-section .button-clear .icon {
   display: flex;
   align-items: center;
   margin-top: 2px;
 }
-.log-section .settings-input-content .button-section .button-clear .icon svg {
+.log-section .settings-input-content .section-log-container .button-section .button-clear .icon svg {
   width: 11px;
   height: 11px;
   fill: #fff;
 }
-.log-section .settings-input-content .log-container-wrapper {
-  min-height: 450px;
-  height: -moz-fit-content;
-  height: fit-content;
+.log-section .settings-input-content .section-log-container .log-container-wrapper {
+  max-height: 300px;
+  min-height: 100px;
+  height: 100%;
   width: 100%;
-  border: 0.115rem solid rgba(0, 0, 0, 0.125);
-  border-radius: 0;
-  padding: 0.25rem 0.5rem;
-  background: transparent;
-  font-size: 0.875rem;
-  line-height: 1.5714285714;
+  border-radius: 0.25rem;
+  padding: 2.25rem 0.5rem 0.5rem;
   position: relative;
+  font-size: 14px;
+  line-height: 18.62px;
+  word-break: normal;
+  overflow-y: scroll;
+  background-color: rgb(21, 23, 24);
 }
-.log-section .settings-input-content .log-container-wrapper p {
-  width: 100%;
+.log-section .settings-input-content .section-log-container .log-container-wrapper p {
+  margin-bottom: 10px;
+  color: rgb(220, 220, 220);
+  text-wrap: pretty;
+  letter-spacing: 0.8px;
+  line-height: 1.7;
 }
-.log-section .settings-input-content .log-container-wrapper .Btn {
+.log-section .settings-input-content .section-log-container .Btn {
   position: absolute;
-  top: 10px;
+  top: 85px;
   right: 10px;
-  width: 100px;
+  width: 35px;
   height: 35px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   border: none;
-  border-radius: 4px;
   overflow: hidden;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.164);
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.164);
+  padding: 0;
+  border-radius: 0.25rem;
   cursor: pointer;
 }
-.log-section .settings-input-content .log-container-wrapper .Btn:hover .text {
-  background-color: #65438f;
-}
-.log-section .settings-input-content .log-container-wrapper .Btn:hover .svgIcon {
+.log-section .settings-input-content .section-log-container .Btn:hover .svgIcon {
   background-color: #522c81;
 }
-.log-section .settings-input-content .log-container-wrapper .Btn .text {
-  width: 65%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  background-color: #65438f;
-}
-.log-section .settings-input-content .log-container-wrapper .Btn .svgIcon {
-  width: 35%;
+.log-section .settings-input-content .section-log-container .Btn .svgIcon {
+  width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
