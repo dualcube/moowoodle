@@ -73,9 +73,8 @@ class Setting {
             'moowoodle_sso_settings',
             'moowoodle_notification_settings',
             'moowoodle_log_settings',
-            'moowoodle_synchronize_schedule_course_settings',
-            'moowoodle_synchronize_schedule_user_settings',
-            'moowoodle_synchronize_datamap_settings',
+            'moowoodle_synchronize_course_settings',
+            'moowoodle_synchronize_user_settings',
         ]);
 
         return $this->settings_keys;

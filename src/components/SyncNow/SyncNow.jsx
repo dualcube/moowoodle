@@ -6,6 +6,7 @@ import { getApiLink } from "../../services/apiService";
 import "./SyncNow.scss";
 
 const SyncNow = (props) => {
+  const { buttonKey, proSetting, proSettingChanged } = props;
   const [modelOpen, setModelOpen] = useState(false);
   const [syncCourseStart, setSyncCourseStart] = useState(false);
   const [syncUserStart, setSyncUserStart] = useState(false);
@@ -72,8 +73,9 @@ const SyncNow = (props) => {
         ></span>
         <Popoup />
       </Dialog>
+      
       <div className="section-synchronize-now">
-        <div className="button-section">
+        {/* <div className="button-section">
           <button className="synchronize-now-button" onClick={handleUserSync}>
             Synchronize All User
           </button>
@@ -82,7 +84,7 @@ const SyncNow = (props) => {
             <div class="three-body__dot"></div>
             <div class="three-body__dot"></div>
           </div>
-        </div>
+        </div> */}
 
         <div className="button-section">
           <button className="synchronize-now-button" onClick={handleCourseSync}>

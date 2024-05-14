@@ -13,6 +13,7 @@ import FormCustomizer from "../Inputs/Special/FormCustomizer";
 import ConnectButton from "../../ConnectButton/ConnectButton";
 import Log from "../../Log/Log";
 import SSOKey from "../../SSOKey/SSOKey";
+import SyncNow from "../../SyncNow/SyncNow";
 
 // Variable for controll coldown effect submit time
 const PENALTY  = 10;
@@ -655,6 +656,14 @@ const DynamicForm = (props) => {
           break;
 
         // Special input type project specific
+        case "syncbutton":
+          input = <SyncNow
+            buttonKey={inputField.key}
+            proSetting={isProSetting(inputField.proSetting)}
+            proSettingChanged={proSettingChanged}
+          />
+          break;
+
         case "testconnection":
           input = <ConnectButton />
           break;

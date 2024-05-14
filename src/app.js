@@ -4,21 +4,7 @@ import { useLocation } from 'react-router-dom';
 import Settings from "./components/Settings/Settings";
 import Synchronization from "./components/Synchronization/Synchronization";
 import Courses from "./components/Courses/Courses";
-
-// import Courses from "./components/SubMenuPage/AllCourses";
-
-// import ManageEnrolment from "./commponents/SubMenuPage/ManageEnrolment";
-// import Synchronization from "./commponents/SubMenuPage/Synchronization";
-
-// import SideBanner from "./commponents/Common/SideBanner";
-// import ProOverlay from "./commponents/Common/ProOverlay";
-// import dualcubeLogo from "./assets/images/dualcube.png";
-
-// css and scss file for global styling.
-// import "./styles/admin.css";
-
-// utils js file for global customisation.
-// import "./utils/moowoodle-admin-frontend.js";
+import Enrollment from "./components/Enrollment/Enrollment";
 
 const App = () => {
     const currentUrl = window.location.href;
@@ -36,6 +22,7 @@ const App = () => {
             { location.get('tab') === 'settings' && <Settings initialTab='general' /> }
             { location.get('tab') === 'synchronization' && <Synchronization initialTab='connection' /> }
             { location.get('tab') === 'all-courses' && <Courses /> }
+            { location.get('tab') === 'manage-enrolment' && <Enrollment /> }
         </>
     );
 }

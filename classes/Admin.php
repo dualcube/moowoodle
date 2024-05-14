@@ -48,7 +48,7 @@ class Admin {
 			],
 			"synchronization" => [
 				'name'   => __("Synchronization", 'moowoodle'),
-				'subtab' => 'synchronize-datamap'
+				'subtab' => 'synchronize-user'
 			],
 		];
 
@@ -114,9 +114,8 @@ class Admin {
 			'sso',
 			'log',
 			'notification',
-			'synchronize-datamap',
-			'synchronize-schedule-course',
-			'synchronize-schedule-user'
+			'synchronize-course',
+			'synchronize-user'
 		];
 
         foreach( $tabs_names as $tab_name ) {

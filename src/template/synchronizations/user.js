@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 
 export default {
-    id: "synchronize-schedule-user",
+    id: "synchronize-user",
     priority: 10,
     name: __("User", 'moowoodle'),
     desc: __("Admins can select user sync direction and schedule interval for user synchronization.", 'moowoodle'),

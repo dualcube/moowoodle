@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 
 export default {
-    id: "synchronize-schedule-course",
+    id: "synchronize-course",
     priority: 20,
     name: __("Course", 'moowoodle'),
     desc: __("Control course sync direction and schedule interval", 'moowoodle'),
