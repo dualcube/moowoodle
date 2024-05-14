@@ -1,10 +1,5 @@
-import { useRef, useState } from "react";
-
 const SSOKey = (props) => {
     const { value, proSetting, onChange } = props;
-
-    const inputRef = useRef();
-    const [ copied, setCopied ] = useState( false );
 
     function generateRandomKey( length = 8 ) {
         const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -16,19 +11,9 @@ const SSOKey = (props) => {
         return key;
     }
 
-    const generateSSOKey = (e) => {
-        e.preventDefault();
-        const key = generateRandomKey(8);
-        onChange( key );
-    }
-
-    const handleCopy = (e) => {
-        e.preventDefault();
-        navigator.clipboard.writeText(value)
-            .then(() => {
-                setCopied( true );
-            });
-    }
+    const generateSSOKey = ( e ) => {
+        
+    } 
 
     return (
         <div>
@@ -37,11 +22,9 @@ const SSOKey = (props) => {
                 value={value}
                 onChange={ (e) => onChange( e.target.value ) }
             />
+            <button>coppy</button>
             <button
-                onClick={ handleCopy }
-            >{ copied ? ' ✔copied' : 'copy' }</button>
-            <button
-                onClick={ generateSSOKey }
+                onClick={ generateSSOKey() }
             >Generate</button>
         </div>
     );

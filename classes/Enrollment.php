@@ -1,7 +1,5 @@
 <?php
-
 namespace MooWoodle;
-
 class Enrollment {
 	/**
 	 * Variable store woocommerce order object
@@ -74,6 +72,7 @@ class Enrollment {
 		$moodle_user_id = $this->search_for_moodle_user( 'email', ( $user ) ? $user->user_email : $email );
 		
 		if ( ! $moodle_user_id ) {
+			\MooWoodle\Util::_log( 'in createee');
 			$moodle_user_id = $this->create_moodle_user();
 		} else {
 			// User id is availeble update user id.
@@ -142,13 +141,12 @@ class Enrollment {
 
 			// Not a valid response.
 			if ( ! $response[ 'data' ] ) return 0;
-
 			$moodle_users = $response[ 'data' ];
 			$moodle_users = reset( $moodle_users );
 
 			if ( is_array( $moodle_users ) && isset( $moodle_users[ 'id' ] ) ) {
 				$user_id = $moodle_users[ 'id' ];
-
+				
 				/**
 				 * Action hook after moodle user creation.
 				 * @var array $user_data data for creating user in moodle

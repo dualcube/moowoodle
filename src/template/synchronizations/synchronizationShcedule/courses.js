@@ -30,40 +30,40 @@ export default {
             label: __("Course Synchronization Schedule Interval", 'moowoodle'),
             options: [
                 {
-                    key: 0,
+                    key: "realtime",
                     label: __("Realtime", 'moowoodle'),
-                    value: 0, // realtime is 0s
+                    value: "realtime",
                 },
                 {
-                    key: 3600,
+                    key: "hour",
                     label: __("Hourly.", 'moowoodle'),
-                    value: 3600, // 1 hour is 36000s
+                    value: "hour",
                 },
                 {
-                    key: 21600,
+                    key: "hour6",
                     label: __("Hour 6.", 'moowoodle'),
-                    value: 21600, // 6 hour is 21600
+                    value: "hour6",
                 },
                 {
-                    key: 86400,
+                    key: "day",
                     label: __("Daily", 'moowoodle'),
-                    value: 86400, // 1 day is 86400s
+                    value: "day",
                 },
                 {
-                    key: 604800,
+                    key: "week",
                     label: __("Weekly", 'moowoodle'),
-                    value: 604800, // 1 week is 604800s
+                    value: "week",
                 },
                 {
-                    key: 2592000,
+                    key: "month",
                     label: __("Month", 'moowoodle'),
-                    value: 2592000, // 1 month is 2592000s
+                    value: "month",
                 }
             ],
             proSetting: true,
         },
         {
-            key: "product_sync_option",
+            key: "course_sync_action",
             type: "checkbox-default",
             desc: __("Action Required", 'moowoodle'),
             label: __("Action Required", 'moowoodle'),
