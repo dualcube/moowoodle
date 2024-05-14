@@ -1,76 +1,78 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getApiLink } from "../../services/apiService";
-import './Log.scss';
+import "./Log.scss";
 
 const Log = (props) => {
+  const [data, setData] = useState([]);
 
-    const [data, setData] = useState([]);
+  useEffect(() => {
+    axios({
+      method: "post",
+      url: getApiLink("fetch-log"),
+      headers: { "X-WP-Nonce": appLocalizer.nonce },
+      data: {
+        logcount: 100,
+      },
+    }).then((response) => {
+      // const data = JSON.parse(response.data);
+      setData(response.data);
+    });
+  }, []);
 
-    useEffect(() => {
-        axios({
-            method: "post",
-            url: getApiLink('fetch-log'),
-            headers: { "X-WP-Nonce": appLocalizer.nonce },
-            data: {
-                logcount: 100
-            },
-        }).then((response) => {
-            // const data = JSON.parse(response.data);
-            setData(response.data);
+  const handleDownloadLog = (event) => {
+    event.preventDefault();
+    axios({
+      url: appLocalizer.log_url,
+      method: "GET",
+      responseType: "blob",
+    })
+      .then((response) => {
+        // Create a blob from the response
+        const blob = new Blob([response.data], {
+          type: response.headers["content-type"],
         });
-    }, [] );
 
-    const handleDownloadLog = (event) => {
-        event.preventDefault();
-        axios({
-            url: appLocalizer.log_url,
-            method: 'GET',
-            responseType: 'blob',
-        }).then(response => {
+        // Create a URL for the blob
+        const url = window.URL.createObjectURL(blob);
 
-            // Create a blob from the response
-            const blob = new Blob([response.data], { type: response.headers['content-type'] });
-            
-            // Create a URL for the blob
-            const url = window.URL.createObjectURL(blob);
-            
-            // Create a link element
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'error.txt'); // Set the file name
-            
-            // Trigger the download
-            document.body.appendChild(link);
-            link.click();
-            
-            // Clean up
-            document.body.removeChild(link);
-        }).catch(error => {
-            console.error( 'Error downloading file:', error );
-        });
-    }
+        // Create a link element
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "error.txt"); // Set the file name
 
-    const handleClearLog = (event) => {
-        event.preventDefault();
+        // Trigger the download
+        document.body.appendChild(link);
+        link.click();
 
-        console.log('handle clear log');axios({
-            method: "post",
-            url: getApiLink('fetch-log'),
-            headers: { "X-WP-Nonce": appLocalizer.nonce },
-            data: {
-                logcount: 100,
-                clear: true,
-            },
-        }).then((response) => {
-            // const data = JSON.parse(response.data);
-            setData(response.data);
-        });
-    }
+        // Clean up
+        document.body.removeChild(link);
+      })
+      .catch((error) => {
+        console.error("Error downloading file:", error);
+      });
+  };
 
-    return (
-        <div>
-            <h2>LOG</h2>
+  const handleClearLog = (event) => {
+    event.preventDefault();
+
+    console.log("handle clear log");
+    axios({
+      method: "post",
+      url: getApiLink("fetch-log"),
+      headers: { "X-WP-Nonce": appLocalizer.nonce },
+      data: {
+        logcount: 100,
+        clear: true,
+      },
+    }).then((response) => {
+      // const data = JSON.parse(response.data);
+      setData(response.data);
+    });
+  };
+
+  return (
+    <div className="section-log-container">
       <div className="button-section">
         <button onClick={handleDownloadLog} class="download-btn">
           Download
@@ -89,26 +91,54 @@ const Log = (props) => {
             </svg>
           </span>
         </button>
-            </div>
+      </div>
       <div className="log-container-wrapper">
-                <>
-                    {
-                        data.map((log) => {
-                            return <p>{log}</p>;
-                        })
-                    }
-                </>
-                <div className="click-to-copy">
-                <button class="Btn">
-                  <span class="text">Copy</span>
-                  <span class="svgIcon">
-                    <svg fill="white" viewBox="0 0 384 512" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M280 64h40c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128C0 92.7 28.7 64 64 64h40 9.6C121 27.5 153.3 0 192 0s71 27.5 78.4 64H280zM64 112c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16H320c8.8 0 16-7.2 16-16V128c0-8.8-7.2-16-16-16H304v24c0 13.3-10.7 24-24 24H192 104c-13.3 0-24-10.7-24-24V112H64zm128-8a24 24 0 1 0 0-48 24 24 0 1 0 0 48z"></path></svg>
-                  </span>
-                </button>
-                </div>
-            </div>
+        <div className="wrapper-header">
+          <p className="log-viewer-text">MooWoodle - log viewer</p>
+          <div className="click-to-copy">
+            <button title="Copy" class="Btn">
+              <span class="svgIcon">
+                <svg
+                  fill="white"
+                  viewBox="0 0 384 512"
+                  height="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M280 64h40c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128C0 92.7 28.7 64 64 64h40 9.6C121 27.5 153.3 0 192 0s71 27.5 78.4 64H280zM64 112c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16H320c8.8 0 16-7.2 16-16V128c0-8.8-7.2-16-16-16H304v24c0 13.3-10.7 24-24 24H192 104c-13.3 0-24-10.7-24-24V112H64zm128-8a24 24 0 1 0 0-48 24 24 0 1 0 0 48z"></path>
+                </svg>
+              </span>
+              <span className="tool-clip">Copy to clipboard</span>
+            </button>
+          </div>
         </div>
-    );
+        <div className="wrapper-body">
+          {data.map((log, index) => {
+            // Using regular expression to split at the first colon
+            const regex = /^([^:]+:[^:]+:[^:]+):(.*)$/;
+            const match = log.match(regex);
+
+            if (match) {
+              const dateSection = match[1].trim();
+              const content = match[2].trim();
+
+              return (
+                <div className="log-row" key={index}>
+                  {/* Render date section in a span */}
+                  <span className="log-creation-date">{dateSection} :</span>
+
+                  {/* Render content in another span */}
+                  <span className="log-details">{content}</span>
+                </div>
+              );
+            } else {
+              // Handle if the log doesn't match the expected format
+              return null;
+            }
+          })}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Log;

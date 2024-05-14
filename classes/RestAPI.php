@@ -59,7 +59,6 @@ class RestAPI {
             'callback'            =>[ $this, 'get_log' ],
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
-
     }
 
     /**
@@ -196,6 +195,11 @@ class RestAPI {
 
         MooWoodle()->product->update_products( $courses );
         
+        /**
+         * Action hook after moowoodle course sync.
+         */
+        do_action( 'moowoodle_after_sync_course' );
+        
         // Retrive the sync status and flush it
         $sync_status = Util::get_sync_status();
         Util::flush_sync_status();
@@ -322,5 +326,4 @@ class RestAPI {
         
         return rest_ensure_response( array_reverse( array_slice( $logs, - $log_count ) ) );
     }
-
 }

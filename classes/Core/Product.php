@@ -24,12 +24,35 @@ class Product {
 	 * @param mixed $data_store_cpt
 	 * @return mixed
 	 */
-	function handling_custom_meta_query_keys( $wp_query_args, $query_vars, $data_store_cpt ) {
+	public function handling_custom_meta_query_keys( $wp_query_args, $query_vars, $data_store_cpt ) {
 		if ( ! empty( $query_vars[ 'meta_query' ] ) ) {
 			$wp_query_args[ 'meta_query' ][] = $query_vars[ 'meta_query' ];
 		}
 			
 		return $wp_query_args;
+	}
+
+	/**
+	 * Get product from course.
+	 * @param mixed $course_id moowoodle course id.
+	 * @return null | \WC_Product return null if product not exist.
+	 */
+	public static function get_product_from_moodle_course( $course_id ) {
+		$products = wc_get_products([
+            'meta_query' => [
+                [
+                    'key'   => 'moodle_course_id',
+                    'value' => $course_id,
+					'compare' => '='
+                ]
+            ]
+        ]);
+
+		if ( empty( $products ) ) {
+			return null;
+		}
+
+		return reset( $products );
 	}
 
     /**
@@ -62,23 +85,27 @@ class Product {
 	public static function update_product( $course ) {
 		if ( empty( $course ) || $course[ 'format' ] == 'site' ) return 0;
 
-		// get the product id linked with moodle.
-        $products = wc_get_products([
-            'meta_query' => [
-                [
-                    'key'   => 'moodle_course_id',
-                    'value' => $course[ 'id' ],
-					'compare' => '='
-                ]
-            ]
-        ]);
+		// Manage setting of product sync option.
+		$product_sync_setting = MooWoodle()->setting->get_setting( 'product_sync_option' );
+		$product_sync_setting = is_array( $product_sync_setting ) ? $product_sync_setting : [];
+
+		$create_product = array_intersect( $product_sync_setting, [ 'create_update', 'create' ] );
+		$update_product = array_intersect( $product_sync_setting, [ 'create_update', 'update' ] );
+
+		// None of the option is choosen.
+		if ( ! $create_product && ! $update_product ) return 0;
+
+		$product = self::get_product_from_moodle_course( $course[ 'id' ] );
 
         // create a new product if not exist.
-        if( empty( $products ) ) {
+        if( ! $product && $create_product ) {
             $product = new \WC_Product_Simple();
-        } else {
-            $product = reset( $products );
-        }
+        } 
+		
+		// Product is not exist
+		if ( ! $product ) {
+			return 0;
+		}
 
         // get category term
         $term = MooWoodle()->category->get_category( $course[ 'categoryid' ], 'product_cat' );

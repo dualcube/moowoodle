@@ -98,7 +98,7 @@ class TestConnection {
 		$response = MooWoodle()->external_service->do_request( 'create_users', [ 'users' =>  [ [
 			'email' 	=> 'moowoodletestuser@gmail.com',
 			'username'  => 'moowoodletestuser',
-			'password'  => 'Moowoodle+1237',
+			'password'  => 'Moowoodle@123',
 			'auth' 		=> 'manual',
 			'lang' 		=> 'en',
 			'firstname' => 'moowoodle',

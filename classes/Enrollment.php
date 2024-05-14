@@ -1,5 +1,7 @@
 <?php
+
 namespace MooWoodle;
+
 class Enrollment {
 	/**
 	 * Variable store woocommerce order object
@@ -21,7 +23,7 @@ class Enrollment {
 	 */
 	public function process_order( $order_id ) {
 	
-		$order = new \WC_Order($order_id);
+		$order = new \WC_Order( $order_id );
 
 		// Check order contain courses
 		$has_course = false;
@@ -36,7 +38,7 @@ class Enrollment {
 		}
 
 		// Enroll moodle user
-		if ( ! $order->get_meta( 'moodle_user_enrolled', true ) ) {
+		if ( $has_course && ! $order->get_meta( 'moodle_user_enrolled', true ) ) {
 			$this->order	= $order;
 			$moodle_user_id = $this->get_moodle_user_id();
 			$this->enrol_moodle_user( $moodle_user_id );
@@ -47,7 +49,7 @@ class Enrollment {
 	 * Get moodle user id. If the user does not exist in moodle then creats an user in moodle.
 	 * @return int newly create user id.
 	 */
-	private function get_moodle_user_id() {
+	public function get_moodle_user_id() {
 		$user_id = $this->order->get_user_id();
 
 		// if user is a guest user.
@@ -72,7 +74,6 @@ class Enrollment {
 		$moodle_user_id = $this->search_for_moodle_user( 'email', ( $user ) ? $user->user_email : $email );
 		
 		if ( ! $moodle_user_id ) {
-			\MooWoodle\Util::_log( 'in createee');
 			$moodle_user_id = $this->create_moodle_user();
 		} else {
 			// User id is availeble update user id.
@@ -141,12 +142,13 @@ class Enrollment {
 
 			// Not a valid response.
 			if ( ! $response[ 'data' ] ) return 0;
+
 			$moodle_users = $response[ 'data' ];
 			$moodle_users = reset( $moodle_users );
 
 			if ( is_array( $moodle_users ) && isset( $moodle_users[ 'id' ] ) ) {
 				$user_id = $moodle_users[ 'id' ];
-				
+
 				/**
 				 * Action hook after moodle user creation.
 				 * @var array $user_data data for creating user in moodle
@@ -242,7 +244,7 @@ class Enrollment {
 	 * @param int $suspend default 0
 	 * @return void
 	 */
-	private function enrol_moodle_user( $moodle_user_id, $suspend = 0 ) {
+	public function enrol_moodle_user( $moodle_user_id, $suspend = 0 ) {
 		if ( empty( $moodle_user_id ) || ! is_int( $moodle_user_id ) ) {
 			return;
 		}

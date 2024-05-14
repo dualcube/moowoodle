@@ -15,29 +15,29 @@ const SyncNow = (props) => {
   const fetchSyncStatus = () => {
     axios({
       method: "post",
-            url: getApiLink('sync-status'),
+      url: getApiLink('sync-status'),
       headers: { "X-WP-Nonce": appLocalizer.nonce },
     }).then((response) => {
-            if ( syncStart.current ) {
+      if (syncStart.current) {
         setSyncStatus(response.data);
         setTimeout(() => {
           fetchSyncStatus();
-                }, 0)
+        }, 0)
       }
     });
-    }
+  }
 
   useEffect(() => {
-        if ( syncStart ) {
+    if (syncStart) {
       fetchSyncStatus();
     }
-    }, [ syncStart.current ] );
+  }, [syncStart.current]);
 
   const handleUserSync = (event) => {
-        if ( ! appLocalizer.pro_active ) {
+    if (!appLocalizer.pro_active) {
       return setModelOpen(true);
     }
-    }
+  }
 
   const handleCourseSync = (event) => {
     if (syncCourseStart) {
@@ -49,26 +49,26 @@ const SyncNow = (props) => {
 
     axios({
       method: "post",
-            url: getApiLink('sync-course'),
+      url: getApiLink('sync-course'),
       headers: { "X-WP-Nonce": appLocalizer.nonce },
     }).then((response) => {
       setSyncStatus(response.data);
       setSyncCourseStart(false);
       syncStart.current = false;
     });
-    }
+  }
 
   return (
     <>
       <Dialog
         className="admin-module-popup"
         open={modelOpen}
-                onClose={() => setModelOpen(false) }
+        onClose={() => setModelOpen(false)}
         aria-labelledby="form-dialog-title"
       >
         <span
           className="admin-font font-cross"
-                    onClick={() => setModelOpen(false) }
+          onClick={() => setModelOpen(false)}
         ></span>
         <Popoup />
       </Dialog>
