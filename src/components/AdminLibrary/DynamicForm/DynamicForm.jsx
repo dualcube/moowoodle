@@ -676,10 +676,10 @@ const DynamicForm = (props) => {
           input = <SSOKey
             value={value}
             proSetting={isProSetting(inputField.proSetting)}
-            onChange={(data) => {
+            onChange={( value ) => {
               if (!proSettingChanged(inputField.proSetting) && true) {
                 settingChanged.current = true;
-                updateSetting( inputField.key, data );
+                updateSetting(inputField.key, value)
               }
             }}
           />

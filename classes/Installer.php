@@ -56,7 +56,7 @@ class Installer {
 				$options =[
 					'moowoodle_general_settings' => [ 'update_moodle_user', 'moowoodle_adv_log' ],
 					'moowoodle_display_settings' => [ 'start_end_date' ],
-					'moowoodle_sso_settings' => [ 'moowoodle_sso_eneble' ],
+					'moowoodle_sso_settings' => [ 'moowoodle_sso_enable' ],
 					'moowoodle_notification_settings' => [ 'moowoodle_create_user_custom_mail' ],
 					'moowoodle_synchronize_settings' => [ 'realtime_sync_moodle_users', 'realtime_sync_wordpress_users',
 						'sync_user_first_name', 'sync_user_last_name', 'sync_username', 'sync_password', ],

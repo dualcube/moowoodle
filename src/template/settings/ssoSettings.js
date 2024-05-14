@@ -3,21 +3,21 @@ import { __ } from '@wordpress/i18n';
 export default {
     id: "sso",
     priority: 30,
-    name: __("Single Sing On", 'moowoodle'),
+    name: __("Single Sign On", 'moowoodle'),
     desc: __("Manage seamless login and logout synchronization ", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     proDependent: true,
     modal: [
         {
-            key: "moowoodle_sso_eneble",
+            key: "moowoodle_sso_enable",
             type: "checkbox",
-            desc: __("Single Sing On", 'moowoodle'),
+            desc: __("Single Sign On", 'moowoodle'),
             label: __('If enabled Moodle user\'s will login by WordPress user', 'moowoodle'),
             options: [
                 {
-                    key: "moowoodle_sso_eneble",
-                    value: "moowoodle_sso_eneble"
+                    key: "moowoodle_sso_enable",
+                    value: "moowoodle_sso_enable"
                 }
             ],
             proSetting: true,

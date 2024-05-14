@@ -24,6 +24,39 @@ export default {
             proSetting: true,
         },
         {
+            key: "sync-course-options",
+            type: "checkbox-default",
+            desc: __("Select Option For Course Sync.", 'moowoodle'),
+            label: __("Course Information", 'moowoodle'),
+            select_deselect: true,
+            options: [
+                {
+                    key: "sync_courses",
+                    label: __( 'Moodle Courses', 'moowoodle' ),
+                    hints: __("This function will retrieve all Moodle course data and synchronize it with the courses listed in WordPress.", 'moowoodle'),
+                    value: "sync_courses",
+                },
+                {
+                    key: "sync_courses_category",
+                    label: __( 'Moodle Course Categories', 'moowoodle' ),
+                    hints: __("This feature will scan the entire Moodle course category structure and synchronize it with the WordPress category listings.", 'moowoodle'),
+                    value: "sync_courses_category",
+                },
+                {
+                    key: "sync_image",
+                    label: __( 'Course Images', 'moowoodle' ),
+                    hints: __("This function copies course images and sets them as WooCommerce product images.", 'moowoodle'),
+                    value: "sync_image",
+                    proSetting: true,
+                },
+            ]
+        },
+        {
+            key: 'separator_content',
+            type: 'section',
+            label: "",
+        },
+        {
             key: "course_schedule_interval",
             type: "select",
             desc: __("Select Option For Course Synchronization Schedule Interval.", 'moowoodle'),
@@ -88,34 +121,6 @@ export default {
                 }
             ],
             proSetting: true,
-        },
-        {
-            key: "sync-course-options",
-            type: "checkbox-default",
-            desc: __("Select Option For Course Sync.", 'moowoodle'),
-            label: __("Course Information", 'moowoodle'),
-            select_deselect: true,
-            options: [
-                {
-                    key: "sync_courses",
-                    label: __( 'Moodle Courses', 'moowoodle' ),
-                    hints: __("This function will retrieve all Moodle course data and synchronize it with the courses listed in WordPress.", 'moowoodle'),
-                    value: "sync_courses",
-                },
-                {
-                    key: "sync_courses_category",
-                    label: __( 'Moodle Course Categories', 'moowoodle' ),
-                    hints: __("This feature will scan the entire Moodle course category structure and synchronize it with the WordPress category listings.", 'moowoodle'),
-                    value: "sync_courses_category",
-                },
-                {
-                    key: "sync_image",
-                    label: __( 'Course Images', 'moowoodle' ),
-                    hints: __("This function copies course images and sets them as WooCommerce product images.", 'moowoodle'),
-                    value: "sync_image",
-                    proSetting: true,
-                },
-            ]
         },
         {
             key: "sync_course_btn",

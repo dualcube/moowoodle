@@ -7,15 +7,30 @@ import Dialog from "@mui/material/Dialog";
 import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
+import './Enrollment.scss';
+import Propopup from "../PopupContent/PopupContent";
 
 const Enrollment = () => {
 	const [students, setStudents] = useState([]);
+    const [postStatus, setPostStatus] = useState("");
+	const [suggestions, setSuggestions] = useState([]);
 	const [courses, setCourses] = useState([]);
     const [data, setData] = useState(null);
     const [selectedRows, setSelectedRows] = useState([]);
     const [totalRows, setTotalRows] = useState();
+    const [openDialog, setOpenDialog] = useState(false);
     const [openDatePicker, setOpenDatePicker] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
+    const [modalDetails, setModalDetails] = useState(false);
 	const dateRef = useRef();
+
+	useEffect(() => {
+		document.body.addEventListener("click", (event) => {
+			if (! dateRef?.current?.contains(event.target) ) {
+			  setOpenDatePicker(false);
+			}
+		})
+	}, [])
 
 	useEffect(() => {
 		axios({
@@ -182,6 +197,7 @@ const Enrollment = () => {
 				<input value={`${selectedRange[0].startDate.toLocaleDateString()} - ${selectedRange[0].endDate.toLocaleDateString()}`} onClick={()=>handleDateOpen()} className="date-picker-input-custom" type="text" placeholder={__("DD/MM/YYYY", "moowoodle")} />
 			  </div>
 			  {openDatePicker &&
+			   <div className="date-picker-section-wrapper">
 				<DateRangePicker
 				  ranges={selectedRange}
 				  months={1}
@@ -201,6 +217,7 @@ const Enrollment = () => {
 					}
 				  }}
 				/>
+				</div>
 			  }
 			</div>
 		  ),
@@ -236,9 +253,9 @@ const Enrollment = () => {
 	{
 		name: __("Action", "moowoodle"),
 		cell: (row) => (
-		  <TableCell title="action">
-			<button onClick={() => handleButtonClick(row)}>
-				{row.status === 'enrolled' ? 'Unenroll' : 'Enroll'}
+		  <TableCell title="Action">
+			<button className={`${row.status == 'enrolled' ? 'unenroll' : 'enroll'}`} onClick={() => handleButtonClick(row)}>
+			  {row.status === 'enrolled' ? 'Unenroll' : 'Enroll'}
 			</button>
 		  </TableCell>
 		),
@@ -267,8 +284,33 @@ const Enrollment = () => {
       
     return(
         <>
-		
-        <div className="admin-subscriber-list">
+		{ ! appLocalizer.pro_active ? (
+			<>
+			<Dialog
+            className="admin-module-popup"
+            open={openDialog}
+            onClose={() => {
+              setOpenDialog(false);
+            }}
+            aria-labelledby="form-dialog-title"
+          >
+            <span
+              className="admin-font font-cross stock-manager-popup-cross"
+              onClick={() => {
+                setOpenDialog(false);
+              }}
+            ></span>
+            <Propopup />
+          </Dialog>
+          <div
+            className="enrollment-img"
+            onClick={() => {
+              setOpenDialog(true);
+            }}>
+          </div>
+		</>
+      ) : (
+        <div className="admin-enrollment-list">
           <div className="admin-page-title">
             <p>{__("All Enrollments", "moowoodle")}</p>
           </div>
@@ -288,6 +330,7 @@ const Enrollment = () => {
               />
             }
           </div>
+		  )}
         </>
         
     );

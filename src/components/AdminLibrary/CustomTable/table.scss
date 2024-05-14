@@ -90,6 +90,103 @@ $color-white: #fff;
 $menu-color: #f9f8fb;
 $color-active: #65438f;
 
+.filter-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+
+  .wrap-bulk-all-date{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    max-width: 37.8rem;
+    flex-wrap: wrap;
+    position: relative;
+    width: 100%;
+  
+    .admin-header-search-section{
+      input{
+        padding: 0.15rem 0.5rem
+      }
+    }
+  
+    & > div{
+      flex: 1 0 9.45rem;
+      width: 100%;
+  
+      div{
+        background-color: transparent;
+      }
+
+
+      .date-picker-section-wrapper{
+        position: absolute;
+        left: 0;
+        top: 105%;
+        background: #fff !important;
+        z-index: 5;
+        padding: 1rem;
+
+        .rdrDateRangePickerWrapper{
+          // flex-wrap: wrap;
+
+          .rdrDefinedRangesWrapper{
+            .rdrInputRanges{
+              .rdrInputRange{
+                input{
+                  width: 3.15rem;
+                }
+              }
+            }
+          }
+
+
+          & > div{
+            // flex: 1;
+
+            input{
+              width: fit-content;
+            }
+
+            .rdrDateDisplay{
+              span{
+                border-radius: 0;
+                box-shadow: none;
+                border: none;
+              }
+            }
+          }
+        }
+
+        @media screen and (max-width: 41.58rem) {
+          .rdrDateRangePickerWrapper{
+            flex-direction: column;
+
+            & > div{
+              width: 100%;
+            }
+          }
+        }
+      }
+      
+      input, select{
+        background-color: transparent;
+        width: 100%;
+        outline: none;
+        border: 0.115rem solid rgba(0, 0, 0, 0.125);
+  
+        &:focus{
+          box-shadow: none;
+        }
+      }
+    }
+  }
+}
+
 .koyZDM{
   overflow: visible !important; // To overwrite default react data table css
 }
