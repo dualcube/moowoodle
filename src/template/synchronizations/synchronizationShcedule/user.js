@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 
 export default {
-    id: "synchronize-shcedule-user",
+    id: "synchronize-schedule-user",
     priority: 25,
     name: __("User", 'moowoodle'),
     desc: __("Admins can select user sync direction and schedule interval for user synchronization.", 'moowoodle'),
@@ -11,7 +11,7 @@ export default {
     modal: [
         {
             key: "user_sync_direction",
-            type: "select",
+            type: "checkbox-default",
             // desc: __("<b>Prior to updating existing user info, you must select the user info to be synchronized at </b>", 'moowoodle') . $moowoodle_sync_setting_url . __("<br><br>While synchronizing user information, we use the email address as the unique identifier for each user. We check the username associated with that email address, and if we find the same username in the other instance but with a different email address, the user's information cannot be synchronized.", 'moowoodle'),
             label: __("Sync Direction", 'moowoodle'),
             options: [

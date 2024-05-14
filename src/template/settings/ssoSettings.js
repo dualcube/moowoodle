@@ -24,7 +24,7 @@ export default {
         },
         {
             key: "moowoodle_sso_secret_key",
-            type: "text",
+            type: "sso_key",
             desc: __(`Enter SSO Secret Key it should be same as  ${ appLocalizer.moodle_sso_url } SSO Secret Key`, 'moowoodle'),
             label: __("SSO Secret Key", 'moowoodle'),
             proSetting: true,

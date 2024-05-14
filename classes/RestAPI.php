@@ -38,7 +38,7 @@ class RestAPI {
 
         register_rest_route( MooWoodle()->rest_namespace, '/sync-course', [
             'methods'             => \WP_REST_Server::ALLMETHODS,
-            'callback'            =>[ $this, 'synchronize' ],
+            'callback'            =>[ $this, 'synchronize_course' ],
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
 
@@ -143,7 +143,7 @@ class RestAPI {
      * @param mixed $request rest api request object
      * @return \WP_Error | \WP_REST_Response
      */
-    public function synchronize( $request ) {
+    public function synchronize_course( $request ) {
         Util::flush_sync_status();
 
         $sync_setting = MooWoodle()->setting->get_setting( 'sync-course-options' );
@@ -194,6 +194,11 @@ class RestAPI {
         ] );
 
         MooWoodle()->product->update_products( $courses );
+        
+        /**
+         * Action hook after moowoodle course sync.
+         */
+        do_action( 'moowoodle_after_sync_course' );
         
         // Retrive the sync status and flush it
         $sync_status = Util::get_sync_status();

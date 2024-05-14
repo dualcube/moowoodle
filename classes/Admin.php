@@ -115,8 +115,8 @@ class Admin {
 			'log',
 			'notification',
 			'synchronize-datamap',
-			'synchronize-shcedule-course',
-			'synchronize-shcedule-user'
+			'synchronize-schedule-course',
+			'synchronize-schedule-user'
 		];
 
         foreach( $tabs_names as $tab_name ) {

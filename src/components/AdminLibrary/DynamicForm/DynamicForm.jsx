@@ -12,6 +12,7 @@ import Popoup from "../../PopupContent/PopupContent";
 import FormCustomizer from "../Inputs/Special/FormCustomizer";
 import ConnectButton from "../../ConnectButton/ConnectButton";
 import Log from "../../Log/Log";
+import SSOKey from "../../SSOKey/SSOKey";
 
 // Variable for controll coldown effect submit time
 const PENALTY  = 10;
@@ -660,6 +661,19 @@ const DynamicForm = (props) => {
         
         case "log":
           input = <Log />
+          break;
+
+        case "sso_key":
+          input = <SSOKey
+            value={value}
+            proSetting={isProSetting(inputField.proSetting)}
+            onChange={(data) => {
+              if (!proSettingChanged(inputField.proSetting) && true) {
+                settingChanged.current = true;
+                updateSetting( inputField.key, data );
+              }
+            }}
+          />
           break;
         
         case "checkbox-default":

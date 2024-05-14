@@ -1,5 +1,7 @@
 <?php
+
 namespace MooWoodle;
+
 class Enrollment {
 	/**
 	 * Variable store woocommerce order object
@@ -22,6 +24,18 @@ class Enrollment {
 	public function process_order( $order_id ) {
 	
 		$order = new \WC_Order($order_id);
+
+		// Check order contain courses
+		$has_course = false;
+
+		foreach( $order->get_items() as $item_id => $item ) {
+			$product = $item->get_product();
+
+			if ( $product->get_meta( 'moodle_course_id', true ) ) {
+				$has_course = true;
+				break;
+			}
+		}
 
 		// Enroll moodle user
 		if ( ! $order->get_meta( 'moodle_user_enrolled', true ) ) {
@@ -53,16 +67,22 @@ class Enrollment {
 		// If moodle user id exist then return it.
 		if ( $moodle_user_id ) return $moodle_user_id;
 
+		$user 	  = ( $user_id ) ? get_userdata( $user_id ) : false;
+		$email 	  = $this->order->get_billing_email();
+
 		// Get user id from moodle database.
-		$moodle_user_id = $this->search_for_moodle_user( 'email', $this->order->get_billing_email() );
+		$moodle_user_id = $this->search_for_moodle_user( 'email', ( $user ) ? $user->user_email : $email );
 		
 		if ( ! $moodle_user_id ) {
 			$moodle_user_id = $this->create_moodle_user();
 		} else {
 			// User id is availeble update user id.
+
+			$should_user_update = MooWoodle()->setting->get_setting( 'update_moodle_user', [] );
+			$should_user_update = is_array( $should_user_update ) ? $should_user_update : [];
 			$should_user_update = in_array(
 				'update_moodle_user',
-				MooWoodle()->setting->get_setting( 'update_moodle_user', [] )
+				$should_user_update
 			);
 
 			if ( $should_user_update ) {
@@ -108,35 +128,40 @@ class Enrollment {
 	 * @return int newly created user id.
 	 */
 	private function create_moodle_user() {
-		
-		$user_data = $this->get_user_data();
-		$user_id   = 0;
+		try {
+			$user_data = $this->get_user_data();
+			$user_id   = 0;
 
-		// create user on moodle.
-		$response = MooWoodle()->external_service->do_request(
-			'create_users', 
-			[
-				'users' => [ $user_data ]
-			]
-		);
+			// create user on moodle.
+			$response = MooWoodle()->external_service->do_request(
+				'create_users', 
+				[
+					'users' => [ $user_data ]
+				]
+			);
 
-		// Not a valid response.
-		if ( ! $response[ 'success' ] ) return 0;
+			// Not a valid response.
+			if ( ! $response[ 'data' ] ) return 0;
 
-		$moodle_users = $response[ 'data' ];
+			$moodle_users = $response[ 'data' ];
+			$moodle_users = reset( $moodle_users );
 
-		if ( $moodle_users ) {
-			$user    = reset( $moodle_users );
-			$user_id = $user[ 'id' ];
+			if ( is_array( $moodle_users ) && isset( $moodle_users[ 'id' ] ) ) {
+				$user_id = $moodle_users[ 'id' ];
 
-			/**
-			 * Action hook after moodle user creation.
-			 * @var array $user_data data for creating user in moodle
-			 * @var int $user_id newly created user id
-			 */
-			do_action( 'moowoodle_after_create_moodle_user', $user_data, $user_id );
+				/**
+				 * Action hook after moodle user creation.
+				 * @var array $user_data data for creating user in moodle
+				 * @var int $user_id newly created user id
+				 */
+				do_action( 'moowoodle_after_create_moodle_user', $user_data, $user_id );
 
-			return $user_id;
+				return $user_id;
+			} else {
+				throw new \Exception( "Unable to create user." );
+			}
+		} catch ( \Exception $e ) {
+			Util::log( $e->getMessage() );
 		}
 
 		return 0;
@@ -173,8 +198,7 @@ class Enrollment {
 		$user 	  = ( $user_id ) ? get_userdata( $user_id ) : false;
 		$username = ( $user ) ? $user->user_login : '';
 		$username = str_replace( ' ', '', strtolower( $username ) );
-		// $password = get_user_meta( $user_id, 'moowoodle_moodle_user_pwd', true );
-		$password = '';
+		$password = get_user_meta( $user_id, 'moowoodle_moodle_user_pwd', true );
 
 		// If password not exist create a password.
 		if ( ! $password ) {
@@ -318,9 +342,12 @@ class Enrollment {
 		$startdate 		= get_post_meta( $product->get_id(), '_course_startdate', true );
 		$enddate 		= get_post_meta( $product->get_id(), '_course_enddate', true );
 
+		// Get start end date setting
+		$start_end_date = MooWoodle()->setting->get_setting('start_end_date');
+		$start_end_date = is_array( $start_end_date ) ? $start_end_date : [];
 		$start_end_date = in_array(
 			'start_end_date',
-			MooWoodle()->setting->get_setting( 'start_end_date' )
+			$start_end_date
 		);
 		
 		if ( $start_end_date ) {

@@ -16616,11 +16616,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Inputs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Inputs */ "./src/components/AdminLibrary/Inputs/index.js");
 /* harmony import */ var _contexts_SettingContext__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../contexts/SettingContext */ "./src/contexts/SettingContext.jsx");
 /* harmony import */ var _services_apiService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../services/apiService */ "./src/services/apiService.js");
-/* harmony import */ var _mui_material_Dialog__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/material/Dialog */ "./node_modules/@mui/material/Dialog/Dialog.js");
+/* harmony import */ var _mui_material_Dialog__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mui/material/Dialog */ "./node_modules/@mui/material/Dialog/Dialog.js");
 /* harmony import */ var _PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../PopupContent/PopupContent */ "./src/components/PopupContent/PopupContent.jsx");
 /* harmony import */ var _Inputs_Special_FormCustomizer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Inputs/Special/FormCustomizer */ "./src/components/AdminLibrary/Inputs/Special/FormCustomizer.jsx");
 /* harmony import */ var _ConnectButton_ConnectButton__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../ConnectButton/ConnectButton */ "./src/components/ConnectButton/ConnectButton.jsx");
 /* harmony import */ var _Log_Log__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Log/Log */ "./src/components/Log/Log.jsx");
+/* harmony import */ var _SSOKey_SSOKey__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../SSOKey/SSOKey */ "./src/components/SSOKey/SSOKey.jsx");
 
 
 
@@ -16630,6 +16631,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 // import services function
+
 
 
 
@@ -17214,6 +17216,18 @@ const DynamicForm = props => {
         case "log":
           input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Log_Log__WEBPACK_IMPORTED_MODULE_8__["default"], null);
           break;
+        case "sso_key":
+          input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SSOKey_SSOKey__WEBPACK_IMPORTED_MODULE_9__["default"], {
+            value: value,
+            proSetting: isProSetting(inputField.proSetting),
+            onChange: data => {
+              if (!proSettingChanged(inputField.proSetting) && true) {
+                settingChanged.current = true;
+                updateSetting(inputField.key, data);
+              }
+            }
+          });
+          break;
         case "checkbox-default":
           input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Inputs__WEBPACK_IMPORTED_MODULE_2__["default"].MultiCheckBox, {
             wrapperClass: "checkbox-list-side-by-side",
@@ -17264,7 +17278,7 @@ const DynamicForm = props => {
   };
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "dynamic-fields-wrapper"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_10__["default"], {
     className: "admin-module-popup",
     open: modelOpen,
     onClose: handleModelClose,
@@ -19882,7 +19896,7 @@ const Log = props => {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     (0,axios__WEBPACK_IMPORTED_MODULE_3__["default"])({
       method: "post",
-      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)("fetch-log"),
+      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('fetch-log'),
       headers: {
         "X-WP-Nonce": appLocalizer.nonce
       },
@@ -19898,21 +19912,21 @@ const Log = props => {
     event.preventDefault();
     (0,axios__WEBPACK_IMPORTED_MODULE_3__["default"])({
       url: appLocalizer.log_url,
-      method: "GET",
-      responseType: "blob"
+      method: 'GET',
+      responseType: 'blob'
     }).then(response => {
       // Create a blob from the response
       const blob = new Blob([response.data], {
-        type: response.headers["content-type"]
+        type: response.headers['content-type']
       });
 
       // Create a URL for the blob
       const url = window.URL.createObjectURL(blob);
 
       // Create a link element
-      const link = document.createElement("a");
+      const link = document.createElement('a');
       link.href = url;
-      link.setAttribute("download", "error.txt"); // Set the file name
+      link.setAttribute('download', 'error.txt'); // Set the file name
 
       // Trigger the download
       document.body.appendChild(link);
@@ -19921,15 +19935,15 @@ const Log = props => {
       // Clean up
       document.body.removeChild(link);
     }).catch(error => {
-      console.error("Error downloading file:", error);
+      console.error('Error downloading file:', error);
     });
   };
   const handleClearLog = event => {
     event.preventDefault();
-    console.log("handle clear log");
+    console.log('handle clear log');
     (0,axios__WEBPACK_IMPORTED_MODULE_3__["default"])({
       method: "post",
-      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)("fetch-log"),
+      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('fetch-log'),
       headers: {
         "X-WP-Nonce": appLocalizer.nonce
       },
@@ -19942,9 +19956,7 @@ const Log = props => {
       setData(response.data);
     });
   };
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "section-log-container"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, "LOG"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "button-section"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleDownloadLog,
@@ -19965,16 +19977,15 @@ const Log = props => {
     d: "M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"
   }))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "log-container-wrapper"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "wrapper-header"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
-    className: "log-viewer-text"
-  }, "MooWoodle - log viewer"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, data.map(log => {
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, log);
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "click-to-copy"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    title: "Copy",
     class: "Btn"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    class: "text"
+  }, "Copy"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     class: "svgIcon"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
     fill: "white",
@@ -19983,30 +19994,7 @@ const Log = props => {
     xmlns: "http://www.w3.org/2000/svg"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
     d: "M280 64h40c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128C0 92.7 28.7 64 64 64h40 9.6C121 27.5 153.3 0 192 0s71 27.5 78.4 64H280zM64 112c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16H320c8.8 0 16-7.2 16-16V128c0-8.8-7.2-16-16-16H304v24c0 13.3-10.7 24-24 24H192 104c-13.3 0-24-10.7-24-24V112H64zm128-8a24 24 0 1 0 0-48 24 24 0 1 0 0 48z"
-  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "tool-clip"
-  }, "Copy to clipboard")))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "wrapper-body"
-  }, data.map((log, index) => {
-    // Using regular expression to split at the first colon
-    const regex = /^([^:]+:[^:]+:[^:]+):(.*)$/;
-    const match = log.match(regex);
-    if (match) {
-      const dateSection = match[1].trim();
-      const content = match[2].trim();
-      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-        className: "log-row",
-        key: index
-      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-        className: "log-creation-date"
-      }, dateSection, " :"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-        className: "log-details"
-      }, content));
-    } else {
-      // Handle if the log doesn't match the expected format
-      return null;
-    }
-  }))));
+  })))))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Log);
 
@@ -20054,6 +20042,63 @@ const Propopup = () => {
   }, "Upgrade to Pro")))))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Propopup);
+
+/***/ }),
+
+/***/ "./src/components/SSOKey/SSOKey.jsx":
+/*!******************************************!*\
+  !*** ./src/components/SSOKey/SSOKey.jsx ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+const SSOKey = props => {
+  const {
+    value,
+    proSetting,
+    onChange
+  } = props;
+  const inputRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
+  const [copied, setCopied] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  function generateRandomKey(length = 8) {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let key = "";
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      key += characters.charAt(randomIndex);
+    }
+    return key;
+  }
+  const generateSSOKey = e => {
+    e.preventDefault();
+    const key = generateRandomKey(8);
+    onChange(key);
+  };
+  const handleCopy = e => {
+    e.preventDefault();
+    navigator.clipboard.writeText(value).then(() => {
+      setCopied(true);
+    });
+  };
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "text",
+    value: value,
+    onChange: e => onChange(e.target.value)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    onClick: handleCopy
+  }, copied ? ' ✔copied' : 'copy'), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    onClick: generateSSOKey
+  }, "Generate"));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SSOKey);
 
 /***/ }),
 
@@ -20839,7 +20884,7 @@ __webpack_require__.r(__webpack_exports__);
     proSetting: true
   }, {
     key: "moowoodle_sso_secret_key",
-    type: "text",
+    type: "sso_key",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Enter SSO Secret Key it should be same as  ${appLocalizer.moodle_sso_url} SSO Secret Key`, 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("SSO Secret Key", 'moowoodle'),
     proSetting: true
@@ -20922,7 +20967,7 @@ __webpack_require__.r(__webpack_exports__);
   proDependent: true,
   modal: [{
     key: "course_sync_direction",
-    type: "select",
+    type: "checkbox-default",
     // desc: __("<b>Prior to updating existing course info, you must select the course info to be synchronized at </b>", 'moowoodle') . $moowoodle_sync_setting_url . __("<br><br>While synchronizing user information, we use the email address as the unique identifier for each user. We check the username associated with that email address, and if we find the same username in the other instance but with a different email address, the user's information cannot be synchronized.", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Sync Direction", 'moowoodle'),
     options: [{
@@ -20937,33 +20982,33 @@ __webpack_require__.r(__webpack_exports__);
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select Option For Course Synchronization Schedule Interval.", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Course Synchronization Schedule Interval", 'moowoodle'),
     options: [{
-      key: "realtime",
+      key: 0,
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Realtime", 'moowoodle'),
-      value: "realtime"
+      value: 0 // realtime is 0s
     }, {
-      key: "hour",
+      key: 3600,
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Hourly.", 'moowoodle'),
-      value: "hour"
+      value: 3600 // 1 hour is 36000s
     }, {
-      key: "hour6",
+      key: 21600,
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Hour 6.", 'moowoodle'),
-      value: "hour6"
+      value: 21600 // 6 hour is 21600
     }, {
-      key: "day",
+      key: 86400,
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Daily", 'moowoodle'),
-      value: "day"
+      value: 86400 // 1 day is 86400s
     }, {
-      key: "week",
+      key: 604800,
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Weekly", 'moowoodle'),
-      value: "week"
+      value: 604800 // 1 week is 604800s
     }, {
-      key: "month",
+      key: 2592000,
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Month", 'moowoodle'),
-      value: "month"
+      value: 2592000 // 1 month is 2592000s
     }],
     proSetting: true
   }, {
-    key: "course_sync_action",
+    key: "product_sync_option",
     type: "checkbox-default",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Action Required", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Action Required", 'moowoodle'),
@@ -21028,7 +21073,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  id: "synchronize-shcedule-user",
+  id: "synchronize-schedule-user",
   priority: 25,
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("User", 'moowoodle'),
   desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Admins can select user sync direction and schedule interval for user synchronization.", 'moowoodle'),
@@ -21037,7 +21082,7 @@ __webpack_require__.r(__webpack_exports__);
   proDependent: true,
   modal: [{
     key: "user_sync_direction",
-    type: "select",
+    type: "checkbox-default",
     // desc: __("<b>Prior to updating existing user info, you must select the user info to be synchronized at </b>", 'moowoodle') . $moowoodle_sync_setting_url . __("<br><br>While synchronizing user information, we use the email address as the unique identifier for each user. We check the username associated with that email address, and if we find the same username in the other instance but with a different email address, the user's information cannot be synchronized.", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Sync Direction", 'moowoodle'),
     options: [{

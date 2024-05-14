@@ -56,15 +56,21 @@ class ExternalService {
 		// Get response from moodle server.
 		$response = null;
 		if ( ! empty( $moodle_base_url ) && ! empty( $moodle_access_token ) && $function_name ) {
+
 			$request_query  = http_build_query( $request_param );
 
 			$timeout 		= MooWoodle()->setting->get_setting( 'moodle_timeout' );
 			$timeout		= $timeout ? $timeout : '10';
-			
+
+
 			$response       = wp_remote_post( $request_url, [ 'body' => $request_query, 'timeout' => $timeout ] );
 			
+			$show_adv_log 	= MooWoodle()->setting->get_setting( 'moowoodle_adv_log' );
+			$show_adv_log   = is_array( $show_adv_log ) ? $show_adv_log : [];
+			$show_adv_log   = in_array( 'moowoodle_adv_log', $show_adv_log );
+
             // Log the response relult.
-            if ( MooWoodle()->setting->get_setting( 'moowoodle_adv_log' ) ) {
+            if ( $show_adv_log ) {
 				MooWoodle()->util->log( "moowoodle moodle_url:" . $request_url . '&' . $request_query . "\n\t\tmoowoodle response:" . wp_json_encode( $response ) . "\n\n");
 			}
 		}
@@ -123,6 +129,7 @@ class ExternalService {
 			if ( str_contains( $response['message'], 'Invalid moodle_access_token' ) ) {
 				return [ 'error' => $response['message'] . ' ' .  '<a href="' . MooWoodle()->setting->get_setting( 'moodle_url' ) . '/admin/webservice/tokens.php">Link</a>' ];
 			}
+			return [ 'error' => $response['message'] . ' ' .  '<a href="' . MooWoodle()->setting->get_setting( 'moodle_url' ) . '/admin/webservice/tokens.php">Link</a>' ];
 		}
 
 		// success
