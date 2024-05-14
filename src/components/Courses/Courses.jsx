@@ -197,7 +197,7 @@ export default function Course() {
                 <div class="moowoodle-course-actions">
                     <button
                         class={ `sync-single-course button-primary` }
-                        title={ __('Sync Couse Data') }
+                        title={ __('Sync Course Data') }
                         onClick={ (e) => {
                             handleSingleAction(
                                 'sync_courses',

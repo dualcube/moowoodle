@@ -9,16 +9,12 @@ import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 
 const Enrollment = () => {
-    const [postStatus, setPostStatus] = useState("");
-	const [suggestions, setSuggestions] = useState([]);
+	const [students, setStudents] = useState([]);
 	const [courses, setCourses] = useState([]);
     const [data, setData] = useState(null);
     const [selectedRows, setSelectedRows] = useState([]);
     const [totalRows, setTotalRows] = useState();
-    const [openDialog, setOpenDialog] = useState(false);
     const [openDatePicker, setOpenDatePicker] = useState(false);
-    const [openModal, setOpenModal] = useState(false);
-    const [modalDetails, setModalDetails] = useState(false);
 	const dateRef = useRef();
 
 	useEffect(() => {
@@ -38,7 +34,7 @@ const Enrollment = () => {
 		if (appLocalizer.pro_active) {
 		  requestData();
 		}
-	}, [postStatus]);
+	}, []);
 
 	
 	useEffect(() => {
@@ -46,7 +42,7 @@ const Enrollment = () => {
 			method: "get",
 			url: getApiLink('all-customers'),
 		}).then((response) => {
-			setSuggestions(response.data)
+			setStudents(response.data)
 		});
 	}, []);
 
@@ -127,7 +123,7 @@ const Enrollment = () => {
 					value={filterValue || ""}
 				>
 					<option value="">Student</option>
-					{Object.entries(suggestions).map(([userId, userName]) => (
+					{Object.entries(students).map(([userId, userName]) => (
 						<option value={userId}>{userName}</option>
 					))}
 				</select>
@@ -234,15 +230,15 @@ const Enrollment = () => {
 	{
 		name: __("Status", "moowoodle"),
 		cell: (row) => <TableCell title="Status" > 
-		<p>{row.status == 'enrolled' ? 'Enenrolled' : 'Unenrolled'}</p>
+		<p>{row.status == 'enrolled' ? 'Enrolled' : 'Unenrolled'}</p>
 		</TableCell>,
 	},
 	{
 		name: __("Action", "moowoodle"),
 		cell: (row) => (
 		  <TableCell title="action">
-			<button onClick={(e) => alert('hello')}>
-			  {row.status == 'enrolled' ? 'Unenroll' : 'Enenroll'}
+			<button onClick={() => handleButtonClick(row)}>
+				{row.status === 'enrolled' ? 'Unenroll' : 'Enroll'}
 			</button>
 		  </TableCell>
 		),
@@ -250,6 +246,24 @@ const Enrollment = () => {
 	  
 	];
 
+	const handleButtonClick = (row) => {
+		console.log(row)
+		
+		if ( confirm('Are you sure you want to proceed?') === true ) {
+			axios({
+				method: 'post',
+				url: getApiLink('manage-enrollment'),
+				data: {
+					orderId : row.order_id,
+					courseId : row.course_id,
+					userId : row.customer_id,
+					action : row.status
+				},
+			}).then((response) => {
+				requestData();
+			});
+		}
+	}
       
     return(
         <>
