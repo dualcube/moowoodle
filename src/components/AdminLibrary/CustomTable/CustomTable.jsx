@@ -54,6 +54,7 @@ const CustomTable = (props) => {
     perPageOption, // per page option array. user should always provide.
     realtimeFilter, // filter filds for realtime filter.
     typeCounts,
+    bulkActionComp,
   } = props;
 
   const [loading, setLoading] = useState(false); // loading state varaible.
@@ -205,12 +206,15 @@ const CustomTable = (props) => {
         }
       </div>
       
-      <div className="wrap-bulk-all-date">
-        {/* Render realtime filter */}
-        {realtimeFilter &&
-          realtimeFilter.map((filter) => {
-            return filter.render(handleFilterChange, filterData[filter.name]);
-          })}
+      <div className="filter-wrapper">
+        <div className="wrap-bulk-all-date">
+          {/* Render realtime filter */}
+          {realtimeFilter &&
+            realtimeFilter.map((filter) => {
+              return filter.render(handleFilterChange, filterData[filter.name]);
+            })}
+        </div>
+        { bulkActionComp && bulkActionComp() }
       </div>
       {loading ? (
         <LoadingTable />

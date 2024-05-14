@@ -88,7 +88,7 @@ const SyncNow = (props) => {
 
         <div className="button-section">
           <button className="synchronize-now-button" onClick={handleCourseSync}>
-            Synchronize All Course
+            Manually sync courses now
           </button>
           <div class="loader">
             <div class="three-body__dot"></div>
@@ -96,6 +96,8 @@ const SyncNow = (props) => {
             <div class="three-body__dot"></div>
           </div>
         </div>
+
+        <p>tis usdvgvbs fbhsnuh nhu bgbsfh </p>
 
         {syncStatus.length > 0 && (
           <>

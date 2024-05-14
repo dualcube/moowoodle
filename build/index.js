@@ -16408,7 +16408,8 @@ const CustomTable = props => {
     // per page option array. user should always provide.
     realtimeFilter,
     // filter filds for realtime filter.
-    typeCounts
+    typeCounts,
+    bulkActionComp
   } = props;
   const [loading, setLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false); // loading state varaible.
   const [totalRows, setTotalRows] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(defaultTotalRows); // total no of row in dataset.
@@ -16553,10 +16554,12 @@ const CustomTable = props => {
     },
     className: countInfo.key == typeCountActive ? 'type-count-active' : ''
   }, `${countInfo.name} (${countInfo.count})`))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "filter-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "wrap-bulk-all-date"
   }, realtimeFilter && realtimeFilter.map(filter => {
     return filter.render(handleFilterChange, filterData[filter.name]);
-  })), loading ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(LoadingTable, null) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_data_table_component__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  })), bulkActionComp && bulkActionComp()), loading ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(LoadingTable, null) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_data_table_component__WEBPACK_IMPORTED_MODULE_1__["default"], {
     pagination: true,
     paginationServer: true,
     selectableRows: selectable,
@@ -17215,10 +17218,10 @@ const DynamicForm = props => {
           input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SSOKey_SSOKey__WEBPACK_IMPORTED_MODULE_9__["default"], {
             value: value,
             proSetting: isProSetting(inputField.proSetting),
-            onChange: data => {
+            onChange: value => {
               if (!proSettingChanged(inputField.proSetting) && true) {
                 settingChanged.current = true;
-                updateSetting(inputField.key, data);
+                updateSetting(inputField.key, value);
               }
             }
           });
@@ -19614,11 +19617,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 /* harmony import */ var _services_apiService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/apiService */ "./src/services/apiService.js");
 /* harmony import */ var _AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../AdminLibrary/CustomTable/CustomTable */ "./src/components/AdminLibrary/CustomTable/CustomTable.jsx");
 /* harmony import */ var _Banner_banner__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Banner/banner */ "./src/components/Banner/banner.jsx");
 /* harmony import */ var _courses_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./courses.scss */ "./src/components/Courses/courses.scss");
+/* harmony import */ var _PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../PopupContent/PopupContent */ "./src/components/PopupContent/PopupContent.jsx");
+/* harmony import */ var _mui_material_Dialog__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/material/Dialog */ "./node_modules/@mui/material/Dialog/Dialog.js");
+
+
 
 
 
@@ -19635,6 +19642,7 @@ function Course() {
   const [selectedRows, setSelectedRows] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [totalRows, setTotalRows] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
   const bulkSelectRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
+  const [openDialog, setOpenDialog] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
 
   /**
    * Function that request data from backend
@@ -19643,7 +19651,7 @@ function Course() {
    */
   function requestData(rowsPerPage = 10, currentPage = 1) {
     //Fetch the data to show in the table
-    (0,axios__WEBPACK_IMPORTED_MODULE_5__["default"])({
+    (0,axios__WEBPACK_IMPORTED_MODULE_6__["default"])({
       method: "post",
       url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('courses'),
       headers: {
@@ -19678,7 +19686,7 @@ function Course() {
    */
   const handleSingleAction = (actionName, courseId, moodleCourseId) => {
     if (appLocalizer.pro_active) {
-      (0,axios__WEBPACK_IMPORTED_MODULE_5__["default"])({
+      (0,axios__WEBPACK_IMPORTED_MODULE_6__["default"])({
         method: 'post',
         url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)(`course-bulk-action`),
         headers: {
@@ -19697,7 +19705,7 @@ function Course() {
         console.error('Error:', error);
       });
     } else {
-      console.log("pro banner");
+      setOpenDialog(true);
     }
   };
   const handleBulkAction = event => {
@@ -19708,7 +19716,7 @@ function Course() {
       if (!bulkSelectRef.current.value) {
         return window.alert(__('Select bulk action', 'moowoodle'));
       }
-      (0,axios__WEBPACK_IMPORTED_MODULE_5__["default"])({
+      (0,axios__WEBPACK_IMPORTED_MODULE_6__["default"])({
         method: 'post',
         url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)(`course-bulk-action`),
         headers: {
@@ -19738,7 +19746,7 @@ function Course() {
 
   // Get the total no of data present in database
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    (0,axios__WEBPACK_IMPORTED_MODULE_5__["default"])({
+    (0,axios__WEBPACK_IMPORTED_MODULE_6__["default"])({
       method: "post",
       url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('courses'),
       headers: {
@@ -19829,7 +19837,19 @@ function Course() {
       class: "dashicons dashicons-cloud-upload"
     })))
   }];
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  return openDialog ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    className: "admin-module-popup",
+    open: openDialog,
+    onClose: () => {
+      setOpenDialog(false);
+    },
+    "aria-labelledby": "form-dialog-title"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "admin-font font-cross stock-manager-popup-cross",
+    onClick: () => {
+      setOpenDialog(false);
+    }
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_5__["default"], null)) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "course-container-wrapper"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "admin-page-title"
@@ -19882,10 +19902,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../AdminLibrary/CustomTable/CustomTable */ "./src/components/AdminLibrary/CustomTable/CustomTable.jsx");
 /* harmony import */ var _services_apiService__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/apiService */ "./src/services/apiService.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var _mui_material_Dialog__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mui/material/Dialog */ "./node_modules/@mui/material/Dialog/Dialog.js");
 /* harmony import */ var react_date_range__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-date-range */ "./node_modules/react-date-range/dist/index.js");
 /* harmony import */ var react_date_range_dist_styles_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-date-range/dist/styles.css */ "./node_modules/react-date-range/dist/styles.css");
 /* harmony import */ var react_date_range_dist_theme_default_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-date-range/dist/theme/default.css */ "./node_modules/react-date-range/dist/theme/default.css");
+/* harmony import */ var _Enrollment_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Enrollment.scss */ "./src/components/Enrollment/Enrollment.scss");
+/* harmony import */ var _PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../PopupContent/PopupContent */ "./src/components/PopupContent/PopupContent.jsx");
 
 
 
@@ -19897,16 +19920,29 @@ __webpack_require__.r(__webpack_exports__);
  // main style file
  // theme css file
 
+
 const Enrollment = () => {
   const [students, setStudents] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const [postStatus, setPostStatus] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("");
+  const [suggestions, setSuggestions] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [courses, setCourses] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [data, setData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [selectedRows, setSelectedRows] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [totalRows, setTotalRows] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
+  const [openDialog, setOpenDialog] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [openDatePicker, setOpenDatePicker] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [openModal, setOpenModal] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [modalDetails, setModalDetails] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const dateRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    (0,axios__WEBPACK_IMPORTED_MODULE_7__["default"])({
+    document.body.addEventListener("click", event => {
+      if (!dateRef?.current?.contains(event.target)) {
+        setOpenDatePicker(false);
+      }
+    });
+  }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    (0,axios__WEBPACK_IMPORTED_MODULE_9__["default"])({
       method: "post",
       url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_3__.getApiLink)('get-enrollments'),
       headers: {
@@ -19925,7 +19961,7 @@ const Enrollment = () => {
     }
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    (0,axios__WEBPACK_IMPORTED_MODULE_7__["default"])({
+    (0,axios__WEBPACK_IMPORTED_MODULE_9__["default"])({
       method: "get",
       url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_3__.getApiLink)('all-customers')
     }).then(response => {
@@ -19933,7 +19969,7 @@ const Enrollment = () => {
     });
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    (0,axios__WEBPACK_IMPORTED_MODULE_7__["default"])({
+    (0,axios__WEBPACK_IMPORTED_MODULE_9__["default"])({
       method: "get",
       url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_3__.getApiLink)('all-courses')
     }).then(response => {
@@ -19950,7 +19986,7 @@ const Enrollment = () => {
   }]);
   function requestData(rowsPerPage = 10, currentPage = 1, studentField = "", courseField = "", statusField = "", start_date = new Date(0), end_date = new Date(), postStatus) {
     //Fetch the data to show in the table
-    (0,axios__WEBPACK_IMPORTED_MODULE_7__["default"])({
+    (0,axios__WEBPACK_IMPORTED_MODULE_9__["default"])({
       method: "post",
       url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_3__.getApiLink)('get-enrollments'),
       headers: {
@@ -20031,7 +20067,9 @@ const Enrollment = () => {
       className: "date-picker-input-custom",
       type: "text",
       placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("DD/MM/YYYY", "moowoodle")
-    })), openDatePicker && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_date_range__WEBPACK_IMPORTED_MODULE_4__.DateRangePicker, {
+    })), openDatePicker && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "date-picker-section-wrapper"
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_date_range__WEBPACK_IMPORTED_MODULE_4__.DateRangePicker, {
       ranges: selectedRange,
       months: 1,
       direction: "vertical",
@@ -20051,7 +20089,7 @@ const Enrollment = () => {
           });
         }
       }
-    }))
+    })))
   }];
 
   //columns for the data table
@@ -20078,15 +20116,16 @@ const Enrollment = () => {
   }, {
     name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Action", "moowoodle"),
     cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, {
-      title: "action"
+      title: "Action"
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+      className: `${row.status == 'enrolled' ? 'unenroll' : 'enroll'}`,
       onClick: () => handleButtonClick(row)
     }, row.status === 'enrolled' ? 'Unenroll' : 'Enroll'))
   }];
   const handleButtonClick = row => {
     console.log(row);
     if (confirm('Are you sure you want to proceed?') === true) {
-      (0,axios__WEBPACK_IMPORTED_MODULE_7__["default"])({
+      (0,axios__WEBPACK_IMPORTED_MODULE_9__["default"])({
         method: 'post',
         url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_3__.getApiLink)('manage-enrollment'),
         data: {
@@ -20100,8 +20139,25 @@ const Enrollment = () => {
       });
     }
   };
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "admin-subscriber-list"
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, !appLocalizer.pro_active ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    className: "admin-module-popup",
+    open: openDialog,
+    onClose: () => {
+      setOpenDialog(false);
+    },
+    "aria-labelledby": "form-dialog-title"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "admin-font font-cross stock-manager-popup-cross",
+    onClick: () => {
+      setOpenDialog(false);
+    }
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_8__["default"], null)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "enrollment-img",
+    onClick: () => {
+      setOpenDialog(true);
+    }
+  })) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "admin-enrollment-list"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "admin-page-title"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("All Enrollments", "moowoodle"))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -20336,6 +20392,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _SSOKey_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SSOKey.scss */ "./src/components/SSOKey/SSOKey.scss");
+
 
 
 const SSOKey = props => {
@@ -20365,16 +20423,72 @@ const SSOKey = props => {
     navigator.clipboard.writeText(value).then(() => {
       setCopied(true);
     });
+    setTimeout(() => {
+      setCopied(false);
+    }, 2500);
   };
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+  const handleClear = e => {
+    e.preventDefault();
+    onChange("");
+  };
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "sso-key-section"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "input-section"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "text",
     value: value,
     onChange: e => onChange(e.target.value)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+  }), value !== "" && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    onClick: handleClear,
+    className: "clear-btn"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    fill: "none",
+    viewBox: "0 0 50 59",
+    class: "bin"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+    d: "M0 7.5C0 5.01472 2.01472 3 4.5 3H45.5C47.9853 3 50 5.01472 50 7.5V7.5C50 8.32843 49.3284 9 48.5 9H1.5C0.671571 9 0 8.32843 0 7.5V7.5Z"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+    d: "M17 3C17 1.34315 18.3431 0 20 0H29.3125C30.9694 0 32.3125 1.34315 32.3125 3V3H17V3Z"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+    d: "M2.18565 18.0974C2.08466 15.821 3.903 13.9202 6.18172 13.9202H43.8189C46.0976 13.9202 47.916 15.821 47.815 18.0975L46.1699 55.1775C46.0751 57.3155 44.314 59.0002 42.1739 59.0002H7.8268C5.68661 59.0002 3.92559 57.3155 3.83073 55.1775L2.18565 18.0974ZM18.0003 49.5402C16.6196 49.5402 15.5003 48.4209 15.5003 47.0402V24.9602C15.5003 23.5795 16.6196 22.4602 18.0003 22.4602C19.381 22.4602 20.5003 23.5795 20.5003 24.9602V47.0402C20.5003 48.4209 19.381 49.5402 18.0003 49.5402ZM29.5003 47.0402C29.5003 48.4209 30.6196 49.5402 32.0003 49.5402C33.381 49.5402 34.5003 48.4209 34.5003 47.0402V24.9602C34.5003 23.5795 33.381 22.4602 32.0003 22.4602C30.6196 22.4602 29.5003 23.5795 29.5003 24.9602V47.0402Z",
+    "clip-rule": "evenodd",
+    "fill-rule": "evenodd"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+    d: "M2 13H48L47.6742 21.28H2.32031L2 13Z"
+  })))), value !== "" ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    className: "copy-btn",
     onClick: handleCopy
-  }, copied ? ' ✔copied' : 'copy'), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+  }, "   ", copied && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "tooltip"
+  }, "\u2714copied"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
+    viewBox: "0 0 6.35 6.35",
+    y: "0",
+    x: "0",
+    height: "20",
+    width: "20",
+    version: "1.1",
+    class: "clipboard"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("g", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+    fill: "currentColor",
+    d: "M2.43.265c-.3 0-.548.236-.573.53h-.328a.74.74 0 0 0-.735.734v3.822a.74.74 0 0 0 .735.734H4.82a.74.74 0 0 0 .735-.734V1.529a.74.74 0 0 0-.735-.735h-.328a.58.58 0 0 0-.573-.53zm0 .529h1.49c.032 0 .049.017.049.049v.431c0 .032-.017.049-.049.049H2.43c-.032 0-.05-.017-.05-.049V.843c0-.032.018-.05.05-.05zm-.901.53h.328c.026.292.274.528.573.528h1.49a.58.58 0 0 0 .573-.529h.328a.2.2 0 0 1 .206.206v3.822a.2.2 0 0 1-.206.205H1.53a.2.2 0 0 1-.206-.205V1.529a.2.2 0 0 1 .206-.206z"
+  })))) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    className: "generate-btn",
     onClick: generateSSOKey
-  }, "Generate"));
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
+    height: "24",
+    width: "24",
+    fill: "#FFFFFF",
+    viewBox: "0 0 24 24",
+    "data-name": "Layer 1",
+    id: "Layer_1",
+    class: "sparkle"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+    d: "M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z"
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    class: "text"
+  }, "Generate")));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SSOKey);
 
@@ -20562,7 +20676,7 @@ const SyncNow = props => {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: "synchronize-now-button",
     onClick: handleCourseSync
-  }, "Synchronize All Course"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, "Manually sync courses now"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "loader"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "three-body__dot"
@@ -20570,7 +20684,7 @@ const SyncNow = props => {
     class: "three-body__dot"
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "three-body__dot"
-  }))), syncStatus.length > 0 && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, syncStatus.map(status => {
+  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "tis usdvgvbs fbhsnuh nhu bgbsfh "), syncStatus.length > 0 && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, syncStatus.map(status => {
     {
       console.log(status);
     }
@@ -21035,6 +21149,10 @@ __webpack_require__.r(__webpack_exports__);
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Refer to the ${appLocalizer.setupguide} to complete all necessary configurations on the Moodle site, and subsequently, perform a Test Connection to verify the functionality of all services.`, 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("MooWoodle Test Connection", 'moowoodle')
   }, {
+    key: 'separator_content',
+    type: 'section',
+    label: ""
+  }, {
     key: "moodle_timeout",
     type: "text",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Set Curl connection time out in sec.', 'moowoodle'),
@@ -21137,19 +21255,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   id: "sso",
   priority: 30,
-  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Single Sing On", 'moowoodle'),
+  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Single Sign On", 'moowoodle'),
   desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Manage seamless login and logout synchronization ", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   proDependent: true,
   modal: [{
-    key: "moowoodle_sso_eneble",
+    key: "moowoodle_sso_enable",
     type: "checkbox",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Single Sing On", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Single Sign On", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('If enabled Moodle user\'s will login by WordPress user', 'moowoodle'),
     options: [{
-      key: "moowoodle_sso_eneble",
-      value: "moowoodle_sso_eneble"
+      key: "moowoodle_sso_enable",
+      value: "moowoodle_sso_enable"
     }],
     proSetting: true
   }, {
@@ -21222,6 +21340,33 @@ __webpack_require__.r(__webpack_exports__);
     }],
     proSetting: true
   }, {
+    key: "sync-course-options",
+    type: "checkbox-default",
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select Option For Course Sync.", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Course Information", 'moowoodle'),
+    select_deselect: true,
+    options: [{
+      key: "sync_courses",
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Moodle Courses', 'moowoodle'),
+      hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This function will retrieve all Moodle course data and synchronize it with the courses listed in WordPress.", 'moowoodle'),
+      value: "sync_courses"
+    }, {
+      key: "sync_courses_category",
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Moodle Course Categories', 'moowoodle'),
+      hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This feature will scan the entire Moodle course category structure and synchronize it with the WordPress category listings.", 'moowoodle'),
+      value: "sync_courses_category"
+    }, {
+      key: "sync_image",
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Course Images', 'moowoodle'),
+      hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This function copies course images and sets them as WooCommerce product images.", 'moowoodle'),
+      value: "sync_image",
+      proSetting: true
+    }]
+  }, {
+    key: 'separator_content',
+    type: 'section',
+    label: ""
+  }, {
     key: "course_schedule_interval",
     type: "select",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select Option For Course Synchronization Schedule Interval.", 'moowoodle'),
@@ -21275,29 +21420,6 @@ __webpack_require__.r(__webpack_exports__);
     }],
     proSetting: true
   }, {
-    key: "sync-course-options",
-    type: "checkbox-default",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select Option For Course Sync.", 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Course Information", 'moowoodle'),
-    select_deselect: true,
-    options: [{
-      key: "sync_courses",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Moodle Courses', 'moowoodle'),
-      hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This function will retrieve all Moodle course data and synchronize it with the courses listed in WordPress.", 'moowoodle'),
-      value: "sync_courses"
-    }, {
-      key: "sync_courses_category",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Moodle Course Categories', 'moowoodle'),
-      hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This feature will scan the entire Moodle course category structure and synchronize it with the WordPress category listings.", 'moowoodle'),
-      value: "sync_courses_category"
-    }, {
-      key: "sync_image",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Course Images', 'moowoodle'),
-      hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This function copies course images and sets them as WooCommerce product images.", 'moowoodle'),
-      value: "sync_image",
-      proSetting: true
-    }]
-  }, {
     key: "sync_course_btn",
     type: "syncbutton",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Sync course", 'moowoodle')
@@ -21329,6 +21451,44 @@ __webpack_require__.r(__webpack_exports__);
   submitUrl: "save-moowoodle-setting",
   proDependent: true,
   modal: [{
+    key: "update_moodle_user",
+    type: "checkbox",
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('If enabled, all moodle user\'s profile data (first name, last name, city, address, etc.) will be updated as per their wordpress profile data. Explicitly, for existing user, their data will be overwritten on moodle.', 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Force Override Moodle User Profile", 'moowoodle'),
+    options: [{
+      key: "update_moodle_user",
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enable', 'moowoodle'),
+      value: "update_moodle_user"
+    }]
+  }, {
+    key: "sync-user-options",
+    type: "checkbox-default",
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Determine User Information to Synchronize in Moodle-WordPress User synchronization. Please be aware that this setting does not apply to newly created users.", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("User Information", 'moowoodle'),
+    select_deselect: true,
+    options: [{
+      key: "sync_user_first_name",
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('First Name', 'moowoodle'),
+      value: "sync_user_first_name"
+    }, {
+      key: "sync_user_last_name",
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Last Name', 'moowoodle'),
+      value: "sync_user_last_name"
+    }, {
+      key: "sync_username",
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Username', 'moowoodle'),
+      value: "sync_username"
+    }, {
+      key: "sync_password",
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Password', 'moowoodle'),
+      value: "sync_password"
+    }],
+    proSetting: true
+  }, {
+    key: 'separator_content',
+    type: 'section',
+    label: ""
+  }, {
     key: "user_sync_direction",
     type: "checkbox-default",
     // desc: __("<b>Prior to updating existing user info, you must select the user info to be synchronized at </b>", 'moowoodle') . $moowoodle_sync_setting_url . __("<br><br>While synchronizing user information, we use the email address as the unique identifier for each user. We check the username associated with that email address, and if we find the same username in the other instance but with a different email address, the user's information cannot be synchronized.", 'moowoodle'),
@@ -21375,43 +21535,9 @@ __webpack_require__.r(__webpack_exports__);
     }],
     proSetting: true
   }, {
-    key: "update_moodle_user",
-    type: "checkbox",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('If enabled, all moodle user\'s profile data (first name, last name, city, address, etc.) will be updated as per their wordpress profile data. Explicitly, for existing user, their data will be overwritten on moodle.', 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Force Override Moodle User Profile", 'moowoodle'),
-    options: [{
-      key: "update_moodle_user",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enable', 'moowoodle'),
-      value: "update_moodle_user"
-    }]
-  }, {
-    key: "sync-user-options",
-    type: "checkbox-default",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Determine User Information to Synchronize in Moodle-WordPress User synchronization. Please be aware that this setting does not apply to newly created users.", 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("User Information", 'moowoodle'),
-    select_deselect: true,
-    options: [{
-      key: "sync_user_first_name",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('First Name', 'moowoodle'),
-      value: "sync_user_first_name"
-    }, {
-      key: "sync_user_last_name",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Last Name', 'moowoodle'),
-      value: "sync_user_last_name"
-    }, {
-      key: "sync_username",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Username', 'moowoodle'),
-      value: "sync_username"
-    }, {
-      key: "sync_password",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Password', 'moowoodle'),
-      value: "sync_password"
-    }],
-    proSetting: true
-  }, {
     key: "sync_user_btn",
     type: "syncbutton",
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Sync user", 'moowoodle')
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("", 'moowoodle')
   }]
 });
 
@@ -44505,6 +44631,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/components/Enrollment/Enrollment.scss":
+/*!***************************************************!*\
+  !*** ./src/components/Enrollment/Enrollment.scss ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
 /***/ "./src/components/Log/Log.scss":
 /*!*************************************!*\
   !*** ./src/components/Log/Log.scss ***!
@@ -44522,6 +44661,19 @@ __webpack_require__.r(__webpack_exports__);
 /*!*******************************************************!*\
   !*** ./src/components/PopupContent/popupContent.scss ***!
   \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/components/SSOKey/SSOKey.scss":
+/*!*******************************************!*\
+  !*** ./src/components/SSOKey/SSOKey.scss ***!
+  \*******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";

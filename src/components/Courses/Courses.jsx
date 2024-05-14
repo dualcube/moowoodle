@@ -7,6 +7,8 @@ import CustomTable, {
 import Banner from "../Banner/banner";
 import { useRef } from "react";
 import './courses.scss';
+import Propopup from "../PopupContent/PopupContent";
+import Dialog from "@mui/material/Dialog";
 
 export default function Course() {
     const { __ } = wp.i18n;
@@ -14,6 +16,7 @@ export default function Course() {
     const [selectedRows, setSelectedRows] = useState([]);
     const [totalRows, setTotalRows] = useState();
     const bulkSelectRef = useRef();
+    const [openDialog, setOpenDialog] = useState(false);
     
     /**
      * Function that request data from backend
@@ -78,7 +81,7 @@ export default function Course() {
                 console.error('Error:', error);
             });
         } else {
-            console.log("pro banner");
+            setOpenDialog(true);
         }
     }
 
@@ -244,41 +247,63 @@ export default function Course() {
     ];
 
     return (
-        <div className="course-container-wrapper">
-            <div className="admin-page-title">
-                <p>{__("All Course", "moowoodle")}</p>
-            </div>
-            <div className="course-bulk-action">
-                <label>
-                    { __( 'Select bulk action' ) }
-                </label>
-                <select name="action" ref={bulkSelectRef} >
-                    <option value="">{ __( 'Bulk Actions' ) }</option>
-                    <option value="sync_courses">{ __( 'Sync Course' ) }</option>
-                    <option value="create_product">{ __( 'Create Product' ) }</option>
-                    <option value="update_product">{__('Update Product')}</option>
-                </select>
-                <button
-                    name="bulk-action-apply"
-                    onClick={handleBulkAction}
-                >
-                    {__('Apply',)}
-                </button>
-            </div>
-            <div className="admin-table-wrapper">
-                {
-                    <CustomTable
-                        data={data}
-                        columns={columns}
-                        handlePagination={requestApiForData}
-                        defaultRowsParPage={10}
-                        defaultTotalRows={totalRows}
-                        perPageOption={[10, 25, 50]}
-                        selectable={true}
-                        handleSelect={handleRowSelect}
-                    />
-                }
-            </div>
-        </div>
+        openDialog ? 
+            ( 
+                <Dialog
+                className="admin-module-popup"
+                open={openDialog}
+                onClose={() => {
+                setOpenDialog(false);
+                }}
+                aria-labelledby="form-dialog-title"
+            >
+                <span
+                className="admin-font font-cross stock-manager-popup-cross"
+                onClick={() => {
+                    setOpenDialog(false);
+                }}
+                ></span>
+                <Propopup />
+            </Dialog>
+             ) 
+            : 
+            (
+                <div className="course-container-wrapper">
+                    <div className="admin-page-title">
+                        <p>{__("All Course", "moowoodle")}</p>
+                    </div>
+                    <div className="course-bulk-action">
+                        <label>
+                            { __( 'Select bulk action' ) }
+                        </label>
+                        <select name="action" ref={bulkSelectRef} >
+                            <option value="">{ __( 'Bulk Actions' ) }</option>
+                            <option value="sync_courses">{ __( 'Sync Course' ) }</option>
+                            <option value="create_product">{ __( 'Create Product' ) }</option>
+                            <option value="update_product">{__('Update Product')}</option>
+                        </select>
+                        <button
+                            name="bulk-action-apply"
+                            onClick={handleBulkAction}
+                        >
+                            {__('Apply',)}
+                        </button>
+                    </div>
+                    <div className="admin-table-wrapper">
+                        {
+                            <CustomTable
+                                data={data}
+                                columns={columns}
+                                handlePagination={requestApiForData}
+                                defaultRowsParPage={10}
+                                defaultTotalRows={totalRows}
+                                perPageOption={[10, 25, 50]}
+                                selectable={true}
+                                handleSelect={handleRowSelect}
+                            />
+                        }
+                    </div>
+                </div>
+            )
     );
 }

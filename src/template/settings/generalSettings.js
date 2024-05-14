@@ -27,6 +27,11 @@ export default {
             label: __("MooWoodle Test Connection", 'moowoodle'),
         },
         {
+            key: 'separator_content',
+            type: 'section',
+            label: "",
+        },
+        {
             key: "moodle_timeout",
             type: "text",
             desc: __('Set Curl connection time out in sec.', 'moowoodle'),

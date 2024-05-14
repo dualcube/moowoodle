@@ -1,0 +1,100 @@
+
+$menu-btn-color: #522c81;
+$body-background: #f9f9f9;
+$color-white: #fff;
+$menu-color: #f9f8fb;
+$color-active: #65438f;
+
+
+div.enrollment-img {
+    // background-image: url("../../assets/images/subscriber-list.jpg") !important; // force to set image for ungrade with pro for desktop-screen
+    background-repeat: no-repeat;
+    background-position: top left;
+    background-size: contain;
+    height: 100vh;
+  }
+  
+  @media only screen and (max-width: 69.3rem) {
+    div.enrollment-img {
+    //   background-image: url("../../assets/images/subcriber-list-tab.png") !important; // force to set image for ungrade with pro for laptop-screen
+      background-repeat: no-repeat;
+      background-position: top;
+      background-size: contain;
+    }
+  }
+  
+  @media only screen and (max-width: 40.95rem) {
+    div.enrollment-img {
+    //   background-image: url("../../assets/images/subcriber-list-phone.png") !important; // force to set image for ungrade with pro for mobile-screen
+      background-repeat: no-repeat;
+      background-position: top;
+      background-size: contain;
+    }
+  }
+
+.admin-enrollment-list{
+    .admin-page-title{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.75rem;
+        position: relative;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    
+        p{
+          font-size: 1.5rem;
+        }
+    
+        .download-btn-enrollment-list{
+          border-radius: 0.25rem;
+          background-color: $color-active;
+          padding: 0.5rem 1rem;
+            
+            a{
+              color: $color-white;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 0.5rem;
+              text-decoration: none;
+    
+              .dashicons-before {
+                &::before{
+                  padding: 0;
+                }
+              }
+            }
+        }
+      }
+
+      .selectable-table{
+        .wrap-bulk-all-date{
+            max-width: 42rem !important; // To overwrite default custom table css for adjust select input width
+
+            & > div{
+                select {
+                    padding-top: 0.14rem !important;
+                    padding-bottom: 0.14rem !important;
+                }
+            }
+        }
+      }
+}
+
+.table-row-custom{
+    button.unenroll{
+        padding: 0.5rem 0.75rem;
+        background: #ff0000ad;
+        color: #fff;
+        border-radius: 0.25rem;
+        cursor: pointer;
+    }
+    button.enroll{
+        padding: 0.5rem 0.75rem;
+        background: #008000ad;
+        color: #fff;
+        border-radius: 0.25rem;
+        cursor: pointer;
+    }
+}
