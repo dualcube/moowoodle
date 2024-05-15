@@ -17204,6 +17204,8 @@ const DynamicForm = props => {
         case "syncbutton":
           input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SyncNow_SyncNow__WEBPACK_IMPORTED_MODULE_10__["default"], {
             buttonKey: inputField.key,
+            value: inputField.value,
+            description: inputField.desc,
             proSetting: isProSetting(inputField.proSetting),
             proSettingChanged: proSettingChanged
           });
@@ -20763,7 +20765,9 @@ const SyncNow = props => {
   const {
     buttonKey,
     proSetting,
-    proSettingChanged
+    proSettingChanged,
+    value,
+    description
   } = props;
   const [modelOpen, setModelOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [syncCourseStart, setSyncCourseStart] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
@@ -20829,7 +20833,7 @@ const SyncNow = props => {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: "synchronize-now-button",
     onClick: handleCourseSync
-  }, "Manually sync courses now"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, value), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "loader"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "three-body__dot"
@@ -20837,7 +20841,9 @@ const SyncNow = props => {
     class: "three-body__dot"
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "three-body__dot"
-  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "tis usdvgvbs fbhsnuh nhu bgbsfh "), syncStatus.length > 0 && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, syncStatus.map(status => {
+  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    className: "btn-description"
+  }, description), syncStatus.length > 0 && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, syncStatus.map(status => {
     {
       console.log(status);
     }
@@ -21476,8 +21482,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   id: "synchronize-course",
   priority: 20,
-  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Course", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Control course sync direction and schedule interval", 'moowoodle'),
+  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Course and Products", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchronize courses (Product)", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   proDependent: true,
@@ -21575,7 +21581,9 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "sync_course_btn",
     type: "syncbutton",
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Sync course", 'moowoodle')
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Sync course", 'moowoodle'),
+    value: "Manually sync course now",
+    desc: "Initiate the immediate synchronization of all courses from Moodle to WordPress."
   }]
 });
 
@@ -21598,19 +21606,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   id: "synchronize-user",
   priority: 10,
-  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("User", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchronize user profiles between WordPress and Moodle, manually or at set intervals.", 'moowoodle'),
+  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Users", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Control user sync direction and schedule interval.", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   proDependent: true,
   modal: [{
     key: "update_moodle_user",
     type: "checkbox",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('If enabled, all moodle user\'s profile data (first name, last name, city, address, etc.) will be updated as per their wordpress profile data. Explicitly, for existing user, their data will be overwritten on moodle.', 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Force Override Moodle User Profile", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enable this to sync all users between WordPress and Moodle. Select "Sync Direction" to determine the sync route.', 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Sync Users", 'moowoodle'),
     options: [{
       key: "update_moodle_user",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enable', 'moowoodle'),
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('', 'moowoodle'),
       value: "update_moodle_user"
     }]
   }, {
@@ -21676,7 +21684,7 @@ __webpack_require__.r(__webpack_exports__);
       value: "hour"
     }, {
       key: "hour6",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Hour 6.", 'moowoodle'),
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Every 6 hours.", 'moowoodle'),
       value: "hour6"
     }, {
       key: "day",
@@ -21695,7 +21703,9 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "sync_user_btn",
     type: "syncbutton",
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("", 'moowoodle')
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("", 'moowoodle'),
+    value: "Manually sync user now",
+    desc: "This will synchronize user accounts between WordPress and Moodle instantly according to the selected ‘Sync Direction’."
   }]
 });
 
