@@ -3,8 +3,8 @@ import { __ } from '@wordpress/i18n';
 export default {
     id: "synchronize-user",
     priority: 10,
-    name: __("User Data", 'moowoodle'),
-    desc: __("Transfer users both ways between WordPress and Moodle, manually or scheduled.", 'moowoodle'),
+    name: __("User", 'moowoodle'),
+    desc: __("Synchronize user profiles between WordPress and Moodle, manually or at set intervals.", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     proDependent: true,
@@ -79,8 +79,8 @@ export default {
         {
             key: "user_schedule_interval",
             type: "select",
-            desc: __("Select Option For User Synchronization Schedule Interval.", 'moowoodle'),
-            label: __("Schedule Interval", 'moowoodle'),
+            desc: __("Select the interval for the user synchronization process. Based on this schedule, the cron job will run to sync users between WordPress and Moodle.", 'moowoodle'),
+            label: __("Set Time Interval", 'moowoodle'),
             options: [
                 {
                     key: "realtime",
