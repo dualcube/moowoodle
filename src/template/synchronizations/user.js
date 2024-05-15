@@ -12,8 +12,8 @@ export default {
         {
             key: "update_moodle_user",
             type: "checkbox",
-            desc: __('If enabled, all moodle user\'s profile data (first name, last name, city, address, etc.) will be updated as per their wordpress profile data. Explicitly, for existing user, their data will be overwritten on moodle.', 'moowoodle'),
-            label: __("Force Override Moodle User Profile", 'moowoodle'),
+            desc: __('Enable this to sync all users between WordPress and Moodle. Select "Sync Direction" to determine the sync route.', 'moowoodle'),
+            label: __("Sync Users", 'moowoodle'),
             options: [
                 {
                     key: "update_moodle_user",
@@ -96,7 +96,7 @@ export default {
                 },
                 {
                     key: "hour6",
-                    label: __("Hour 6.", 'moowoodle'),
+                    label: __("Every 6 hours.", 'moowoodle'),
                     value: "hour6",
                 },
                 {

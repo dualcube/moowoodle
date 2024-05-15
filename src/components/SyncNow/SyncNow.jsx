@@ -97,7 +97,7 @@ const SyncNow = (props) => {
           </div>
         </div>
 
-        <p>tis usdvgvbs fbhsnuh nhu bgbsfh </p>
+        <p>This will synchronize user accounts between WordPress and Moodle according to the selected ‘Sync Direction’.</p>
 
         {syncStatus.length > 0 && (
           <>

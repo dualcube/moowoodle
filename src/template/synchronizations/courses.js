@@ -3,7 +3,7 @@ import { __ } from '@wordpress/i18n';
 export default {
     id: "synchronize-course",
     priority: 20,
-    name: __("Course", 'moowoodle'),
+    name: __("Course and Products", 'moowoodle'),
     desc: __("Control course sync direction and schedule interval", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
