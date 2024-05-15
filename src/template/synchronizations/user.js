@@ -3,8 +3,8 @@ import { __ } from '@wordpress/i18n';
 export default {
     id: "synchronize-user",
     priority: 10,
-    name: __("User", 'moowoodle'),
-    desc: __("Admins can select user sync direction and schedule interval for user synchronization.", 'moowoodle'),
+    name: __("User Data", 'moowoodle'),
+    desc: __("Transfer users both ways between WordPress and Moodle, manually or scheduled.", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     proDependent: true,
