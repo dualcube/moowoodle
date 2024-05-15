@@ -17258,6 +17258,27 @@ const DynamicForm = props => {
             proChanged: () => setModelOpen(true)
           });
           break;
+        case "checkbox-custom-img":
+          input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Inputs__WEBPACK_IMPORTED_MODULE_2__["default"].CheckboxCustomImg, null);
+          break;
+        case "select-custom-radio":
+          let option = inputField.options;
+          input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Inputs__WEBPACK_IMPORTED_MODULE_2__["default"].ScheduleInterval, {
+            wrapperClass: "form-select-field-wrapper",
+            descClass: "settings-metabox-description",
+            description: inputField.desc,
+            inputClass: inputField.key,
+            options: option,
+            value: value,
+            proSetting: isProSetting(inputField.proSetting),
+            onChange: data => {
+              if (!proSettingChanged(inputField.proSetting)) {
+                settingChanged.current = true;
+                updateSetting(inputField.key, data.value);
+              }
+            }
+          });
+          break;
       }
       return inputField.type === "section" || inputField.label === "no_label" ? input : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
         key: "g" + inputField.key,
@@ -18229,6 +18250,80 @@ const ButtonCustomizer = props => {
 
 /***/ }),
 
+/***/ "./src/components/AdminLibrary/Inputs/Special/CheckboxCustomImg.jsx":
+/*!**************************************************************************!*\
+  !*** ./src/components/AdminLibrary/Inputs/Special/CheckboxCustomImg.jsx ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _assets_images_WordPress_png__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../assets/images/WordPress.png */ "./src/assets/images/WordPress.png");
+/* harmony import */ var _assets_images_Moodle_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../assets/images/Moodle.png */ "./src/assets/images/Moodle.png");
+/* harmony import */ var _CheckboxCustomImg_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CheckboxCustomImg.scss */ "./src/components/AdminLibrary/Inputs/Special/CheckboxCustomImg.scss");
+
+
+
+
+
+const CheckboxCustomImg = () => {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "custom-sync-section"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "sync-direction-items"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "input-section"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "checkbox"
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "sync-meta-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "img-section"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    src: _assets_images_WordPress_png__WEBPACK_IMPORTED_MODULE_1__,
+    alt: ""
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "connection-arrow"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
+    className: "admin-font font-arrow-right"
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    src: _assets_images_Moodle_png__WEBPACK_IMPORTED_MODULE_2__,
+    alt: ""
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    className: "sync-label"
+  }, "WordPress to Mooble"))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "sync-direction-items"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "input-section"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "checkbox"
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "sync-meta-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "img-section"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    src: _assets_images_Moodle_png__WEBPACK_IMPORTED_MODULE_2__,
+    alt: ""
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "connection-arrow"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
+    className: "admin-font font-arrow-right"
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    src: _assets_images_WordPress_png__WEBPACK_IMPORTED_MODULE_1__,
+    alt: ""
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    className: "sync-label"
+  }, "Mooble to WordPress")))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CheckboxCustomImg);
+
+/***/ }),
+
 /***/ "./src/components/AdminLibrary/Inputs/Special/ConnectSelect.jsx":
 /*!**********************************************************************!*\
   !*** ./src/components/AdminLibrary/Inputs/Special/ConnectSelect.jsx ***!
@@ -18432,6 +18527,58 @@ const FormCustomizer = props => {
   }))))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FormCustomizer);
+
+/***/ }),
+
+/***/ "./src/components/AdminLibrary/Inputs/Special/ScheduleInterval.jsx":
+/*!*************************************************************************!*\
+  !*** ./src/components/AdminLibrary/Inputs/Special/ScheduleInterval.jsx ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ScheduleInterval_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ScheduleInterval.scss */ "./src/components/AdminLibrary/Inputs/Special/ScheduleInterval.scss");
+
+
+
+const ScheduleInterval = props => {
+  const optionsData = [];
+  let defaultValue = '';
+  props.options.forEach((option, index) => {
+    optionsData[index] = {
+      value: option.value,
+      label: option.label,
+      index
+    };
+    if (option.value === props.value) {
+      defaultValue = optionsData[index];
+    }
+  });
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, console.log(optionsData), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "radio-buttons-container"
+  }, optionsData.map((item, index) => {
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      class: "radio-button"
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+      name: "radio-group",
+      id: index,
+      class: "radio-button__input",
+      type: "radio"
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
+      htmlFor: index,
+      class: "radio-button__label"
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      class: "radio-button__custom"
+    }), item.label)));
+  })));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ScheduleInterval);
 
 /***/ }),
 
@@ -18926,6 +19073,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Util_WpEditor_jsx__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./Util/WpEditor.jsx */ "./src/components/AdminLibrary/Inputs/Util/WpEditor.jsx");
 /* harmony import */ var _Special_ButtonCustomizer_jsx__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./Special/ButtonCustomizer.jsx */ "./src/components/AdminLibrary/Inputs/Special/ButtonCustomizer.jsx");
 /* harmony import */ var _Special_ConnectSelect_jsx__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./Special/ConnectSelect.jsx */ "./src/components/AdminLibrary/Inputs/Special/ConnectSelect.jsx");
+/* harmony import */ var _Special_CheckboxCustomImg_jsx__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./Special/CheckboxCustomImg.jsx */ "./src/components/AdminLibrary/Inputs/Special/CheckboxCustomImg.jsx");
+/* harmony import */ var _Special_ScheduleInterval_jsx__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./Special/ScheduleInterval.jsx */ "./src/components/AdminLibrary/Inputs/Special/ScheduleInterval.jsx");
 // Normal input component import
 
 
@@ -18950,6 +19099,8 @@ __webpack_require__.r(__webpack_exports__);
 // Spacial component import
 
 
+
+
 // Export Component's object as default.
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   BasicInput: _BasicInput_jsx__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -18972,7 +19123,9 @@ __webpack_require__.r(__webpack_exports__);
   Section: _Util_Section_jsx__WEBPACK_IMPORTED_MODULE_15__["default"],
   Seperator: _Util_Separator_jsx__WEBPACK_IMPORTED_MODULE_16__["default"],
   Table: _Util_Table_jsx__WEBPACK_IMPORTED_MODULE_17__["default"],
-  WpEditor: _Util_WpEditor_jsx__WEBPACK_IMPORTED_MODULE_18__["default"]
+  WpEditor: _Util_WpEditor_jsx__WEBPACK_IMPORTED_MODULE_18__["default"],
+  CheckboxCustomImg: _Special_CheckboxCustomImg_jsx__WEBPACK_IMPORTED_MODULE_21__["default"],
+  ScheduleInterval: _Special_ScheduleInterval_jsx__WEBPACK_IMPORTED_MODULE_22__["default"]
 });
 
 /***/ }),
@@ -21332,10 +21485,10 @@ __webpack_require__.r(__webpack_exports__);
     key: "course_sync_direction",
     type: "checkbox-default",
     // desc: __("<b>Prior to updating existing course info, you must select the course info to be synchronized at </b>", 'moowoodle') . $moowoodle_sync_setting_url . __("<br><br>While synchronizing user information, we use the email address as the unique identifier for each user. We check the username associated with that email address, and if we find the same username in the other instance but with a different email address, the user's information cannot be synchronized.", 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Sync Direction", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Sync Courses", 'moowoodle'),
     options: [{
       key: "moodle_to_wordpress",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Moodle to Wordpress', 'moowoodle'),
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('If activated, courses will be synchronized and added from your Moodle platform into your WordPress.', 'moowoodle'),
       value: "moodle_to_wordpress"
     }],
     proSetting: true
@@ -21446,7 +21599,7 @@ __webpack_require__.r(__webpack_exports__);
   id: "synchronize-user",
   priority: 10,
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("User", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Admins can select user sync direction and schedule interval for user synchronization.", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchronize user profiles between WordPress and Moodle, manually or at set intervals.", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   proDependent: true,
@@ -21490,24 +21643,29 @@ __webpack_require__.r(__webpack_exports__);
     label: ""
   }, {
     key: "user_sync_direction",
-    type: "checkbox-default",
+    type: "checkbox-custom-img",
     // desc: __("<b>Prior to updating existing user info, you must select the user info to be synchronized at </b>", 'moowoodle') . $moowoodle_sync_setting_url . __("<br><br>While synchronizing user information, we use the email address as the unique identifier for each user. We check the username associated with that email address, and if we find the same username in the other instance but with a different email address, the user's information cannot be synchronized.", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Sync Direction", 'moowoodle'),
-    options: [{
-      key: "wordpress_to_moodle",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Wordpress to Moodle', 'moowoodle'),
-      value: "wordpress_to_moodle"
-    }, {
-      key: "moodle_to_wordpress",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Moodle to Wordpress', 'moowoodle'),
-      value: "moodle_to_wordpress"
-    }],
+    // options: [
+    //     {
+    //         key: "wordpress_to_moodle",
+    //         label: __('Wordpress to Moodle', 'moowoodle'),
+    //         img: 'ggg',
+    //         value: "wordpress_to_moodle",
+    //     },
+    //     {
+    //         key: "moodle_to_wordpress",
+    //         img: '',
+    //         label: __('Moodle to Wordpress', 'moowoodle'),
+    //         value: "moodle_to_wordpress",
+    //     }
+    // ],
     proSetting: true
   }, {
     key: "user_schedule_interval",
-    type: "select",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select Option For User Synchronization Schedule Interval.", 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Schedule Interval", 'moowoodle'),
+    type: "select-custom-radio",
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select the interval for the user synchronization process. Based on this schedule, the cron job will run to sync users between WordPress and Moodle.", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Set Time Interval", 'moowoodle'),
     options: [{
       key: "realtime",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Realtime", 'moowoodle'),
@@ -44540,6 +44698,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/components/AdminLibrary/Inputs/Special/CheckboxCustomImg.scss":
+/*!***************************************************************************!*\
+  !*** ./src/components/AdminLibrary/Inputs/Special/CheckboxCustomImg.scss ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
 /***/ "./src/components/AdminLibrary/Inputs/Special/ConnectSelect.scss":
 /*!***********************************************************************!*\
   !*** ./src/components/AdminLibrary/Inputs/Special/ConnectSelect.scss ***!
@@ -44557,6 +44728,19 @@ __webpack_require__.r(__webpack_exports__);
 /*!************************************************************************!*\
   !*** ./src/components/AdminLibrary/Inputs/Special/FormCustomizer.scss ***!
   \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/components/AdminLibrary/Inputs/Special/ScheduleInterval.scss":
+/*!**************************************************************************!*\
+  !*** ./src/components/AdminLibrary/Inputs/Special/ScheduleInterval.scss ***!
+  \**************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -59383,6 +59567,28 @@ module.exports = __webpack_require__.p + "images/Brand-small.8d0ad4f7.png";
 
 "use strict";
 module.exports = __webpack_require__.p + "images/Brand.3c2867e9.png";
+
+/***/ }),
+
+/***/ "./src/assets/images/Moodle.png":
+/*!**************************************!*\
+  !*** ./src/assets/images/Moodle.png ***!
+  \**************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+module.exports = __webpack_require__.p + "images/Moodle.55f4c6e0.png";
+
+/***/ }),
+
+/***/ "./src/assets/images/WordPress.png":
+/*!*****************************************!*\
+  !*** ./src/assets/images/WordPress.png ***!
+  \*****************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+module.exports = __webpack_require__.p + "images/WordPress.26392aec.png";
 
 /***/ }),
 
