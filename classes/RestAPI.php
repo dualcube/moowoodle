@@ -83,7 +83,12 @@ class RestAPI {
             // save the settings in database
             MooWoodle()->setting->update_option( $settingsname, $settings_data );
 
-            do_action( 'moowoodle_settings_after_save', $settingsname, $settings_data );
+            /**
+             * Moodle after setting save.
+             * @var $settingsname settingname
+             * @var $settingdata settingdata
+             */
+            do_action( 'moowoodle_after_setting_save', $settingsname, $settings_data );
 
             return rest_ensure_response( __( 'Settings Saved', 'woocommerce-stock-manager' ) );
 
