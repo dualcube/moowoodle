@@ -659,6 +659,8 @@ const DynamicForm = (props) => {
         case "syncbutton":
           input = <SyncNow
             buttonKey={inputField.key}
+            value={inputField.value}
+            description={inputField.desc}
             proSetting={isProSetting(inputField.proSetting)}
             proSettingChanged={proSettingChanged}
           />

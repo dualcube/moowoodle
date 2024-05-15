@@ -3,8 +3,8 @@ import { __ } from '@wordpress/i18n';
 export default {
     id: "synchronize-user",
     priority: 10,
-    name: __("User", 'moowoodle'),
-    desc: __("Synchronize user profiles between WordPress and Moodle, manually or at set intervals.", 'moowoodle'),
+    name: __("Users", 'moowoodle'),
+    desc: __("Control user sync direction and schedule interval.", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     proDependent: true,
@@ -17,7 +17,7 @@ export default {
             options: [
                 {
                     key: "update_moodle_user",
-                    label:  __('Enable', 'moowoodle'), 
+                    label:  __('', 'moowoodle'), 
                     value: "update_moodle_user"
                 }
             ]
@@ -121,6 +121,8 @@ export default {
             key: "sync_user_btn",
             type: "syncbutton",
             label: __("", 'moowoodle'),
+            value: "Manually sync user now",
+            desc: "This will synchronize user accounts between WordPress and Moodle instantly according to the selected ‘Sync Direction’."
         },
     ]
 };

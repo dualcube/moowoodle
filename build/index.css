@@ -1429,6 +1429,7 @@ span.stock-manager-pro-tag {
   flex-direction: column;
   width: -moz-fit-content;
   width: fit-content;
+  margin-top: 0.5rem;
 }
 .section-synchronize-now .button-section {
   display: flex;
@@ -1551,6 +1552,12 @@ span.stock-manager-pro-tag {
     transform: translateY(66%) scale(0.65);
     opacity: 0.8;
   }
+}
+.section-synchronize-now .btn-description {
+  font-style: italic;
+  color: rgba(114, 114, 117, 0.6);
+  font-size: 0.813rem;
+  line-height: 1.5714285714;
 }
 .section-synchronize-now .details-status-row {
   padding: 0.5rem 0.5rem 0.75rem;
