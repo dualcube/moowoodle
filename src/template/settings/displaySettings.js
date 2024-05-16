@@ -3,15 +3,15 @@ import { __ } from '@wordpress/i18n';
 export default {
     id: "display",
     priority: 20,
-    name: __("Shop Setup", 'moowoodle'),
-    desc: __("", 'moowoodle'),
+    name: __("Shop Central", 'moowoodle'),
+    desc: __("Efficient Course Information Handling for customers.", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     modal: [
         {
             key: "start_end_date",
             type: "checkbox",
-            desc: __('If enabled display course duration in shop page.', 'moowoodle'),
+            desc: __('Enable this to allow the display of the course duration on the shop page', 'moowoodle'),
             label: __("Display course duration in Shop Page", 'moowoodle'),
             options: [
                 {

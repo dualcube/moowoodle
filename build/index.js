@@ -20342,7 +20342,6 @@ const Log = props => {
   };
   const handleClearLog = event => {
     event.preventDefault();
-    console.log("handle clear log");
     (0,axios__WEBPACK_IMPORTED_MODULE_3__["default"])({
       method: "post",
       url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)("fetch-log"),
@@ -20355,7 +20354,7 @@ const Log = props => {
       }
     }).then(response => {
       // const data = JSON.parse(response.data);
-      setData(response.data);
+      setData([]);
     });
   };
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -21390,14 +21389,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   id: "display",
   priority: 20,
-  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Shop Setup", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("", 'moowoodle'),
+  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Shop Central", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Efficient Course Information Handling for customers.", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   modal: [{
     key: "start_end_date",
     type: "checkbox",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('If enabled display course duration in shop page.', 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enable this to allow the display of the course duration on the shop page', 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Display course duration in Shop Page", 'moowoodle'),
     options: [{
       key: "start_end_date",
