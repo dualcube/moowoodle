@@ -3,20 +3,20 @@ import { __ } from '@wordpress/i18n';
 export default {
     id: "display",
     priority: 20,
-    name: __("Shop Central", 'moowoodle'),
-    desc: __("Efficient Course Information Handling for customers.", 'moowoodle'),
+    name: __("Course Information Display", 'moowoodle'),
+    desc: __("Manage learner access to course information", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     modal: [
         {
             key: "start_end_date",
             type: "checkbox",
-            desc: __('Enable this to allow the display of the course duration on the shop page', 'moowoodle'),
-            label: __("Display course duration in Shop Page", 'moowoodle'),
+            desc: __('If enabled display start date and end date in shop page.', 'moowoodle'),
+            label: __("Display Start Date and End Date in Shop Page", 'moowoodle'),
             options: [
                 {
                     key: "start_end_date",
-                    label:  __('', 'moowoodle'), 
+                    label:  __('Enable', 'moowoodle'), 
                     value: "start_end_date"
                 }
             ]
@@ -24,8 +24,8 @@ export default {
         {
             key: "my_courses_priority",
             type: "select",
-            desc: __("Choose the location within the 'My Account' page where the 'My Course' menu will appear.", 'moowoodle'),
-            label: __("Endpoint menu position - My Course", 'moowoodle'),
+            desc: __('Select below which menu the My Courses Menu will be displayed', 'moowoodle'),
+            label: __("My Courses Menu Position", 'moowoodle'),
             options: Object.entries(appLocalizer.accountmenu).map(( [key, name ], index) => {
                 return {
                     key: index,

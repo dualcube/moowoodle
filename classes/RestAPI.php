@@ -405,7 +405,7 @@ class RestAPI {
 			$all_category[$term->term_id] = $term->name;
 		}	
         return rest_ensure_response( $all_category );
-	}
+    }
 
     /**
      * Save the setting set in react's admin setting page.

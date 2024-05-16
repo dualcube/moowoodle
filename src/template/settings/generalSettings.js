@@ -11,7 +11,7 @@ export default {
         {
             key: "moodle_url",
             type: "text",
-            desc: __('Provide the URL of your Moodle site where the course will be hosted. Students will receive access to the course content on that site.', 'moowoodle'),
+            desc: __('Enter the Moodle Site URL', 'moowoodle'),
             label: __("Moodle Site URL", 'moowoodle'),
         },
         {
@@ -34,7 +34,7 @@ export default {
         {
             key: "moodle_timeout",
             type: "text",
-            desc: __('When WordPress connects to Moodle, communication delays may exceed server timeout settings. Adjust server timeout in second. ', 'moowoodle'),
+            desc: __('Set Curl connection time out in sec.', 'moowoodle'),
             label: __("Timeout", 'moowoodle'),
         },
     ]
