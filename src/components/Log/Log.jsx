@@ -56,7 +56,6 @@ const Log = (props) => {
   const handleClearLog = (event) => {
     event.preventDefault();
 
-    console.log("handle clear log");
     axios({
       method: "post",
       url: getApiLink("fetch-log"),
@@ -67,7 +66,7 @@ const Log = (props) => {
       },
     }).then((response) => {
       // const data = JSON.parse(response.data);
-      setData(response.data);
+      setData([]);
     });
   };
 
