@@ -54,6 +54,24 @@ class RestAPI {
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
 
+        register_rest_route( MooWoodle()->rest_namespace, '/all-courses', [
+            'methods'             => \WP_REST_Server::ALLMETHODS,
+            'callback'            =>[ $this, 'get_all_courses' ],
+            'permission_callback' =>[ MooWoodle()->restAPI, 'moowoodle_permission' ],
+        ]);
+
+        register_rest_route( MooWoodle()->rest_namespace, '/all-products', [
+            'methods'             => \WP_REST_Server::ALLMETHODS,
+            'callback'            =>[ $this, 'get_all_products' ],
+            'permission_callback' =>[ MooWoodle()->restAPI, 'moowoodle_permission' ],
+        ]);
+
+        register_rest_route( MooWoodle()->rest_namespace, '/all-category', [
+            'methods'             => \WP_REST_Server::ALLMETHODS,
+            'callback'            =>[ $this, 'get_all_category' ],
+            'permission_callback' =>[ MooWoodle()->restAPI, 'moowoodle_permission' ],
+        ]);
+
         register_rest_route( MooWoodle()->rest_namespace, '/fetch-log', [
             'methods'             => \WP_REST_Server::ALLMETHODS,
             'callback'            =>[ $this, 'get_log' ],
@@ -231,6 +249,11 @@ class RestAPI {
         $page          = $request->get_param( 'page' );
         $per_page      = $request->get_param( 'perpage' );
 
+        $courseField          = $request->get_param( 'course' );
+        $productField         = $request->get_param( 'product' );
+        $catagoryField          = $request->get_param( 'catagory' );
+        $shortnameField          = $request->get_param( 'shortname' );
+        
         // Get the courses
         $course_ids = MooWoodle()->course->get_courses([
             'fields'      => 'ids',
@@ -303,9 +326,86 @@ class RestAPI {
 				'date'              => $date,
 			]);
 		}
-
-        return rest_ensure_response( $formatted_courses );
+        $filtered_courses = [];
+        foreach ( $formatted_courses as $courses ) {
+			if ( $courseField && $courses[ 'id' ] != $courseField ) {
+				continue;
+			}
+			if ( $productField && $courses[ 'products' ] != get_the_title($productField) ) {
+				continue;
+			}
+		
+			$filtered_courses[] = $courses;
+		}
+        return rest_ensure_response( $filtered_courses );
     }
+
+    /**
+     * get all courses
+     * @param mixed $request
+     * @return \WP_Error|\WP_REST_Response
+     */
+	function get_all_courses() {
+		$course_ids = MooWoodle()->course->get_courses([
+            'fields'      => 'ids',
+            'numberposts' => -1,
+        ]);
+
+		$all_courses = [];
+		foreach ( $course_ids as $course_id ) {
+			$all_courses[$course_id] = get_the_title( $course_id );
+		}
+		
+        return rest_ensure_response( $all_courses );
+	}
+
+    /**
+     * get all products
+     * @param mixed $request
+     * @return \WP_Error|\WP_REST_Response
+     */
+	function get_all_products() {
+		$course_ids = MooWoodle()->course->get_courses([
+            'fields'      => 'ids',
+            'numberposts' => -1,
+        ]);
+
+		$all_products = [];
+		foreach ( $course_ids as $course_id ) {
+            $products = wc_get_products([
+                'meta_query' => [
+                    [
+                        'key'   => 'linked_course_id',
+                        'value' => $course_id,
+                    ]
+                ]
+            ]);
+            foreach ( $products as $product ) {
+				$all_products[$product->get_id()] = $product->get_name();
+			}
+		}		
+        return rest_ensure_response( $all_products );
+	}
+
+    /**
+     * get all category
+     * @param mixed $request
+     * @return \WP_Error|\WP_REST_Response
+     */
+	function get_all_category() {
+		$course_ids = MooWoodle()->course->get_courses([
+            'fields'      => 'ids',
+            'numberposts' => -1,
+        ]);
+
+		$all_category = [];
+		foreach ( $course_ids as $course_id ) {
+			$course_meta = array_map( 'current', get_post_meta( $course_id, '', true ) );
+            $term = MooWoodle()->category->get_category( $course_meta[ '_category_id' ], 'course_cat' );
+			$all_category[$term->term_id] = $term->name;
+		}	
+        return rest_ensure_response( $all_category );
+	}
 
     /**
      * Save the setting set in react's admin setting page.
