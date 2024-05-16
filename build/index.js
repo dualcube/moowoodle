@@ -21406,8 +21406,8 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "my_courses_priority",
     type: "select",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Select where the My Course menue will be displayed in My Account page.', 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Enpoint menu position - My Course", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Choose the location within the 'My Account' page where the 'My Course' menu will appear.", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Endpoint menu position - My Course", 'moowoodle'),
     options: Object.entries(appLocalizer.accountmenu).map(([key, name], index) => {
       return {
         key: index,
@@ -21444,7 +21444,7 @@ __webpack_require__.r(__webpack_exports__);
   modal: [{
     key: "moodle_url",
     type: "text",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enter the Moodle Site URL', 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Provide the URL of your Moodle site where the course will be hosted. Students will receive access to the course content on that site.', 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Moodle Site URL", 'moowoodle')
   }, {
     key: "moodle_access_token",
@@ -21463,7 +21463,7 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "moodle_timeout",
     type: "text",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Set Curl connection time out in sec.', 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('When WordPress connects to Moodle, communication delays may exceed server timeout settings. Adjust server timeout in second. ', 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Timeout", 'moowoodle')
   }]
 });
@@ -21571,8 +21571,8 @@ __webpack_require__.r(__webpack_exports__);
   modal: [{
     key: "moowoodle_sso_enable",
     type: "checkbox",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Single Sign On", 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('If enabled Moodle user\'s will login by WordPress user', 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Enabling this option allows users to access Moodle courses directly, bypassing the need for login ", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Single Sign On', 'moowoodle'),
     options: [{
       key: "moowoodle_sso_enable",
       value: "moowoodle_sso_enable"

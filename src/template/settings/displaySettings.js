@@ -24,8 +24,8 @@ export default {
         {
             key: "my_courses_priority",
             type: "select",
-            desc: __('Select where the My Course menue will be displayed in My Account page.', 'moowoodle'),
-            label: __("Enpoint menu position - My Course", 'moowoodle'),
+            desc: __("Choose the location within the 'My Account' page where the 'My Course' menu will appear.", 'moowoodle'),
+            label: __("Endpoint menu position - My Course", 'moowoodle'),
             options: Object.entries(appLocalizer.accountmenu).map(( [key, name ], index) => {
                 return {
                     key: index,
