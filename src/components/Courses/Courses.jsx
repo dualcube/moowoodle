@@ -20,33 +20,33 @@ export default function Course() {
     const [totalRows, setTotalRows] = useState();
     const bulkSelectRef = useRef();
     const [openDialog, setOpenDialog] = useState(false);
-    
-    useEffect(() => {
-		axios({
-			method: "get",
-			url: getApiLink('all-courses'),
-		}).then((response) => {
-			setCourses(response.data)
-		});
-	}, []);
 
     useEffect(() => {
-		axios({
-			method: "get",
-			url: getApiLink('all-products'),
-		}).then((response) => {
-			setProducts(response.data)
-		});
-	}, []);
+        axios({
+            method: "get",
+            url: getApiLink('all-courses'),
+        }).then((response) => {
+            setCourses(response.data)
+        });
+    }, []);
 
     useEffect(() => {
-		axios({
-			method: "get",
-			url: getApiLink('all-category'),
-		}).then((response) => {
-			setCategory(response.data)
-		});
-	}, []);
+        axios({
+            method: "get",
+            url: getApiLink('all-products'),
+        }).then((response) => {
+            setProducts(response.data)
+        });
+    }, []);
+
+    useEffect(() => {
+        axios({
+            method: "get",
+            url: getApiLink('all-category'),
+        }).then((response) => {
+            setCategory(response.data)
+        });
+    }, []);
 
     /**
      * Function that request data from backend
@@ -56,6 +56,10 @@ export default function Course() {
     function requestData(
         rowsPerPage = 10,
         currentPage = 1,
+        courseField = '',
+        productField = '',
+        catagoryField = '',
+        shortnameField = '',
     ) {
         //Fetch the data to show in the table
         axios({
@@ -65,9 +69,12 @@ export default function Course() {
             data: {
                 page: currentPage,
                 perpage: rowsPerPage,
+                course: courseField,
+                product: productField,
+                catagory: catagoryField,
+                shortname: shortnameField
             },
         }).then((response) => {
-            // const data = JSON.parse(response.data);
             setData(response.data);
         });
     }
@@ -78,26 +85,117 @@ export default function Course() {
      * @param {*} currentPage 
      * @param {*} filterData 
      */
-    const requestApiForData = ( rowsPerPage, currentPage, filterData = {} ) => {
+    const requestApiForData = (rowsPerPage, currentPage, filterData = {}) => {
         requestData(
             rowsPerPage,
             currentPage,
+            filterData?.courseField,
+            filterData?.productField,
+            filterData?.catagoryField,
+            filterData?.shortnameField
         );
     };
 
+    const realtimeFilter = [
+        {
+            name: "courseField",
+            render: (updateFilter, filterValue) => {
+                return (
+                    <>
+                        <div className="admin-header-search-section">
+                            <select
+                                name="courseField"
+                                onChange={(e) => updateFilter(e.target.name, e.target.value)}
+                                value={filterValue || ""}
+                            >
+                                <option value="">Courses</option>
+                                {Object.entries(courses).map(([courseId, courseName]) => (
+                                    <option value={courseId}>{courseName}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </>
+                );
+            },
+        },
+        {
+            name: "productField",
+            render: (updateFilter, filterValue) => {
+                return (
+                    <>
+                        <div className="admin-header-search-section">
+                            <select
+                                name="productField"
+                                onChange={(e) => updateFilter(e.target.name, e.target.value)}
+                                value={filterValue || ""}
+                            >
+                                <option value="">Products</option>
+                                {Object.entries(products).map(([productId, productName]) => (
+                                    <option value={productId}>{productName}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </>
+                );
+            },
+        },
+        {
+            name: "catagoryField",
+            render: (updateFilter, filterValue) => {
+                return (
+                    <>
+                        <div className="admin-header-search-section">
+                            <select
+                                name="catagoryField"
+                                onChange={(e) => updateFilter(e.target.name, e.target.value)}
+                                value={filterValue || ""}
+                            >
+                                <option value="">Category</option>
+                                {Object.entries(category).map(([categoryId, categoryName]) => (
+                                    <option value={categoryId}>{categoryName}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </>
+                );
+            },
+        },
+        {
+            name: "shortnameField",
+            render: (updateFilter, filterValue) => {
+                return (
+                    <>
+                        <div className="admin-header-search-section">
+                            <select
+                                name="shortnameField"
+                                onChange={(e) => updateFilter(e.target.name, e.target.value)}
+                                value={filterValue || ""}
+                            >
+                                <option value="">Short Name</option>
+                                {Object.entries(courses).map(([courseId, courseName]) => (
+                                    <option value={courseId}>{courseName}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </>
+                );
+            },
+        },
+
+    ];
     /**
      * Handle single row action
      * @param {*} actionName 
      * @param {*} courseId 
      * @param {*} rowId 
      * @param {*} rowIndex 
-     */ 
-    const handleSingleAction = ( actionName, courseId, moodleCourseId ) => {
-        if ( appLocalizer.pro_active ) {
+     */
+    const handleSingleAction = (actionName, courseId, moodleCourseId) => {
+        if (appLocalizer.pro_active) {
             axios({
                 method: 'post',
-                url: getApiLink( `course-bulk-action` ),
-                headers: { 'X-WP-Nonce' : appLocalizer.nonce },
+                url: getApiLink(`course-bulk-action`),
+                headers: { 'X-WP-Nonce': appLocalizer.nonce },
                 data: {
                     selected_action: actionName,
                     course_ids: [{
@@ -105,7 +203,7 @@ export default function Course() {
                         moodle_course_id: moodleCourseId,
                     }]
                 },
-            }).then( ( response ) => {
+            }).then((response) => {
                 console.log(response);
             }).catch((error) => {
                 console.error('Error:', error);
@@ -116,25 +214,25 @@ export default function Course() {
     }
 
     const handleBulkAction = (event) => {
-        if ( appLocalizer.pro_active ) {
-            if ( ! selectedRows.length ) {
-                return window.alert( __( 'Select rows', 'moowoodle' ) );
+        if (appLocalizer.pro_active) {
+            if (!selectedRows.length) {
+                return window.alert(__('Select rows', 'moowoodle'));
             }
-            if ( ! bulkSelectRef.current.value ) {
-                return window.alert( __( 'Select bulk action' ,'moowoodle') );
+            if (!bulkSelectRef.current.value) {
+                return window.alert(__('Select bulk action', 'moowoodle'));
             }
 
             axios({
                 method: 'post',
-                url: getApiLink( `course-bulk-action` ),
-                headers: { 'X-WP-Nonce' : appLocalizer.nonce },
+                url: getApiLink(`course-bulk-action`),
+                headers: { 'X-WP-Nonce': appLocalizer.nonce },
                 data: {
                     selected_action: bulkSelectRef.current.value,
                     course_ids: selectedRows.map((row) => {
                         return { course_id: row.id, moodle_course_id: row.moodle_course_id }
                     })
                 },
-            }).then( ( response ) => {
+            }).then((response) => {
                 console.log(response);
             }).catch((error) => {
                 console.error('Error:', error);
@@ -172,8 +270,8 @@ export default function Course() {
             selector: row => row.course_name,
             cell: (row) => (
                 <TableCell>
-                    <a href={ row.moodle_url } alt="moowoodle_url">
-                        { row.course_name }
+                    <a href={row.moodle_url} alt="moowoodle_url">
+                        {row.course_name}
                     </a>
                 </TableCell>
             ),
@@ -190,7 +288,7 @@ export default function Course() {
                                 return <a key={index} href={url}> {name} </a>
                             })
                         ) : (
-                            "-" 
+                            "-"
                         )
                     }
                 </TableCell>
@@ -201,8 +299,8 @@ export default function Course() {
             selector: row => row.category_name,
             cell: (row) => (
                 <TableCell title={'Category Name'}>
-                    <a href={ row.category_url } alt="category_url">
-                        { row.category_name }
+                    <a href={row.category_url} alt="category_url">
+                        {row.category_name}
                     </a>
                 </TableCell>
             ),
@@ -212,104 +310,101 @@ export default function Course() {
             name: __('Enrolled Users', 'moowoodle'),
             cell: (row) => (
                 <TableCell title={'Enrolled Users'}>
-                    { row.enroled_user }
+                    {row.enroled_user}
                 </TableCell>
             )
         },
         {
-            name: __('Date', 'moowoodle'),
+            name: __('Course Duration', 'moowoodle'),
             cell: (row) => (
                 <TableCell title={'Date'}>
-                    { row.date }
+                    {row.date}
                 </TableCell>
             )
         },
         {
-            name: <div dangerouslySetInnerHTML={{ __html: __('Actions')}}></div>,
-            cell: ( row, rowIndex ) => (
+            name: <div dangerouslySetInnerHTML={{ __html: __('Actions') }}></div>,
+            cell: (row, rowIndex) => (
                 <div class="moowoodle-course-actions">
                     <button
-                        class={ `sync-single-course button-primary` }
-                        title={ __('Sync Couse Data') }
-                        onClick={ (e) => {
+                        class={`sync-single-course button-primary`}
+                        title={__('Sync Couse Data')}
+                        onClick={(e) => {
                             handleSingleAction(
                                 'sync_courses',
                                 row.id,
                                 row.moodle_course_id,
-                            ) 
+                            )
                         }}
                     >
                         <i class="dashicons dashicons-update"></i>
                     </button>
                     {
-                        Object.keys( row.products ).length ?
-                        <button
-                            class={ `update-existed-single-product button-secondary ` }
-                            title={ __('Sync Course Data & Update Product') }
-                            onClick={ (e) => {
-                                handleSingleAction(
-                                    'update_product',
-                                    row.id,
-                                    row.moodle_course_id,
-                                ) 
-                            }}
-                        >
-                            <i class="dashicons dashicons-admin-links"></i>
-                        </button>
-                        :
-                        <button
-                            class={ `create-single-product button-secondary` }
-                            title={ __('Create Product') }
-                            onClick={ (e) => {
-                                handleSingleAction(
-                                    'create_product',
-                                    row.id,
-                                    row.moodle_course_id,
-                                )
-                            }}
-                        >
-                            <i class="dashicons dashicons-cloud-upload"></i>
-                        </button>
+                        Object.keys(row.products).length ?
+                            <button
+                                class={`update-existed-single-product button-secondary `}
+                                title={__('Sync Course Data & Update Product')}
+                                onClick={(e) => {
+                                    handleSingleAction(
+                                        'update_product',
+                                        row.id,
+                                        row.moodle_course_id,
+                                    )
+                                }}
+                            >
+                                <i class="dashicons dashicons-admin-links"></i>
+                            </button>
+                            :
+                            <button
+                                class={`create-single-product button-secondary`}
+                                title={__('Create Product')}
+                                onClick={(e) => {
+                                    handleSingleAction(
+                                        'create_product',
+                                        row.id,
+                                        row.moodle_course_id,
+                                    )
+                                }}
+                            >
+                                <i class="dashicons dashicons-cloud-upload"></i>
+                            </button>
                     }
-              </div>
+                </div>
             ),
         },
     ];
 
     return (
-        openDialog ? 
-            ( 
+        openDialog ?
+            (
                 <Dialog
-                className="admin-module-popup"
-                open={openDialog}
-                onClose={() => {
-                setOpenDialog(false);
-                }}
-                aria-labelledby="form-dialog-title"
-            >
-                <span
-                className="admin-font font-cross stock-manager-popup-cross"
-                onClick={() => {
-                    setOpenDialog(false);
-                }}
-                ></span>
-                <Propopup />
-            </Dialog>
-             ) 
-            : 
+                    className="admin-module-popup"
+                    open={openDialog}
+                    onClose={() => {
+                        setOpenDialog(false);
+                    }}
+                    aria-labelledby="form-dialog-title"
+                >
+                    <span
+                        className="admin-font font-cross stock-manager-popup-cross"
+                        onClick={() => {
+                            setOpenDialog(false);
+                        }}
+                    ></span>
+                    <Propopup />
+                </Dialog>
+            )
+            :
             (
                 <div className="course-container-wrapper">
                     <div className="admin-page-title">
-                        <p>{__("All Course", "moowoodle")}</p>
+                        <p>{__("All Courses", "moowoodle")}</p>
                     </div>
                     <div className="course-bulk-action">
-                        <label>
-                            { __( 'Select bulk action' ) }
-                        </label>
                         <select name="action" ref={bulkSelectRef} >
-                            <option value="">{ __( 'Bulk Actions' ) }</option>
-                            <option value="sync_courses">{ __( 'Sync Course' ) }</option>
-                            <option value="create_product">{ __( 'Create Product' ) }</option>
+                            <option value="">{__('Bulk Actions')}</option>
+                            <option value="sync_courses">{__('Sync Course')}</option>
+                            <option value="create_product">{__('Create Product')}</option>
                             <option value="update_product">{__('Update Product')}</option>
                         </select>
                         <button
@@ -330,6 +425,7 @@ export default function Course() {
                                 perPageOption={[10, 25, 50]}
                                 selectable={true}
                                 handleSelect={handleRowSelect}
+                                realtimeFilter={realtimeFilter}
                             />
                         }
                     </div>

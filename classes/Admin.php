@@ -64,7 +64,7 @@ class Admin {
 			add_submenu_page(
 				'moowoodle',
 				$submenu['name'],
-				$submenu['name'],
+				"<span class='admin-menu'>" . $submenu['name'] . "</span>",
 				'manage_options',
 				'moowoodle#&tab=' . $slug . $subtab,
 				'_-return_null'

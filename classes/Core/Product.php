@@ -63,8 +63,18 @@ class Product {
     public static function update_products( $courses ) {
         $updated_ids = [];
 
+		// Manage setting of product sync option.
+		$product_sync_setting = MooWoodle()->setting->get_setting( 'product_sync_option' );
+		$product_sync_setting = is_array( $product_sync_setting ) ? $product_sync_setting : [];
+
+		$create_product = ( bool ) array_intersect( $product_sync_setting, [ 'create_update', 'create' ] );
+		$update_product = ( bool ) array_intersect( $product_sync_setting, [ 'create_update', 'update' ] );
+
+		// None of the option is choosen.
+		if ( ! $create_product && ! $update_product ) return;
+
         foreach ( $courses as $course ) {
-            $product_id = self::update_product( $course );
+            $product_id = self::update_product( $course, $create_product );
 
             if ( $product_id ) {
                 $updated_ids[] = $product_id;
@@ -80,25 +90,16 @@ class Product {
 	 * Update moodle product data in WordPress WooCommerce.
 	 * If product not exist create new product
 	 * @param array $course (moodle course data)
+	 * @param bool $fource_create 
 	 * @return int course id
 	 */
-	public static function update_product( $course ) {
+	public static function update_product( $course, $fource_create = true ) {
 		if ( empty( $course ) || $course[ 'format' ] == 'site' ) return 0;
-
-		// Manage setting of product sync option.
-		$product_sync_setting = MooWoodle()->setting->get_setting( 'product_sync_option' );
-		$product_sync_setting = is_array( $product_sync_setting ) ? $product_sync_setting : [];
-
-		$create_product = array_intersect( $product_sync_setting, [ 'create_update', 'create' ] );
-		$update_product = array_intersect( $product_sync_setting, [ 'create_update', 'update' ] );
-
-		// None of the option is choosen.
-		if ( ! $create_product && ! $update_product ) return 0;
 
 		$product = self::get_product_from_moodle_course( $course[ 'id' ] );
 
         // create a new product if not exist.
-        if( ! $product && $create_product ) {
+        if( ! $product && $fource_create ) {
             $product = new \WC_Product_Simple();
         } 
 		
@@ -133,6 +134,7 @@ class Product {
         $product->update_meta_data( '_course_enddate', $course[ 'enddate' ] );
         $product->update_meta_data( 'moodle_course_id', $course[ 'id' ] );
         $product->update_meta_data( 'linked_course_id', $linked_course_id );
+		$product->set_status( 'publish' );
 		$product->save();
 
 		return $product->get_id();
@@ -154,7 +156,8 @@ class Product {
 		// delete product.
 		foreach ( $product_ids as $product_id ) {
             $product = wc_get_product( $product_id );
-            $product->delete( true );
+            $product->set_status( 'draft' );
+			$product->save();
 		}
 	}
 

@@ -45,7 +45,6 @@ export default {
                     value: "moowoodle_create_user_custom_mail"
                 }
             ],
-            proSetting: true,
         }
     ]
 };
