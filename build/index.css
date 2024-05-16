@@ -591,6 +591,104 @@ input[type=radio] {
     opacity: 0.8;
   }
 }
+/*!******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/AdminLibrary/Inputs/Special/CheckboxCustomImg.scss ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************/
+.custom-sync-section {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.custom-sync-section .sync-direction-items {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.75rem;
+}
+.custom-sync-section .sync-direction-items .input-section input {
+  width: 1.1rem !important;
+  height: 1rem !important;
+  margin: 0 !important;
+}
+.custom-sync-section .sync-direction-items .sync-meta-wrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  flex-direction: column;
+}
+.custom-sync-section .sync-direction-items .sync-meta-wrapper .img-section {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.75rem;
+}
+.custom-sync-section .sync-direction-items .sync-meta-wrapper .img-section img {
+  width: 30px;
+}
+.custom-sync-section .sync-direction-items .sync-meta-wrapper .img-section .connection-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.custom-sync-section .sync-direction-items .sync-meta-wrapper .img-section .connection-arrow i {
+  font-size: 1rem;
+}
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/AdminLibrary/Inputs/Special/ScheduleInterval.scss ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************/
+.radio-buttons-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.radio-buttons-container .radio-button {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+.radio-buttons-container .radio-button .radio-button__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.radio-buttons-container .radio-button .radio-button__label {
+  display: inline-block;
+  padding-left: 25px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.radio-buttons-container .radio-button .radio-button__label:hover .radio-button__custom {
+  transform: translateY(-50%) scale(1.1);
+  border-color: #65438f;
+  box-shadow: 0 0 10px rgba(101, 67, 143, 0.2470588235);
+}
+.radio-buttons-container .radio-button .radio-button__custom {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #555;
+  transition: all 0.3s linear;
+}
+.radio-buttons-container .radio-button .radio-button__input:checked + .radio-button__label {
+  color: #65438f;
+}
+.radio-buttons-container .radio-button .radio-button__input:checked + .radio-button__label .radio-button__custom {
+  transform: translateY(-50%) scale(0.8);
+  border: 2px solid transparent;
+  background-color: #65438f;
+  box-shadow: 0 0 0.5rem black;
+  box-shadow: 0px 0px 0px 0.15rem #fff, 0px 0px 0px 0.25rem;
+}
 /*!**********************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/PopupContent/popupContent.scss ***!
   \**********************************************************************************************************************************************************************************************************************************************************************/
@@ -1327,10 +1425,11 @@ span.stock-manager-pro-tag {
 .section-synchronize-now {
   display: flex;
   gap: 1rem;
-  padding: 1.83rem 1.83rem;
+  padding-top: 0.75rem;
   flex-direction: column;
   width: -moz-fit-content;
   width: fit-content;
+  margin-top: 0.5rem;
 }
 .section-synchronize-now .button-section {
   display: flex;
@@ -1453,6 +1552,12 @@ span.stock-manager-pro-tag {
     transform: translateY(66%) scale(0.65);
     opacity: 0.8;
   }
+}
+.section-synchronize-now .btn-description {
+  font-style: italic;
+  color: rgba(114, 114, 117, 0.6);
+  font-size: 0.813rem;
+  line-height: 1.5714285714;
 }
 .section-synchronize-now .details-status-row {
   padding: 0.5rem 0.5rem 0.75rem;

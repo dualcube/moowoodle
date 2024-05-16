@@ -6,7 +6,7 @@ import { getApiLink } from "../../services/apiService";
 import "./SyncNow.scss";
 
 const SyncNow = (props) => {
-  const { buttonKey, proSetting, proSettingChanged } = props;
+  const { buttonKey, proSetting, proSettingChanged, value, description } = props;
   const [modelOpen, setModelOpen] = useState(false);
   const [syncCourseStart, setSyncCourseStart] = useState(false);
   const [syncUserStart, setSyncUserStart] = useState(false);
@@ -88,7 +88,7 @@ const SyncNow = (props) => {
 
         <div className="button-section">
           <button className="synchronize-now-button" onClick={handleCourseSync}>
-            Manually sync courses now
+            {value}
           </button>
           <div class="loader">
             <div class="three-body__dot"></div>
@@ -97,7 +97,7 @@ const SyncNow = (props) => {
           </div>
         </div>
 
-        <p>tis usdvgvbs fbhsnuh nhu bgbsfh </p>
+        <p className="btn-description">{description}</p>
 
         {syncStatus.length > 0 && (
           <>

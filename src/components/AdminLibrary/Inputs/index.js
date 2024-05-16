@@ -22,6 +22,8 @@ import WpEditor from './Util/WpEditor.jsx';
 // Spacial component import
 import ButtonCustomizer from './Special/ButtonCustomizer.jsx';
 import ConnectSelect from './Special/ConnectSelect.jsx';
+import CheckboxCustomImg from './Special/CheckboxCustomImg.jsx';
+import ScheduleInterval from './Special/ScheduleInterval.jsx';
 // Export Component's object as default.
 export default {
     BasicInput,
@@ -44,5 +46,7 @@ export default {
     Section,
     Seperator,
     Table,
-    WpEditor
+    WpEditor,
+    CheckboxCustomImg,
+    ScheduleInterval
 };

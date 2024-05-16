@@ -659,6 +659,8 @@ const DynamicForm = (props) => {
         case "syncbutton":
           input = <SyncNow
             buttonKey={inputField.key}
+            value={inputField.value}
+            description={inputField.desc}
             proSetting={isProSetting(inputField.proSetting)}
             proSettingChanged={proSettingChanged}
           />
@@ -718,6 +720,30 @@ const DynamicForm = (props) => {
               proChanged={() => setModelOpen(true) }
             />
           );
+          break;
+
+          case "checkbox-custom-img":
+            input = <CustomInput.CheckboxCustomImg 
+          />
+          break;
+
+          case "select-custom-radio": 
+            let option = inputField.options;
+            input = <CustomInput.ScheduleInterval 
+            wrapperClass="form-select-field-wrapper"
+            descClass="settings-metabox-description"
+            description={inputField.desc}
+            inputClass={inputField.key}
+            options={option}
+            value={value}
+            proSetting={isProSetting(inputField.proSetting)}
+            onChange={(data) => {
+              if (!proSettingChanged(inputField.proSetting)) {
+                settingChanged.current = true;
+                updateSetting(inputField.key, data.value)
+              }
+            }}
+          />
           break;
     
         }

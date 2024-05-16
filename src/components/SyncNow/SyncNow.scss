@@ -7,9 +7,10 @@ $color-active: #65438f;
 .section-synchronize-now {
   display: flex;
   gap: 1rem;
-  padding: 1.83rem 1.83rem;
+  padding-top: 0.75rem;
   flex-direction: column;
   width: fit-content;
+  margin-top: 0.5rem;
 
   .button-section {
     display: flex;
@@ -156,6 +157,13 @@ $color-active: #65438f;
         }
       }
     }
+  }
+
+  .btn-description{
+    font-style: italic;
+    color: rgba(114, 114, 117, 0.6);
+    font-size: 0.813rem;
+    line-height: 1.5714285714;
   }
 
   .details-status-row {
