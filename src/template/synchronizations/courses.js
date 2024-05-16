@@ -32,13 +32,13 @@ export default {
             options: [
                 {
                     key: "sync_courses",
-                    label: __( 'Moodle Courses', 'moowoodle' ),
+                    label: __( 'Course categories', 'moowoodle' ),
                     hints: __("This function will retrieve all Moodle course data and synchronize it with the courses listed in WordPress.", 'moowoodle'),
                     value: "sync_courses",
                 },
                 {
                     key: "sync_courses_category",
-                    label: __( 'Moodle Course Categories', 'moowoodle' ),
+                    label: __( 'Course SKU', 'moowoodle' ),
                     hints: __("This feature will scan the entire Moodle course category structure and synchronize it with the WordPress category listings.", 'moowoodle'),
                     value: "sync_courses_category",
                 },
@@ -58,7 +58,7 @@ export default {
         },
         {
             key: "course_schedule_interval",
-            type: "select",
+            type: "select-custom-radio",
             desc: __("Select Option For Course Synchronization Schedule Interval.", 'moowoodle'),
             label: __("Course Synchronization Schedule Interval", 'moowoodle'),
             options: [
@@ -94,6 +94,11 @@ export default {
                 }
             ],
             proSetting: true,
+        },
+        {
+            key: 'separator_content',
+            type: 'section',
+            label: "",
         },
         {
             key: "course_sync_action",

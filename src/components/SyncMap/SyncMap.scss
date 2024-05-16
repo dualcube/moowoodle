@@ -10,7 +10,7 @@
         display: flex;
         align-content: center;
         justify-content: flex-start;
-        gap: 0.25rem;
+        gap: 0.5rem;
         flex-wrap: wrap;
 
         select{
@@ -22,6 +22,13 @@
             &:active, &:focus{
                 box-shadow: none;
             }
+        }
+
+        .connection-icon{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
         }
 
         .remove-mapping{
@@ -48,6 +55,11 @@
                 }
             }
         }
+    }
+
+    .add-mapping-container{
+        min-width: 130px;
+        position: relative;
     }
 
     .add-mapping{
