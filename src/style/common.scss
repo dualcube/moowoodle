@@ -262,3 +262,19 @@ span.admin-pro-tag{
     top: 26% !important;
   }
 }
+
+.dynamic-fields-wrapper{
+  .dynamic-form {
+    .form-group {
+      .settings-input-content {
+        .toggle-checkbox-header{
+          margin: 0;
+          
+          .toggle-checkbox-content {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}

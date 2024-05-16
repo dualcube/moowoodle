@@ -1,0 +1,77 @@
+.sync-map-container{
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    
+    .map-content-wrapper{
+        display: flex;
+        align-content: center;
+        justify-content: flex-start;
+        gap: 0.25rem;
+        flex-wrap: wrap;
+
+        select{
+            background-color: transparent !important;
+            border: 0.115rem solid rgba(0, 0, 0, 0.125) !important;
+            border-radius: 0.25rem !important;
+            padding: 0.125rem 1.5rem 0.15rem 0.5rem;
+
+            &:active, &:focus{
+                box-shadow: none;
+            }
+        }
+
+        .remove-mapping{
+            padding: 8px 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            background: #e35047;
+            justify-content: space-between;
+            border-radius: 0.25rem;
+            color: white;
+            gap: 0.75rem;
+            transition: all 0.3s linear;
+
+            .icon{
+                display: flex;
+                align-items: center;
+                margin-top: 2px;
+
+                svg{
+                    width: 11px;
+                    height: 11px;
+                    fill: #fff;
+                }
+            }
+        }
+    }
+
+    .add-mapping{
+        padding: 8px 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        background: #65438f;
+        justify-content: space-between;
+        border-radius: 0.25rem;
+        color: white;
+        gap: 0.75rem;
+        transition: all 0.3s linear;
+
+        .icon{
+            display: flex;
+            align-items: center;
+            margin-top: 2px;
+
+            svg{
+                width: 13px;
+                height: 13px;
+                fill: #fff;
+            }
+        }
+    }
+}
