@@ -12,8 +12,8 @@ export default {
         {
             key: "moowoodle_sso_enable",
             type: "checkbox",
-            desc: __("Single Sign On", 'moowoodle'),
-            label: __('If enabled Moodle user\'s will login by WordPress user', 'moowoodle'),
+            desc: __("Enabling this option allows users to access Moodle courses directly, bypassing the need for login ", 'moowoodle'),
+            label: __('Single Sign On', 'moowoodle'),
             options: [
                 {
                     key: "moowoodle_sso_enable",

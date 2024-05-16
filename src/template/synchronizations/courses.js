@@ -21,7 +21,6 @@ export default {
                     value: "moodle_to_wordpress",
                 }
             ],
-            proSetting: true,
         },
         {
             key: "sync-course-options",
