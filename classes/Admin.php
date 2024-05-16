@@ -62,6 +62,7 @@ class Admin {
 			}
 
 			add_submenu_page(
+<<<<<<< HEAD
                 'moowoodle',
                 $submenu['name'],
                 "<span style='position: relative; display: block; width: 100%;' class='admin-menu'>" . $submenu['name'] . "</span>",
@@ -69,6 +70,15 @@ class Admin {
                 'moowoodle#&tab=' . $slug . $subtab,
                 '_-return_null'
             );
+=======
+				'moowoodle',
+				$submenu['name'],
+				"<span class='admin-menu'>" . $submenu['name'] . "</span>",
+				'manage_options',
+				'moowoodle#&tab=' . $slug . $subtab,
+				'_-return_null'
+			);
+>>>>>>> 5d2a84173bc3bc0f14d9ebcbb32bf0f73278f54b
 		}
 
 		// Register upgrade to pro submenu page.

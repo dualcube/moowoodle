@@ -19773,7 +19773,7 @@ function Course() {
    * @param {*} rowsPerPage 
    * @param {*} currentPage 
    */
-  function requestData(rowsPerPage = 10, currentPage = 1) {
+  function requestData(rowsPerPage = 10, currentPage = 1, courseField = '', productField = '', catagoryField = '', shortnameField = '') {
     //Fetch the data to show in the table
     (0,axios__WEBPACK_IMPORTED_MODULE_6__["default"])({
       method: "post",
@@ -19783,10 +19783,13 @@ function Course() {
       },
       data: {
         page: currentPage,
-        perpage: rowsPerPage
+        perpage: rowsPerPage,
+        course: courseField,
+        product: productField,
+        catagory: catagoryField,
+        shortname: shortnameField
       }
     }).then(response => {
-      // const data = JSON.parse(response.data);
       setData(response.data);
     });
   }
@@ -19798,9 +19801,69 @@ function Course() {
    * @param {*} filterData 
    */
   const requestApiForData = (rowsPerPage, currentPage, filterData = {}) => {
-    requestData(rowsPerPage, currentPage);
+    requestData(rowsPerPage, currentPage, filterData?.courseField, filterData?.productField, filterData?.catagoryField, filterData?.shortnameField);
   };
-
+  const realtimeFilter = [{
+    name: "courseField",
+    render: (updateFilter, filterValue) => {
+      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "admin-header-search-section"
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
+        name: "courseField",
+        onChange: e => updateFilter(e.target.name, e.target.value),
+        value: filterValue || ""
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: ""
+      }, "Courses"), Object.entries(courses).map(([courseId, courseName]) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: courseId
+      }, courseName)))));
+    }
+  }, {
+    name: "productField",
+    render: (updateFilter, filterValue) => {
+      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "admin-header-search-section"
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
+        name: "productField",
+        onChange: e => updateFilter(e.target.name, e.target.value),
+        value: filterValue || ""
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: ""
+      }, "Products"), Object.entries(products).map(([productId, productName]) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: productId
+      }, productName)))));
+    }
+  }, {
+    name: "catagoryField",
+    render: (updateFilter, filterValue) => {
+      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "admin-header-search-section"
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
+        name: "catagoryField",
+        onChange: e => updateFilter(e.target.name, e.target.value),
+        value: filterValue || ""
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: ""
+      }, "Category"), Object.entries(category).map(([categoryId, categoryName]) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: categoryId
+      }, categoryName)))));
+    }
+  }, {
+    name: "shortnameField",
+    render: (updateFilter, filterValue) => {
+      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "admin-header-search-section"
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
+        name: "shortnameField",
+        onChange: e => updateFilter(e.target.name, e.target.value),
+        value: filterValue || ""
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: ""
+      }, "Short Name"), Object.entries(courses).map(([courseId, courseName]) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: courseId
+      }, courseName)))));
+    }
+  }];
   /**
    * Handle single row action
    * @param {*} actionName 
@@ -19923,7 +19986,7 @@ function Course() {
       title: 'Enrolled Users'
     }, row.enroled_user)
   }, {
-    name: __('Date', 'moowoodle'),
+    name: __('Course Duration', 'moowoodle'),
     cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, {
       title: 'Date'
     }, row.date)
@@ -19977,9 +20040,9 @@ function Course() {
     className: "course-container-wrapper"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "admin-page-title"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, __("All Course", "moowoodle"))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, __("All Courses", "moowoodle"))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "course-bulk-action"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, __('Select bulk action')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
     name: "action",
     ref: bulkSelectRef
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
@@ -20003,7 +20066,8 @@ function Course() {
     defaultTotalRows: totalRows,
     perPageOption: [10, 25, 50],
     selectable: true,
-    handleSelect: handleRowSelect
+    handleSelect: handleRowSelect,
+    realtimeFilter: realtimeFilter
   })));
 }
 
@@ -21463,8 +21527,7 @@ __webpack_require__.r(__webpack_exports__);
     options: [{
       key: "moowoodle_create_user_custom_mail",
       value: "moowoodle_create_user_custom_mail"
-    }],
-    proSetting: true
+    }]
   }]
 });
 
