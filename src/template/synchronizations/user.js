@@ -24,7 +24,7 @@ export default {
         },
         {
             key: "sync-user-options",
-            type: "checkbox-default",
+            type: "sync_map",
             desc: __("Define the user profile information mapping between WordPress and Moodle. Add multiple rows above to define all the profile data you wish to map. Any remaining profile field will be excluded from the synchronization process.", 'moowoodle'),
             label: __("Profile Information Mapping", 'moowoodle'),
             select_deselect: true,

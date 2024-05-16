@@ -14,6 +14,7 @@ import ConnectButton from "../../ConnectButton/ConnectButton";
 import Log from "../../Log/Log";
 import SSOKey from "../../SSOKey/SSOKey";
 import SyncNow from "../../SyncNow/SyncNow";
+import SyncMap from "../../SyncMap/SyncMap";
 
 // Variable for controll coldown effect submit time
 const PENALTY  = 10;
@@ -665,7 +666,11 @@ const DynamicForm = (props) => {
             proSettingChanged={proSettingChanged}
           />
           break;
-
+        
+        case "sync_map":
+          input = <SyncMap />
+          break;
+        
         case "testconnection":
           input = <ConnectButton />
           break;
