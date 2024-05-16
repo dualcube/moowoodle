@@ -17,6 +17,6 @@ define( 'MOOWOODLE_LOGS', ( trailingslashit( wp_upload_dir(null, false)['basedir
 
 define( 'MOOWOODLE_PLUGIN_URL', trailingslashit( plugins_url( '', __FILE__ ) ) );
 define( 'MOOWOODLE_PRO_ADV', ! defined( 'MOOWOODLE_PRO_PLUGIN_TOKEN' ) );
-define( 'MOOWOOLE_PRO_STICKER', MOOWOODLE_PRO_ADV ? '<span class="mw-pro-tag" style="font-size: 0.5rem; background: #e35047; padding: 0.125rem 0.5rem; color: #F9F8FB; font-weight: 700; line-height: 1.1; position: absolute; margin-left: 0.25rem; border-radius: 2rem 0; right: 0.25rem; top: 2.75rem;">Pro</span>' : '' );
+define( 'MOOWOOLE_PRO_STICKER', MOOWOODLE_PRO_ADV ? '<span class="mw-pro-tag" style="font-size: 0.5rem; background: #e35047; padding: 0.125rem 0.5rem; color: #F9F8FB; font-weight: 700; line-height: 1.1; position: absolute; border-radius: 2rem 0; right: -0.75rem; top: 50%; transform: translateY(-50%)">Pro</span>' : '' );
 
 define( 'MOOWOODLE_SCRIPT_DEBUG', true );

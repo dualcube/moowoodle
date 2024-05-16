@@ -100,7 +100,7 @@ export default {
             label: "",
         },
         {
-            key: "course_sync_action",
+            key: "product_sync_option",
             type: "checkbox-default",
             desc: __("Action Required", 'moowoodle'),
             label: __("Action Required", 'moowoodle'),

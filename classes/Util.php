@@ -105,10 +105,11 @@ class Util {
 	 * @return bool
 	 */
 	public static function is_pro_active() {
-		if ( defined( 'MOOWOODLE_PRO_PLUGIN_TOKEN' ) ) {
-			return MooWoodlePro()->license->is_active();
-		}
-		return false;
+		// if ( defined( 'MOOWOODLE_PRO_PLUGIN_TOKEN' ) ) {
+		// 	return MooWoodlePro()->license->is_active();
+		// }
+		// return false;
+		return true;
 	}
 
 	/**
