@@ -56,10 +56,6 @@ export default function Course() {
     function requestData(
         rowsPerPage = 10,
         currentPage = 1,
-        courseField = '',
-        productField = '',
-        catagoryField = '',
-        shortnameField = '',
     ) {
         //Fetch the data to show in the table
         axios({
@@ -69,12 +65,9 @@ export default function Course() {
             data: {
                 page: currentPage,
                 perpage: rowsPerPage,
-                course: courseField,
-                product: productField,
-                catagory: catagoryField,
-                shortname: shortnameField
             },
         }).then((response) => {
+            // const data = JSON.parse(response.data);
             setData(response.data);
         });
     }
@@ -89,100 +82,9 @@ export default function Course() {
         requestData(
             rowsPerPage,
             currentPage,
-            filterData?.courseField,
-            filterData?.productField,
-            filterData?.catagoryField,
-            filterData?.shortnameField
         );
     };
 
-    const realtimeFilter = [		
-		{
-			name: "courseField",
-			render: (updateFilter, filterValue) => {
-			return (
-			<>
-				<div className="admin-header-search-section">
-				<select
-					name="courseField"
-					onChange={(e) => updateFilter(e.target.name, e.target.value)}
-					value={filterValue || ""}
-				>
-					<option value="">Courses</option>
-					{Object.entries(courses).map(([courseId, courseName]) => (
-						<option value={courseId}>{courseName}</option>
-					))}
-				</select>
-				</div>
-			</>
-			);
-			},
-		},
-        {
-			name: "productField",
-			render: (updateFilter, filterValue) => {
-			return (
-			<>
-				<div className="admin-header-search-section">
-				<select
-					name="productField"
-					onChange={(e) => updateFilter(e.target.name, e.target.value)}
-					value={filterValue || ""}
-				>
-					<option value="">Products</option>
-					{Object.entries(products).map(([productId, productName]) => (
-						<option value={productId}>{productName}</option>
-					))}
-				</select>
-				</div>
-			</>
-			);
-			},
-		},
-        {
-			name: "catagoryField",
-			render: (updateFilter, filterValue) => {
-			return (
-			<>
-				<div className="admin-header-search-section">
-				<select
-					name="catagoryField"
-					onChange={(e) => updateFilter(e.target.name, e.target.value)}
-					value={filterValue || ""}
-				>
-					<option value="">Category</option>
-					{Object.entries(category).map(([categoryId, categoryName]) => (
-						<option value={categoryId}>{categoryName}</option>
-					))}
-				</select>
-				</div>
-			</>
-			);
-			},
-		},
-        {
-			name: "shortnameField",
-			render: (updateFilter, filterValue) => {
-			return (
-			<>
-				<div className="admin-header-search-section">
-				<select
-					name="shortnameField"
-					onChange={(e) => updateFilter(e.target.name, e.target.value)}
-					value={filterValue || ""}
-				>
-					<option value="">Short Name</option>
-					{Object.entries(courses).map(([courseId, courseName]) => (
-						<option value={courseId}>{courseName}</option>
-					))}
-				</select>
-				</div>
-			</>
-			);
-			},
-		},
-		
-	  ];
     /**
      * Handle single row action
      * @param {*} actionName 
@@ -315,7 +217,7 @@ export default function Course() {
             )
         },
         {
-            name: __('Course Duration', 'moowoodle'),
+            name: __('Date', 'moowoodle'),
             cell: (row) => (
                 <TableCell title={'Date'}>
                     { row.date }
@@ -398,9 +300,12 @@ export default function Course() {
             (
                 <div className="course-container-wrapper">
                     <div className="admin-page-title">
-                        <p>{__("All Courses", "moowoodle")}</p>
+                        <p>{__("All Course", "moowoodle")}</p>
                     </div>
                     <div className="course-bulk-action">
+                        <label>
+                            { __( 'Select bulk action' ) }
+                        </label>
                         <select name="action" ref={bulkSelectRef} >
                             <option value="">{ __( 'Bulk Actions' ) }</option>
                             <option value="sync_courses">{ __( 'Sync Course' ) }</option>
@@ -425,7 +330,6 @@ export default function Course() {
                                 perPageOption={[10, 25, 50]}
                                 selectable={true}
                                 handleSelect={handleRowSelect}
-                                realtimeFilter={realtimeFilter}
                             />
                         }
                     </div>
