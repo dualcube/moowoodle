@@ -15,6 +15,8 @@ import Log from "../../Log/Log";
 import SSOKey from "../../SSOKey/SSOKey";
 import SyncNow from "../../SyncNow/SyncNow";
 import SyncMap from "../../SyncMap/SyncMap";
+import ScheduleInterval from "../../ScheduleInterval/ScheduleInterval";
+import CheckboxCustomImg from "../../CheckboxCustomImg/CheckboxCustomImg";
 
 // Variable for controll coldown effect submit time
 const PENALTY  = 10;
@@ -728,13 +730,13 @@ const DynamicForm = (props) => {
           break;
 
           case "checkbox-custom-img":
-            input = <CustomInput.CheckboxCustomImg 
+            input = <CheckboxCustomImg 
           />
           break;
 
           case "select-custom-radio": 
             let option = inputField.options;
-            input = <CustomInput.ScheduleInterval 
+            input = <ScheduleInterval 
             wrapperClass="form-select-field-wrapper"
             descClass="settings-metabox-description"
             description={inputField.desc}

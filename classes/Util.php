@@ -105,7 +105,7 @@ class Util {
 	 * @return bool
 	 */
 	public static function is_pro_active() {
-		return true;
+		return false;
 	}
 
 	/**
