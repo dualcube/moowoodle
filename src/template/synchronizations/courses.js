@@ -4,14 +4,14 @@ export default {
     id: "synchronize-course",
     priority: 20,
     name: __("Courses and Products", 'moowoodle'),
-    desc: __("Mapping courses to products, automatic & manual mode.", 'moowoodle'),
+    desc: __("fetch Moodle courses & generate products - Manual & Automatic mode.", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     modal: [
         {
             key: "course_sync_direction",
             type: "checkbox",
-            desc: __("This functionality allows you to synchronization Moodle courses with it's product in WordPress. <br><br>With the '<b>Course-to-Product Handling</b>' option, you have the ability to specify whether you want to create new products, update existing ones, or perform both actions. <br><br>Furthermore, through the '<b>Course Information Mapping</b>' feature, you gain the flexibility to define which specific course data gets imported from Moodle. By default we will fetch only the category of the product. ", 'moowoodle'),
+            desc: __("This functionality allows you to fetche  Moodle courses with it's product in WordPress. <br><br>With the '<b>Course-to-Product Handling</b>' option, you have the ability to specify whether you want to create new products, update existing ones, or perform both actions. <br><br>Furthermore, through the '<b>Course Information Mapping</b>' feature, you gain the flexibility to define which specific course data gets imported from Moodle. By default we will fetch only the category of the product. ", 'moowoodle'),
             label: __("Initiate synchronization", 'moowoodle'),
             options: [
                 {
@@ -61,11 +61,6 @@ export default {
             desc: __("Select pption for course synchronization schedule interval.", 'moowoodle'),
             label: __("Automatic synchronization frequency", 'moowoodle'),
             options: [
-                {
-                    key: "realtime",
-                    label: __("Realtime", 'moowoodle'),
-                    value: "realtime",
-                },
                 {
                     key: "hour",
                     label: __("Hourly", 'moowoodle'),

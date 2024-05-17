@@ -21706,7 +21706,7 @@ __webpack_require__.r(__webpack_exports__);
   id: 'support',
   priority: 60,
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Support", "woocommerce-stock-manager"),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Configure basic product manager settings.", "woocommerce-stock-manager"),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("More about MooWoodle.", "woocommerce-stock-manager"),
   icon: 'font-support',
   modal: []
 });
@@ -21731,13 +21731,13 @@ __webpack_require__.r(__webpack_exports__);
   id: "synchronize-course",
   priority: 20,
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Courses and Products", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Mapping courses to products, automatic & manual mode.", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("fetch Moodle courses & generate products - Manual & Automatic mode.", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   modal: [{
     key: "course_sync_direction",
     type: "checkbox",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This functionality allows you to synchronization Moodle courses with it's product in WordPress. <br><br>With the '<b>Course-to-Product Handling</b>' option, you have the ability to specify whether you want to create new products, update existing ones, or perform both actions. <br><br>Furthermore, through the '<b>Course Information Mapping</b>' feature, you gain the flexibility to define which specific course data gets imported from Moodle. By default we will fetch only the category of the product. ", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This functionality allows you to fetche  Moodle courses with it's product in WordPress. <br><br>With the '<b>Course-to-Product Handling</b>' option, you have the ability to specify whether you want to create new products, update existing ones, or perform both actions. <br><br>Furthermore, through the '<b>Course Information Mapping</b>' feature, you gain the flexibility to define which specific course data gets imported from Moodle. By default we will fetch only the category of the product. ", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Initiate synchronization", 'moowoodle'),
     options: [{
       key: "moodle_to_wordpress",
@@ -21778,10 +21778,6 @@ __webpack_require__.r(__webpack_exports__);
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select pption for course synchronization schedule interval.", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Automatic synchronization frequency", 'moowoodle'),
     options: [{
-      key: "realtime",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Realtime", 'moowoodle'),
-      value: "realtime"
-    }, {
       key: "hour",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Hourly", 'moowoodle'),
       value: "hour"
@@ -21858,14 +21854,14 @@ __webpack_require__.r(__webpack_exports__);
   id: "synchronize-user",
   priority: 10,
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Users", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Information management - manual & automatic mode", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Information management - Manual & Automatic mode", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   proDependent: true,
   modal: [{
     key: "update_moodle_user",
     type: "checkbox",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This allows you to sync user information between WordPress and Moodle sites at specified intervals. Select the "Sync Direction" to set the synchronization direction and use "Schedule" to define how frequently the synchronization process runs.', 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enableing this will start the synchornization between WordPress and Moodle sites at specified intervals (Default: daily). <br>Select the "Site-to-site data synchronization direction" to set the synchronization direction and use "<b>Automatic synchronization frequency</b>" to define how frequentl the synchronization process runs.', 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Initiate synchronization", 'moowoodle'),
     options: [{
       key: "update_moodle_user",
@@ -21960,7 +21956,7 @@ __webpack_require__.r(__webpack_exports__);
     key: "sync_user_btn",
     type: "syncbutton",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Manual synchronization mode", 'moowoodle'),
-    value: "Synchronize user profile now!!",
+    value: "Synchronize user profile now!! ",
     desc: "This will synchronize user accounts between WordPress and Moodle instantly according to the selected ‘Sync Direction’.",
     proSetting: true
   }]
