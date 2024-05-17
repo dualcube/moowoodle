@@ -20040,7 +20040,7 @@ function Course() {
     className: "course-container-wrapper"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "admin-page-title"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, __("All Courses", "moowoodle"))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, __("All Courses", "moowoodle")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "course-bulk-action"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
     name: "action",
@@ -20056,7 +20056,7 @@ function Course() {
   }, __('Update Product'))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     name: "bulk-action-apply",
     onClick: handleBulkAction
-  }, __('Apply'))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, __('Apply')))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "admin-table-wrapper"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__["default"], {
     data: data,
@@ -21500,7 +21500,7 @@ __webpack_require__.r(__webpack_exports__);
   modal: [{
     key: "start_end_date",
     type: "checkbox",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Enable this to allow the display of the course duration on the shop page', 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('When enabled, the course duration, such as the start and end dates, will be visible on the shop page.', 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Display course duration in Shop Page", 'moowoodle'),
     options: [{
       key: "start_end_date",
@@ -21510,7 +21510,7 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "my_courses_priority",
     type: "select",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Choose the location within the 'My Account' page where the 'My Course' menu will appear.", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("My Courses' menu will appear beneath the selected menu on the 'My Account' page.", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Endpoint menu position - My Course", 'moowoodle'),
     options: Object.entries(appLocalizer.accountmenu).map(([key, name], index) => {
       return {
@@ -21522,8 +21522,8 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "moowoodle_create_user_custom_mail",
     type: "checkbox",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`If this option is enabled, default WordPress new user registration emails will be disabled for both admin and user. Our custom New User Registration email will be sent to the newly registered user. You can personalize the content of the MooWoodle New User email from ${appLocalizer.woocom_new_user_mail}`, 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Customize New User Registration Email", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`If this option is enabled, default WordPress new user registration emails will be disabled for both admin and user. You can personalize the content of the MooWoodle New User email from ${appLocalizer.woocom_new_user_mail}`, 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Disable New User Registration Email", 'moowoodle'),
     options: [{
       key: "moowoodle_create_user_custom_mail",
       value: "moowoodle_create_user_custom_mail"
@@ -21551,7 +21551,7 @@ __webpack_require__.r(__webpack_exports__);
   id: "general",
   priority: 10,
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("General", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Configure Moodle connection with WordPress", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Effortlessly Configure and Verify Your WordPress-Moodle Connection.", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   modal: [{
@@ -21576,8 +21576,8 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "moodle_timeout",
     type: "text",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('When WordPress connects to Moodle, communication delays may exceed server timeout settings. Adjust server timeout in second. ', 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Timeout", 'moowoodle')
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('When WordPress sends a request to the Moodle server for data, communication delays might exceed the server connection timeout. You can customize the timeout parameters by adjusting them here. The timeout duration is measured in seconds (Default is 5 seconds). ', 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Connection timeout", 'moowoodle')
   }]
 });
 
@@ -21601,14 +21601,14 @@ __webpack_require__.r(__webpack_exports__);
   id: 'log',
   priority: 50,
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Log", "moowoodle"),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Advance log", "moowoodle"),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Review all system logs and errors", "moowoodle"),
   icon: 'font-support',
   submitUrl: "save-moowoodle-setting",
   modal: [{
     key: "moowoodle_adv_log",
     type: "checkbox",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Advance Log", 'moowoodle'),
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('These setting will record all advanced error informations. Please don\'t Enable it if not required, because it will create a large log file.', 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Activating this option will log more detailed error information. Enable it only when essential, as it may result in a larger log file.', 'moowoodle'),
     options: [{
       key: "moowoodle_adv_log",
       value: "moowoodle_adv_log"
