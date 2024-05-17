@@ -146,7 +146,7 @@ class Admin {
 				'accountmenu' => $my_account_menu,
 				'log_url'     => get_site_url( null, str_replace( ABSPATH, '', MOOWOODLE_LOGS ) ),
 				'wc_email_url' => admin_url( '/admin.php?page=wc-settings&tab=email&section=enrollmentemail' ),
-				'moodle_tokens_url' =>  MooWoodle()->setting->get_setting( 'moodle_url' )
+				'moodle_site_url' =>  MooWoodle()->setting->get_setting( 'moodle_url' )
 			],
 		);
 	}

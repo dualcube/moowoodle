@@ -4,7 +4,7 @@ export default {
     id: "synchronize-user",
     priority: 10,
     name: __("Users", 'moowoodle'),
-    desc: __("Information management - manual & automatic mode", 'moowoodle'),
+    desc: __("Information management - Manual & Automatic mode", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     proDependent: true,
@@ -12,7 +12,7 @@ export default {
         {
             key: "update_moodle_user",
             type: "checkbox",
-            desc: __('This allows you to sync user information between WordPress and Moodle sites at specified intervals. Select the "Sync Direction" to set the synchronization direction and use "Schedule" to define how frequently the synchronization process runs.', 'moowoodle'),
+            desc: __('Enableing this will start the synchornization between WordPress and Moodle sites at specified intervals (Default: daily). <br>Select the "Site-to-site data synchronization direction" to set the synchronization direction and use "<b>Automatic synchronization frequency</b>" to define how frequentl the synchronization process runs.', 'moowoodle'),
             label: __("Initiate synchronization", 'moowoodle'),
             options: [
                 {
@@ -127,7 +127,7 @@ export default {
             key: "sync_user_btn",
             type: "syncbutton",
             label: __("Manual synchronization mode", 'moowoodle'),
-            value: "Synchronize user profile now!!",
+            value: "Synchronize user profile now!! ",
             desc: "This will synchronize user accounts between WordPress and Moodle instantly according to the selected ‘Sync Direction’.",
             proSetting: true,
         },

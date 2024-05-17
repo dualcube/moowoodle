@@ -25,7 +25,7 @@ export default {
         {
             key: "moowoodle_sso_secret_key",
             type: "sso_key",
-            desc: __(`Enter SSO Secret Key it should be same as  ${ appLocalizer.moodle_sso_url } SSO Secret Key`, 'moowoodle'),
+            desc: __(`Generate a unique SSO secret key (must be at least 8 characters) and copy it. Then, go to your Moodle site and paste the copied SSO key <a href="${ appLocalizer.moodle_site_url }admin/settings.php?section=authsettingmoowoodle" target="_blank">there</a>.`, 'moowoodle'),
             label: __("SSO Secret Key", 'moowoodle'),
             proSetting: true,
         }

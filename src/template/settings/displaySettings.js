@@ -24,7 +24,7 @@ export default {
         {
             key: "my_courses_priority",
             type: "select",
-            desc: __("My Courses' menu will appear beneath the selected menu on the 'My Account' page.", 'moowoodle'),
+            desc: __("'<b>My Course</b>' menu will appear beneath the selected menu on the WooCommerce 'My Account' page of customer dashboard.", 'moowoodle'),
             label: __("Endpoint menu position - My Course", 'moowoodle'),
             options: Object.entries(appLocalizer.accountmenu).map(( [key, name ], index) => {
                 return {
@@ -37,8 +37,8 @@ export default {
         {
             key: "moowoodle_create_user_custom_mail",
             type: "checkbox",
-            desc: __(`If this option is enabled, default WordPress new user registration emails will be disabled for both admin and user. You can personalize the content of the MooWoodle New User email from  <a href="${appLocalizer.wc_email_url}" target="_blank">Here</a>`, 'moowoodle'),
-            label: __("Disable New User Registration Email", 'moowoodle'),
+            desc: __(`If enabled, default WordPress new user registration emails will be disabled for both admin and user. <br>You can personalize the content of the MooWoodle New User email from  <a href="${appLocalizer.wc_email_url}" target="_blank">here.</a>`, 'moowoodle'),
+            label: __("Disable new user registration email", 'moowoodle'),
             options: [
                 {
                     key: "moowoodle_create_user_custom_mail",

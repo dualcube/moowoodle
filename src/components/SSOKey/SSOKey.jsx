@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import './SSOKey.scss';
 
 const SSOKey = (props) => {
-    const { value, proSetting, onChange } = props;
+    const { value, proSetting, onChange, description } = props;
 
     const inputRef = useRef();
     const [ copied, setCopied ] = useState( false );
@@ -41,7 +41,8 @@ const SSOKey = (props) => {
     }
 
     return (
-        <div className="sso-key-section">
+        <>
+            <div className="sso-key-section">
             <div className="input-section">
                 <input
                     type="text"
@@ -104,6 +105,8 @@ const SSOKey = (props) => {
                 proSetting && <span className="admin-pro-tag">pro</span>
             }
         </div>
+        <p className="settings-metabox-description" dangerouslySetInnerHTML={{__html: description}}></p>
+        </>
     );
 }
 

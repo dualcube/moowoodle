@@ -687,6 +687,7 @@ const DynamicForm = (props) => {
         case "sso_key":
           input = <SSOKey
             value={value}
+            description={inputField.desc}
             proSetting={isProSetting(inputField.proSetting)}
             onChange={( value ) => {
               if (!proSettingChanged(inputField.proSetting) && true) {
