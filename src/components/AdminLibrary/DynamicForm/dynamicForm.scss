@@ -118,6 +118,10 @@ $color-active: #65438f;
           color: rgba(114, 114, 117, 0.6);
           font-size: 0.813rem;
           line-height: 1.5714285714;
+
+          p{
+            margin-bottom: 0.5rem;
+          }
         }
 
         .checkbox-description{
