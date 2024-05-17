@@ -4,7 +4,7 @@ export default {
     id: "synchronize-course",
     priority: 20,
     name: __("Courses and Products", 'moowoodle'),
-    desc: __("Mapping of Moodle Courses to Products, Automatic/Manual.", 'moowoodle'),
+    desc: __("Mapping of Moodle courses to products, automatic/manual.", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     modal: [

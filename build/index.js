@@ -21708,7 +21708,7 @@ __webpack_require__.r(__webpack_exports__);
   id: "synchronize-course",
   priority: 20,
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Courses and Products", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Mapping of Moodle Courses to Products, Automatic/Manual.", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Mapping of Moodle courses to products, automatic/manual.", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   modal: [{
