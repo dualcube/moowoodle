@@ -56,28 +56,12 @@ class Product {
         $product_sync_setting = MooWoodle()->setting->get_setting( 'product_sync_option' );
         $product_sync_setting = is_array( $product_sync_setting ) ? $product_sync_setting : [];
 
-<<<<<<< HEAD
         $create_product = ( bool ) array_intersect( $product_sync_setting, [ 'create_update', 'create' ] );
         $update_product = ( bool ) array_intersect( $product_sync_setting, [ 'create_update', 'update' ] );
         // None of the option is choosen.
         if ( ! $create_product && ! $update_product ) return;
         foreach ( $courses as $course ) {
             $product_id = self::update_product( $course, $create_product );
-=======
-		// Manage setting of product sync option.
-		$product_sync_setting = MooWoodle()->setting->get_setting( 'product_sync_option' );
-		$product_sync_setting = is_array( $product_sync_setting ) ? $product_sync_setting : [];
-
-		$create_product = ( bool ) array_intersect( $product_sync_setting, [ 'create_update', 'create' ] );
-		$update_product = ( bool ) array_intersect( $product_sync_setting, [ 'create_update', 'update' ] );
-
-		// None of the option is choosen.
-		if ( ! $create_product && ! $update_product ) return;
-
-        foreach ( $courses as $course ) {
-            $product_id = self::update_product( $course, $create_product );
-
->>>>>>> 5d2a84173bc3bc0f14d9ebcbb32bf0f73278f54b
             if ( $product_id ) {
                 $updated_ids[] = $product_id;
             }
@@ -86,7 +70,6 @@ class Product {
         self::remove_exclude_ids( $updated_ids );
     }
     /**
-<<<<<<< HEAD
      * Update moodle product data in WordPress WooCommerce.
      * If product not exist create new product
      * @param array $course (moodle course data)
@@ -96,19 +79,6 @@ class Product {
     public static function update_product( $course, $fource_create = true ) {
         if ( empty( $course ) || $course[ 'format' ] == 'site' ) return 0;
         $product = self::get_product_from_moodle_course( $course[ 'id' ] );
-=======
-	 * Update moodle product data in WordPress WooCommerce.
-	 * If product not exist create new product
-	 * @param array $course (moodle course data)
-	 * @param bool $fource_create 
-	 * @return int course id
-	 */
-	public static function update_product( $course, $fource_create = true ) {
-		if ( empty( $course ) || $course[ 'format' ] == 'site' ) return 0;
-
-		$product = self::get_product_from_moodle_course( $course[ 'id' ] );
-
->>>>>>> 5d2a84173bc3bc0f14d9ebcbb32bf0f73278f54b
         // create a new product if not exist.
         if( ! $product && $fource_create ) {
             $product = new \WC_Product_Simple();
@@ -140,7 +110,6 @@ class Product {
         $product->update_meta_data( '_course_enddate', $course[ 'enddate' ] );
         $product->update_meta_data( 'moodle_course_id', $course[ 'id' ] );
         $product->update_meta_data( 'linked_course_id', $linked_course_id );
-<<<<<<< HEAD
         $product->set_status( 'publish' );
         $product->save();
         return $product->get_id();
@@ -151,20 +120,6 @@ class Product {
      * @return void
      */
     public static function remove_exclude_ids( $exclude_ids ) {
-=======
-		$product->set_status( 'publish' );
-		$product->save();
-
-		return $product->get_id();
-	}
-    
-	/**
-	 * Delete all the product which id is not prasent in $exclude_ids array.
-	 * @param array $exclude_ids (product ids)
-	 * @return void
-	 */
-	public static function remove_exclude_ids( $exclude_ids ) {
->>>>>>> 5d2a84173bc3bc0f14d9ebcbb32bf0f73278f54b
         // get all product except $exclude_ids array
         $product_ids = \wc_get_products([
             'exclude' => $exclude_ids,
@@ -175,16 +130,9 @@ class Product {
         foreach ( $product_ids as $product_id ) {
             $product = wc_get_product( $product_id );
             $product->set_status( 'draft' );
-<<<<<<< HEAD
             $product->save();
         }
     }
-=======
-			$product->save();
-		}
-	}
-
->>>>>>> 5d2a84173bc3bc0f14d9ebcbb32bf0f73278f54b
     /**
      * Add meta box panal.
      * @return void
