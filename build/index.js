@@ -20166,7 +20166,7 @@ const Enrollment = () => {
       method: "get",
       url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_3__.getApiLink)('all-courses')
     }).then(response => {
-      setCourses(response.data);
+      setCourses(response.data.courses);
     });
   }, []);
   const handleDateOpen = () => {
