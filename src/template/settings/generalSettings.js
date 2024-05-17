@@ -4,7 +4,7 @@ export default {
     id: "general",
     priority: 10,
     name: __("General", 'moowoodle'),
-    desc: __("Configure Moodle connection with WordPress", 'moowoodle'),
+    desc: __("Effortlessly Configure and Verify Your WordPress-Moodle Connection.", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     modal: [
@@ -34,8 +34,8 @@ export default {
         {
             key: "moodle_timeout",
             type: "text",
-            desc: __('When WordPress connects to Moodle, communication delays may exceed server timeout settings. Adjust server timeout in second. ', 'moowoodle'),
-            label: __("Timeout", 'moowoodle'),
+            desc: __('When WordPress sends a request to the Moodle server for data, communication delays might exceed the server connection timeout. You can customize the timeout parameters by adjusting them here. The timeout duration is measured in seconds (Default is 5 seconds). ', 'moowoodle'),
+            label: __("Connection timeout", 'moowoodle'),
         },
     ]
 };

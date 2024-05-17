@@ -11,7 +11,7 @@ export default {
         {
             key: "start_end_date",
             type: "checkbox",
-            desc: __('Enable this to allow the display of the course duration on the shop page', 'moowoodle'),
+            desc: __('When enabled, the course duration, such as the start and end dates, will be visible on the shop page.', 'moowoodle'),
             label: __("Display course duration in Shop Page", 'moowoodle'),
             options: [
                 {
@@ -24,7 +24,7 @@ export default {
         {
             key: "my_courses_priority",
             type: "select",
-            desc: __("Choose the location within the 'My Account' page where the 'My Course' menu will appear.", 'moowoodle'),
+            desc: __("My Courses' menu will appear beneath the selected menu on the 'My Account' page.", 'moowoodle'),
             label: __("Endpoint menu position - My Course", 'moowoodle'),
             options: Object.entries(appLocalizer.accountmenu).map(( [key, name ], index) => {
                 return {
@@ -37,8 +37,8 @@ export default {
         {
             key: "moowoodle_create_user_custom_mail",
             type: "checkbox",
-            desc: __(`If this option is enabled, default WordPress new user registration emails will be disabled for both admin and user. Our custom New User Registration email will be sent to the newly registered user. You can personalize the content of the MooWoodle New User email from ${ appLocalizer.woocom_new_user_mail }`, 'moowoodle'),
-            label: __("Customize New User Registration Email", 'moowoodle'),
+            desc: __(`If this option is enabled, default WordPress new user registration emails will be disabled for both admin and user. You can personalize the content of the MooWoodle New User email from ${ appLocalizer.woocom_new_user_mail }`, 'moowoodle'),
+            label: __("Disable New User Registration Email", 'moowoodle'),
             options: [
                 {
                     key: "moowoodle_create_user_custom_mail",
