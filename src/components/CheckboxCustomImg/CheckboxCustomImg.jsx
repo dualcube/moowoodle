@@ -3,7 +3,7 @@ import WordPress from "../../assets/images/WordPress.png";
 import Moodle from "../../assets/images/Moodle.png";
 import './CheckboxCustomImg.scss';
 
-const CheckboxCustomImg = () => {
+const CheckboxCustomImg = (props) => {
   return (
     <>
       <div className="custom-sync-section">
@@ -25,6 +25,9 @@ const CheckboxCustomImg = () => {
           </div>
           <p className="sync-label">Moodle to WordPress</p>
         </div>
+        {
+            props.proSetting && <span className="admin-pro-tag">pro</span>
+        }
       </div>
     </>
   );

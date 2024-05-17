@@ -19,7 +19,6 @@ const ScheduleInterval = ( props ) => {
 
   return (
     <>
-    {console.log(optionsData)}
 
     <div className='radio-buttons-container'>
         {optionsData.map((item, index)=>{
@@ -35,6 +34,9 @@ const ScheduleInterval = ( props ) => {
                 </>
             )
         })}
+        {
+            props.proSetting && <span className="admin-pro-tag">pro</span>
+        }
     </div>
     </>
   )

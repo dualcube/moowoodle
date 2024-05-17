@@ -100,6 +100,9 @@ const SSOKey = (props) => {
                     </button>
                 )
             }
+            {
+                proSetting && <span className="admin-pro-tag">pro</span>
+            }
         </div>
     );
 }

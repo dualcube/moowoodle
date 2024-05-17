@@ -7,6 +7,7 @@ import "./SyncNow.scss";
 
 const SyncNow = (props) => {
   const { buttonKey, proSetting, proSettingChanged, value, description } = props;
+  console.log(proSetting)
   const [modelOpen, setModelOpen] = useState(false);
   const [syncCourseStart, setSyncCourseStart] = useState(false);
   const [syncUserStart, setSyncUserStart] = useState(false);
@@ -98,6 +99,9 @@ const SyncNow = (props) => {
         </div>
 
         <p className="btn-description">{description}</p>
+        {
+            proSetting && <span className="admin-pro-tag">pro</span>
+        }
 
         {syncStatus.length > 0 && (
           <>
@@ -124,6 +128,7 @@ const SyncNow = (props) => {
             })}
           </>
         )}
+        
       </div>
     </>
   );

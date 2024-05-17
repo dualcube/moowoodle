@@ -34,12 +34,12 @@ class Admin {
 	public function add_submenu() {
 		// Array contain moowoodle submenu
 		$submenus = [
-			"all-courses" => [
-				'name' 	 => __("All Courses", 'moowoodle'),
+			"courses" => [
+				'name' 	 => __("Courses", 'moowoodle'),
 				'subtab' => ''
 			],
-			"manage-enrolment" => [
-				'name'   => __("Manage Enrolment", 'moowoodle') . MOOWOOLE_PRO_STICKER,
+			"enrolments" => [
+				'name'   => __("Enrolments", 'moowoodle') . MOOWOOLE_PRO_STICKER,
 				'subtab' => ''
 			],
 			"settings" => [
@@ -146,6 +146,7 @@ class Admin {
 				'accountmenu' => $my_account_menu,
 				'log_url'     => get_site_url( null, str_replace( ABSPATH, '', MOOWOODLE_LOGS ) ),
 				'wc_email_url' => admin_url( '/admin.php?page=wc-settings&tab=email&section=enrollmentemail' ),
+				'moodle_tokens_url' =>  MooWoodle()->setting->get_setting( 'moodle_url' )
 			],
 		);
 	}

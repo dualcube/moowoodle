@@ -66,7 +66,7 @@ const Enrollment = () => {
 			method: "get",
 			url: getApiLink('all-courses'),
 		}).then((response) => {
-			setCourses(response.data)
+			setCourses(response.data.courses)
 		});
 	}, []);
 

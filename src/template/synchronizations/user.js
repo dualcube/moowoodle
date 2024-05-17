@@ -20,7 +20,8 @@ export default {
                     label:  __('', 'moowoodle'), 
                     value: "update_moodle_user"
                 }
-            ]
+            ],
+            proSetting: true,
         },
         {
             key: "sync-user-options",
@@ -127,7 +128,8 @@ export default {
             type: "syncbutton",
             label: __("Manual synchronization mode", 'moowoodle'),
             value: "Synchronize user profile now!!",
-            desc: "This will synchronize user accounts between WordPress and Moodle instantly according to the selected ‘Sync Direction’."
+            desc: "This will synchronize user accounts between WordPress and Moodle instantly according to the selected ‘Sync Direction’.",
+            proSetting: true,
         },
     ]
 };
