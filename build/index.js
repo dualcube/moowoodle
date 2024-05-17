@@ -17218,6 +17218,7 @@ const DynamicForm = props => {
           break;
         case "sync_map":
           input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SyncMap_SyncMap__WEBPACK_IMPORTED_MODULE_11__["default"], {
+            description: inputField.desc,
             proSetting: isProSetting(inputField.proSetting)
           });
           break;
@@ -19738,6 +19739,7 @@ function Course() {
   const [courses, setCourses] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [products, setProducts] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [category, setCategory] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const [shortName, setShortName] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [selectedRows, setSelectedRows] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [totalRows, setTotalRows] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
   const bulkSelectRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
@@ -19766,6 +19768,14 @@ function Course() {
       setCategory(response.data);
     });
   }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    (0,axios__WEBPACK_IMPORTED_MODULE_6__["default"])({
+      method: "get",
+      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('all-short-name')
+    }).then(response => {
+      setShortName(response.data);
+    });
+  }, []);
 
   /**
    * Function that request data from backend
@@ -19776,13 +19786,13 @@ function Course() {
     //Fetch the data to show in the table
     (0,axios__WEBPACK_IMPORTED_MODULE_6__["default"])({
       method: "post",
-      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('courses'),
+      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('get-courses'),
       headers: {
         "X-WP-Nonce": appLocalizer.nonce
       },
       data: {
         page: currentPage,
-        perpage: rowsPerPage,
+        row: rowsPerPage,
         course: courseField,
         product: productField,
         catagory: catagoryField,
@@ -19858,9 +19868,9 @@ function Course() {
         value: filterValue || ""
       }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
         value: ""
-      }, "Short Name"), Object.entries(courses).map(([courseId, courseName]) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-        value: courseId
-      }, courseName)))));
+      }, "Short Name"), Object.entries(shortName).map(([shortNameId, shortNameValue]) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: shortNameValue
+      }, shortNameValue)))));
     }
   }];
   /**
@@ -19934,7 +19944,7 @@ function Course() {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     (0,axios__WEBPACK_IMPORTED_MODULE_6__["default"])({
       method: "post",
-      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('courses'),
+      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('get-courses'),
       headers: {
         "X-WP-Nonce": appLocalizer.nonce
       },
@@ -19959,6 +19969,11 @@ function Course() {
       href: row.moodle_url,
       alt: "moowoodle_url"
     }, row.course_name)),
+    sortable: true
+  }, {
+    name: __('Short Name', 'moowoodle'),
+    selector: row => row.course_short_name,
+    cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, null, row.course_short_name),
     sortable: true
   }, {
     name: __('Product Name', 'moowoodle'),
@@ -20041,6 +20056,14 @@ function Course() {
     className: "admin-page-title"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, __("All Courses", "moowoodle")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "course-bulk-action"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "search-container"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "text",
+    class: "search-box",
+    placeholder: "Search..."
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "bulk-action-wrapper"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
     name: "action",
     ref: bulkSelectRef
@@ -20055,7 +20078,7 @@ function Course() {
   }, __('Update Product'))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     name: "bulk-action-apply",
     onClick: handleBulkAction
-  }, __('Apply')))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, __('Apply'))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "admin-table-wrapper"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__["default"], {
     data: data,
@@ -20840,7 +20863,8 @@ const SyncMap = props => {
   const {
     value,
     onChange,
-    proSetting
+    proSetting,
+    description
   } = props;
   const wordpressSyncFields = ['firstname', 'lastname', 'username', 'password'];
   const moodleSyncFields = ['firstname', 'lastname', 'username', 'password'];
@@ -20979,7 +21003,9 @@ const SyncMap = props => {
     d: "M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"
   })))), proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     class: "admin-pro-tag"
-  }, "pro")));
+  }, "pro")), description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    className: "settings-metabox-description"
+  }, description));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SyncMap);
 
@@ -21518,13 +21544,8 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "moowoodle_create_user_custom_mail",
     type: "checkbox",
-<<<<<<< HEAD
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`If this option is enabled, default WordPress new user registration emails will be disabled for both admin and user. You can personalize the content of the MooWoodle New User email from ${appLocalizer.woocom_new_user_mail}`, 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Disable New User Registration Email", 'moowoodle'),
-=======
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`If this option is enabled, default WordPress new user registration emails will be disabled for both admin and user. Our custom New User Registration email will be sent to the newly registered user. You can personalize the content of the MooWoodle New User email from <a href=${appLocalizer.wc_email_url}>here</a>`, 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Customize New User Registration Email", 'moowoodle'),
->>>>>>> b925ea2d2137e9c4d04fd03ee8bb84f62ed5534e
     options: [{
       key: "moowoodle_create_user_custom_mail",
       value: "moowoodle_create_user_custom_mail"

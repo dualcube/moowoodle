@@ -2507,24 +2507,38 @@ span.stock-manager-pro-tag {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 0.75rem;
   align-items: center;
 }
-.course-container-wrapper .course-bulk-action label {
+.course-container-wrapper .course-bulk-action .search-container {
+  flex-grow: 1;
+}
+.course-container-wrapper .course-bulk-action .search-container input {
+  background-color: transparent;
+  width: 100%;
+  outline: none;
+  border: 0.115rem solid rgba(0, 0, 0, 0.125);
+  min-height: 38px;
+}
+.course-container-wrapper .course-bulk-action .search-container input:focus, .course-container-wrapper .course-bulk-action .search-container input:active {
+  box-shadow: none;
+}
+.course-container-wrapper .course-bulk-action .bulk-action-wrapper {
+  flex-grow: 1;
   display: flex;
+  gap: 0.5rem;
   align-items: center;
-  justify-content: flex-start;
 }
-.course-container-wrapper .course-bulk-action select {
+.course-container-wrapper .course-bulk-action .bulk-action-wrapper select {
   background-color: transparent !important;
   border: 0.115rem solid rgba(0, 0, 0, 0.125) !important;
   border-radius: 0.25rem !important;
   padding: 0.125rem 1.5rem 0.15rem 0.5rem;
+  width: 100%;
 }
-.course-container-wrapper .course-bulk-action select:hover, .course-container-wrapper .course-bulk-action select:active {
+.course-container-wrapper .course-bulk-action .bulk-action-wrapper select:hover, .course-container-wrapper .course-bulk-action .bulk-action-wrapper select:active {
   box-shadow: none;
 }
-.course-container-wrapper .course-bulk-action button {
+.course-container-wrapper .course-bulk-action .bulk-action-wrapper button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2563,10 +2577,10 @@ span.stock-manager-pro-tag {
 .course-container-wrapper .rdt_Table a {
   color: rgba(0, 0, 0, 0.87);
 }
-.course-container-wrapper .rdt_Table .rdt_TableHead .rdt_TableHeadRow .rdt_TableCol:nth-child(6) {
+.course-container-wrapper .rdt_Table .rdt_TableHead .rdt_TableHeadRow .rdt_TableCol:nth-child(7) {
   min-width: 17rem !important;
 }
-.course-container-wrapper .rdt_Table .rdt_TableRow .rdt_TableCell:nth-child(6) {
+.course-container-wrapper .rdt_Table .rdt_TableRow .rdt_TableCell:nth-child(7) {
   min-width: 17rem !important;
 }
 .course-container-wrapper .rdt_TableCol .rdt_TableCol_Sortable > span {
@@ -3495,7 +3509,6 @@ span.admin-pro-tag {
   margin-bottom: 0;
 }
 
-<<<<<<< HEAD
 .rdt_Pagination {
   grid-template-columns: 6rem 1fr 8.19rem 10.08rem !important;
 }
@@ -3504,6 +3517,4 @@ span.admin-pro-tag {
   flex: 1 0 8.45rem !important;
 }
 
-=======
->>>>>>> b925ea2d2137e9c4d04fd03ee8bb84f62ed5534e
 /*# sourceMappingURL=index.css.map*/
