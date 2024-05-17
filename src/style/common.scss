@@ -282,10 +282,3 @@ span.admin-pro-tag{
 .rdt_Pagination{
   grid-template-columns: 6rem 1fr 8.19rem 10.08rem !important; // To overwrite default adminComponent css
 }
-.filter-wrapper{
-  .wrap-bulk-all-date{
-    &  > div{
-      flex: 1 0 8.45rem !important; // To overwrite default flex in table.css for adjust width
-    }
-  }
-}
