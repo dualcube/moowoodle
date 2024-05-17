@@ -37,7 +37,7 @@ export default {
         {
             key: "moowoodle_create_user_custom_mail",
             type: "checkbox",
-            desc: __(`If this option is enabled, default WordPress new user registration emails will be disabled for both admin and user. You can personalize the content of the MooWoodle New User email from ${ appLocalizer.woocom_new_user_mail }`, 'moowoodle'),
+            desc: __(`If this option is enabled, default WordPress new user registration emails will be disabled for both admin and user. You can personalize the content of the MooWoodle New User email from  <a href="${appLocalizer.wc_email_url}" target="_blank">Here</a>`, 'moowoodle'),
             label: __("Disable New User Registration Email", 'moowoodle'),
             options: [
                 {

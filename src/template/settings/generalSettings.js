@@ -18,7 +18,7 @@ export default {
             key: "moodle_access_token",
             type: "text",
             label: __("Moodle access token", 'moowoodle'),
-            desc: __(`Enter Moodle access token. You can generate the access token from - Dashboard => Site administration => Server => Web services => ${ appLocalizer.moodle_tokens_url }`, 'moowoodle'),
+            desc: __(`Enter Moodle access token. You can generate the access token from - Dashboard => Site administration => Server => Web services => <a href="${appLocalizer.moodle_tokens_url}" target="_blank">Here</a>`, 'moowoodle'),
         },
         {
             key: "test_connection",

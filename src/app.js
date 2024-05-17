@@ -21,8 +21,8 @@ const App = () => {
         <>
             { location.get('tab') === 'settings' && <Settings initialTab='general' /> }
             { location.get('tab') === 'synchronization' && <Synchronization initialTab='connection' /> }
-            { location.get('tab') === 'all-courses' && <Courses /> }
-            { location.get('tab') === 'manage-enrolment' && <Enrollment /> }
+            { location.get('tab') === 'courses' && <Courses /> }
+            { location.get('tab') === 'enrolments' && <Enrollment /> }
         </>
     );
 }
