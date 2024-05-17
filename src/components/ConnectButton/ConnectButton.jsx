@@ -165,7 +165,7 @@ const ConnectButton = (props) => {
                         startConnectionTask();
                     }}
                 >
-                    {__('Connection test', 'moowoodle')}
+                    {__('Start test', 'moowoodle')}
                 </button>
                 {
                     loading &&

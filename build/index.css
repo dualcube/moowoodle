@@ -24,6 +24,7 @@
 }
 .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content .select-input-section {
   position: relative;
+  z-index: 1;
 }
 .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content .toggle-checkbox-content {
   position: relative;
@@ -1630,8 +1631,7 @@ span.stock-manager-pro-tag {
   flex-direction: column;
   padding: 1rem;
   border-radius: 0.25rem;
-  box-shadow: 0 0 0rem 0.075rem rgba(0, 0, 0, 0.5);
-  background: linear-gradient(45deg, rgba(0, 0, 0, 0.1098039216), transparent);
+  box-shadow: 0 0 0rem 0.05rem rgba(0, 0, 0, 0.3);
 }
 .custom-sync-section .sync-direction-items input {
   position: absolute;
@@ -1639,7 +1639,19 @@ span.stock-manager-pro-tag {
   height: 100%;
   top: 0;
   left: 0;
-  opacity: 0;
+  outline: none;
+  border: none !important;
+  box-shadow: none;
+}
+.custom-sync-section .sync-direction-items input::before {
+  top: 10px;
+  position: absolute;
+  right: 5px;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
+  background: transparent;
 }
 .custom-sync-section .sync-direction-items .sync-meta-wrapper {
   display: flex;
@@ -1656,6 +1668,7 @@ span.stock-manager-pro-tag {
 }
 .sync-direction-items:has(input:checked) {
   box-shadow: 0 0 0px 2px #65438f;
+  background: linear-gradient(45deg, rgba(0, 0, 0, 0.1098039216), transparent);
 }
 /*!*******************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/AdminLibrary/Tabs/tabs.scss ***!
@@ -2494,24 +2507,38 @@ span.stock-manager-pro-tag {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 0.75rem;
   align-items: center;
 }
-.course-container-wrapper .course-bulk-action label {
+.course-container-wrapper .course-bulk-action .search-container {
+  flex-grow: 1;
+}
+.course-container-wrapper .course-bulk-action .search-container input {
+  background-color: transparent;
+  width: 100%;
+  outline: none;
+  border: 0.115rem solid rgba(0, 0, 0, 0.125);
+  min-height: 38px;
+}
+.course-container-wrapper .course-bulk-action .search-container input:focus, .course-container-wrapper .course-bulk-action .search-container input:active {
+  box-shadow: none;
+}
+.course-container-wrapper .course-bulk-action .bulk-action-wrapper {
+  flex-grow: 1;
   display: flex;
+  gap: 0.5rem;
   align-items: center;
-  justify-content: flex-start;
 }
-.course-container-wrapper .course-bulk-action select {
+.course-container-wrapper .course-bulk-action .bulk-action-wrapper select {
   background-color: transparent !important;
   border: 0.115rem solid rgba(0, 0, 0, 0.125) !important;
   border-radius: 0.25rem !important;
   padding: 0.125rem 1.5rem 0.15rem 0.5rem;
+  width: 100%;
 }
-.course-container-wrapper .course-bulk-action select:hover, .course-container-wrapper .course-bulk-action select:active {
+.course-container-wrapper .course-bulk-action .bulk-action-wrapper select:hover, .course-container-wrapper .course-bulk-action .bulk-action-wrapper select:active {
   box-shadow: none;
 }
-.course-container-wrapper .course-bulk-action button {
+.course-container-wrapper .course-bulk-action .bulk-action-wrapper button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2550,10 +2577,10 @@ span.stock-manager-pro-tag {
 .course-container-wrapper .rdt_Table a {
   color: rgba(0, 0, 0, 0.87);
 }
-.course-container-wrapper .rdt_Table .rdt_TableHead .rdt_TableHeadRow .rdt_TableCol:nth-child(6) {
+.course-container-wrapper .rdt_Table .rdt_TableHead .rdt_TableHeadRow .rdt_TableCol:nth-child(7) {
   min-width: 17rem !important;
 }
-.course-container-wrapper .rdt_Table .rdt_TableRow .rdt_TableCell:nth-child(6) {
+.course-container-wrapper .rdt_Table .rdt_TableRow .rdt_TableCell:nth-child(7) {
   min-width: 17rem !important;
 }
 .course-container-wrapper .rdt_TableCol .rdt_TableCol_Sortable > span {
@@ -3484,6 +3511,10 @@ span.admin-pro-tag {
 
 .rdt_Pagination {
   grid-template-columns: 6rem 1fr 8.19rem 10.08rem !important;
+}
+
+.filter-wrapper .wrap-bulk-all-date > div {
+  flex: 1 0 8.45rem !important;
 }
 
 /*# sourceMappingURL=index.css.map*/

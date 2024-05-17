@@ -18,7 +18,7 @@ export default {
             key: "moodle_access_token",
             type: "text",
             label: __("Moodle access token", 'moowoodle'),
-            desc: __(`Enter Moodle access token. You can generate the access token from - Dashboard => Site administration => Server => Web services => <a href="${appLocalizer.moodle_tokens_url}" target="_blank">Here</a>`, 'moowoodle'),
+            desc: __(`Enter Moodle access token. You can generate the access token from <a href="${appLocalizer.moodle_site_url}admin/webservice/tokens.php" target="_blank">here</a>. <br> Navigation: Dashboard => Site administration => Server => Manage tokens. `, 'moowoodle'),
         },
         {
             key: "test_connection",
@@ -34,7 +34,7 @@ export default {
         {
             key: "moodle_timeout",
             type: "text",
-            desc: __('When WordPress sends a request to the Moodle server for data, communication delays might exceed the server connection timeout. You can customize the timeout parameters by adjusting them here. The timeout duration is measured in seconds (Default is 5 seconds). ', 'moowoodle'),
+            desc: __('When WordPress sends a request to the Moodle server for data, communication delays might exceed the default server connection timeout. You can customize the timeout parameters by adjusting them here. <br>Default: 5 seconds. ', 'moowoodle'),
             label: __("Connection timeout", 'moowoodle'),
         },
     ]

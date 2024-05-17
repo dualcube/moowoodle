@@ -16332,7 +16332,7 @@ const App = () => {
     initialTab: "general"
   }), location.get('tab') === 'synchronization' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_Synchronization_Synchronization__WEBPACK_IMPORTED_MODULE_2__["default"], {
     initialTab: "connection"
-  }), location.get('tab') === 'all-courses' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_Courses_Courses__WEBPACK_IMPORTED_MODULE_3__["default"], null), location.get('tab') === 'manage-enrolment' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_Enrollment_Enrollment__WEBPACK_IMPORTED_MODULE_4__["default"], null));
+  }), location.get('tab') === 'courses' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_Courses_Courses__WEBPACK_IMPORTED_MODULE_3__["default"], null), location.get('tab') === 'enrolments' && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_Enrollment_Enrollment__WEBPACK_IMPORTED_MODULE_4__["default"], null));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
 
@@ -17231,6 +17231,7 @@ const DynamicForm = props => {
         case "sso_key":
           input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SSOKey_SSOKey__WEBPACK_IMPORTED_MODULE_9__["default"], {
             value: value,
+            description: inputField.desc,
             proSetting: isProSetting(inputField.proSetting),
             onChange: value => {
               if (!proSettingChanged(inputField.proSetting) && true) {
@@ -17273,7 +17274,9 @@ const DynamicForm = props => {
           });
           break;
         case "checkbox-custom-img":
-          input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_CheckboxCustomImg_CheckboxCustomImg__WEBPACK_IMPORTED_MODULE_13__["default"], null);
+          input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_CheckboxCustomImg_CheckboxCustomImg__WEBPACK_IMPORTED_MODULE_13__["default"], {
+            proSetting: isProSetting(inputField.proSetting)
+          });
           break;
         case "select-custom-radio":
           let option = inputField.options;
@@ -19412,7 +19415,7 @@ function banner() {
     className: "carousel-item active"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "admin-pro-txt-items"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Double Opt-In ", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Experience the power of Double Opt-In for our Stock Alert Form - Guaranteed precision in every notification!", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Automated user and course synchronization with scheduler ", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Utilize personalized scheduling options to synchronize users and courses between WordPress and Moodle.", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
     href: appLocalizer.pro_url,
     target: "_blank",
     className: "admin-btn btn-red"
@@ -19420,7 +19423,7 @@ function banner() {
     class: "carousel-item"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "admin-pro-txt-items"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Your Subscription Hub", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Subscription Dashboard - Easily monitor and download lists of out-of-stock subscribers for seamless management.", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Convenient Single Sign-On login", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "SSO enables students to access their purchased courses without the need to log in separately to the Moodle site.", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
     href: appLocalizer.pro_url,
     target: "_blank",
     className: "admin-btn btn-red"
@@ -19428,7 +19431,7 @@ function banner() {
     class: "carousel-item"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "admin-pro-txt-items"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Mailchimp Bridge", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Seamlessly link WooCommerce out-of-stock subscriptions with Mailchimp for effective marketing.", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Steady Income through Course Subscriptions ", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Generate consistent revenue by offering courses with subscription-based model.", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
     href: appLocalizer.pro_url,
     target: "_blank",
     className: "admin-btn btn-red"
@@ -19436,7 +19439,7 @@ function banner() {
     class: "carousel-item"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "admin-pro-txt-items"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Unsubscribe Notifications", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "User-Initiated Unsubscribe from In-Stock Notifications.", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Synchronize Courses in Bulk", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Effortlessly synchronize multiple courses  at once, ideal for managing large course catalogs.", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
     href: appLocalizer.pro_url,
     target: "_blank",
     className: "admin-btn btn-red"
@@ -19444,7 +19447,7 @@ function banner() {
     class: "carousel-item"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "admin-pro-txt-items"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Ban Spam Emails ", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Email and Domain Blacklist for Spam Prevention.", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Automatic User Synchronization for Moodle\u2122 and WordPress", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Synchronizes user accounts between Moodle\u2122 and WordPress, ensuring consistent user management across both platforms without manual intervention.", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
     href: appLocalizer.pro_url,
     target: "_blank",
     className: "admin-btn btn-red"
@@ -19484,7 +19487,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const CheckboxCustomImg = () => {
+const CheckboxCustomImg = props => {
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "custom-sync-section"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -19519,7 +19522,9 @@ const CheckboxCustomImg = () => {
     alt: ""
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: "sync-label"
-  }, "Moodle to WordPress"))));
+  }, "Moodle to WordPress")), props.proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "admin-pro-tag"
+  }, "pro")));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CheckboxCustomImg);
 
@@ -19679,7 +19684,7 @@ const ConnectButton = props => {
       e.preventDefault();
       startConnectionTask();
     }
-  }, __('Connection test', 'moowoodle')), loading && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, __('Start test', 'moowoodle')), loading && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "loader"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "three-body__dot"
@@ -20592,7 +20597,8 @@ const SSOKey = props => {
   const {
     value,
     proSetting,
-    onChange
+    onChange,
+    description
   } = props;
   const inputRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
   const [copied, setCopied] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
@@ -20623,7 +20629,7 @@ const SSOKey = props => {
     e.preventDefault();
     onChange("");
   };
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sso-key-section"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "input-section"
@@ -20680,7 +20686,14 @@ const SSOKey = props => {
     d: "M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z"
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     class: "text"
-  }, "Generate")));
+  }, "Generate")), proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "admin-pro-tag"
+  }, "pro")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    className: "settings-metabox-description",
+    dangerouslySetInnerHTML: {
+      __html: description
+    }
+  }));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SSOKey);
 
@@ -20716,7 +20729,7 @@ const ScheduleInterval = props => {
       defaultValue = optionsData[index];
     }
   });
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, console.log(optionsData), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "radio-buttons-container"
   }, optionsData.map((item, index) => {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -20732,7 +20745,9 @@ const ScheduleInterval = props => {
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
       class: "radio-button__custom"
     }), item.label)));
-  })));
+  }), props.proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "admin-pro-tag"
+  }, "pro")));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ScheduleInterval);
 
@@ -21027,6 +21042,7 @@ const SyncNow = props => {
     value,
     description
   } = props;
+  console.log(proSetting);
   const [modelOpen, setModelOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [syncCourseStart, setSyncCourseStart] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [syncUserStart, setSyncUserStart] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
@@ -21101,7 +21117,9 @@ const SyncNow = props => {
     class: "three-body__dot"
   }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: "btn-description"
-  }, description), syncStatus.length > 0 && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, syncStatus.map(status => {
+  }, description), proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "admin-pro-tag"
+  }, "pro"), syncStatus.length > 0 && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, syncStatus.map(status => {
     {
       console.log(status);
     }
@@ -21499,7 +21517,7 @@ __webpack_require__.r(__webpack_exports__);
   id: "display",
   priority: 20,
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Shop Central", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Efficient Course Information Handling for customers.", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Efficient course information handling for customers.", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   modal: [{
@@ -21515,7 +21533,7 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "my_courses_priority",
     type: "select",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("My Courses' menu will appear beneath the selected menu on the 'My Account' page.", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("'<b>My Course</b>' menu will appear beneath the selected menu on the WooCommerce 'My Account' page of customer dashboard.", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Endpoint menu position - My Course", 'moowoodle'),
     options: Object.entries(appLocalizer.accountmenu).map(([key, name], index) => {
       return {
@@ -21527,8 +21545,8 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "moowoodle_create_user_custom_mail",
     type: "checkbox",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`If this option is enabled, default WordPress new user registration emails will be disabled for both admin and user. You can personalize the content of the MooWoodle New User email from ${appLocalizer.woocom_new_user_mail}`, 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Disable New User Registration Email", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`If enabled, default WordPress new user registration emails will be disabled for both admin and user. <br>You can personalize the content of the MooWoodle New User email from  <a href="${appLocalizer.wc_email_url}" target="_blank">here.</a>`, 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Disable new user registration email", 'moowoodle'),
     options: [{
       key: "moowoodle_create_user_custom_mail",
       value: "moowoodle_create_user_custom_mail"
@@ -21556,24 +21574,24 @@ __webpack_require__.r(__webpack_exports__);
   id: "general",
   priority: 10,
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("General", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Effortlessly Configure and Verify Your WordPress-Moodle Connection.", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Effortlessly configure and verify your WordPress-Moodle connection.", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   modal: [{
     key: "moodle_url",
     type: "text",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Provide the URL of your Moodle site where the course will be hosted. Students will receive access to the course content on that site.', 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Moodle Site URL", 'moowoodle')
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Moodle site URL", 'moowoodle')
   }, {
     key: "moodle_access_token",
     type: "text",
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Moodle Access Token", 'moowoodle'),
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Enter Moodle Access Token. You can generate the Access Token from - Dashboard => Site administration => Server => Web services => ${appLocalizer.moodle_tokens_url}`, 'moowoodle')
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Moodle access token", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Enter Moodle access token. You can generate the access token from <a href="${appLocalizer.moodle_site_url}admin/webservice/tokens.php" target="_blank">here</a>. <br> Navigation: Dashboard => Site administration => Server => Manage tokens. `, 'moowoodle')
   }, {
     key: "test_connection",
     type: "testconnection",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Refer to the ${appLocalizer.setupguide} to complete all necessary configurations on the Moodle site, and subsequently, perform a Test Connection to verify the functionality of all services.`, 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("MooWoodle Test Connection", 'moowoodle')
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("MooWoodle test connection", 'moowoodle')
   }, {
     key: 'separator_content',
     type: 'section',
@@ -21581,7 +21599,7 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "moodle_timeout",
     type: "text",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('When WordPress sends a request to the Moodle server for data, communication delays might exceed the server connection timeout. You can customize the timeout parameters by adjusting them here. The timeout duration is measured in seconds (Default is 5 seconds). ', 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('When WordPress sends a request to the Moodle server for data, communication delays might exceed the default server connection timeout. You can customize the timeout parameters by adjusting them here. <br>Default: 5 seconds. ', 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Connection timeout", 'moowoodle')
   }]
 });
@@ -21662,7 +21680,7 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "moowoodle_sso_secret_key",
     type: "sso_key",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Enter SSO Secret Key it should be same as  ${appLocalizer.moodle_sso_url} SSO Secret Key`, 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`Generate a unique SSO secret key (must be at least 8 characters) and copy it. Then, go to your Moodle site and paste the copied SSO key <a href="${appLocalizer.moodle_site_url}admin/settings.php?section=authsettingmoowoodle" target="_blank">there</a>.`, 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("SSO Secret Key", 'moowoodle'),
     proSetting: true
   }]
@@ -21712,15 +21730,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   id: "synchronize-course",
   priority: 20,
-  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Course and Products", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchronize courses (Product)", 'moowoodle'),
+  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Courses and Products", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Mapping courses to products, automatic & manual mode.", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
-  proDependent: true,
   modal: [{
     key: "course_sync_direction",
     type: "checkbox",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('This feature enables you to synchronize products from Moodle and automatically generate corresponding products in your WordPress site. Use the "Schedule" option to determine the frequency of this synchronization process.', 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This functionality allows you to synchronization Moodle courses with it's product in WordPress. <br><br>With the '<b>Course-to-Product Handling</b>' option, you have the ability to specify whether you want to create new products, update existing ones, or perform both actions. <br><br>Furthermore, through the '<b>Course Information Mapping</b>' feature, you gain the flexibility to define which specific course data gets imported from Moodle. By default we will fetch only the category of the product. ", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Initiate synchronization", 'moowoodle'),
     options: [{
       key: "moodle_to_wordpress",
@@ -21730,8 +21747,8 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "sync-course-options",
     type: "checkbox-default",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select Option For Course Sync.", 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Course Information", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Course information mapping", 'moowoodle'),
     select_deselect: true,
     options: [{
       key: "sync_courses",
@@ -21742,10 +21759,11 @@ __webpack_require__.r(__webpack_exports__);
       key: "sync_courses_category",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Course SKU', 'moowoodle'),
       hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This feature will scan the entire Moodle course category structure and synchronize it with the WordPress category listings.", 'moowoodle'),
-      value: "sync_courses_category"
+      value: "sync_courses_category",
+      proSetting: true
     }, {
       key: "sync_image",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Course Images', 'moowoodle'),
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Course images', 'moowoodle'),
       hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This function copies course images and sets them as WooCommerce product images.", 'moowoodle'),
       value: "sync_image",
       proSetting: true
@@ -21757,19 +21775,19 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "course_schedule_interval",
     type: "select-custom-radio",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select Option For Course Synchronization Schedule Interval.", 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Course Synchronization Schedule Interval", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select pption for course synchronization schedule interval.", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Automatic synchronization frequency", 'moowoodle'),
     options: [{
       key: "realtime",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Realtime", 'moowoodle'),
       value: "realtime"
     }, {
       key: "hour",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Hourly.", 'moowoodle'),
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Hourly", 'moowoodle'),
       value: "hour"
     }, {
       key: "hour6",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Hour 6.", 'moowoodle'),
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("In 6 Hours", 'moowoodle'),
       value: "hour6"
     }, {
       key: "day",
@@ -21792,8 +21810,8 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "product_sync_option",
     type: "checkbox-default",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Action Required", 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Action Required", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Course-to-product handling", 'moowoodle'),
     options: [{
       key: "create_update",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Create and Update Products', 'moowoodle'),
@@ -21814,8 +21832,8 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "sync_course_btn",
     type: "syncbutton",
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Sync course", 'moowoodle'),
-    value: "Manually sync course now",
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Manual synchronization mode", 'moowoodle'),
+    value: "Synchronize courses now!",
     desc: "Initiate the immediate synchronization of all courses from Moodle to WordPress."
   }]
 });
@@ -21840,7 +21858,7 @@ __webpack_require__.r(__webpack_exports__);
   id: "synchronize-user",
   priority: 10,
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Users", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Information Management - Manual & Automatic Mode", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Information management - manual & automatic mode", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   proDependent: true,
@@ -21853,20 +21871,21 @@ __webpack_require__.r(__webpack_exports__);
       key: "update_moodle_user",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('', 'moowoodle'),
       value: "update_moodle_user"
-    }]
+    }],
+    proSetting: true
   }, {
     key: "sync-user-options",
     type: "sync_map",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Define the user profile information mapping between WordPress and Moodle. Add multiple rows above to define all the profile data you wish to map. Any remaining profile field will be excluded from the synchronization process.", 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Profile Information Mapping", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Profile information mapping", 'moowoodle'),
     select_deselect: true,
     options: [{
       key: "sync_user_first_name",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('First Name', 'moowoodle'),
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('First name', 'moowoodle'),
       value: "sync_user_first_name"
     }, {
       key: "sync_user_last_name",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Last Name', 'moowoodle'),
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Last name', 'moowoodle'),
       value: "sync_user_last_name"
     }, {
       key: "sync_username",
@@ -21886,7 +21905,7 @@ __webpack_require__.r(__webpack_exports__);
     key: "user_sync_direction",
     type: "checkbox-custom-img",
     // desc: __("<b>Prior to updating existing user info, you must select the user info to be synchronized at </b>", 'moowoodle') . $moowoodle_sync_setting_url . __("<br><br>While synchronizing user information, we use the email address as the unique identifier for each user. We check the username associated with that email address, and if we find the same username in the other instance but with a different email address, the user's information cannot be synchronized.", 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Site-to-Site Data Synchronization Direction", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Site-to-site data synchronization direction", 'moowoodle'),
     // options: [
     //     {
     //         key: "wordpress_to_moodle",
@@ -21906,7 +21925,7 @@ __webpack_require__.r(__webpack_exports__);
     key: "user_schedule_interval",
     type: "select-custom-radio",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select the interval for the user synchronization process. Based on this schedule, the cron job will run to sync users between WordPress and Moodle.", 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Automatic Synchronization Frequency", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Automatic synchronization frequency", 'moowoodle'),
     options: [{
       key: "realtime",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Real-time on user changes", 'moowoodle'),
@@ -21941,8 +21960,9 @@ __webpack_require__.r(__webpack_exports__);
     key: "sync_user_btn",
     type: "syncbutton",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Manual synchronization mode", 'moowoodle'),
-    value: "Synchronize User Profile Now!!",
-    desc: "This will synchronize user accounts between WordPress and Moodle instantly according to the selected ‘Sync Direction’."
+    value: "Synchronize user profile now!!",
+    desc: "This will synchronize user accounts between WordPress and Moodle instantly according to the selected ‘Sync Direction’.",
+    proSetting: true
   }]
 });
 
