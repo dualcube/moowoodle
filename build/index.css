@@ -3495,6 +3495,7 @@ span.admin-pro-tag {
   margin-bottom: 0;
 }
 
+<<<<<<< HEAD
 .rdt_Pagination {
   grid-template-columns: 6rem 1fr 8.19rem 10.08rem !important;
 }
@@ -3503,4 +3504,6 @@ span.admin-pro-tag {
   flex: 1 0 8.45rem !important;
 }
 
+=======
+>>>>>>> b925ea2d2137e9c4d04fd03ee8bb84f62ed5534e
 /*# sourceMappingURL=index.css.map*/

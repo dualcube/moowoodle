@@ -28,6 +28,7 @@ class ExternalService {
 			'enrol_users'       => 'enrol_manual_enrol_users',
 			'get_course_image'  => 'core_course_get_courses_by_field',
 			'unenrol_users'     => 'enrol_manual_unenrol_users',
+			'get_users_data'    => 'auth_moowoodle_get_users',
 			'sync_users_data'   => 'auth_moowoodle_user_sync',
         ];
 	}
@@ -74,15 +75,9 @@ class ExternalService {
 				MooWoodle()->util->log( "moowoodle moodle_url:" . $request_url . '&' . $request_query . "\n\t\tmoowoodle response:" . wp_json_encode( $response ) . "\n\n");
 			}
 		}
-
+		
 		// check the response containe error.
 		$response = self::check_connection( $response );
-
-		// log the error
-		if ( isset( $response[ 'error' ] ) ) {
-			MooWoodle()->util->log( "moowoodle error: " . $response[ 'error' ] . "\n" );
-			return null;
-		}
 
 		// return response on success.
 		return $response;

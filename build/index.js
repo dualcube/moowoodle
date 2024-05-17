@@ -17218,7 +17218,6 @@ const DynamicForm = props => {
           break;
         case "sync_map":
           input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SyncMap_SyncMap__WEBPACK_IMPORTED_MODULE_11__["default"], {
-            description: inputField.desc,
             proSetting: isProSetting(inputField.proSetting)
           });
           break;
@@ -20841,8 +20840,7 @@ const SyncMap = props => {
   const {
     value,
     onChange,
-    proSetting,
-    description
+    proSetting
   } = props;
   const wordpressSyncFields = ['firstname', 'lastname', 'username', 'password'];
   const moodleSyncFields = ['firstname', 'lastname', 'username', 'password'];
@@ -20981,9 +20979,7 @@ const SyncMap = props => {
     d: "M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"
   })))), proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     class: "admin-pro-tag"
-  }, "pro")), description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
-    className: "settings-metabox-description"
-  }, description));
+  }, "pro")));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SyncMap);
 
@@ -21522,8 +21518,13 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "moowoodle_create_user_custom_mail",
     type: "checkbox",
+<<<<<<< HEAD
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`If this option is enabled, default WordPress new user registration emails will be disabled for both admin and user. You can personalize the content of the MooWoodle New User email from ${appLocalizer.woocom_new_user_mail}`, 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Disable New User Registration Email", 'moowoodle'),
+=======
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`If this option is enabled, default WordPress new user registration emails will be disabled for both admin and user. Our custom New User Registration email will be sent to the newly registered user. You can personalize the content of the MooWoodle New User email from <a href=${appLocalizer.wc_email_url}>here</a>`, 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Customize New User Registration Email", 'moowoodle'),
+>>>>>>> b925ea2d2137e9c4d04fd03ee8bb84f62ed5534e
     options: [{
       key: "moowoodle_create_user_custom_mail",
       value: "moowoodle_create_user_custom_mail"
