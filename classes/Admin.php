@@ -56,18 +56,19 @@ class Admin {
 		foreach ( $submenus as $slug => $submenu ) {
 			// prepare subtab if subtab is exist
 			$subtab = '';
+
 			if ( $submenu[ 'subtab' ] ) {
 				$subtab = '&sub-tab=' . $submenu[ 'subtab' ];
 			}
 
 			add_submenu_page(
-                'moowoodle',
-                $submenu['name'],
+				'moowoodle',
+				$submenu['name'],
                 "<span style='position: relative; display: block; width: 100%;' class='admin-menu'>" . $submenu['name'] . "</span>",
-                'manage_options',
-                'moowoodle#&tab=' . $slug . $subtab,
-                '_-return_null'
-            );
+				'manage_options',
+				'moowoodle#&tab=' . $slug . $subtab,
+				'_-return_null'
+			);
 		}
 
 		// Register upgrade to pro submenu page.
@@ -122,6 +123,10 @@ class Admin {
             $settings_databases_value[ $tab_name ] = (object) MooWoodle()->setting->get_option( $option_name );
         }
 
+		// Get my account menu
+		$my_account_menu = wc_get_account_menu_items();
+		unset( $my_account_menu[ 'my-courses' ] );
+
 		wp_localize_script(
 			'moowoodle-admin-script',
 			'appLocalizer',
@@ -132,8 +137,9 @@ class Admin {
 				'pro_active'  => Util::is_pro_active(),
 				'pro_sticker' => MOOWOOLE_PRO_STICKER,
 				'shop_url'    => MOOWOODLE_PRO_SHOP_URL,
-				'accountmenu' => wc_get_account_menu_items(),
+				'accountmenu' => $my_account_menu,
 				'log_url'     => get_site_url( null, str_replace( ABSPATH, '', MOOWOODLE_LOGS ) ),
+				'wc_email_url' => admin_url( '/admin.php?page=wc-settings&tab=email&section=enrollmentemail' ),
 			],
 		);
 	}

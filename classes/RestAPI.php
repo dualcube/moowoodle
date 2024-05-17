@@ -215,7 +215,7 @@ class RestAPI {
             'total'     => count( $courses ),
             'current'   => 0
         ] );
-        
+
         MooWoodle()->product->update_products( $courses );
         
         /**
