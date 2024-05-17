@@ -4,7 +4,7 @@ export default {
     id: "synchronize-user",
     priority: 10,
     name: __("Users", 'moowoodle'),
-    desc: __("Information Management - Manual & Automatic Mode", 'moowoodle'),
+    desc: __("Information management - manual & automatic mode", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     proDependent: true,
@@ -26,17 +26,17 @@ export default {
             key: "sync-user-options",
             type: "sync_map",
             desc: __("Define the user profile information mapping between WordPress and Moodle. Add multiple rows above to define all the profile data you wish to map. Any remaining profile field will be excluded from the synchronization process.", 'moowoodle'),
-            label: __("Profile Information Mapping", 'moowoodle'),
+            label: __("Profile information mapping", 'moowoodle'),
             select_deselect: true,
             options: [
                 {
                     key: "sync_user_first_name",
-                    label: __('First Name', 'moowoodle'),
+                    label: __('First name', 'moowoodle'),
                     value: "sync_user_first_name",
                 },
                 {
                     key: "sync_user_last_name",
-                    label: __('Last Name', 'moowoodle'),
+                    label: __('Last name', 'moowoodle'),
                     value: "sync_user_last_name",
                 },
                 {
@@ -61,7 +61,7 @@ export default {
             key: "user_sync_direction",
             type: "checkbox-custom-img",
             // desc: __("<b>Prior to updating existing user info, you must select the user info to be synchronized at </b>", 'moowoodle') . $moowoodle_sync_setting_url . __("<br><br>While synchronizing user information, we use the email address as the unique identifier for each user. We check the username associated with that email address, and if we find the same username in the other instance but with a different email address, the user's information cannot be synchronized.", 'moowoodle'),
-            label: __("Site-to-Site Data Synchronization Direction", 'moowoodle'),
+            label: __("Site-to-site data synchronization direction", 'moowoodle'),
             // options: [
             //     {
             //         key: "wordpress_to_moodle",
@@ -82,7 +82,7 @@ export default {
             key: "user_schedule_interval",
             type: "select-custom-radio",
             desc: __("Select the interval for the user synchronization process. Based on this schedule, the cron job will run to sync users between WordPress and Moodle.", 'moowoodle'),
-            label: __("Automatic Synchronization Frequency", 'moowoodle'),
+            label: __("Automatic synchronization frequency", 'moowoodle'),
             options: [
                 {
                     key: "realtime",
@@ -126,7 +126,7 @@ export default {
             key: "sync_user_btn",
             type: "syncbutton",
             label: __("Manual synchronization mode", 'moowoodle'),
-            value: "Synchronize User Profile Now!!",
+            value: "Synchronize user profile now!!",
             desc: "This will synchronize user accounts between WordPress and Moodle instantly according to the selected ‘Sync Direction’."
         },
     ]

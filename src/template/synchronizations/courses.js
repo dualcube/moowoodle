@@ -4,7 +4,7 @@ export default {
     id: "synchronize-course",
     priority: 20,
     name: __("Courses and Products", 'moowoodle'),
-    desc: __("Mapping of Moodle courses to products, automatic/manual.", 'moowoodle'),
+    desc: __("Mapping of courses to products, automatic & manual mode.", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     modal: [
@@ -43,7 +43,7 @@ export default {
                 },
                 {
                     key: "sync_image",
-                    label: __( 'Course Images', 'moowoodle' ),
+                    label: __( 'Course images', 'moowoodle' ),
                     hints: __("This function copies course images and sets them as WooCommerce product images.", 'moowoodle'),
                     value: "sync_image",
                     proSetting: true,
@@ -58,7 +58,7 @@ export default {
         {
             key: "course_schedule_interval",
             type: "select-custom-radio",
-            desc: __("Select Option For Course Synchronization Schedule Interval.", 'moowoodle'),
+            desc: __("Select pption for course synchronization schedule interval.", 'moowoodle'),
             label: __("Automatic synchronization frequency", 'moowoodle'),
             options: [
                 {

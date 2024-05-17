@@ -21708,7 +21708,7 @@ __webpack_require__.r(__webpack_exports__);
   id: "synchronize-course",
   priority: 20,
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Courses and Products", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Mapping of Moodle courses to products, automatic/manual.", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Mapping of courses to products, automatic & manual mode.", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   modal: [{
@@ -21740,7 +21740,7 @@ __webpack_require__.r(__webpack_exports__);
       proSetting: true
     }, {
       key: "sync_image",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Course Images', 'moowoodle'),
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Course images', 'moowoodle'),
       hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This function copies course images and sets them as WooCommerce product images.", 'moowoodle'),
       value: "sync_image",
       proSetting: true
@@ -21752,7 +21752,7 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "course_schedule_interval",
     type: "select-custom-radio",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select Option For Course Synchronization Schedule Interval.", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select pption for course synchronization schedule interval.", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Automatic synchronization frequency", 'moowoodle'),
     options: [{
       key: "realtime",
@@ -21835,7 +21835,7 @@ __webpack_require__.r(__webpack_exports__);
   id: "synchronize-user",
   priority: 10,
   name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Users", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Information Management - Manual & Automatic Mode", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Information management - manual & automatic mode", 'moowoodle'),
   icon: "font-mail",
   submitUrl: "save-moowoodle-setting",
   proDependent: true,
@@ -21853,15 +21853,15 @@ __webpack_require__.r(__webpack_exports__);
     key: "sync-user-options",
     type: "sync_map",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Define the user profile information mapping between WordPress and Moodle. Add multiple rows above to define all the profile data you wish to map. Any remaining profile field will be excluded from the synchronization process.", 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Profile Information Mapping", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Profile information mapping", 'moowoodle'),
     select_deselect: true,
     options: [{
       key: "sync_user_first_name",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('First Name', 'moowoodle'),
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('First name', 'moowoodle'),
       value: "sync_user_first_name"
     }, {
       key: "sync_user_last_name",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Last Name', 'moowoodle'),
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Last name', 'moowoodle'),
       value: "sync_user_last_name"
     }, {
       key: "sync_username",
@@ -21881,7 +21881,7 @@ __webpack_require__.r(__webpack_exports__);
     key: "user_sync_direction",
     type: "checkbox-custom-img",
     // desc: __("<b>Prior to updating existing user info, you must select the user info to be synchronized at </b>", 'moowoodle') . $moowoodle_sync_setting_url . __("<br><br>While synchronizing user information, we use the email address as the unique identifier for each user. We check the username associated with that email address, and if we find the same username in the other instance but with a different email address, the user's information cannot be synchronized.", 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Site-to-Site Data Synchronization Direction", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Site-to-site data synchronization direction", 'moowoodle'),
     // options: [
     //     {
     //         key: "wordpress_to_moodle",
@@ -21901,7 +21901,7 @@ __webpack_require__.r(__webpack_exports__);
     key: "user_schedule_interval",
     type: "select-custom-radio",
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select the interval for the user synchronization process. Based on this schedule, the cron job will run to sync users between WordPress and Moodle.", 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Automatic Synchronization Frequency", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Automatic synchronization frequency", 'moowoodle'),
     options: [{
       key: "realtime",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Real-time on user changes", 'moowoodle'),
@@ -21936,7 +21936,7 @@ __webpack_require__.r(__webpack_exports__);
     key: "sync_user_btn",
     type: "syncbutton",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Manual synchronization mode", 'moowoodle'),
-    value: "Synchronize User Profile Now!!",
+    value: "Synchronize user profile now!!",
     desc: "This will synchronize user accounts between WordPress and Moodle instantly according to the selected ‘Sync Direction’."
   }]
 });
