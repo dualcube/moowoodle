@@ -101,8 +101,8 @@ export default function banner() {
                                 <ul className="carousel-list">
                                     <li className="carousel-item active">
                                         <div className="admin-pro-txt-items">
-                                            <h3>Double Opt-In {' '}</h3>
-                                            <p>Experience the power of Double Opt-In for our Stock Alert Form - Guaranteed precision in every notification!{' '}</p>
+                                            <h3>Automated user and course synchronization with scheduler {' '}</h3>
+                                            <p>Utilize personalized scheduling options to synchronize users and courses between WordPress and Moodle.{' '}</p>
                                             <a
                                                 href={appLocalizer.pro_url}
                                                 target='_blank'
@@ -114,8 +114,8 @@ export default function banner() {
                                     </li>
                                     <li class="carousel-item">
                                         <div className="admin-pro-txt-items">
-                                            <h3>Your Subscription Hub{' '}</h3>
-                                            <p>Subscription Dashboard - Easily monitor and download lists of out-of-stock subscribers for seamless management.{' '}</p>
+                                            <h3>Convenient Single Sign-On login{' '}</h3>
+                                            <p>SSO enables students to access their purchased courses without the need to log in separately to the Moodle site.{' '}</p>
                                             <a
                                                 href={appLocalizer.pro_url}
                                                 target='_blank'
@@ -127,8 +127,8 @@ export default function banner() {
                                     </li>
                                     <li class="carousel-item">
                                         <div className="admin-pro-txt-items">
-                                            <h3>Mailchimp Bridge{' '}</h3>
-                                            <p>Seamlessly link WooCommerce out-of-stock subscriptions with Mailchimp for effective marketing.{' '}</p>
+                                            <h3>Steady Income through Course Subscriptions {' '}</h3>
+                                            <p>Generate consistent revenue by offering courses with subscription-based model.{' '}</p>
                                             <a
                                                 href={appLocalizer.pro_url}
                                                 target='_blank'
@@ -140,8 +140,8 @@ export default function banner() {
                                     </li>
                                     <li class="carousel-item">
                                         <div className="admin-pro-txt-items">
-                                            <h3>Unsubscribe Notifications{' '}</h3>
-                                            <p>User-Initiated Unsubscribe from In-Stock Notifications.{' '}</p>
+                                            <h3>Synchronize Courses in Bulk{' '}</h3>
+                                            <p>Effortlessly synchronize multiple courses  at once, ideal for managing large course catalogs.{' '}</p>
                                             <a
                                                 href={appLocalizer.pro_url}
                                                 target='_blank'
@@ -153,8 +153,8 @@ export default function banner() {
                                     </li>
                                     <li class="carousel-item">
                                         <div className="admin-pro-txt-items">
-                                            <h3>Ban Spam Emails {' '}</h3>
-                                            <p>Email and Domain Blacklist for Spam Prevention.{' '}</p>
+                                            <h3>Automatic User Synchronization for Moodle™ and WordPress{' '}</h3>
+                                            <p>Synchronizes user accounts between Moodle™ and WordPress, ensuring consistent user management across both platforms without manual intervention.{' '}</p>
                                             <a
                                                 href={appLocalizer.pro_url}
                                                 target='_blank'
