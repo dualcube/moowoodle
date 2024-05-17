@@ -27,34 +27,10 @@ export default function Course() {
             method: "get",
             url: getApiLink('all-courses'),
         }).then((response) => {
-            setCourses(response.data)
-        });
-    }, []);
-
-    useEffect(() => {
-        axios({
-            method: "get",
-            url: getApiLink('all-products'),
-        }).then((response) => {
-            setProducts(response.data)
-        });
-    }, []);
-
-    useEffect(() => {
-        axios({
-            method: "get",
-            url: getApiLink('all-category'),
-        }).then((response) => {
-            setCategory(response.data)
-        });
-    }, []);
-
-    useEffect(() => {
-        axios({
-            method: "get",
-            url: getApiLink('all-short-name'),
-        }).then((response) => {
-            setShortName(response.data)
+            setCourses(response.data.courses);
+            setProducts(response.data.products);
+            setCategory(response.data.category);
+            setShortName(response.data.shortname);
         });
     }, []);
 
@@ -70,6 +46,7 @@ export default function Course() {
         productField = '',
         catagoryField = '',
         shortnameField = '',
+        searchCourseField =''
     ) {
         //Fetch the data to show in the table
         axios({
@@ -82,7 +59,8 @@ export default function Course() {
                 course: courseField,
                 product: productField,
                 catagory: catagoryField,
-                shortname: shortnameField
+                shortname: shortnameField,
+                search: searchCourseField
             },
         }).then((response) => {
             setData(response.data);
@@ -102,7 +80,8 @@ export default function Course() {
             filterData?.courseField,
             filterData?.productField,
             filterData?.catagoryField,
-            filterData?.shortnameField
+            filterData?.shortnameField,
+            filterData?.searchCourseField
         );
     };
 
@@ -191,6 +170,22 @@ export default function Course() {
                 );
             },
         },
+        {
+            name: "searchCourseField",
+            render: (updateFilter, filterValue) => (
+              <>
+                <div className="admin-header-search-section">
+                  <input
+                    name="searchCourseField"
+                    type="text"
+                    placeholder={__("Search Course","moowoodle")}
+                    onChange={(e) => updateFilter(e.target.name, e.target.value)}
+                    value={filterValue || ""}
+                  />
+                </div>
+              </>
+            ),
+        }
 
     ];
     /**
@@ -348,7 +343,7 @@ export default function Course() {
                 <div class="moowoodle-course-actions">
                     <button
                         class={`sync-single-course button-primary`}
-                        title={__('Sync Couse Data')}
+                        title={__('Sync Course Data')}
                         onClick={(e) => {
                             handleSingleAction(
                                 'sync_courses',
@@ -419,26 +414,22 @@ export default function Course() {
                 <div className="course-container-wrapper">
                     <div className="admin-page-title">
                         <p>{__("All Courses", "moowoodle")}</p>
-                        <div className="course-bulk-action">
-                            <div class="search-container">
-                                <input type="text" class="search-box" placeholder="Search..."/>
-                            </div>
-                            <div className="bulk-action-wrapper">
-                                <select name="action" ref={bulkSelectRef} >
-                                    <option value="">{__('Bulk Actions')}</option>
-                                    <option value="sync_courses">{__('Sync Course')}</option>
-                                    <option value="create_product">{__('Create Product')}</option>
-                                    <option value="update_product">{__('Update Product')}</option>
-                                </select>
-                                <button
-                                    name="bulk-action-apply"
-                                    onClick={handleBulkAction}
-                                >
-                                    {__('Apply',)}
-                                </button>
-                            </div>
-                        </div>
                     </div>
+                    <div className="course-bulk-action">
+                        <select name="action" ref={bulkSelectRef} >
+                            <option value="">{__('Bulk Actions')}</option>
+                            <option value="sync_courses">{__('Sync Course')}</option>
+                            <option value="create_product">{__('Create Product')}</option>
+                            <option value="update_product">{__('Update Product')}</option>
+                        </select>
+                        <button
+                            name="bulk-action-apply"
+                            onClick={handleBulkAction}
+                        >
+                            {__('Apply',)}
+                        </button>
+                    </div>
+                   
                     <div className="admin-table-wrapper">
                         {
                             <CustomTable
