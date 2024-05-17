@@ -4,7 +4,7 @@ export default {
     id: 'log',
     priority: 50,
     name: __("Log", "moowoodle"),
-    desc: __("Advance log", "moowoodle"),
+    desc: __("Review all system logs and errors", "moowoodle"),
     icon: 'font-support',
     submitUrl: "save-moowoodle-setting",
     modal: [
@@ -12,7 +12,7 @@ export default {
             key: "moowoodle_adv_log",
             type: "checkbox",
             label: __("Advance Log", 'moowoodle'),
-            desc: __('These setting will record all advanced error informations. Please don\'t Enable it if not required, because it will create a large log file.', 'moowoodle'),
+            desc: __('Activating this option will log more detailed error information. Enable it only when essential, as it may result in a larger log file.', 'moowoodle'),
             options: [
                 {
                     key: "moowoodle_adv_log",
