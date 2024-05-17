@@ -3482,4 +3482,8 @@ span.admin-pro-tag {
   margin-bottom: 0;
 }
 
+.rdt_Pagination {
+  grid-template-columns: 6rem 1fr 8.19rem 10.08rem !important;
+}
+
 /*# sourceMappingURL=index.css.map*/
