@@ -4,7 +4,7 @@ export default {
     id: "display",
     priority: 20,
     name: __("Shop Central", 'moowoodle'),
-    desc: __("Efficient Course Information Handling for customers.", 'moowoodle'),
+    desc: __("Efficient course information handling for customers.", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     modal: [

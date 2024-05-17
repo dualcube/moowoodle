@@ -4,14 +4,14 @@ export default {
     id: "synchronize-course",
     priority: 20,
     name: __("Courses and Products", 'moowoodle'),
-    desc: __("Mapping of courses to products, automatic & manual mode.", 'moowoodle'),
+    desc: __("Mapping courses to products, automatic & manual mode.", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     modal: [
         {
             key: "course_sync_direction",
             type: "checkbox",
-            desc: __('This feature enables you to synchronize products from Moodle and automatically generate corresponding products in your WordPress site. Use the "Automatic synchronization frequency" option to determine the frequency of this synchronization process.', 'moowoodle'),
+            desc: __("This functionality simplifies the synchronization of Moodle courses with it's product in WordPress. With the 'Course-to-Product Handling' option, you have the ability to specify whether you want to create new products, update existing ones, or perform both actions. <br>Furthermore, through the 'Course Information Mapping' feature, you gain the flexibility to define which specific course data gets imported from Moodle. By default we will fetch only the category of the product. ", 'moowoodle'),
             label: __("Initiate synchronization", 'moowoodle'),
             options: [
                 {
@@ -102,7 +102,7 @@ export default {
         {
             key: "product_sync_option",
             type: "checkbox-default",
-            desc: __("When courses undergo synchronization, corresponding products are automatically generated or existing ones are updated by default. If you have specific preferences, you can customize the settings by deselecting relevant options from the provided list.", 'moowoodle'),
+            desc: __("", 'moowoodle'),
             label: __("Course-to-product handling", 'moowoodle'),
             options: [
                 {
