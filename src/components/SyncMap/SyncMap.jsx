@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import './SyncMap.scss';
 
 const SyncMap = (props) => {
-    const { value, onChange, proSetting } = props;
+    const { value, onChange, proSetting, description } = props;
     const wordpressSyncFields = [ 'firstname', 'lastname', 'username', 'password' ];
     const moodleSyncFields    = [ 'firstname', 'lastname', 'username', 'password' ];
     
@@ -151,6 +151,7 @@ const SyncMap = (props) => {
                 </button>
                 {proSetting && <span class="admin-pro-tag">pro</span>}
             </div>
+            { description && <p className="settings-metabox-description">{description}</p> }
         </div>
     );
 }

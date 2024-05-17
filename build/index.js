@@ -17218,6 +17218,7 @@ const DynamicForm = props => {
           break;
         case "sync_map":
           input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SyncMap_SyncMap__WEBPACK_IMPORTED_MODULE_11__["default"], {
+            description: inputField.desc,
             proSetting: isProSetting(inputField.proSetting)
           });
           break;
@@ -20840,7 +20841,8 @@ const SyncMap = props => {
   const {
     value,
     onChange,
-    proSetting
+    proSetting,
+    description
   } = props;
   const wordpressSyncFields = ['firstname', 'lastname', 'username', 'password'];
   const moodleSyncFields = ['firstname', 'lastname', 'username', 'password'];
@@ -20979,7 +20981,9 @@ const SyncMap = props => {
     d: "M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"
   })))), proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     class: "admin-pro-tag"
-  }, "pro")));
+  }, "pro")), description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    className: "settings-metabox-description"
+  }, description));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SyncMap);
 

@@ -56,19 +56,18 @@ class Admin {
 		foreach ( $submenus as $slug => $submenu ) {
 			// prepare subtab if subtab is exist
 			$subtab = '';
-
 			if ( $submenu[ 'subtab' ] ) {
 				$subtab = '&sub-tab=' . $submenu[ 'subtab' ];
 			}
 
 			add_submenu_page(
-				'moowoodle',
-				$submenu['name'],
-				"<span class='admin-menu'>" . $submenu['name'] . "</span>",
-				'manage_options',
-				'moowoodle#&tab=' . $slug . $subtab,
-				'_-return_null'
-			);
+                'moowoodle',
+                $submenu['name'],
+                "<span style='position: relative; display: block; width: 100%;' class='admin-menu'>" . $submenu['name'] . "</span>",
+                'manage_options',
+                'moowoodle#&tab=' . $slug . $subtab,
+                '_-return_null'
+            );
 		}
 
 		// Register upgrade to pro submenu page.

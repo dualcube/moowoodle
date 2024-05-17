@@ -3456,7 +3456,7 @@ span.admin-pro-tag {
   margin-left: 0.25rem;
   border-radius: 2rem 0;
   right: 0.25rem;
-  top: 50%;
+  top: 30%;
   transform: translateY(-50%);
 }
 
@@ -3480,6 +3480,10 @@ span.admin-pro-tag {
 }
 .dynamic-fields-wrapper .dynamic-form .form-group .settings-input-content .toggle-checkbox-header .toggle-checkbox-content {
   margin-bottom: 0;
+}
+
+.rdt_Pagination {
+  grid-template-columns: 6rem 1fr 8.19rem 10.08rem !important;
 }
 
 /*# sourceMappingURL=index.css.map*/
