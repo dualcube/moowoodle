@@ -44,37 +44,54 @@ $color-active: #65438f;
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-bottom: 0.75rem;
     align-items: center;
 
-    label{
+    .search-container{
+      flex-grow: 1;
+
+      input{
+        background-color: transparent;
+        width: 100%;
+        outline: none;
+        border: 0.115rem solid rgba(0, 0, 0, 0.125);
+        min-height: 38px;
+
+        &:focus, &:active{
+          box-shadow: none;
+        }
+      }
+    }
+
+    .bulk-action-wrapper{
+      flex-grow: 1;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+  
+      select{
+          background-color: transparent !important;
+          border: 0.115rem solid rgba(0, 0, 0, 0.125) !important;
+          border-radius: 0.25rem !important;
+          padding: 0.125rem 1.5rem 0.15rem 0.5rem;
+          width: 100%;
+  
+          &:hover, &:active{
+              box-shadow: none;
+          }
+      }
+  
+      button{
         display: flex;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: center;
+        gap: 0.5rem;
+        border-radius: 0.25rem;
+        background-color: #65438f;
+        padding: 0.5rem 1rem;
+        height: fit-content;
+        color: #fff;
+      }
     }
-
-    select{
-        background-color: transparent !important;
-        border: 0.115rem solid rgba(0, 0, 0, 0.125) !important;
-        border-radius: 0.25rem !important;
-        padding: 0.125rem 1.5rem 0.15rem 0.5rem;
-
-        &:hover, &:active{
-            box-shadow: none;
-        }
-    }
-
-   button{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    border-radius: 0.25rem;
-    background-color: #65438f;
-    padding: 0.5rem 1rem;
-    height: fit-content;
-    color: #fff;
-   }
   }
 
   .moowoodle-course-actions{
@@ -114,7 +131,7 @@ $color-active: #65438f;
     .rdt_TableHead {
       .rdt_TableHeadRow {
         .rdt_TableCol{
-          &:nth-child(6){
+          &:nth-child(7){
             min-width: 17rem !important; // To overwrite default table css
           }
         }
@@ -123,7 +140,7 @@ $color-active: #65438f;
 
     .rdt_TableRow{
       .rdt_TableCell{
-        &:nth-child(6){
+        &:nth-child(7){
           min-width: 17rem !important; // To overwrite default table css
         }
       }

@@ -16,6 +16,7 @@ export default function Course() {
     const [courses, setCourses] = useState([]);
     const [products, setProducts] = useState([]);
     const [category, setCategory] = useState([]);
+    const [shortName, setShortName] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
     const [totalRows, setTotalRows] = useState();
     const bulkSelectRef = useRef();
@@ -48,6 +49,15 @@ export default function Course() {
         });
     }, []);
 
+    useEffect(() => {
+        axios({
+            method: "get",
+            url: getApiLink('all-short-name'),
+        }).then((response) => {
+            setShortName(response.data)
+        });
+    }, []);
+
     /**
      * Function that request data from backend
      * @param {*} rowsPerPage 
@@ -64,11 +74,11 @@ export default function Course() {
         //Fetch the data to show in the table
         axios({
             method: "post",
-            url: getApiLink('courses'),
+            url: getApiLink('get-courses'),
             headers: { "X-WP-Nonce": appLocalizer.nonce },
             data: {
                 page: currentPage,
-                perpage: rowsPerPage,
+                row: rowsPerPage,
                 course: courseField,
                 product: productField,
                 catagory: catagoryField,
@@ -172,8 +182,8 @@ export default function Course() {
                                 value={filterValue || ""}
                             >
                                 <option value="">Short Name</option>
-                                {Object.entries(courses).map(([courseId, courseName]) => (
-                                    <option value={courseId}>{courseName}</option>
+                                {Object.entries(shortName).map(([shortNameId, shortNameValue]) => (
+                                    <option value={shortNameValue}>{shortNameValue}</option>
                                 ))}
                             </select>
                         </div>
@@ -250,7 +260,7 @@ export default function Course() {
     useEffect(() => {
         axios({
             method: "post",
-            url: getApiLink('courses'),
+            url: getApiLink('get-courses'),
             headers: { "X-WP-Nonce": appLocalizer.nonce },
             data: { count: true },
         }).then((response) => {
@@ -273,6 +283,16 @@ export default function Course() {
                     <a href={row.moodle_url} alt="moowoodle_url">
                         {row.course_name}
                     </a>
+                </TableCell>
+            ),
+            sortable: true,
+        },
+        {
+            name: __('Short Name', 'moowoodle'),
+            selector: row => row.course_short_name,
+            cell: (row) => (
+                <TableCell>
+                    {row.course_short_name}
                 </TableCell>
             ),
             sortable: true,
@@ -399,20 +419,25 @@ export default function Course() {
                 <div className="course-container-wrapper">
                     <div className="admin-page-title">
                         <p>{__("All Courses", "moowoodle")}</p>
-                    </div>
-                    <div className="course-bulk-action">
-                        <select name="action" ref={bulkSelectRef} >
-                            <option value="">{__('Bulk Actions')}</option>
-                            <option value="sync_courses">{__('Sync Course')}</option>
-                            <option value="create_product">{__('Create Product')}</option>
-                            <option value="update_product">{__('Update Product')}</option>
-                        </select>
-                        <button
-                            name="bulk-action-apply"
-                            onClick={handleBulkAction}
-                        >
-                            {__('Apply',)}
-                        </button>
+                        <div className="course-bulk-action">
+                            <div class="search-container">
+                                <input type="text" class="search-box" placeholder="Search..."/>
+                            </div>
+                            <div className="bulk-action-wrapper">
+                                <select name="action" ref={bulkSelectRef} >
+                                    <option value="">{__('Bulk Actions')}</option>
+                                    <option value="sync_courses">{__('Sync Course')}</option>
+                                    <option value="create_product">{__('Create Product')}</option>
+                                    <option value="update_product">{__('Update Product')}</option>
+                                </select>
+                                <button
+                                    name="bulk-action-apply"
+                                    onClick={handleBulkAction}
+                                >
+                                    {__('Apply',)}
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div className="admin-table-wrapper">
                         {

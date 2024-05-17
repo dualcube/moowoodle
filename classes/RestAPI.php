@@ -48,7 +48,7 @@ class RestAPI {
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
 
-        register_rest_route( MooWoodle()->rest_namespace, '/courses', [
+        register_rest_route( MooWoodle()->rest_namespace, '/get-courses', [
             'methods'             => \WP_REST_Server::ALLMETHODS,
             'callback'            =>[ $this, 'get_courses' ],
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
