@@ -671,6 +671,7 @@ const DynamicForm = (props) => {
         
         case "sync_map":
           input = <SyncMap
+          description = {inputField.desc}
           proSetting={isProSetting(inputField.proSetting)}
           />
           break;

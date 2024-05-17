@@ -21518,7 +21518,7 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "moowoodle_create_user_custom_mail",
     type: "checkbox",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`If this option is enabled, default WordPress new user registration emails will be disabled for both admin and user. Our custom New User Registration email will be sent to the newly registered user. You can personalize the content of the MooWoodle New User email from ${appLocalizer.woocom_new_user_mail}`, 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`If this option is enabled, default WordPress new user registration emails will be disabled for both admin and user. Our custom New User Registration email will be sent to the newly registered user. You can personalize the content of the MooWoodle New User email from <a href=${appLocalizer.wc_email_url}>here</a>`, 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Customize New User Registration Email", 'moowoodle'),
     options: [{
       key: "moowoodle_create_user_custom_mail",
