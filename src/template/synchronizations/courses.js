@@ -11,7 +11,7 @@ export default {
         {
             key: "course_sync_direction",
             type: "checkbox",
-            desc: __("This functionality simplifies the synchronization of Moodle courses with it's product in WordPress. With the 'Course-to-Product Handling' option, you have the ability to specify whether you want to create new products, update existing ones, or perform both actions. <br>Furthermore, through the 'Course Information Mapping' feature, you gain the flexibility to define which specific course data gets imported from Moodle. By default we will fetch only the category of the product. ", 'moowoodle'),
+            desc: __("This functionality allows you to synchronization Moodle courses with it's product in WordPress. <br><br>With the '<b>Course-to-Product Handling</b>' option, you have the ability to specify whether you want to create new products, update existing ones, or perform both actions. <br><br>Furthermore, through the '<b>Course Information Mapping</b>' feature, you gain the flexibility to define which specific course data gets imported from Moodle. By default we will fetch only the category of the product. ", 'moowoodle'),
             label: __("Initiate synchronization", 'moowoodle'),
             options: [
                 {
