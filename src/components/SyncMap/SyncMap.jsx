@@ -3,13 +3,28 @@ import './SyncMap.scss';
 
 const SyncMap = (props) => {
     const { value, onChange, proSetting, description } = props;
-    const wordpressSyncFields = [ 'firstname', 'lastname', 'username', 'password' ];
-    const moodleSyncFields    = [ 'firstname', 'lastname', 'username', 'password' ];
+
+    const wordpressSyncFieldsMap = {
+        'firstname': 'First name',
+        'lastname': 'Last name',
+        'username': 'User name',
+        'password': 'Password'
+    };
+
+    const moodleSyncFieldsMap = {
+        'firstname': 'First name',
+        'lastname': 'Last name',
+        'username': 'User name',
+        'password': 'Password'
+    };
+
+    const wordpressSyncFields = Object.keys(wordpressSyncFieldsMap);
+    const moodleSyncFields    =  Object.keys(moodleSyncFieldsMap);
     
     const [ selectedFields, setSelectedFields ] = useState( value || [] );
     
     const [wordpressSyncFieldsChose, setWordpressSyncFieldsChose] = useState(wordpressSyncFields);
-    const [moodleSyncFieldsChose, setMoodleSyncFieldsChose] = useState(wordpressSyncFields);
+    const [moodleSyncFieldsChose, setMoodleSyncFieldsChose] = useState(moodleSyncFields);
 
     // Get all unselected fields for a site.
     const getUnselectedFields = ( site ) => {
@@ -88,6 +103,17 @@ const SyncMap = (props) => {
 
     return (
         <div className="sync-map-container">
+            <div><span>WordPress</span><span>Moodle</span></div>
+            <div class="map-content-wrapper">
+                <select class="" disabled>
+                    <option value="email">Email</option>
+                </select>
+                <span class="connection-icon">⇌</span>
+                <select class="" disabled>
+                    <option value="email">Email</option>
+                </select>
+            </div>
+                {/* <button class="remove-mapping"><span class="text">Clear</span><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path></svg></span></button></div> */}
             {
                 selectedFields.map(([wpField, mwField], index) => {
                     return (
@@ -97,10 +123,10 @@ const SyncMap = (props) => {
                                 className=""
                                 onChange={(e) => changeSelectedFields( index, e.target.value, 'wordpress' ) }
                             >
-                                <option value={wpField} selected>{wpField}</option>
+                                <option value={wpField} selected>{wordpressSyncFieldsMap[wpField]}</option>
                                 {
                                     wordpressSyncFieldsChose.map((option) => {
-                                        return <option value={option}>{option}</option>
+                                        return <option value={option}>{wordpressSyncFieldsMap[option]}</option>
                                     })
                                 }
                             </select >
@@ -113,10 +139,10 @@ const SyncMap = (props) => {
                                 value={mwField}
                                 onChange={(e) => changeSelectedFields( index, e.target.value, 'moodle' ) }
                             >
-                                <option value={mwField} selected>{mwField}</option>
+                                <option value={mwField} selected>{moodleSyncFieldsMap[mwField]}</option>
                                 {
                                     moodleSyncFieldsChose.map((option) => {
-                                        return <option value={option}>{option}</option>
+                                        return <option value={option}>{moodleSyncFieldsMap[option]}</option>
                                     })
                                 }
                             </select >

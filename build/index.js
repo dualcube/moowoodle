@@ -20864,11 +20864,23 @@ const SyncMap = props => {
     proSetting,
     description
   } = props;
-  const wordpressSyncFields = ['firstname', 'lastname', 'username', 'password'];
-  const moodleSyncFields = ['firstname', 'lastname', 'username', 'password'];
+  const wordpressSyncFieldsMap = {
+    'firstname': 'First name',
+    'lastname': 'Last name',
+    'username': 'User name',
+    'password': 'Password'
+  };
+  const moodleSyncFieldsMap = {
+    'firstname': 'First name',
+    'lastname': 'Last name',
+    'username': 'User name',
+    'password': 'Password'
+  };
+  const wordpressSyncFields = Object.keys(wordpressSyncFieldsMap);
+  const moodleSyncFields = Object.keys(moodleSyncFieldsMap);
   const [selectedFields, setSelectedFields] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(value || []);
   const [wordpressSyncFieldsChose, setWordpressSyncFieldsChose] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(wordpressSyncFields);
-  const [moodleSyncFieldsChose, setMoodleSyncFieldsChose] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(wordpressSyncFields);
+  const [moodleSyncFieldsChose, setMoodleSyncFieldsChose] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(moodleSyncFields);
 
   // Get all unselected fields for a site.
   const getUnselectedFields = site => {
@@ -20936,7 +20948,21 @@ const SyncMap = props => {
   }, [selectedFields]);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sync-map-container"
-  }, selectedFields.map(([wpField, mwField], index) => {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "WordPress"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Moodle")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "map-content-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
+    class: "",
+    disabled: true
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+    value: "email"
+  }, "Email")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    class: "connection-icon"
+  }, "\u21CC"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
+    class: "",
+    disabled: true
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+    value: "email"
+  }, "Email"))), selectedFields.map(([wpField, mwField], index) => {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "map-content-wrapper"
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
@@ -20945,10 +20971,10 @@ const SyncMap = props => {
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
       value: wpField,
       selected: true
-    }, wpField), wordpressSyncFieldsChose.map(option => {
+    }, wordpressSyncFieldsMap[wpField]), wordpressSyncFieldsChose.map(option => {
       return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
         value: option
-      }, option);
+      }, wordpressSyncFieldsMap[option]);
     })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
       className: "connection-icon"
     }, "\u21CC"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
@@ -20958,10 +20984,10 @@ const SyncMap = props => {
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
       value: mwField,
       selected: true
-    }, mwField), moodleSyncFieldsChose.map(option => {
+    }, moodleSyncFieldsMap[mwField]), moodleSyncFieldsChose.map(option => {
       return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
         value: option
-      }, option);
+      }, moodleSyncFieldsMap[option]);
     })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
       className: "remove-mapping",
       onClick: e => {
