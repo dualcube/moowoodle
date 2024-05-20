@@ -26,6 +26,8 @@ const SyncMap = (props) => {
     const [wordpressSyncFieldsChose, setWordpressSyncFieldsChose] = useState(wordpressSyncFields);
     const [moodleSyncFieldsChose, setMoodleSyncFieldsChose] = useState(moodleSyncFields);
 
+    const [ btnAllow, setBtnAllow ] = useState(false);
+
     // Get all unselected fields for a site.
     const getUnselectedFields = ( site ) => {
         const unSelectFields = [];
@@ -78,18 +80,24 @@ const SyncMap = (props) => {
         setSelectedFields((selectedFields) => {
             return selectedFields.filter( ( fieldPair, index ) => index != fieldIndex );
         })
+        setBtnAllow(false);
     }
 
     const insertSelectedFields = () => {
         if ( wordpressSyncFieldsChose.length && moodleSyncFieldsChose.length ) {
             const wpField = wordpressSyncFieldsChose.shift();
             const mdField = moodleSyncFieldsChose.shift();
-           
+
             console.log( wpField, mdField );
 
             setSelectedFields(( selectedFields ) => {
                 return [ ...selectedFields, [ wpField, mdField ] ];
             });
+            if ( wordpressSyncFieldsChose.length == 0 && moodleSyncFieldsChose.length == 0) {
+                setBtnAllow(true);
+            } else{
+                
+            }
         } else {
             console.log( 'unable to add sync fields' );
         }
@@ -105,7 +113,7 @@ const SyncMap = (props) => {
         <div className="sync-map-container">
             <div className="container-wrapper">
                 <div className="main-wrapper"> 
-                    <div><span>WordPress</span><span>Moodle</span></div>
+                    <div className="main-wrapper-heading"><span>WordPress</span><span>Moodle</span></div>
                     <div class="map-content-wrapper">
                         <select class="" disabled>
                             <option value="email">Email</option>
@@ -169,7 +177,7 @@ const SyncMap = (props) => {
                 <div className="btn-container">
                     <div className="add-mapping-container">
                         <button
-                            className="add-mapping"
+                            className={`add-mapping ${btnAllow ? "not-allow" : ""}`}
                             onClick={(e) => {
                                 e.preventDefault();
                                 insertSelectedFields();

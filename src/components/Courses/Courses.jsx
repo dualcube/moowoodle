@@ -194,7 +194,7 @@ export default function Course() {
             name: __('Product Name', 'moowoodle'),
             selector: row => row.products,
             cell: (row) => (
-                <TableCell>
+                <TableCell title={'Product Name'}>
                     {
                         Object.keys(row.products).length ? (
                             Object.entries(row.products).map(([name, url], index) => {
@@ -375,16 +375,6 @@ export default function Course() {
                     </>
                 );
             },
-        },
-        {
-            name: "blank",
-            render : () => {
-                return(
-                    <>
-                    <div className="blank-separator"></div>
-                    </>
-                )
-            }
         },
         {
             name: "shortnameField",
