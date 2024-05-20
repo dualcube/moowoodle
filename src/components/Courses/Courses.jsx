@@ -377,7 +377,7 @@ export default function Course() {
             render : () => {
                 return(
                     <>
-                    <div></div>
+                    <div className="blank-separator"></div>
                     </>
                 )
             }

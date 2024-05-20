@@ -131,18 +131,55 @@ $color-active: #65438f;
 .filter-wrapper {
   .wrap-bulk-all-date{
     max-width: 1400px !important;
-
-    // .searchCourseField{
-    //   flex: none;
-    //   text-align: end;
-
-    //   input{
-    //     max-width: 200px;
-    //   }
-    // }
+    gap: 0.75rem;
 
     & > div{
       max-width: 150px;
+
+      select{
+        min-height: 40px;
+      }
+    }
+
+    .searchCourseField{
+      max-width: 200px;
+    }
+
+    .course-bulk-action{
+      max-width: 200px;
+      flex-wrap: nowrap !important;
+    }
+
+    .shortnameField{
+      margin-left: auto;
+    }
+  }
+}
+
+@media only screen and (max-width: 873px) {
+  .filter-wrapper{
+    .wrap-bulk-all-date{
+      .blank-separator{
+        display: none;
+      }
+    }
+  }
+}
+
+
+@media only screen and (max-width: 663px) {
+  .filter-wrapper{
+    .wrap-bulk-all-date{
+      .shortnameField{
+        margin: 0;
+      }
+      .course-bulk-action{
+        min-width: 200px;
+      }
+      
+      .course-bulk-action , & > div, .searchCourseField{
+        max-width: 100%;
+      }
     }
   }
 }
