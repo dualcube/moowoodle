@@ -6,10 +6,10 @@ import CustomTable, {
 } from "../AdminLibrary/CustomTable/CustomTable";
 import Banner from "../Banner/banner";
 import { useRef } from "react";
-import './courses.scss';
 import Propopup from "../PopupContent/PopupContent";
 import Dialog from "@mui/material/Dialog";
 import { render } from "react-dom";
+import './courses.scss';
 
 export default function Course() {
     const { __ } = wp.i18n;
@@ -141,7 +141,7 @@ export default function Course() {
                 console.error('Error:', error);
             });
         } else {
-            console.log("pro banner");
+            setOpenDialog(true);
         }
     }
 
@@ -236,52 +236,55 @@ export default function Course() {
             )
         },
         {
-            name: <div dangerouslySetInnerHTML={{ __html: __('Actions') }}></div>,
+            name: <div className="table-action-column">{__('Action', 'moowoodle')}{!appLocalizer.pro_active && <span className="admin-pro-tag">pro</span>}</div>,
             cell: (row, rowIndex) => (
-                <div class="moowoodle-course-actions">
-                    <button
-                        class={`sync-single-course button-primary`}
-                        title={__('Sync Course Data')}
-                        onClick={(e) => {
-                            handleSingleAction(
-                                'sync_courses',
-                                row.id,
-                                row.moodle_course_id,
-                            )
-                        }}
-                    >
-                        <i class="dashicons dashicons-update"></i>
-                    </button>
-                    {
-                        Object.keys(row.products).length ?
-                            <button
-                                class={`update-existed-single-product button-secondary `}
-                                title={__('Sync Course Data & Update Product')}
-                                onClick={(e) => {
-                                    handleSingleAction(
-                                        'update_product',
-                                        row.id,
-                                        row.moodle_course_id,
-                                    )
-                                }}
-                            >
-                                <i class="dashicons dashicons-admin-links"></i>
-                            </button>
-                            :
-                            <button
-                                class={`create-single-product button-secondary`}
-                                title={__('Create Product')}
-                                onClick={(e) => {
-                                    handleSingleAction(
-                                        'create_product',
-                                        row.id,
-                                        row.moodle_course_id,
-                                    )
-                                }}
-                            >
-                                <i class="dashicons dashicons-cloud-upload"></i>
-                            </button>
-                    }
+                <div className="table-row-custom">
+                    <h4 className="column-name">{__('Action', 'moowoodle')}{!appLocalizer.pro_active && <span className="admin-pro-tag">pro</span>}</h4>
+                    <div class="moowoodle-course-actions">
+                        <button
+                            class={`sync-single-course button-primary`}
+                            title={__('Sync Course Data')}
+                            onClick={(e) => {
+                                handleSingleAction(
+                                    'sync_courses',
+                                    row.id,
+                                    row.moodle_course_id,
+                                )
+                            }}
+                        >
+                            <i class="dashicons dashicons-update"></i>
+                        </button>
+                        {
+                            Object.keys(row.products).length ?
+                                <button
+                                    class={`update-existed-single-product button-secondary `}
+                                    title={__('Sync Course Data & Update Product')}
+                                    onClick={(e) => {
+                                        handleSingleAction(
+                                            'update_product',
+                                            row.id,
+                                            row.moodle_course_id,
+                                        )
+                                    }}
+                                >
+                                    <i class="dashicons dashicons-admin-links"></i>
+                                </button>
+                                :
+                                <button
+                                    class={`create-single-product button-secondary`}
+                                    title={__('Create Product')}
+                                    onClick={(e) => {
+                                        handleSingleAction(
+                                            'create_product',
+                                            row.id,
+                                            row.moodle_course_id,
+                                        )
+                                    }}
+                                >
+                                    <i class="dashicons dashicons-cloud-upload"></i>
+                                </button>
+                        }
+                    </div>
                 </div>
             ),
         },
@@ -299,6 +302,7 @@ export default function Course() {
                             <option value="create_product">{__('Create Product')}</option>
                             <option value="update_product">{__('Update Product')}</option>
                         </select>
+                            {!appLocalizer.pro_active && <span className="admin-pro-tag">pro</span>}
                         <button
                             name="bulk-action-apply"
                             onClick={handleBulkAction}

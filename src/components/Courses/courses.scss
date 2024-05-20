@@ -40,28 +40,28 @@ $color-active: #65438f;
     }
   }
 
-  .moowoodle-course-actions{
+  .moowoodle-course-actions {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
-    
-    button{
+
+    button {
       box-shadow: 0 0 1rem rgba($color: #000000, $alpha: 0.025);
       display: flex;
       align-items: center;
       justify-content: center;
 
-      &:first-child{
+      &:first-child {
         background-color: $color-active;
       }
 
-      &:last-child{
+      &:last-child {
         background-color: rgba($color: $color-active, $alpha: 0.6);
         color: $color-white;
       }
-      
-      i{
+
+      i {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -69,56 +69,56 @@ $color-active: #65438f;
     }
   }
 
-  .rdt_Table{
-    a{
+  .rdt_Table {
+    a {
       color: rgba($color: #000000, $alpha: 0.87);
     }
 
     .rdt_TableHead {
       .rdt_TableHeadRow {
-        .rdt_TableCol{
-          &:nth-child(7){
+        .rdt_TableCol {
+          &:nth-child(7) {
             min-width: 17rem !important; // To overwrite default table css
           }
         }
       }
     }
 
-    .rdt_TableRow{
-      .rdt_TableCell{
-        &:nth-child(7){
+    .rdt_TableRow {
+      .rdt_TableCell {
+        &:nth-child(7) {
           min-width: 17rem !important; // To overwrite default table css
         }
       }
     }
   }
 
-  .rdt_TableCol{
-    .rdt_TableCol_Sortable{
-      & > span{
+  .rdt_TableCol {
+    .rdt_TableCol_Sortable {
+      & > span {
         font-size: 0.75rem;
-        padding: 3px
+        padding: 3px;
       }
     }
   }
 
-  .rdt_Pagination{
-    .sc-lnsjTu.epZUJV{
-      & > svg{
+  .rdt_Pagination {
+    .sc-lnsjTu.epZUJV {
+      & > svg {
         display: none;
       }
     }
   }
 }
 
-@media only screen and (max-width: 85.365rem){
-  .rdt_Table{
-    .rdt_TableBody{
-      .rdt_TableRow{
-        .rdt_TableCell{
+@media only screen and (max-width: 85.365rem) {
+  .rdt_Table {
+    .rdt_TableBody {
+      .rdt_TableRow {
+        .rdt_TableCell {
           &:nth-child(1),
           &:nth-child(2),
-          &:nth-child(3){
+          &:nth-child(3) {
             height: 4.25rem !important;
           }
         }
@@ -127,59 +127,73 @@ $color-active: #65438f;
   }
 }
 
-
 .filter-wrapper {
-  .wrap-bulk-all-date{
+  .wrap-bulk-all-date {
     max-width: 1400px !important;
     gap: 0.75rem;
 
-    & > div{
+    & > div {
       max-width: 150px;
 
-      select{
+      select {
         min-height: 40px;
       }
     }
 
-    .searchCourseField{
+    .searchCourseField {
       max-width: 200px;
     }
 
-    .course-bulk-action{
+    .course-bulk-action {
       max-width: 200px;
       flex-wrap: nowrap !important;
+      position: relative;
     }
 
-    .shortnameField{
+    .shortnameField {
       margin-left: auto;
     }
   }
 }
 
 @media only screen and (max-width: 873px) {
-  .filter-wrapper{
-    .wrap-bulk-all-date{
-      .blank-separator{
+  .filter-wrapper {
+    .wrap-bulk-all-date {
+      .blank-separator {
         display: none;
       }
     }
   }
 }
 
-
 @media only screen and (max-width: 663px) {
-  .filter-wrapper{
-    .wrap-bulk-all-date{
-      .shortnameField{
+  .filter-wrapper {
+    .wrap-bulk-all-date {
+      .shortnameField {
         margin: 0;
       }
-      .course-bulk-action{
+      .course-bulk-action {
         min-width: 200px;
       }
-      
-      .course-bulk-action , & > div, .searchCourseField{
+
+      .course-bulk-action,
+      & > div,
+      .searchCourseField {
         max-width: 100%;
       }
     }
+  }
+}
+
+.table-action-column {
+  position: relative;
+
+  .admin-pro-tag {
+    right: unset;
+  }
+}
+.table-row-custom {
+  .column-name {
+    position: relative;
   }
 }
