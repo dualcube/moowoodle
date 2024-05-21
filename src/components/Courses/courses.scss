@@ -56,7 +56,10 @@ $color-active: #65438f;
     .rdt_TableHead {
       .rdt_TableHeadRow {
         .rdt_TableCol {
-          &:nth-child(7) {
+          &:nth-child(2) {
+            min-width: 12rem !important; // To overwrite default table css
+          }
+          &:nth-child(6) {
             min-width: 17rem !important; // To overwrite default table css
           }
         }
@@ -65,7 +68,10 @@ $color-active: #65438f;
 
     .rdt_TableRow {
       .rdt_TableCell {
-        &:nth-child(7) {
+        &:nth-child(2) {
+          min-width: 12rem !important; // To overwrite default table css
+        }
+        &:nth-child(6) {
           min-width: 17rem !important; // To overwrite default table css
         }
       }
