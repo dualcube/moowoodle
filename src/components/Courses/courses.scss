@@ -17,51 +17,30 @@ $color-active: #65438f;
     p {
       font-size: 1.5rem;
     }
-
-    .download-btn-subscriber-list {
-      border-radius: 0.25rem;
-      background-color: $color-active;
-      padding: 0.5rem 1rem;
-
-      a {
-        color: $color-white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        text-decoration: none;
-
-        .dashicons-before {
-          &::before {
-            padding: 0;
-          }
-        }
-      }
-    }
   }
 
-  .moowoodle-course-actions{
+  .moowoodle-course-actions {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
-    
-    button{
+
+    button {
       box-shadow: 0 0 1rem rgba($color: #000000, $alpha: 0.025);
       display: flex;
       align-items: center;
       justify-content: center;
 
-      &:first-child{
+      &:first-child {
         background-color: $color-active;
       }
 
-      &:last-child{
+      &:last-child {
         background-color: rgba($color: $color-active, $alpha: 0.6);
         color: $color-white;
       }
-      
-      i{
+
+      i {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -69,56 +48,56 @@ $color-active: #65438f;
     }
   }
 
-  .rdt_Table{
-    a{
+  .rdt_Table {
+    a {
       color: rgba($color: #000000, $alpha: 0.87);
     }
 
     .rdt_TableHead {
       .rdt_TableHeadRow {
-        .rdt_TableCol{
-          &:nth-child(7){
+        .rdt_TableCol {
+          &:nth-child(7) {
             min-width: 17rem !important; // To overwrite default table css
           }
         }
       }
     }
 
-    .rdt_TableRow{
-      .rdt_TableCell{
-        &:nth-child(7){
+    .rdt_TableRow {
+      .rdt_TableCell {
+        &:nth-child(7) {
           min-width: 17rem !important; // To overwrite default table css
         }
       }
     }
   }
 
-  .rdt_TableCol{
-    .rdt_TableCol_Sortable{
-      & > span{
+  .rdt_TableCol {
+    .rdt_TableCol_Sortable {
+      & > span {
         font-size: 0.75rem;
-        padding: 3px
+        padding: 3px;
       }
     }
   }
 
-  .rdt_Pagination{
-    .sc-lnsjTu.epZUJV{
-      & > svg{
+  .rdt_Pagination {
+    .sc-lnsjTu.epZUJV {
+      & > svg {
         display: none;
       }
     }
   }
 }
 
-@media only screen and (max-width: 85.365rem){
-  .rdt_Table{
-    .rdt_TableBody{
-      .rdt_TableRow{
-        .rdt_TableCell{
+@media only screen and (max-width: 85.365rem) {
+  .rdt_Table {
+    .rdt_TableBody {
+      .rdt_TableRow {
+        .rdt_TableCell {
           &:nth-child(1),
           &:nth-child(2),
-          &:nth-child(3){
+          &:nth-child(3) {
             height: 4.25rem !important;
           }
         }
@@ -127,22 +106,64 @@ $color-active: #65438f;
   }
 }
 
-
 .filter-wrapper {
-  .wrap-bulk-all-date{
-    max-width: 1400px !important;
+  .wrap-bulk-all-date {
+    max-width: 100% !important;
+    gap: 0.75rem;
 
-    // .searchCourseField{
-    //   flex: none;
-    //   text-align: end;
-
-    //   input{
-    //     max-width: 200px;
-    //   }
-    // }
-
-    & > div{
+    & > div {
       max-width: 150px;
+
+      select {
+        min-height: 40px;
+      }
     }
+
+    .searchCourseField {
+      max-width: 200px;
+    }
+
+    .course-bulk-action {
+      max-width: 200px;
+      flex-wrap: nowrap !important;
+      position: relative;
+    }
+
+    .shortnameField {
+      margin-left: auto;
+    }
+  }
+}
+
+@media only screen and (max-width: 665px) {
+  .filter-wrapper {
+    .wrap-bulk-all-date {
+      .shortnameField {
+        margin: 0;
+      }
+      .course-bulk-action {
+        min-width: 200px;
+      }
+
+      .course-bulk-action,
+      & > div,
+      .searchCourseField {
+        max-width: 100%;
+      }
+    }
+  }
+}
+
+
+.table-action-column {
+  position: relative;
+
+  .admin-pro-tag {
+    right: unset;
+  }
+}
+.table-row-custom {
+  .column-name {
+    position: relative;
   }
 }

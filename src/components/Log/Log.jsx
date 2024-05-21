@@ -70,6 +70,29 @@ const Log = (props) => {
     });
   };
 
+  const handleCopyToClipboard = (event) => {
+    event.preventDefault();
+    const logText = data.map((log) => {
+      const regex = /^([^:]+:[^:]+:[^:]+):(.*)$/;
+      const match = log.match(regex);
+      if (match) {
+        const dateSection = match[1].trim();
+        const content = match[2].trim();
+        return `${dateSection} : ${content}`;
+      } else {
+        return log;
+      }
+    }).join('\n');
+
+    navigator.clipboard.writeText(logText)
+      .then(() => {
+        console.log("Logs copied to clipboard");
+      })
+      .catch((error) => {
+        console.error("Error copying logs to clipboard:", error);
+      });
+  };
+
   return (
     <div className="section-log-container">
       <div className="button-section">
@@ -95,7 +118,7 @@ const Log = (props) => {
         <div className="wrapper-header">
           <p className="log-viewer-text">MooWoodle - log viewer</p>
           <div className="click-to-copy">
-            <button title="Copy" class="Btn">
+            <button title="Copy" class="Btn" onClick={handleCopyToClipboard}>
               <span class="svgIcon">
                 <svg
                   fill="white"

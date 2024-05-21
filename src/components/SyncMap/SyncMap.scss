@@ -5,85 +5,124 @@
     gap: 0.5rem;
     justify-content: flex-start;
     flex-wrap: wrap;
-    
-    .map-content-wrapper{
+
+    .container-wrapper{
         display: flex;
-        align-content: center;
-        justify-content: flex-start;
-        gap: 0.5rem;
         flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: flex-end;
 
-        select{
-            background-color: transparent !important;
-            border: 0.115rem solid rgba(0, 0, 0, 0.125) !important;
-            border-radius: 0.25rem !important;
-            padding: 0.125rem 1.5rem 0.15rem 0.5rem;
+        .main-wrapper{
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 0.5rem;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            position: relative;
 
-            &:active, &:focus{
-                box-shadow: none;
+            .main-wrapper-heading{
+                display: flex;
+                flex-wrap: wrap;
+                column-gap: 2.25rem;
+                row-gap: 0.5rem;
+
+                span{
+                    width: 110px;
+                }
+            }
+    
+            .map-content-wrapper{
+                display: flex;
+                align-content: center;
+                justify-content: flex-start;
+                gap: 0.5rem;
+                flex-wrap: wrap;
+        
+                select{
+                    background-color: transparent !important;
+                    border: 0.115rem solid rgba(0, 0, 0, 0.125) !important;
+                    border-radius: 0.25rem !important;
+                    padding: 0.125rem 1.5rem 0.15rem 0.5rem;
+                    width: 110px;
+        
+                    &:active, &:focus{
+                        box-shadow: none;
+                    }
+                }
+        
+                .connection-icon{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.25rem;
+                }
+        
+                .remove-mapping{
+                    padding: 8px 1rem;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    background: #e35047;
+                    justify-content: space-between;
+                    border-radius: 0.25rem;
+                    color: white;
+                    gap: 0.75rem;
+                    transition: all 0.3s linear;
+        
+                    .icon{
+                        display: flex;
+                        align-items: center;
+                        margin-top: 2px;
+        
+                        svg{
+                            width: 11px;
+                            height: 11px;
+                            fill: #fff;
+                        }
+                    }
+                }
             }
         }
+    
+        .btn-container{
 
-        .connection-icon{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-        }
+            .add-mapping-container{
+                min-width: 130px;
+                position: relative;
+        
+                .add-mapping{
+                    padding: 8px 1rem;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    background: #65438f;
+                    justify-content: space-between;
+                    border-radius: 0.25rem;
+                    color: white;
+                    gap: 0.75rem;
+                    transition: all 0.3s linear;
 
-        .remove-mapping{
-            padding: 8px 1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            background: #e35047;
-            justify-content: space-between;
-            border-radius: 0.25rem;
-            color: white;
-            gap: 0.75rem;
-            transition: all 0.3s linear;
-
-            .icon{
-                display: flex;
-                align-items: center;
-                margin-top: 2px;
-
-                svg{
-                    width: 11px;
-                    height: 11px;
-                    fill: #fff;
+                    &.not-allow{
+                        opacity: 0.5;
+                        cursor: not-allowed;
+                    }
+        
+                    .icon{
+                        display: flex;
+                        align-items: center;
+                        margin-top: 2px;
+        
+                        svg{
+                            width: 13px;
+                            height: 13px;
+                            fill: #fff;
+                        }
+                    }
                 }
             }
         }
     }
-
-    .add-mapping-container{
-        min-width: 130px;
-        position: relative;
-    }
-
-    .add-mapping{
-        padding: 8px 1rem;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        background: #65438f;
-        justify-content: space-between;
-        border-radius: 0.25rem;
-        color: white;
-        gap: 0.75rem;
-        transition: all 0.3s linear;
-
-        .icon{
-            display: flex;
-            align-items: center;
-            margin-top: 2px;
-
-            svg{
-                width: 13px;
-                height: 13px;
-                fill: #fff;
-            }
-        }
-    }
+    
+    
 }
