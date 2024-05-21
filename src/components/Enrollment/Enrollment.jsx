@@ -8,12 +8,10 @@ import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import './Enrollment.scss';
-import Propopup from "../PopupContent/PopupContent";
+import Popoup from "../PopupContent/PopupContent.jsx";
 
 const Enrollment = () => {
 	const [students, setStudents] = useState([]);
-    const [postStatus, setPostStatus] = useState("");
-	const [suggestions, setSuggestions] = useState([]);
 	const [courses, setCourses] = useState([]);
     const [data, setData] = useState(null);
     const [selectedRows, setSelectedRows] = useState([]);
@@ -33,16 +31,18 @@ const Enrollment = () => {
 	}, [])
 
 	useEffect(() => {
-		axios({
-			method: "post",
-			url:  getApiLink('get-enrollments'),
-			headers: { "X-WP-Nonce": appLocalizer.nonce },
-			data: {
-				counts : true
-			},
-		  }).then((response) => {
-			setTotalRows(response.data);
-		  });
+		if (appLocalizer.pro_active) {
+			axios({
+				method: "post",
+				url:  getApiLink('get-enrollments'),
+				headers: { "X-WP-Nonce": appLocalizer.nonce },
+				data: {
+					counts : true
+				},
+			}).then((response) => {
+				setTotalRows(response.data);
+			});
+		}
 	}, []);
 
 	useEffect(() => {
@@ -53,12 +53,14 @@ const Enrollment = () => {
 
 	
 	useEffect(() => {
-		axios({
-			method: "get",
-			url: getApiLink('all-customers'),
-		}).then((response) => {
-			setStudents(response.data)
-		});
+		if (appLocalizer.pro_active) {
+			axios({
+				method: "get",
+				url: getApiLink('all-customers'),
+			}).then((response) => {
+				setStudents(response.data)
+			});
+		}
 	}, []);
 
 	useEffect(() => {
@@ -264,17 +266,23 @@ const Enrollment = () => {
 	];
 
 	const handleButtonClick = (row) => {
-		console.log(row)
+		const data= {
+			orderId : row.order_id,
+			courseId : row.course_id,
+			userId : row.customer_id,
+			action : row.status == 'enrolled' ? 'Unenroll' : 'Enroll'
+		};
+		console.log(data);
 		
 		if ( confirm('Are you sure you want to proceed?') === true ) {
 			axios({
 				method: 'post',
 				url: getApiLink('manage-enrollment'),
 				data: {
-					orderId : row.order_id,
-					courseId : row.course_id,
-					userId : row.customer_id,
-					action : row.status
+					order_id : row.order_id,
+					course_id : row.course_id,
+					user_id : row.customer_id,
+					action : row.status == 'enrolled' ? 'unenroll' : 'enrolled'
 				},
 			}).then((response) => {
 				requestData();
@@ -300,7 +308,7 @@ const Enrollment = () => {
                 setOpenDialog(false);
               }}
             ></span>
-            <Propopup />
+            <Popoup />
           </Dialog>
           <div
             className="enrollment-img"

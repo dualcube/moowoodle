@@ -21,8 +21,7 @@ class Enrollment {
 	 * @param int $order_id
 	 * @return void
 	 */
-	public function process_order( $order_id ) {
-	
+	public function process_order( $order_id ) {	
 		$order = new \WC_Order( $order_id );
 
 		// Check order contain courses
@@ -41,6 +40,7 @@ class Enrollment {
 		if ( $has_course && ! $order->get_meta( 'moodle_user_enrolled', true ) ) {
 			$this->order	= $order;
 			$moodle_user_id = $this->get_moodle_user_id();
+
 			$this->enrol_moodle_user( $moodle_user_id );
 		}
 	}
@@ -245,7 +245,7 @@ class Enrollment {
 	 * @return void
 	 */
 	public function enrol_moodle_user( $moodle_user_id, $suspend = 0 ) {
-		if ( empty( $moodle_user_id ) || ! is_int( $moodle_user_id ) ) {
+		if ( empty( $moodle_user_id ) ) {
 			return;
 		}
 

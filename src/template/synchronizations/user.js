@@ -126,6 +126,7 @@ export default {
         {
             key: "sync_user_btn",
             type: "syncbutton",
+            apilink: 'sync-users',
             label: __("Manual synchronization mode", 'moowoodle'),
             value: "Synchronize user profile now!! ",
             desc: "This will synchronize user accounts between WordPress and Moodle instantly according to the selected ‘Sync Direction’.",
