@@ -84,19 +84,16 @@ const SyncMap = (props) => {
         if ( wordpressSyncFieldsChose.length && moodleSyncFieldsChose.length ) {
             const wpField = wordpressSyncFieldsChose.shift();
             const mdField = moodleSyncFieldsChose.shift();
-           
-            console.log( wpField, mdField );
 
             setSelectedFields(( selectedFields ) => {
                 return [ ...selectedFields, [ wpField, mdField ] ];
             });
         } else {
-            console.log( 'unable to add sync fields' );
+            alert( 'Unable to add sync fields' );
         }
     }
     
     useEffect(() => {
-        console.log(selectedFields);
         if (settingChanged.current && !proSettingChanged()) {
             settingChanged.current = false;
             setWordpressSyncFieldsChose( getUnselectedFields( 'wordpress' ) );

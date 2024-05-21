@@ -115,7 +115,6 @@ const Enrollment = () => {
 	  }
 	
 	const requestApiForData = (rowsPerPage, currentPage, filterData = {}) => {
-		// console.log(filterData)
 		requestData(
 		  rowsPerPage,
 		  currentPage,
@@ -272,7 +271,6 @@ const Enrollment = () => {
 			userId : row.customer_id,
 			action : row.status == 'enrolled' ? 'Unenroll' : 'Enroll'
 		};
-		console.log(data);
 		
 		if ( confirm('Are you sure you want to proceed?') === true ) {
 			axios({
