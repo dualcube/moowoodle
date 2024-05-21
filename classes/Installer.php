@@ -1,88 +1,83 @@
 <?php
-
 namespace MooWoodle;
-
 defined('ABSPATH') || exit;
-
 /**
  * plugin Install
  *
- * @version		3.1.7
- * @package		MooWoodle
- * @author 		DualCube
+ * @version     3.1.7
+ * @package     MooWoodle
+ * @author      DualCube
  */
 class Installer {
-	/**
-	 * Construct installation.
-	 * @return void
-	 */
+    /**
+     * Construct installation.
+     * @return void
+     */
     public function __construct() {
         if ( get_option( 'moowoodle_version' ) != MOOWOODLE_PLUGIN_VERSION ) {
-			
-			$this->set_default_settings();
-			
-			$this->migration();
-			
-			do_action('moowoodle_updated');
-		}
+            $this->set_default_settings();
+            $this->migration();
+            do_action( 'moowoodle_updated' );
+        }
     }
-
     /**
-	 * Plugin migration.
-	 * @return void
-	 */
-	public static function migration() {
-		$version = get_option('dc_moowoodle_plugin_db_version');
-		if ($version) {
-			// in update 3.1.4 migrate 'moowoodle_synchronize_settings' to moowoodle_synchronize_now.
-			if (version_compare($version, '3.1.3' ,'<=')) {
-				$old_settings = get_option('moowoodle_synchronize_settings');
-				if ($old_settings) {
-					update_option('moowoodle_synchronize_now', $old_settings);
-					delete_option('moowoodle_synchronize_settings');
-				}
-			}
-			// in update 3.1.9 product meta changed from single to array. 
-			if(version_compare($version, '3.1.9' ,'=')){
-				foreach (wc_get_products(array('return' => 'ids')) as $product_id) {
-					$moodle_course_id = get_post_meta($product_id, 'moodle_course_id', true);
-					if (is_array($moodle_course_id) && !empty($moodle_course_id)) {
-						update_post_meta($product_id, 'moodle_course_id', $moodle_course_id[0]);
-					}
-				}
-			}
-			// in update 3.1.11 change chackbox settings data from 'Enable' to true/flase. 
-			if(version_compare($version, '3.1.12' ,'<')){
-				$options =[
-					'moowoodle_general_settings' => [ 'update_moodle_user', 'moowoodle_adv_log' ],
-					'moowoodle_display_settings' => [ 'start_end_date' ],
-					'moowoodle_sso_settings' => [ 'moowoodle_sso_enable' ],
-					'moowoodle_notification_settings' => [ 'moowoodle_create_user_custom_mail' ],
-					'moowoodle_synchronize_settings' => [ 'realtime_sync_moodle_users', 'realtime_sync_wordpress_users',
-						'sync_user_first_name', 'sync_user_last_name', 'sync_username', 'sync_password', ],
-					'moowoodle_synchronize_now' => [ 'sync_courses', 'sync_courses_category', 'sync_all_product',
-						'sync_new_products', 'sync_exist_product', 'sync_image', ],
-				];
-				foreach($options as $option_key => $option_value){
-					$settings = get_option($option_key);
-					$settings = $settings ? $settings : [];
-					foreach($option_value as $index => $settings_key){
-						$settings[$settings_key] = $settings[$settings_key] ? true : false;
-					}
-					update_option($option_key, $settings);
-				}
-			}
-			update_option('dc_moowoodle_plugin_db_version', MOOWOODLE_PLUGIN_VERSION);
-		}
-	}
-
-	/**
-	 * Create and Update options.
-	 * @return void
-	 */
-	private function set_default_settings() {
-		add_option( 'moowoodle_version', MOOWOODLE_PLUGIN_VERSION );
-		update_option('woocommerce_registration_generate_username', 'no');
-		update_option('woocommerce_enable_guest_checkout', 'no');
-	}
+     * Plugin migration.
+     * @return void
+     */
+    public static function migration() {
+        update_option( 'moowoodle_version', MOOWOODLE_PLUGIN_VERSION );
+    }
+    /**
+     * Set default moowoodle admin settings.
+     * @return void
+     */
+    private function set_default_settings() {
+        $general_settings = [
+            'moodle_url'          => '',
+            'moodle_access_token' => '',
+            'moodle_timeout'      => 10,
+        ];
+        // Default value for sso setting
+        $sso_settings = [
+            'moowoodle_sso_enable'     => [],
+            'moowoodle_sso_secret_key' => '',
+        ];
+        // Default value for display setting
+        $display_settings = [
+            'start_end_date'                    => [],
+            'my_courses_priority'               => [],
+            'moowoodle_create_user_custom_mail' => [],
+        ];
+        // Default value for log setting
+        $log_settings = [
+            'moowoodle_adv_log' => [],
+        ];
+        // Default value sync course setting
+        $course_settings = [
+            'course_sync_direction'    => [ 'moodle_to_wordpress' ],
+            'course_sync_options'      => [ 'sync_courses', 'sync_courses_category' ],
+            'course_schedule_interval' => [],
+            'product_sync_option'      => [ 'create_update', 'create', 'update' ],
+        ];
+        // Default value for sync user setting
+        $user_settings = [
+            'update_moodle_user'     => [],
+            'user_sync_options'      => [],
+            'user_sync_direction'    => [],
+            'user_schedule_interval' => [],
+        ];
+        // Update default settings
+        update_option( 'moowoodle_general_settings', array_merge(
+            $general_settings,
+            get_option( 'moowoodle_general_settings', [] )
+        ));
+        update_option( 'moowoodle_sso_settings', array_merge(
+            $sso_settings,
+            get_option( 'moowoodle_sso_settings', [] )
+        ));
+        update_option( 'moowoodle_display_settings', $display_settings );
+        update_option( 'moowoodle_log_settings', $log_settings );
+        update_option( 'moowoodle_synchronize_course_settings', $course_settings );
+        update_option( 'moowoodle_synchronize_user_settings',$user_settings );
+    }
 }

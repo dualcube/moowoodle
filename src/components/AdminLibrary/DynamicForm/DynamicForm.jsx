@@ -662,6 +662,7 @@ const DynamicForm = (props) => {
         case "syncbutton":
           input = <SyncNow
             buttonKey={inputField.key}
+            apilink= {inputField.apilink}
             value={inputField.value}
             description={inputField.desc}
             proSetting={isProSetting(inputField.proSetting)}
@@ -673,6 +674,7 @@ const DynamicForm = (props) => {
           input = <SyncMap
           description = {inputField.desc}
           proSetting={isProSetting(inputField.proSetting)}
+          proSettingChanged={() => proSettingChanged( inputField.proSetting )}
           />
           break;
         
@@ -736,6 +738,7 @@ const DynamicForm = (props) => {
           case "checkbox-custom-img":
             input = <CheckboxCustomImg 
             proSetting={isProSetting(inputField.proSetting)}
+			proSettingChanged={() => proSettingChanged( inputField.proSetting )}
           />
           break;
 

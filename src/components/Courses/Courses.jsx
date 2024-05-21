@@ -6,10 +6,10 @@ import CustomTable, {
 } from "../AdminLibrary/CustomTable/CustomTable";
 import Banner from "../Banner/banner";
 import { useRef } from "react";
+import './courses.scss';
 import Propopup from "../PopupContent/PopupContent";
 import Dialog from "@mui/material/Dialog";
 import { render } from "react-dom";
-import './courses.scss';
 
 export default function Course() {
     const { __ } = wp.i18n;
@@ -46,7 +46,7 @@ export default function Course() {
         courseField = '',
         productField = '',
         catagoryField = '',
-        shortnameField = '',
+        searchAction = '',
         searchCourseField =''
     ) {
         //Fetch the data to show in the table
@@ -60,7 +60,7 @@ export default function Course() {
                 course: courseField,
                 product: productField,
                 catagory: catagoryField,
-                shortname: shortnameField,
+                searchaction: searchAction,
                 search: searchCourseField
             },
         }).then((response) => {
@@ -81,7 +81,7 @@ export default function Course() {
             filterData?.courseField,
             filterData?.productField,
             filterData?.catagoryField,
-            filterData?.shortnameField,
+            filterData?.searchAction,
             filterData?.searchCourseField
         );
     };
@@ -141,7 +141,7 @@ export default function Course() {
                 console.error('Error:', error);
             });
         } else {
-            setOpenDialog(true);
+            console.log("pro banner");
         }
     }
 
@@ -194,7 +194,7 @@ export default function Course() {
             name: __('Product Name', 'moowoodle'),
             selector: row => row.products,
             cell: (row) => (
-                <TableCell title={'Product Name'}>
+                <TableCell>
                     {
                         Object.keys(row.products).length ? (
                             Object.entries(row.products).map(([name, url], index) => {
@@ -236,55 +236,52 @@ export default function Course() {
             )
         },
         {
-            name: <div className="table-action-column">{__('Action', 'moowoodle')}{!appLocalizer.pro_active && <span className="admin-pro-tag">pro</span>}</div>,
+            name: <div dangerouslySetInnerHTML={{ __html: __('Actions') }}></div>,
             cell: (row, rowIndex) => (
-                <div className="table-row-custom">
-                    <h4 className="column-name">{__('Action', 'moowoodle')}{!appLocalizer.pro_active && <span className="admin-pro-tag">pro</span>}</h4>
-                    <div class="moowoodle-course-actions">
-                        <button
-                            class={`sync-single-course button-primary`}
-                            title={__('Sync Course Data')}
-                            onClick={(e) => {
-                                handleSingleAction(
-                                    'sync_courses',
-                                    row.id,
-                                    row.moodle_course_id,
-                                )
-                            }}
-                        >
-                            <i class="dashicons dashicons-update"></i>
-                        </button>
-                        {
-                            Object.keys(row.products).length ?
-                                <button
-                                    class={`update-existed-single-product button-secondary `}
-                                    title={__('Sync Course Data & Update Product')}
-                                    onClick={(e) => {
-                                        handleSingleAction(
-                                            'update_product',
-                                            row.id,
-                                            row.moodle_course_id,
-                                        )
-                                    }}
-                                >
-                                    <i class="dashicons dashicons-admin-links"></i>
-                                </button>
-                                :
-                                <button
-                                    class={`create-single-product button-secondary`}
-                                    title={__('Create Product')}
-                                    onClick={(e) => {
-                                        handleSingleAction(
-                                            'create_product',
-                                            row.id,
-                                            row.moodle_course_id,
-                                        )
-                                    }}
-                                >
-                                    <i class="dashicons dashicons-cloud-upload"></i>
-                                </button>
-                        }
-                    </div>
+                <div class="moowoodle-course-actions">
+                    <button
+                        class={`sync-single-course button-primary`}
+                        title={__('Sync Course Data')}
+                        onClick={(e) => {
+                            handleSingleAction(
+                                'sync_courses',
+                                row.id,
+                                row.moodle_course_id,
+                            )
+                        }}
+                    >
+                        <i class="dashicons dashicons-update"></i>
+                    </button>
+                    {
+                        Object.keys(row.products).length ?
+                            <button
+                                class={`update-existed-single-product button-secondary `}
+                                title={__('Sync Course Data & Update Product')}
+                                onClick={(e) => {
+                                    handleSingleAction(
+                                        'update_product',
+                                        row.id,
+                                        row.moodle_course_id,
+                                    )
+                                }}
+                            >
+                                <i class="dashicons dashicons-admin-links"></i>
+                            </button>
+                            :
+                            <button
+                                class={`create-single-product button-secondary`}
+                                title={__('Create Product')}
+                                onClick={(e) => {
+                                    handleSingleAction(
+                                        'create_product',
+                                        row.id,
+                                        row.moodle_course_id,
+                                    )
+                                }}
+                            >
+                                <i class="dashicons dashicons-cloud-upload"></i>
+                            </button>
+                    }
                 </div>
             ),
         },
@@ -302,7 +299,6 @@ export default function Course() {
                             <option value="create_product">{__('Create Product')}</option>
                             <option value="update_product">{__('Update Product')}</option>
                         </select>
-                            {!appLocalizer.pro_active && <span className="admin-pro-tag">pro</span>}
                         <button
                             name="bulk-action-apply"
                             onClick={handleBulkAction}
@@ -334,6 +330,27 @@ export default function Course() {
         //         );
         //     },
         // },
+        {
+            name: "catagoryField",
+            render: (updateFilter, filterValue) => {
+                return (
+                    <>
+                        <div className="admin-header-search-section catagoryField">
+                            <select
+                                name="catagoryField"
+                                onChange={(e) => updateFilter(e.target.name, e.target.value)}
+                                value={filterValue || ""}
+                            >
+                                <option value="">Category</option>
+                                {Object.entries(category).map(([categoryId, categoryName]) => (
+                                    <option value={categoryId}>{categoryName}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </>
+                );
+            },
+        },
         // {
         //     name: "productField",
         //     render: (updateFilter, filterValue) => {
@@ -356,64 +373,73 @@ export default function Course() {
         //     },
         // },
         {
-            name: "catagoryField",
-            render: (updateFilter, filterValue) => {
-                return (
+            name: "blank",
+            render : () => {
+                return(
                     <>
-                        <div className="admin-header-search-section catagoryField">
-                            <select
-                                name="catagoryField"
-                                onChange={(e) => updateFilter(e.target.name, e.target.value)}
-                                value={filterValue || ""}
-                            >
-                                <option value="">Category</option>
-                                {Object.entries(category).map(([categoryId, categoryName]) => (
-                                    <option value={categoryId}>{categoryName}</option>
-                                ))}
-                            </select>
-                        </div>
+                    <div></div>
                     </>
-                );
-            },
+                )
+            }
         },
-        {
-            name: "shortnameField",
-            render: (updateFilter, filterValue) => {
-                return (
-                    <>
-                        <div className="admin-header-search-section shortnameField">
-                            <select
-                                name="shortnameField"
-                                onChange={(e) => updateFilter(e.target.name, e.target.value)}
-                                value={filterValue || ""}
-                            >
-                                <option value="">Short Name</option>
-                                {Object.entries(shortName).map(([shortNameId, shortNameValue]) => (
-                                    <option value={shortNameValue}>{shortNameValue}</option>
-                                ))}
-                            </select>
-                        </div>
-                    </>
-                );
-            },
-        },
+        // {
+        //     name: "shortnameField",
+        //     render: (updateFilter, filterValue) => {
+        //         return (
+        //             <>
+        //                 <div className="admin-header-search-section shortnameField">
+        //                     <select
+        //                         name="shortnameField"
+        //                         onChange={(e) => updateFilter(e.target.name, e.target.value)}
+        //                         value={filterValue || ""}
+        //                     >
+        //                         <option value="">Short Name</option>
+        //                         {Object.entries(shortName).map(([shortNameId, shortNameValue]) => (
+        //                             <option value={shortNameValue}>{shortNameValue}</option>
+        //                         ))}
+        //                     </select>
+        //                 </div>
+        //             </>
+        //         );
+        //     },
+        // },
         
         {
             name: "searchCourseField",
             render: (updateFilter, filterValue) => (
               <>
                 <div className="admin-header-search-section searchCourseField">
-                  <input
-                    name="searchCourseField"
-                    type="text"
-                    placeholder={__("Search Course","moowoodle")}
-                    onChange={(e) => updateFilter(e.target.name, e.target.value)}
-                    value={filterValue || ""}
-                  />
+                    <input
+                        name="searchCourseField"
+                        type="text"
+                        placeholder={__("Search...","moowoodle")}
+                        onChange={(e) => updateFilter(e.target.name, e.target.value)}
+                        value={filterValue || ""}
+                    />           
                 </div>
               </>
             ),
-        }
+        },
+        {
+            name: "searchAction",
+            render: (updateFilter, filterValue) => {
+                return (
+                    <>
+                        <div className="admin-header-search-section searchAction">
+                            <select
+                                name="searchAction"
+                                onChange={(e) => updateFilter(e.target.name, e.target.value)}
+                                value={filterValue || ""}
+                            >
+                                <option value="">All</option>
+                                <option value="course">Course</option>
+                                <option value="shortname">Short Name</option>
+                            </select>
+                        </div>
+                    </>
+                );
+            },
+        },
     ];
 
     return (

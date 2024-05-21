@@ -60,12 +60,6 @@ class RestAPI {
             'permission_callback' =>[ MooWoodle()->restAPI, 'moowoodle_permission' ],
         ]);
 
-        register_rest_route( MooWoodle()->rest_namespace, '/course-bulk-action', [
-            'methods'             => \WP_REST_Server::ALLMETHODS,
-            'callback'            =>[ $this, 'get_course_action' ],
-            'permission_callback' =>[ MooWoodle()->restAPI, 'moowoodle_permission' ],
-        ]);
-
         register_rest_route( MooWoodle()->rest_namespace, '/fetch-log', [
             'methods'             => \WP_REST_Server::ALLMETHODS,
             'callback'            =>[ $this, 'get_log' ],
@@ -242,23 +236,22 @@ class RestAPI {
         $count_courses = $request->get_param( 'count' );
         $limit       = $request->get_param( 'row' );
         $offset      = ( $request->get_param( 'page' ) - 1 ) * $limit;
-        $course_field   = $request->get_param( 'course' );
         $product_field  = $request->get_param( 'product' );
         $catagory_field = $request->get_param( 'catagory' );
-        $shortname_field = $request->get_param( 'shortname' );
+        $search_action =  $request->get_param( 'searchaction' );
         $search_field = $request->get_param( 'search');
+
         $args = [
             'fields'      => 'ids',
             'numberposts' => -1,
             'limit' => $limit,
             'offset' => $offset
         ];
-        if (!empty($search_field)) {
-            $args['s']= $search_field;
+
+        if ($search_action == 'course') {
+            $args['title']= $search_field;
         }
-        if (!empty($course_field)) {
-            $args['p']= intval($course_field);
-        }
+
         if (!empty($catagory_field)) {
             $args['meta_query']= [
                 [
@@ -275,11 +268,11 @@ class RestAPI {
                 ]
             ];
         }
-        if (!empty($shortname_field)) {
+        if ($search_action == 'shortname') {
             $args['meta_query']= [
                 [
                     'key'   => '_course_short_name',
-                    'value' => $shortname_field,
+                    'value' => $search_field,
                 ]
             ];
         }
@@ -397,20 +390,6 @@ class RestAPI {
         ];
 		
         return rest_ensure_response( $all_data );
-	}
-
-
-    /**
-     * get course action
-     * @param mixed $request
-     * @return \WP_Error|\WP_REST_Response
-     */
-	function get_course_action( $request ) {
-		$selected_action = $request->get_param('selected_action');
-		$course_ids = $request->get_param('course_ids');
-
-		\MooWoodle\Util::_log($selected_action);
-		\MooWoodle\Util::_log($course_ids);
 	}
 
     /**

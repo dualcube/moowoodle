@@ -25,9 +25,7 @@ const CheckboxCustomImg = (props) => {
           </div>
           <p className="sync-label">Moodle to WordPress</p>
         </div>
-        {
-            props.proSetting && <span className="admin-pro-tag">pro</span>
-        }
+        {props.proSetting && <span className="admin-pro-tag">pro</span>}
       </div>
     </>
   );
