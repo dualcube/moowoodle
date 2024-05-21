@@ -65,6 +65,7 @@ export default function Course() {
             },
         }).then((response) => {
             setData(response.data);
+            console.log(response.data)
         });
     }
 
@@ -169,6 +170,28 @@ export default function Course() {
     //columns for the data table
     const columns = [
         {
+            name: __('Product Name', 'moowoodle'),
+            selector: row => row.products,
+            cell: (row) => (
+                <TableCell title={'Product Name'}>
+                    {
+                        Object.keys(row.products).length ? (
+                            Object.entries(row.products).map(([name, url], index) => {
+                                return (
+                                <>
+                                    <img src="https://shorturl.at/CXr4y"/>
+                                    <a key={index} href={url}> {name} </a>
+                                </>
+                                )
+                            })
+                        ) : (
+                            "-"
+                        )
+                    }
+                </TableCell>
+            ),
+        },
+        {
             name: __('Course Name', 'moowoodle'),
             selector: row => row.course_name,
             cell: (row) => (
@@ -191,23 +214,6 @@ export default function Course() {
             sortable: true,
         },
         {
-            name: __('Product Name', 'moowoodle'),
-            selector: row => row.products,
-            cell: (row) => (
-                <TableCell title={'Product Name'}>
-                    {
-                        Object.keys(row.products).length ? (
-                            Object.entries(row.products).map(([name, url], index) => {
-                                return <a key={index} href={url}> {name} </a>
-                            })
-                        ) : (
-                            "-"
-                        )
-                    }
-                </TableCell>
-            ),
-        },
-        {
             name: __('Category Name', 'moowoodle'),
             selector: row => row.category_name,
             cell: (row) => (
@@ -220,18 +226,18 @@ export default function Course() {
             sortable: true,
         },
         {
-            name: __('Enrolled Users', 'moowoodle'),
-            cell: (row) => (
-                <TableCell title={'Enrolled Users'}>
-                    {row.enroled_user}
-                </TableCell>
-            )
-        },
-        {
             name: __('Course Duration', 'moowoodle'),
             cell: (row) => (
                 <TableCell title={'Date'}>
                     {row.date}
+                </TableCell>
+            )
+        },
+        {
+            name: __('Enrolled Users', 'moowoodle'),
+            cell: (row) => (
+                <TableCell title={'Enrolled Users'}>
+                    {row.enroled_user}
                 </TableCell>
             )
         },
