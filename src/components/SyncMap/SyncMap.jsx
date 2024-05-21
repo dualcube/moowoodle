@@ -99,12 +99,11 @@ const SyncMap = (props) => {
                 
             }
         } else {
-            console.log( 'unable to add sync fields' );
+            alert( 'Unable to add sync fields' );
         }
     }
     
     useEffect(() => {
-        console.log(selectedFields);
         if (settingChanged.current && !proSettingChanged()) {
             settingChanged.current = false;
         setWordpressSyncFieldsChose( getUnselectedFields( 'wordpress' ) );

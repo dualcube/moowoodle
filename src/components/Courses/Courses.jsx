@@ -9,7 +9,7 @@ import { useRef } from "react";
 import './courses.scss';
 import Propopup from "../PopupContent/PopupContent";
 import Dialog from "@mui/material/Dialog";
-import { render } from "react-dom";
+import defaultImage from '../../assets/images/moowoodle-product-default.png';
 
 export default function Course() {
     const { __ } = wp.i18n;
@@ -65,7 +65,6 @@ export default function Course() {
             },
         }).then((response) => {
             setData(response.data);
-            console.log(response.data)
         });
     }
 
@@ -108,7 +107,7 @@ export default function Course() {
                     }]
                 },
             }).then((response) => {
-                console.log(response);
+                // Handle after single row action success.
             }).catch((error) => {
                 console.error('Error:', error);
             });
@@ -137,11 +136,12 @@ export default function Course() {
                     })
                 },
             }).then((response) => {
-                console.log(response);
+                // handle after bulk action success
             }).catch((error) => {
                 console.error('Error:', error);
             });
         } else {
+            setOpenDialog(true);
             setOpenDialog(true);
         }
     }
@@ -179,7 +179,7 @@ export default function Course() {
                             Object.entries(row.products).map(([name, url], index) => {
                                 return (
                                 <>
-                                    <img src="https://shorturl.at/CXr4y"/>
+                                    <img src={ row.productimage || defaultImage }/>
                                     <a key={index} href={url}> {name} </a>
                                 </>
                                 )
@@ -316,27 +316,6 @@ export default function Course() {
                 );
             },
         },
-        // {
-        //     name: "courseField",
-        //     render: (updateFilter, filterValue) => {
-        //         return (
-        //             <>
-        //                 <div className="admin-header-search-section courseField">
-        //                     <select
-        //                         name="courseField"
-        //                         onChange={(e) => updateFilter(e.target.name, e.target.value)}
-        //                         value={filterValue || ""}
-        //                     >
-        //                         <option value="">Courses</option>
-        //                         {Object.entries(courses).map(([courseId, courseName]) => (
-        //                             <option value={courseId}>{courseName}</option>
-        //                         ))}
-        //                     </select>
-        //                 </div>
-        //             </>
-        //         );
-        //     },
-        // },
         {
             name: "catagoryField",
             render: (updateFilter, filterValue) => {
@@ -358,49 +337,16 @@ export default function Course() {
                 );
             },
         },
-        // {
-        //     name: "productField",
-        //     render: (updateFilter, filterValue) => {
-        //         return (
-        //             <>
-        //                 <div className="admin-header-search-section productField">
-        //                     <select
-        //                         name="productField"
-        //                         onChange={(e) => updateFilter(e.target.name, e.target.value)}
-        //                         value={filterValue || ""}
-        //                     >
-        //                         <option value="">Products</option>
-        //                         {Object.entries(products).map(([productId, productName]) => (
-        //                             <option value={productId}>{productName}</option>
-        //                         ))}
-        //                     </select>
-        //                 </div>
-        //             </>
-        //         );
-        //     },
-        // },
-        // {
-        //     name: "shortnameField",
-        //     render: (updateFilter, filterValue) => {
-        //         return (
-        //             <>
-        //                 <div className="admin-header-search-section shortnameField">
-        //                     <select
-        //                         name="shortnameField"
-        //                         onChange={(e) => updateFilter(e.target.name, e.target.value)}
-        //                         value={filterValue || ""}
-        //                     >
-        //                         <option value="">Short Name</option>
-        //                         {Object.entries(shortName).map(([shortNameId, shortNameValue]) => (
-        //                             <option value={shortNameValue}>{shortNameValue}</option>
-        //                         ))}
-        //                     </select>
-        //                 </div>
-        //             </>
-        //         );
-        //     },
-        // },
-        
+        {
+            name: "blank",
+            render : () => {
+                return(
+                    <>
+                    <div></div>
+                    </>
+                )
+            }
+        },
         {
             name: "searchCourseField",
             render: (updateFilter, filterValue) => (

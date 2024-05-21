@@ -233,43 +233,50 @@ class RestAPI {
      * @return \WP_Error|\WP_REST_Response
      */
     public function get_courses( $request ) {
-        $count_courses = $request->get_param( 'count' );
-        $limit       = $request->get_param( 'row' );
-        $offset      = ( $request->get_param( 'page' ) - 1 ) * $limit;
+        $count_courses  = $request->get_param( 'count' );
+        $limit          = $request->get_param( 'row' );
+        $offset         = ( $request->get_param( 'page' ) - 1 ) * $limit;
         $product_field  = $request->get_param( 'product' );
         $catagory_field = $request->get_param( 'catagory' );
-        $search_action =  $request->get_param( 'searchaction' );
-        $search_field = $request->get_param( 'search');
+        $search_action  =  $request->get_param( 'searchaction' );
+        $search_field   = $request->get_param( 'search');
 
+        // Prepare argument for database query
         $args = [
             'fields'      => 'ids',
             'numberposts' => -1,
-            'limit' => $limit,
-            'offset' => $offset
+            'limit'       => $limit,
+            'offset'      => $offset
         ];
 
-        if ($search_action == 'course') {
-            $args['title']= $search_field;
+        // Filter by course
+        if ( $search_action == 'course' ) {
+            $args[ 'title' ] = $search_field;
         }
 
-        if (!empty($catagory_field)) {
-            $args['meta_query']= [
+        // Filter by category
+        if ( ! empty( $catagory_field ) ) {
+            $args[ 'meta_query' ] = [
                 [
                     'key'   => '_category_id',
-                    'value' => intval($catagory_field),
+                    'value' => intval( $catagory_field ),
                 ]
             ];
         }
-        if (!empty($product_field)) {
-            $args['meta_query']= [
+
+        // Filter by product
+        if ( ! empty( $product_field ) ) {
+            $args[ 'meta_query' ] = [
                 [
                     'key'   => 'linked_product_id',
-                    'value' => intval($product_field),
+                    'value' => intval( $product_field ),
                 ]
             ];
         }
-        if ($search_action == 'shortname') {
-            $args['meta_query']= [
+
+        // Filter by shortname.
+        if ( $search_action == 'shortname' ) {
+            $args[ 'meta_query' ] = [
                 [
                     'key'   => '_course_short_name',
                     'value' => $search_field,
@@ -278,7 +285,7 @@ class RestAPI {
         }
 
         // Get the courses
-        $course_ids = MooWoodle()->course->get_courses($args);
+        $course_ids = MooWoodle()->course->get_courses( $args );
         
         // Set response as number of courses if count request is set.
         if ( $count_courses ) {
@@ -305,10 +312,12 @@ class RestAPI {
 
             $synced_products = [];
             $count_enrolment = 0;
+            $product_image   = '';
 
 			foreach ( $products as $product ) {
 				$synced_products[ $product->get_name() ] = add_query_arg( [ 'post' => $product->get_id() , 'action' => 'edit' ], admin_url( 'post.php' ) );
                 $count_enrolment += (int) $product->get_meta( 'total_sales' );
+                $product_image   = wp_get_attachment_url( $product->get_image_id() );
 			} 
             // Prepare date
             $course_startdate = $course_meta[ '_course_startdate' ];
@@ -339,6 +348,7 @@ class RestAPI {
 				'course_short_name' => $course_meta[ '_course_short_name' ],
 				'course_name'       => get_the_title( $course_id ),
 				'products'          => $synced_products,
+                'productimage'      => $product_image,
 				'category_name'     => $term->name,
 				'category_url'      => $category_url,
 				'enroled_user'      => $count_enrolment,

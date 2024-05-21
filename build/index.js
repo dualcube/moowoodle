@@ -17210,6 +17210,7 @@ const DynamicForm = props => {
         case "syncbutton":
           input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SyncNow_SyncNow__WEBPACK_IMPORTED_MODULE_10__["default"], {
             buttonKey: inputField.key,
+            apilink: inputField.apilink,
             value: inputField.value,
             description: inputField.desc,
             proSetting: isProSetting(inputField.proSetting),
@@ -17219,7 +17220,8 @@ const DynamicForm = props => {
         case "sync_map":
           input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SyncMap_SyncMap__WEBPACK_IMPORTED_MODULE_11__["default"], {
             description: inputField.desc,
-            proSetting: isProSetting(inputField.proSetting)
+            proSetting: isProSetting(inputField.proSetting),
+            proSettingChanged: () => proSettingChanged(inputField.proSetting)
           });
           break;
         case "testconnection":
@@ -17275,7 +17277,8 @@ const DynamicForm = props => {
           break;
         case "checkbox-custom-img":
           input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_CheckboxCustomImg_CheckboxCustomImg__WEBPACK_IMPORTED_MODULE_13__["default"], {
-            proSetting: isProSetting(inputField.proSetting)
+            proSetting: isProSetting(inputField.proSetting),
+            proSettingChanged: () => proSettingChanged(inputField.proSetting)
           });
           break;
         case "select-custom-radio":
@@ -19719,13 +19722,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 /* harmony import */ var _services_apiService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/apiService */ "./src/services/apiService.js");
 /* harmony import */ var _AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../AdminLibrary/CustomTable/CustomTable */ "./src/components/AdminLibrary/CustomTable/CustomTable.jsx");
 /* harmony import */ var _Banner_banner__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Banner/banner */ "./src/components/Banner/banner.jsx");
 /* harmony import */ var _courses_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./courses.scss */ "./src/components/Courses/courses.scss");
 /* harmony import */ var _PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../PopupContent/PopupContent */ "./src/components/PopupContent/PopupContent.jsx");
-/* harmony import */ var _mui_material_Dialog__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/material/Dialog */ "./node_modules/@mui/material/Dialog/Dialog.js");
+/* harmony import */ var _mui_material_Dialog__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/material/Dialog */ "./node_modules/@mui/material/Dialog/Dialog.js");
+/* harmony import */ var _assets_images_moowoodle_product_default_png__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../assets/images/moowoodle-product-default.png */ "./src/assets/images/moowoodle-product-default.png");
+
 
 
 
@@ -19750,7 +19755,7 @@ function Course() {
   const bulkSelectRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
   const [openDialog, setOpenDialog] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    (0,axios__WEBPACK_IMPORTED_MODULE_6__["default"])({
+    (0,axios__WEBPACK_IMPORTED_MODULE_7__["default"])({
       method: "get",
       url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('all-courses')
     }).then(response => {
@@ -19766,9 +19771,9 @@ function Course() {
    * @param {*} rowsPerPage 
    * @param {*} currentPage 
    */
-  function requestData(rowsPerPage = 10, currentPage = 1, courseField = '', productField = '', catagoryField = '', shortnameField = '', searchCourseField = '') {
+  function requestData(rowsPerPage = 10, currentPage = 1, courseField = '', productField = '', catagoryField = '', searchAction = '', searchCourseField = '') {
     //Fetch the data to show in the table
-    (0,axios__WEBPACK_IMPORTED_MODULE_6__["default"])({
+    (0,axios__WEBPACK_IMPORTED_MODULE_7__["default"])({
       method: "post",
       url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('get-courses'),
       headers: {
@@ -19780,7 +19785,7 @@ function Course() {
         course: courseField,
         product: productField,
         catagory: catagoryField,
-        shortname: shortnameField,
+        searchaction: searchAction,
         search: searchCourseField
       }
     }).then(response => {
@@ -19795,80 +19800,9 @@ function Course() {
    * @param {*} filterData 
    */
   const requestApiForData = (rowsPerPage, currentPage, filterData = {}) => {
-    requestData(rowsPerPage, currentPage, filterData?.courseField, filterData?.productField, filterData?.catagoryField, filterData?.shortnameField, filterData?.searchCourseField);
+    requestData(rowsPerPage, currentPage, filterData?.courseField, filterData?.productField, filterData?.catagoryField, filterData?.searchAction, filterData?.searchCourseField);
   };
-  const realtimeFilter = [{
-    name: "courseField",
-    render: (updateFilter, filterValue) => {
-      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-        className: "admin-header-search-section"
-      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
-        name: "courseField",
-        onChange: e => updateFilter(e.target.name, e.target.value),
-        value: filterValue || ""
-      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-        value: ""
-      }, "Courses"), Object.entries(courses).map(([courseId, courseName]) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-        value: courseId
-      }, courseName)))));
-    }
-  }, {
-    name: "productField",
-    render: (updateFilter, filterValue) => {
-      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-        className: "admin-header-search-section"
-      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
-        name: "productField",
-        onChange: e => updateFilter(e.target.name, e.target.value),
-        value: filterValue || ""
-      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-        value: ""
-      }, "Products"), Object.entries(products).map(([productId, productName]) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-        value: productId
-      }, productName)))));
-    }
-  }, {
-    name: "catagoryField",
-    render: (updateFilter, filterValue) => {
-      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-        className: "admin-header-search-section"
-      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
-        name: "catagoryField",
-        onChange: e => updateFilter(e.target.name, e.target.value),
-        value: filterValue || ""
-      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-        value: ""
-      }, "Category"), Object.entries(category).map(([categoryId, categoryName]) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-        value: categoryId
-      }, categoryName)))));
-    }
-  }, {
-    name: "shortnameField",
-    render: (updateFilter, filterValue) => {
-      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-        className: "admin-header-search-section"
-      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
-        name: "shortnameField",
-        onChange: e => updateFilter(e.target.name, e.target.value),
-        value: filterValue || ""
-      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-        value: ""
-      }, "Short Name"), Object.entries(shortName).map(([shortNameId, shortNameValue]) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-        value: shortNameValue
-      }, shortNameValue)))));
-    }
-  }, {
-    name: "searchCourseField",
-    render: (updateFilter, filterValue) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "admin-header-search-section"
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-      name: "searchCourseField",
-      type: "text",
-      placeholder: __("Search Course", "moowoodle"),
-      onChange: e => updateFilter(e.target.name, e.target.value),
-      value: filterValue || ""
-    })))
-  }];
+
   /**
    * Handle single row action
    * @param {*} actionName 
@@ -19878,7 +19812,7 @@ function Course() {
    */
   const handleSingleAction = (actionName, courseId, moodleCourseId) => {
     if (appLocalizer.pro_active) {
-      (0,axios__WEBPACK_IMPORTED_MODULE_6__["default"])({
+      (0,axios__WEBPACK_IMPORTED_MODULE_7__["default"])({
         method: 'post',
         url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)(`course-bulk-action`),
         headers: {
@@ -19892,7 +19826,7 @@ function Course() {
           }]
         }
       }).then(response => {
-        console.log(response);
+        // Handle after single row action success.
       }).catch(error => {
         console.error('Error:', error);
       });
@@ -19908,7 +19842,7 @@ function Course() {
       if (!bulkSelectRef.current.value) {
         return window.alert(__('Select bulk action', 'moowoodle'));
       }
-      (0,axios__WEBPACK_IMPORTED_MODULE_6__["default"])({
+      (0,axios__WEBPACK_IMPORTED_MODULE_7__["default"])({
         method: 'post',
         url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)(`course-bulk-action`),
         headers: {
@@ -19924,12 +19858,12 @@ function Course() {
           })
         }
       }).then(response => {
-        console.log(response);
+        // handle after bulk action success
       }).catch(error => {
         console.error('Error:', error);
       });
     } else {
-      console.log("pro banner");
+      setOpenDialog(true);
     }
   };
   const handleRowSelect = (selectedRows, selectedCount, allSelect) => {
@@ -19938,7 +19872,7 @@ function Course() {
 
   // Get the total no of data present in database
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    (0,axios__WEBPACK_IMPORTED_MODULE_6__["default"])({
+    (0,axios__WEBPACK_IMPORTED_MODULE_7__["default"])({
       method: "post",
       url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)('get-courses'),
       headers: {
@@ -19959,6 +19893,19 @@ function Course() {
 
   //columns for the data table
   const columns = [{
+    name: __('Product Name', 'moowoodle'),
+    selector: row => row.products,
+    cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, {
+      title: 'Product Name'
+    }, Object.keys(row.products).length ? Object.entries(row.products).map(([name, url], index) => {
+      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+        src: row.productimage || _assets_images_moowoodle_product_default_png__WEBPACK_IMPORTED_MODULE_6__
+      }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+        key: index,
+        href: url
+      }, " ", name, " "));
+    }) : "-")
+  }, {
     name: __('Course Name', 'moowoodle'),
     selector: row => row.course_name,
     cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
@@ -19972,15 +19919,6 @@ function Course() {
     cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, null, row.course_short_name),
     sortable: true
   }, {
-    name: __('Product Name', 'moowoodle'),
-    selector: row => row.products,
-    cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, null, Object.keys(row.products).length ? Object.entries(row.products).map(([name, url], index) => {
-      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-        key: index,
-        href: url
-      }, " ", name, " ");
-    }) : "-")
-  }, {
     name: __('Category Name', 'moowoodle'),
     selector: row => row.category_name,
     cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, {
@@ -19991,21 +19929,21 @@ function Course() {
     }, row.category_name)),
     sortable: true
   }, {
-    name: __('Enrolled Users', 'moowoodle'),
-    cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, {
-      title: 'Enrolled Users'
-    }, row.enroled_user)
-  }, {
     name: __('Course Duration', 'moowoodle'),
     cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, {
       title: 'Date'
     }, row.date)
   }, {
+    name: __('Enrolled Users', 'moowoodle'),
+    cell: row => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__.TableCell, {
+      title: 'Enrolled Users'
+    }, row.enroled_user)
+  }, {
     name: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      dangerouslySetInnerHTML: {
-        __html: __('Actions')
-      }
-    }),
+      className: "table-action-column"
+    }, __('Action', 'moowoodle'), !appLocalizer.pro_active && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      className: "admin-pro-tag"
+    }, "pro")),
     cell: (row, rowIndex) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       class: "moowoodle-course-actions"
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
@@ -20034,7 +19972,77 @@ function Course() {
       class: "dashicons dashicons-cloud-upload"
     })))
   }];
-  return openDialog ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  const realtimeFilter = [{
+    name: "bulk-action",
+    render: () => {
+      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "course-bulk-action bulk-action"
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
+        name: "action",
+        ref: bulkSelectRef
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: ""
+      }, __('Bulk Actions')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: "sync_courses"
+      }, __('Sync Course')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: "create_product"
+      }, __('Create Product')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: "update_product"
+      }, __('Update Product'))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+        name: "bulk-action-apply",
+        onClick: handleBulkAction
+      }, __('Apply')));
+    }
+  }, {
+    name: "catagoryField",
+    render: (updateFilter, filterValue) => {
+      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "admin-header-search-section catagoryField"
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
+        name: "catagoryField",
+        onChange: e => updateFilter(e.target.name, e.target.value),
+        value: filterValue || ""
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: ""
+      }, "Category"), Object.entries(category).map(([categoryId, categoryName]) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: categoryId
+      }, categoryName)))));
+    }
+  }, {
+    name: "blank",
+    render: () => {
+      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null));
+    }
+  }, {
+    name: "searchCourseField",
+    render: (updateFilter, filterValue) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "admin-header-search-section searchCourseField"
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+      name: "searchCourseField",
+      type: "text",
+      placeholder: __("Search...", "moowoodle"),
+      onChange: e => updateFilter(e.target.name, e.target.value),
+      value: filterValue || ""
+    })))
+  }, {
+    name: "searchAction",
+    render: (updateFilter, filterValue) => {
+      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        className: "admin-header-search-section searchAction"
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
+        name: "searchAction",
+        onChange: e => updateFilter(e.target.name, e.target.value),
+        value: filterValue || ""
+      }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: ""
+      }, "All"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: "course"
+      }, "Course"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: "shortname"
+      }, "Short Name"))));
+    }
+  }];
+  return openDialog ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_8__["default"], {
     className: "admin-module-popup",
     open: openDialog,
     onClose: () => {
@@ -20051,22 +20059,6 @@ function Course() {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "admin-page-title"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, __("All Courses", "moowoodle"))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "course-bulk-action"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
-    name: "action",
-    ref: bulkSelectRef
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-    value: ""
-  }, __('Bulk Actions')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-    value: "sync_courses"
-  }, __('Sync Course')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-    value: "create_product"
-  }, __('Create Product')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-    value: "update_product"
-  }, __('Update Product'))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    name: "bulk-action-apply",
-    onClick: handleBulkAction
-  }, __('Apply'))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "admin-table-wrapper"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_AdminLibrary_CustomTable_CustomTable__WEBPACK_IMPORTED_MODULE_2__["default"], {
     data: data,
@@ -20106,7 +20098,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_date_range_dist_styles_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-date-range/dist/styles.css */ "./node_modules/react-date-range/dist/styles.css");
 /* harmony import */ var react_date_range_dist_theme_default_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-date-range/dist/theme/default.css */ "./node_modules/react-date-range/dist/theme/default.css");
 /* harmony import */ var _Enrollment_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Enrollment.scss */ "./src/components/Enrollment/Enrollment.scss");
-/* harmony import */ var _PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../PopupContent/PopupContent */ "./src/components/PopupContent/PopupContent.jsx");
+/* harmony import */ var _PopupContent_PopupContent_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../PopupContent/PopupContent.jsx */ "./src/components/PopupContent/PopupContent.jsx");
 
 
 
@@ -20121,8 +20113,6 @@ __webpack_require__.r(__webpack_exports__);
 
 const Enrollment = () => {
   const [students, setStudents] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
-  const [postStatus, setPostStatus] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("");
-  const [suggestions, setSuggestions] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [courses, setCourses] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [data, setData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
   const [selectedRows, setSelectedRows] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
@@ -20140,18 +20130,20 @@ const Enrollment = () => {
     });
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    (0,axios__WEBPACK_IMPORTED_MODULE_9__["default"])({
-      method: "post",
-      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_3__.getApiLink)('get-enrollments'),
-      headers: {
-        "X-WP-Nonce": appLocalizer.nonce
-      },
-      data: {
-        counts: true
-      }
-    }).then(response => {
-      setTotalRows(response.data);
-    });
+    if (appLocalizer.pro_active) {
+      (0,axios__WEBPACK_IMPORTED_MODULE_9__["default"])({
+        method: "post",
+        url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_3__.getApiLink)('get-enrollments'),
+        headers: {
+          "X-WP-Nonce": appLocalizer.nonce
+        },
+        data: {
+          counts: true
+        }
+      }).then(response => {
+        setTotalRows(response.data);
+      });
+    }
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     if (appLocalizer.pro_active) {
@@ -20159,12 +20151,14 @@ const Enrollment = () => {
     }
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    (0,axios__WEBPACK_IMPORTED_MODULE_9__["default"])({
-      method: "get",
-      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_3__.getApiLink)('all-customers')
-    }).then(response => {
-      setStudents(response.data);
-    });
+    if (appLocalizer.pro_active) {
+      (0,axios__WEBPACK_IMPORTED_MODULE_9__["default"])({
+        method: "get",
+        url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_3__.getApiLink)('all-customers')
+      }).then(response => {
+        setStudents(response.data);
+      });
+    }
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     (0,axios__WEBPACK_IMPORTED_MODULE_9__["default"])({
@@ -20204,7 +20198,6 @@ const Enrollment = () => {
     });
   }
   const requestApiForData = (rowsPerPage, currentPage, filterData = {}) => {
-    // console.log(filterData)
     requestData(rowsPerPage, currentPage, filterData?.studentField, filterData?.courseField, filterData?.statusField, filterData?.date?.start_date, filterData?.date?.end_date);
   };
   const realtimeFilter = [{
@@ -20321,16 +20314,21 @@ const Enrollment = () => {
     }, row.status === 'enrolled' ? 'Unenroll' : 'Enroll'))
   }];
   const handleButtonClick = row => {
-    console.log(row);
+    const data = {
+      orderId: row.order_id,
+      courseId: row.course_id,
+      userId: row.customer_id,
+      action: row.status == 'enrolled' ? 'Unenroll' : 'Enroll'
+    };
     if (confirm('Are you sure you want to proceed?') === true) {
       (0,axios__WEBPACK_IMPORTED_MODULE_9__["default"])({
         method: 'post',
         url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_3__.getApiLink)('manage-enrollment'),
         data: {
-          orderId: row.order_id,
-          courseId: row.course_id,
-          userId: row.customer_id,
-          action: row.status
+          order_id: row.order_id,
+          course_id: row.course_id,
+          user_id: row.customer_id,
+          action: row.status == 'enrolled' ? 'unenroll' : 'enrolled'
         }
       }).then(response => {
         requestData();
@@ -20349,7 +20347,7 @@ const Enrollment = () => {
     onClick: () => {
       setOpenDialog(false);
     }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_8__["default"], null)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PopupContent_PopupContent_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], null)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "enrollment-img",
     onClick: () => {
       setOpenDialog(true);
@@ -20461,6 +20459,25 @@ const Log = props => {
       setData([]);
     });
   };
+  const handleCopyToClipboard = event => {
+    event.preventDefault();
+    const logText = data.map(log => {
+      const regex = /^([^:]+:[^:]+:[^:]+):(.*)$/;
+      const match = log.match(regex);
+      if (match) {
+        const dateSection = match[1].trim();
+        const content = match[2].trim();
+        return `${dateSection} : ${content}`;
+      } else {
+        return log;
+      }
+    }).join('\n');
+    navigator.clipboard.writeText(logText).then(() => {
+      console.log("Logs copied to clipboard");
+    }).catch(error => {
+      console.error("Error copying logs to clipboard:", error);
+    });
+  };
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "section-log-container"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -20492,7 +20509,8 @@ const Log = props => {
     className: "click-to-copy"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     title: "Copy",
-    class: "Btn"
+    class: "Btn",
+    onClick: handleCopyToClipboard
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     class: "svgIcon"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
@@ -20862,8 +20880,10 @@ const SyncMap = props => {
     value,
     onChange,
     proSetting,
+    proSettingChanged,
     description
   } = props;
+  const settingChanged = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(false);
   const wordpressSyncFieldsMap = {
     'firstname': 'First name',
     'lastname': 'Last name',
@@ -20933,18 +20953,19 @@ const SyncMap = props => {
     if (wordpressSyncFieldsChose.length && moodleSyncFieldsChose.length) {
       const wpField = wordpressSyncFieldsChose.shift();
       const mdField = moodleSyncFieldsChose.shift();
-      console.log(wpField, mdField);
       setSelectedFields(selectedFields => {
         return [...selectedFields, [wpField, mdField]];
       });
     } else {
-      console.log('unable to add sync fields');
+      alert('Unable to add sync fields');
     }
   };
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    // console.log(selectedFields);
-    setWordpressSyncFieldsChose(getUnselectedFields('wordpress'));
-    setMoodleSyncFieldsChose(getUnselectedFields('moodle'));
+    if (settingChanged.current && !proSettingChanged()) {
+      settingChanged.current = false;
+      setWordpressSyncFieldsChose(getUnselectedFields('wordpress'));
+      setMoodleSyncFieldsChose(getUnselectedFields('moodle'));
+    }
   }, [selectedFields]);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sync-map-container"
@@ -20967,7 +20988,10 @@ const SyncMap = props => {
       className: "map-content-wrapper"
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
       className: "",
-      onChange: e => changeSelectedFields(index, e.target.value, 'wordpress')
+      onChange: e => {
+        settingChanged.current = true;
+        changeSelectedFields(index, e.target.value, 'wordpress');
+      }
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
       value: wpField,
       selected: true
@@ -20980,7 +21004,10 @@ const SyncMap = props => {
     }, "\u21CC"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
       className: "",
       value: mwField,
-      onChange: e => changeSelectedFields(index, e.target.value, 'moodle')
+      onChange: e => {
+        settingChanged.current = true;
+        changeSelectedFields(index, e.target.value, 'moodle');
+      }
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
       value: mwField,
       selected: true
@@ -20992,6 +21019,7 @@ const SyncMap = props => {
       className: "remove-mapping",
       onClick: e => {
         e.preventDefault();
+        settingChanged.current = true;
         removeSelectedFields(index);
       }
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
@@ -21012,6 +21040,7 @@ const SyncMap = props => {
     className: "add-mapping",
     onClick: e => {
       e.preventDefault();
+      settingChanged.current = true;
       insertSelectedFields();
     }
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
@@ -21066,14 +21095,15 @@ const SyncNow = props => {
     proSetting,
     proSettingChanged,
     value,
-    description
+    description,
+    apilink
   } = props;
-  console.log(proSetting);
   const [modelOpen, setModelOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [syncCourseStart, setSyncCourseStart] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
-  const [syncUserStart, setSyncUserStart] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  // const [syncUserStart, setSyncUserStart] = useState(false);
   const [syncStatus, setSyncStatus] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const syncStart = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(false);
+  const [handleClick, setHandleClick] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const fetchSyncStatus = () => {
     (0,axios__WEBPACK_IMPORTED_MODULE_4__["default"])({
       method: "post",
@@ -21101,6 +21131,8 @@ const SyncNow = props => {
     }
   };
   const handleCourseSync = event => {
+    event.preventDefault();
+    setHandleClick(true);
     if (syncCourseStart) {
       return;
     }
@@ -21108,7 +21140,7 @@ const SyncNow = props => {
     setSyncCourseStart(true);
     (0,axios__WEBPACK_IMPORTED_MODULE_4__["default"])({
       method: "post",
-      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)('sync-course'),
+      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)(apilink),
       headers: {
         "X-WP-Nonce": appLocalizer.nonce
       }
@@ -21116,6 +21148,7 @@ const SyncNow = props => {
       setSyncStatus(response.data);
       setSyncCourseStart(false);
       syncStart.current = false;
+      setHandleClick(false);
     });
   };
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_5__["default"], {
@@ -21133,7 +21166,7 @@ const SyncNow = props => {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: "synchronize-now-button",
     onClick: handleCourseSync
-  }, value), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, value), handleClick && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "loader"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "three-body__dot"
@@ -21146,9 +21179,6 @@ const SyncNow = props => {
   }, description), proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "admin-pro-tag"
   }, "pro"), syncStatus.length > 0 && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, syncStatus.map(status => {
-    {
-      console.log(status);
-    }
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "details-status-row"
     }, status.action, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
@@ -21657,7 +21687,7 @@ __webpack_require__.r(__webpack_exports__);
     key: "moowoodle_adv_log",
     type: "checkbox",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Advance Log", 'moowoodle'),
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Activating this option will log more detailed error information. Enable it only when essential, as it may result in a larger log file.', 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`<span class="highlighted-part">Activating this option will log more detailed error information. Enable it only when essential, as it may result in a larger log file.</span>`, 'moowoodle'),
     options: [{
       key: "moowoodle_adv_log",
       value: "moowoodle_adv_log"
@@ -21763,7 +21793,7 @@ __webpack_require__.r(__webpack_exports__);
   modal: [{
     key: "course_sync_direction",
     type: "checkbox",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This functionality allows you to fetche  Moodle courses with it's product in WordPress. <br><br>With the '<b>Course-to-Product Handling</b>' option, you have the ability to specify whether you want to create new products, update existing ones, or perform both actions. <br><br>Furthermore, through the '<b>Course Information Mapping</b>' feature, you gain the flexibility to define which specific course data gets imported from Moodle. By default we will fetch only the category of the product. ", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`<p class="highlighted-part">This functionality allows you to fetche  Moodle courses with it's product in WordPress.</p> <p class="highlighted-part">With the '<b>Course-to-Product Handling</b>' option, you have the ability to specify whether you want to create new products, update existing ones, or perform both actions.</p> <p class="highlighted-part">Furthermore, through the '<b>Course Information Mapping</b> feature, you gain the flexibility to define which specific course data gets imported from Moodle. By default we will fetch only the category of the product.</p>`, 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Initiate synchronization", 'moowoodle'),
     options: [{
       key: "moodle_to_wordpress",
@@ -21854,6 +21884,7 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "sync_course_btn",
     type: "syncbutton",
+    apilink: 'sync-course',
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Manual synchronization mode", 'moowoodle'),
     value: "Synchronize courses now!",
     desc: "Initiate the immediate synchronization of all courses from Moodle to WordPress."
@@ -21898,7 +21929,7 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "sync-user-options",
     type: "sync_map",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Define the user profile information mapping between WordPress and Moodle. Add multiple rows above to define all the profile data you wish to map. Any remaining profile field will be excluded from the synchronization process.", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Define the user profile information mapping between WordPress and Moodle. Add multiple rows above to define all the profile data you wish to map. Any remaining profile field will be excluded from the synchronization process.<br> User will be created based on their e-mail id, hence email id can't be mapped.", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Profile information mapping", 'moowoodle'),
     select_deselect: true,
     options: [{
@@ -21981,6 +22012,7 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "sync_user_btn",
     type: "syncbutton",
+    apilink: 'sync-users',
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Manual synchronization mode", 'moowoodle'),
     value: "Synchronize user profile now!! ",
     desc: "This will synchronize user accounts between WordPress and Moodle instantly according to the selected ‘Sync Direction’.",
@@ -59890,6 +59922,17 @@ module.exports = __webpack_require__.p + "images/Moodle.55f4c6e0.png";
 
 "use strict";
 module.exports = __webpack_require__.p + "images/WordPress.26392aec.png";
+
+/***/ }),
+
+/***/ "./src/assets/images/moowoodle-product-default.png":
+/*!*********************************************************!*\
+  !*** ./src/assets/images/moowoodle-product-default.png ***!
+  \*********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+module.exports = __webpack_require__.p + "images/moowoodle-product-default.5b4e5f67.png";
 
 /***/ }),
 

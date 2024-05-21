@@ -102,9 +102,6 @@ const SyncNow = (props) => {
         {syncStatus.length > 0 && (
           <>
             {syncStatus.map((status) => {
-              {
-                console.log(status);
-              }
               return (
                 <>
                   <div className="details-status-row">
