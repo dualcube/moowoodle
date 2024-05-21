@@ -122,20 +122,20 @@ class Product {
         $product->set_catalog_visibility( $course[ 'visible' ] ? 'visible' : 'hidden' );
 
 		// get the course id linked with moodle.
-        $course = MooWoodle()->course->get_courses([
+        $wp_course = MooWoodle()->course->get_courses([
             'meta_key' 		=> 'moodle_course_id',
             'meta_value' 	=> $course[ 'id' ],
             'meta_compare' 	=> '=',
 		])[0];
 		
 		// Linked product to course.
-		add_post_meta( $course->ID, 'linked_product_id', $product->get_id() );
+		add_post_meta( $wp_course->ID, 'linked_product_id', $product->get_id() );
 
         // Set product meta data.
         $product->update_meta_data( '_course_startdate', $course[ 'startdate' ] );
         $product->update_meta_data( '_course_enddate', $course[ 'enddate' ] );
         $product->update_meta_data( 'moodle_course_id', $course[ 'id' ] );
-        $product->update_meta_data( 'linked_course_id', $course->ID );
+        $product->update_meta_data( 'linked_course_id', $wp_course->ID );
 		$product->set_status( 'publish' );
 		$product->save();
 

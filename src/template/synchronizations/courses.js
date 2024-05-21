@@ -124,6 +124,7 @@ export default {
         {
             key: "sync_course_btn",
             type: "syncbutton",
+            apilink: 'sync-course',
             label: __("Manual synchronization mode", 'moowoodle'),
             value: "Synchronize courses now!",
             desc: "Initiate the immediate synchronization of all courses from Moodle to WordPress."

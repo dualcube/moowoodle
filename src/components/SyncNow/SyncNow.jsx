@@ -6,13 +6,14 @@ import { getApiLink } from "../../services/apiService";
 import "./SyncNow.scss";
 
 const SyncNow = (props) => {
-  const { buttonKey, proSetting, proSettingChanged, value, description } = props;
-  console.log(proSetting)
+  const { buttonKey, proSetting, proSettingChanged, value, description, apilink } = props;
+ 
   const [modelOpen, setModelOpen] = useState(false);
   const [syncCourseStart, setSyncCourseStart] = useState(false);
-  const [syncUserStart, setSyncUserStart] = useState(false);
+  // const [syncUserStart, setSyncUserStart] = useState(false);
   const [syncStatus, setSyncStatus] = useState([]);
   const syncStart = useRef(false);
+  const [handleClick, setHandleClick] = useState(false);
 
   const fetchSyncStatus = () => {
     axios({
@@ -42,6 +43,8 @@ const SyncNow = (props) => {
   }
 
   const handleCourseSync = (event) => {
+    event.preventDefault();
+    setHandleClick(true);
     if (syncCourseStart) {
       return;
     }
@@ -51,12 +54,13 @@ const SyncNow = (props) => {
 
     axios({
       method: "post",
-      url: getApiLink('sync-course'),
+      url: getApiLink(apilink),
       headers: { "X-WP-Nonce": appLocalizer.nonce },
     }).then((response) => {
       setSyncStatus(response.data);
       setSyncCourseStart(false);
       syncStart.current = false;
+      setHandleClick(false);
     });
   }
 
@@ -76,26 +80,18 @@ const SyncNow = (props) => {
       </Dialog>
       
       <div className="section-synchronize-now">
-        {/* <div className="button-section">
-          <button className="synchronize-now-button" onClick={handleUserSync}>
-            Synchronize All User
-          </button>
-          <div class="loader">
-            <div class="three-body__dot"></div>
-            <div class="three-body__dot"></div>
-            <div class="three-body__dot"></div>
-          </div>
-        </div> */}
-
         <div className="button-section">
           <button className="synchronize-now-button" onClick={handleCourseSync}>
             {value}
           </button>
-          <div class="loader">
-            <div class="three-body__dot"></div>
-            <div class="three-body__dot"></div>
-            <div class="three-body__dot"></div>
-          </div>
+          {handleClick && (
+            <div class="loader">
+              <div class="three-body__dot"></div>
+              <div class="three-body__dot"></div>
+              <div class="three-body__dot"></div>
+            </div>
+          )}
+          
         </div>
 
         <p className="btn-description">{description}</p>
