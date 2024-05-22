@@ -298,19 +298,20 @@ export default function Course() {
             render: () => {
                 return (
                     <div className="course-bulk-action bulk-action">
-                        <select name="action" ref={bulkSelectRef} >
-                            <option value="">{__('Bulk Actions')}</option>
-                            <option value="sync_courses">{__('Sync Course')}</option>
-                            <option value="create_product">{__('Create Product')}</option>
-                            <option value="update_product">{__('Update Product')}</option>
-                        </select>
-                        <button
-                            name="bulk-action-apply"
-                            onClick={handleBulkAction}
-                        >
-                            {__('Apply',)}
-                        </button>
-                    </div>
+                    <select name="action" ref={bulkSelectRef} >
+                        <option value="">{__('Bulk Actions')}</option>
+                        <option value="sync_courses">{__('Sync Course')}</option>
+                        <option value="create_product">{__('Create Product')}</option>
+                        <option value="update_product">{__('Update Product')}</option>
+                    </select>
+                        {!appLocalizer.pro_active && <span className="admin-pro-tag">pro</span>}
+                    <button
+                        name="bulk-action-apply"
+                        onClick={handleBulkAction}
+                    >
+                        {__('Apply',)}
+                    </button>
+                </div>
                 );
             },
         },
@@ -405,27 +406,31 @@ export default function Course() {
             )
             :
             (
-                <div className="course-container-wrapper">
-                    <div className="admin-page-title">
-                        <p>{__("All Courses", "moowoodle")}</p>
+                <>
+                    { !appLocalizer.pro_active && <Banner /> }
+
+                    <div className="course-container-wrapper">
+                        <div className="admin-page-title">
+                            <p>{__("All Courses", "moowoodle")}</p>
+                        </div>
+                    
+                        <div className="admin-table-wrapper">
+                            {
+                                <CustomTable
+                                    data={data}
+                                    columns={columns}
+                                    handlePagination={requestApiForData}
+                                    defaultRowsParPage={10}
+                                    defaultTotalRows={totalRows}
+                                    perPageOption={[10, 25, 50]}
+                                    selectable={true}
+                                    handleSelect={handleRowSelect}
+                                    realtimeFilter={realtimeFilter}
+                                />
+                            }
+                        </div>
                     </div>
-                   
-                    <div className="admin-table-wrapper">
-                        {
-                            <CustomTable
-                                data={data}
-                                columns={columns}
-                                handlePagination={requestApiForData}
-                                defaultRowsParPage={10}
-                                defaultTotalRows={totalRows}
-                                perPageOption={[10, 25, 50]}
-                                selectable={true}
-                                handleSelect={handleRowSelect}
-                                realtimeFilter={realtimeFilter}
-                            />
-                        }
-                    </div>
-                </div>
+                </>
             )
     );
 }
