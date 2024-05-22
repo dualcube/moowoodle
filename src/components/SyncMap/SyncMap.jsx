@@ -127,6 +127,10 @@ const SyncMap = (props) => {
             setSelectedFields(( selectedFields ) => {
                 return [ ...selectedFields, [ wpField, mdField ] ];
             });
+            
+            if ( wordpressSyncFieldsChose.length == 0 && moodleSyncFieldsChose.length == 0) {
+                setBtnAllow(true);
+            }
         } else {
             alert( 'Unable to add sync fields' );
         }
