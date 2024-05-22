@@ -142,7 +142,6 @@ export default function Course() {
             });
         } else {
             setOpenDialog(true);
-            setOpenDialog(true);
         }
     }
 
