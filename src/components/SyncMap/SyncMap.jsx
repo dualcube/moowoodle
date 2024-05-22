@@ -116,6 +116,7 @@ const SyncMap = (props) => {
         setSelectedFields((selectedFields) => {
             return selectedFields.filter( ( fieldPair, index ) => index != fieldIndex );
         })
+        setBtnAllow(false);
     }
 
     const insertSelectedFields = () => {
