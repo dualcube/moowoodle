@@ -29,28 +29,6 @@ export default {
             desc: __("Define the user profile information mapping between WordPress and Moodle. Add multiple rows above to define all the profile data you wish to map. Any remaining profile field will be excluded from the synchronization process.<br> User will be created based on their e-mail id, hence email id can't be mapped.", 'moowoodle'),
             label: __("Profile information mapping", 'moowoodle'),
             select_deselect: true,
-            options: [
-                {
-                    key: "sync_user_first_name",
-                    label: __('First name', 'moowoodle'),
-                    value: "sync_user_first_name",
-                },
-                {
-                    key: "sync_user_last_name",
-                    label: __('Last name', 'moowoodle'),
-                    value: "sync_user_last_name",
-                },
-                {
-                    key: "sync_username",
-                    label: __('Username', 'moowoodle'),
-                    value: "sync_username",
-                },
-                {
-                    key: "sync_password",
-                    label: __('Password', 'moowoodle'),
-                    value: "sync_password",
-                }
-            ],
             proSetting: true,
         },
         {
@@ -63,20 +41,6 @@ export default {
             type: "checkbox-custom-img",
             // desc: __("<b>Prior to updating existing user info, you must select the user info to be synchronized at </b>", 'moowoodle') . $moowoodle_sync_setting_url . __("<br><br>While synchronizing user information, we use the email address as the unique identifier for each user. We check the username associated with that email address, and if we find the same username in the other instance but with a different email address, the user's information cannot be synchronized.", 'moowoodle'),
             label: __("Site-to-site data synchronization direction", 'moowoodle'),
-            // options: [
-            //     {
-            //         key: "wordpress_to_moodle",
-            //         label: __('Wordpress to Moodle', 'moowoodle'),
-            //         img: 'ggg',
-            //         value: "wordpress_to_moodle",
-            //     },
-            //     {
-            //         key: "moodle_to_wordpress",
-            //         img: '',
-            //         label: __('Moodle to Wordpress', 'moowoodle'),
-            //         value: "moodle_to_wordpress",
-            //     }
-            // ],
             proSetting: true,
         },
         {
@@ -86,34 +50,34 @@ export default {
             label: __("Automatic synchronization frequency", 'moowoodle'),
             options: [
                 {
-                    key: "realtime",
-                    label: __("Real-time on user changes", 'moowoodle'),
-                    value: "realtime",
+                    key: "perminute",
+                    label: __("Per minute", 'moowoodle'),
+                    value: "perminute",
                 },
                 {
-                    key: "hour",
+                    key: "hourly",
                     label: __("Hourly", 'moowoodle'),
-                    value: "hour",
+                    value: "hourly",
                 },
                 {
-                    key: "hour6",
+                    key: "six_hours",
                     label: __("In 6 hours", 'moowoodle'),
-                    value: "hour6",
+                    value: "six_hours",
                 },
                 {
-                    key: "day",
+                    key: "daily",
                     label: __("Daily", 'moowoodle'),
-                    value: "day",
+                    value: "daily",
                 },
                 {
-                    key: "week",
+                    key: "weekly",
                     label: __("Weekly", 'moowoodle'),
-                    value: "week",
+                    value: "weekly",
                 },
                 {
-                    key: "month",
+                    key: "monthly",
                     label: __("Monthly", 'moowoodle'),
-                    value: "month",
+                    value: "monthly",
                 }
             ],
             proSetting: true,
@@ -126,7 +90,7 @@ export default {
         {
             key: "sync_user_btn",
             type: "syncbutton",
-            apilink: 'sync-users',
+            apilink: 'cron-sync-users',
             label: __("Manual synchronization mode", 'moowoodle'),
             value: "Synchronize user profile now!! ",
             desc: "This will synchronize user accounts between WordPress and Moodle instantly according to the selected ‘Sync Direction’.",

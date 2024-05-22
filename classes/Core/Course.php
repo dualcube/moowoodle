@@ -86,7 +86,7 @@ class Course {
 	 * @param array $args
 	 * @return array $courses
 	 */
-	public function get_courses ( $args = [] ) {
+	public function get_courses( $args = [] ) {
 		$args = array_merge([
 			'post_type'   => 'course',
 			'post_status' => 'publish'

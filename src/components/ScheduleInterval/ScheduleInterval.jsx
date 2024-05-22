@@ -3,7 +3,7 @@ import './ScheduleInterval.scss';
 
 const ScheduleInterval = ( props ) => {
     const optionsData = [];
-    let defaultValue = '';
+    let defaultValue = {};
 
     props.options.forEach((option, index) => {
         optionsData[index] = {
@@ -25,7 +25,13 @@ const ScheduleInterval = ( props ) => {
             return(
                 <>
                     <div class="radio-button">
-                        <input name="radio-group" id={index} class="radio-button__input" type="radio"/>
+                        <input
+                            checked = { item.value === defaultValue.value }
+                            onChange={(e) => {props.onChange(item)}}
+                            name="radio-group"
+                            id={index} class="radio-button__input"
+                            type="radio"
+                        />
                         <label htmlFor={index} class="radio-button__label">
                             <span class="radio-button__custom"></span>
                                 {item.label}
