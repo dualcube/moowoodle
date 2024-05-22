@@ -19,7 +19,7 @@ $color-active: #65438f;
         border: none;
         position: absolute;
         top: 50%;
-        right: 5px;
+        right: 0.315rem;
         transform: translateY(-50%);
         
         &:focus{
@@ -27,7 +27,7 @@ $color-active: #65438f;
         }
         
         svg{
-            width: 12px;
+            width: 0.756rem;
 
             path{
                 fill: rgba(255, 0, 0, 0.522);
@@ -39,8 +39,8 @@ $color-active: #65438f;
       margin: 0;
       border-right: none !important;
 
-      @media screen and (max-width: 782px) {
-        min-height: 20px !important;
+      @media screen and (max-width: 49.266rem) {
+        min-height: 1.26rem !important;
       }
     }
   }
@@ -62,23 +62,23 @@ $color-active: #65438f;
       position: absolute;
       background: $color-active;
       padding: 0.5rem 0.75rem;
-      top: -45px;
+      top: -2.835rem;
       border-radius: 0.25rem;
       
       &::after {
           position: absolute;
         content: "";
-        bottom: -3px;
+        bottom: -0.189rem;
         left: 50%;
         transform: translateX(-50%) rotate(45deg);
-        width: 8px;
-        height: 8px;
+        width: 0.504rem;
+        height: 0.504rem;
         background: $color-active;
       }
     }
 
     svg {
-      width: 15px;
+      width: 0.945rem;
     }
   }
   
@@ -96,7 +96,7 @@ $color-active: #65438f;
     gap: 0.25rem;
 
     svg{
-        width: 15px;
+        width: 0.945rem;
     }
   }
 }

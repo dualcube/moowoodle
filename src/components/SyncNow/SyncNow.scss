@@ -17,14 +17,14 @@ $color-active: #65438f;
 
     .synchronize-now-button {
       display: inline-block;
-      padding: 8px 20px 10px;
-      font-size: 16px;
+      padding: 0.504rem 1.26rem 0.63rem;
+      font-size: 1.008rem;
       text-align: center;
       text-decoration: none;
       cursor: pointer;
       color: #fff;
       background-color: $color-active;
-      border-radius: 5px;
+      border-radius: 0.315rem;
       position: relative;
       overflow: hidden;
 
@@ -35,7 +35,7 @@ $color-active: #65438f;
 
       &:hover {
         &::before {
-          transform: perspective(5px) rotateX(0) rotateY(0);
+          transform: perspective(0.315rem) rotateX(0) rotateY(0);
         }
       }
 
@@ -47,7 +47,7 @@ $color-active: #65438f;
         width: 100%;
         height: 100%;
         background-color: rgba(255, 255, 255, 0.1);
-        transform: perspective(5px) rotateX(2deg) rotateY(2deg);
+        transform: perspective(0.315rem) rotateX(2deg) rotateY(2deg);
         transition: transform 0.3s;
         pointer-events: none;
       }
@@ -177,7 +177,7 @@ $color-active: #65438f;
       position: absolute;
       left: 0;
       bottom: 0;
-      height: 3px;
+      height: 0.189rem;
       background-color: #007400;
       width: 50%;
       transition: width 0.3s linear;

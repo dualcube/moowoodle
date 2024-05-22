@@ -28,7 +28,7 @@
                 row-gap: 0.5rem;
 
                 span{
-                    width: 110px;
+                    width: 6.93rem;
                 }
             }
     
@@ -44,7 +44,7 @@
                     border: 0.115rem solid rgba(0, 0, 0, 0.125) !important;
                     border-radius: 0.25rem !important;
                     padding: 0.125rem 1.5rem 0.15rem 0.5rem;
-                    width: 110px;
+                    width: 6.93rem;
         
                     &:active, &:focus{
                         box-shadow: none;
@@ -59,7 +59,7 @@
                 }
         
                 .remove-mapping{
-                    padding: 8px 1rem;
+                    padding: 0.504rem 1rem;
                     cursor: pointer;
                     display: flex;
                     align-items: center;
@@ -73,11 +73,11 @@
                     .icon{
                         display: flex;
                         align-items: center;
-                        margin-top: 2px;
+                        margin-top: 0.126rem;
         
                         svg{
-                            width: 11px;
-                            height: 11px;
+                            width: 0.693rem;
+                            height: 0.693rem;
                             fill: #fff;
                         }
                     }
@@ -88,11 +88,11 @@
         .btn-container{
 
             .add-mapping-container{
-                min-width: 130px;
+                min-width: 8.19rem;
                 position: relative;
         
                 .add-mapping{
-                    padding: 8px 1rem;
+                    padding: 0.504rem 1rem;
                     cursor: pointer;
                     display: flex;
                     align-items: center;
@@ -111,11 +111,11 @@
                     .icon{
                         display: flex;
                         align-items: center;
-                        margin-top: 2px;
+                        margin-top: 0.126rem;
         
                         svg{
-                            width: 13px;
-                            height: 13px;
+                            width: 0.819rem;
+                            height: 0.819rem;
                             fill: #fff;
                         }
                     }
