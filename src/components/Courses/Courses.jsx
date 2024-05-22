@@ -338,16 +338,6 @@ export default function Course() {
             },
         },
         {
-            name: "blank",
-            render : () => {
-                return(
-                    <>
-                    <div></div>
-                    </>
-                )
-            }
-        },
-        {
             name: "searchCourseField",
             render: (updateFilter, filterValue) => (
               <>

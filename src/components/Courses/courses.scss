@@ -81,7 +81,7 @@ $color-active: #65438f;
     .rdt_TableCol_Sortable {
       &>span {
         font-size: 0.75rem;
-        padding: 3px;
+        padding: 0.189rem;
       }
     }
   }
@@ -117,27 +117,27 @@ $color-active: #65438f;
     gap: 0.75rem;
 
     &>div {
-      max-width: 150px;
+      max-width: 9.45rem;
 
       select {
-        min-height: 40px;
+        min-height: 2.52rem;
       }
     }
 
     .searchCourseField {
-      max-width: 200px;
+      max-width: 12.6rem;
       margin-left: auto;
     }
 
     .course-bulk-action {
-      max-width: 200px;
+      max-width: 12.6rem;
       flex-wrap: nowrap !important;
       position: relative;
     }
   }
 }
 
-@media only screen and (max-width: 665px) {
+@media only screen and (max-width: 41.895rem) {
   .filter-wrapper {
     .wrap-bulk-all-date {
       .shortnameField {
@@ -145,7 +145,7 @@ $color-active: #65438f;
       }
 
       .course-bulk-action {
-        min-width: 200px;
+        min-width: 12.6rem;
       }
 
       .course-bulk-action,

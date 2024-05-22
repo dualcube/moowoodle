@@ -23,14 +23,14 @@ $color-active: #65438f;
         .download-btn {
           display: inline-block;
           position: relative;
-          padding: 10px 25px;
+          padding: 0.63rem 1.575rem;
           background-color: $menu-btn-color;
           color: white;
           font-family: sans-serif;
           text-decoration: none;
-          font-size: 0.9em;
+          font-size: 0.042rem;
           text-align: center;
-          text-indent: 15px;
+          text-indent: 0.945rem;
           border: none;
           border-radius: 0.25rem;
           cursor: pointer;
@@ -54,24 +54,24 @@ $color-active: #65438f;
             content: " ";
             display: block;
             position: absolute;
-            left: 15px;
+            left: 0.945rem;
             top: 52%;
           }
   
           &:before {
-            width: 10px;
-            height: 2px;
+            width: 0.63rem;
+            height: 0.126rem;
             border-style: solid;
-            border-width: 0 2px 2px;
+            border-width: 0 0.126rem 0.126rem;
           }
   
           &:after {
             width: 0;
             height: 0;
-            margin-left: 3px;
-            margin-top: -7px;
+            margin-left: 0.189rem;
+            margin-top: -0.441rem;
             border-style: solid;
-            border-width: 4px 4px 0 4px;
+            border-width: 0.252rem 0.252rem 0 0.252rem;
             border-color: transparent;
             border-top-color: inherit;
             animation: downloadArrow 1s linear infinite;
@@ -79,12 +79,12 @@ $color-active: #65438f;
           }
           @keyframes downloadArrow {
             0% {
-              margin-top: -7px;
+              margin-top: -0.441rem;
               opacity: 1;
             }
   
             0.001% {
-              margin-top: -15px;
+              margin-top: -0.945rem;
               opacity: 0.4;
             }
   
@@ -100,7 +100,7 @@ $color-active: #65438f;
         }
   
         .button-clear {
-          padding: 8px 1rem;
+          padding: 0.504rem 1rem;
           cursor: pointer;
           display: flex;
           align-items: center;
@@ -118,11 +118,11 @@ $color-active: #65438f;
           .icon {
             display: flex;
             align-items: center;
-            margin-top: 2px;
+            margin-top: 0.126rem;
   
             svg {
-              width: 11px;
-              height: 11px;
+              width: 0.693rem;
+              height: 0.693rem;
               fill: $color-white;
             }
           }
@@ -130,16 +130,16 @@ $color-active: #65438f;
       }
   
       .log-container-wrapper {
-        max-height: 350px;
-        min-height: 100px;
+        max-height: 22.05rem;
+        min-height: 6.3rem;
         height: 100%;
         width: 100%;
         border-radius: 0.25rem;
         padding: 0.5rem;
         padding-bottom: 1rem;
         position: relative;
-        font-size: 14px;
-        line-height: 18.62px;
+        font-size: 0.882rem;
+        line-height: 1.173rem;
         word-break: normal;
         background-color: rgb(21, 23, 24);
 
@@ -159,7 +159,7 @@ $color-active: #65438f;
         
         .wrapper-body{
           padding: 0 0 0.75rem 0;
-          height: 300px;
+          height: 18.9rem;
           overflow: scroll;
 
           &::-webkit-scrollbar-track {
@@ -168,8 +168,8 @@ $color-active: #65438f;
           }
           
           &::-webkit-scrollbar {
-            width: 7px;
-            height: 7px;
+            width: 0.441rem;
+            height: 0.441rem;
           }
           
           &::-webkit-scrollbar-thumb {
@@ -192,7 +192,7 @@ $color-active: #65438f;
             gap: 0.25rem;
             flex-direction: column;
             overflow: hidden;
-            margin-bottom: 10px;
+            margin-bottom: 0.63rem;
             width: fit-content;
   
             .log-creation-date{
@@ -202,7 +202,7 @@ $color-active: #65438f;
             span {
               color: rgb(220, 220, 220);
               text-wrap: pretty;
-              letter-spacing: 0.8px;
+              letter-spacing: 0.05rem;
               line-height: 1.7;
               word-wrap: break-word;
             }
@@ -212,8 +212,8 @@ $color-active: #65438f;
       }
   
       .Btn {
-        width: 35px;
-        height: 35px;
+        width: 2.205rem;
+        height: 2.205rem;
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -233,9 +233,9 @@ $color-active: #65438f;
         .tool-clip{
           display: none;
           position: absolute;
-          top: -50px;
+          top: -3.15rem;
           color: black;
-          width: 112px;
+          width: 7.056rem;
           left: -50%;
           transform: translateX(-50%);
           background: #fff;
@@ -247,9 +247,9 @@ $color-active: #65438f;
             content: "";
             position: absolute;
             left: 70%;
-            width: 15px;
+            width: 0.945rem;
             background: white;
-            height: 15px;
+            height: 0.945rem;
             top: 80%;
             transform: rotate(45deg);
           }

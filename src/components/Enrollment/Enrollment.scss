@@ -23,7 +23,7 @@ div.enrollment-img {
     }
   }
   
-  @media only screen and (max-width: 550px) {
+  @media only screen and (max-width: 34.65rem) {
     div.enrollment-img {
       background-image: url("../../assets/images/Enrollment-phone.png") !important; // force to set image for ungrade with pro for mobile-screen
       background-repeat: no-repeat;

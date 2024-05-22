@@ -104,7 +104,7 @@ export default function banner() {
                                             <h3>Automated user and course synchronization with scheduler {' '}</h3>
                                             <p>Utilize personalized scheduling options to synchronize users and courses between WordPress and Moodle.{' '}</p>
                                             <a
-                                                href={appLocalizer.pro_url}
+                                                href={appLocalizer.shop_url}
                                                 target='_blank'
                                                 className="admin-btn btn-red"
                                             >
@@ -117,7 +117,7 @@ export default function banner() {
                                             <h3>Convenient Single Sign-On login{' '}</h3>
                                             <p>SSO enables students to access their purchased courses without the need to log in separately to the Moodle site.{' '}</p>
                                             <a
-                                                href={appLocalizer.pro_url}
+                                                href={appLocalizer.shop_url}
                                                 target='_blank'
                                                 className="admin-btn btn-red"
                                             >
@@ -130,7 +130,7 @@ export default function banner() {
                                             <h3>Steady Income through Course Subscriptions {' '}</h3>
                                             <p>Generate consistent revenue by offering courses with subscription-based model.{' '}</p>
                                             <a
-                                                href={appLocalizer.pro_url}
+                                                href={appLocalizer.shop_url}
                                                 target='_blank'
                                                 className="admin-btn btn-red"
                                             >
@@ -143,7 +143,7 @@ export default function banner() {
                                             <h3>Synchronize Courses in Bulk{' '}</h3>
                                             <p>Effortlessly synchronize multiple courses  at once, ideal for managing large course catalogs.{' '}</p>
                                             <a
-                                                href={appLocalizer.pro_url}
+                                                href={appLocalizer.shop_url}
                                                 target='_blank'
                                                 className="admin-btn btn-red"
                                             >
@@ -156,7 +156,7 @@ export default function banner() {
                                             <h3>Automatic User Synchronization for Moodle™ and WordPress{' '}</h3>
                                             <p>Synchronizes user accounts between Moodle™ and WordPress, ensuring consistent user management across both platforms without manual intervention.{' '}</p>
                                             <a
-                                                href={appLocalizer.pro_url}
+                                                href={appLocalizer.shop_url}
                                                 target='_blank'
                                                 className="admin-btn btn-red"
                                             >

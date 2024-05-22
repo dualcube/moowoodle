@@ -27,9 +27,9 @@
       box-shadow: none;
 
       &::before{
-        top: 10px;
+        top: 0.63rem;
         position: absolute;
-        right: 5px;
+        right: 0.315rem;
         width: 1.25rem;
         height: 1.25rem;
         border-radius: 0.25rem;
@@ -46,7 +46,7 @@
       margin: auto;
 
         img {
-          width: 30px;
+          width: 1.89rem;
         }
 
         i {
@@ -60,6 +60,6 @@
 }
 
 .sync-direction-items:has(input:checked){
-  box-shadow: 0 0 0px 2px #65438f;
+  box-shadow: 0 0 0.0rem 0.126rem #65438f;
   background: linear-gradient(45deg, #0000001c, transparent);
 }
