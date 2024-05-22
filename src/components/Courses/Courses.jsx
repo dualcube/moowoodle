@@ -305,6 +305,7 @@ export default function Course() {
                             <option value="create_product">{__('Create Product')}</option>
                             <option value="update_product">{__('Update Product')}</option>
                         </select>
+                        {!appLocalizer.pro_active && <span className="admin-pro-tag">pro</span>}
                         <button
                             name="bulk-action-apply"
                             onClick={handleBulkAction}
