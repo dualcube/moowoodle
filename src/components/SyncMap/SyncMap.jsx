@@ -57,6 +57,7 @@ const SyncMap = (props) => {
 
     const [wordpressSyncFieldsChose, setWordpressSyncFieldsChose] = useState([]);
     const [moodleSyncFieldsChose, setMoodleSyncFieldsChose] = useState([]);
+    const [ btnAllow, setBtnAllow ] = useState(false);
 
     useEffect(() => {
         setWordpressSyncFieldsChose( wordpressSyncFields );
