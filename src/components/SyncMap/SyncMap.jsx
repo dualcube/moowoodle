@@ -3,14 +3,14 @@ import './SyncMap.scss';
 
 const SyncMap = (props) => {
     const { value, onChange, proSetting, proSettingChanged, description } = props;
-    const settingChanged = useRef(false);
+
     const wordpressSyncFieldsMap = {
         'firstname': 'First name',
         'lastname': 'Last name',
         'username': 'User name',
         'password': 'Password'
     };
-
+    
     const moodleSyncFieldsMap = {
         'firstname': 'First name',
         'lastname': 'Last name',
@@ -18,15 +18,51 @@ const SyncMap = (props) => {
         'password': 'Password'
     };
 
-    const wordpressSyncFields = Object.keys(wordpressSyncFieldsMap);
-    const moodleSyncFields    =  Object.keys(moodleSyncFieldsMap);
+    const settingValue = value || [];
     
-    const [ selectedFields, setSelectedFields ] = useState( value || [] );
-    
-    const [wordpressSyncFieldsChose, setWordpressSyncFieldsChose] = useState(wordpressSyncFields);
-    const [moodleSyncFieldsChose, setMoodleSyncFieldsChose] = useState(moodleSyncFields);
+    const [ selectedFields, setSelectedFields ] = useState( settingValue );
+    const settingChanged = useRef(false);
 
+    // Select unselected fields.
+    const wordpressSyncFields = [];
+    const moodleSyncFields    = [];
+
+    Object.keys(wordpressSyncFieldsMap).forEach((ele) => {
+        let hasSelect = false;
+        
+        settingValue.forEach(([wpSetting, moodleSetting]) => {
+            if ( wpSetting == ele ) {
+                hasSelect = true;
+            }
+        });
+
+        if ( ! hasSelect ) {
+            wordpressSyncFields.push( ele );
+        }
+    });
+
+    Object.keys(moodleSyncFieldsMap).forEach((ele) => {
+        let hasSelect = false;
+
+        settingValue.forEach(([wpSetting, moodleSetting]) => {
+            if ( moodleSetting == ele ) {
+                hasSelect = true;
+            }
+        });
+
+        if ( ! hasSelect ) {
+            moodleSyncFields.push( ele );
+        }
+    });
+
+    const [wordpressSyncFieldsChose, setWordpressSyncFieldsChose] = useState([]);
+    const [moodleSyncFieldsChose, setMoodleSyncFieldsChose] = useState([]);
     const [ btnAllow, setBtnAllow ] = useState(false);
+
+    useEffect(() => {
+        setWordpressSyncFieldsChose( wordpressSyncFields );
+        setMoodleSyncFieldsChose( moodleSyncFields );
+    }, [settingValue]);
 
     // Get all unselected fields for a site.
     const getUnselectedFields = ( site ) => {
@@ -88,15 +124,12 @@ const SyncMap = (props) => {
             const wpField = wordpressSyncFieldsChose.shift();
             const mdField = moodleSyncFieldsChose.shift();
 
-            console.log( wpField, mdField );
-
             setSelectedFields(( selectedFields ) => {
                 return [ ...selectedFields, [ wpField, mdField ] ];
             });
+            
             if ( wordpressSyncFieldsChose.length == 0 && moodleSyncFieldsChose.length == 0) {
                 setBtnAllow(true);
-            } else{
-                
             }
         } else {
             alert( 'Unable to add sync fields' );
@@ -106,8 +139,8 @@ const SyncMap = (props) => {
     useEffect(() => {
         if (settingChanged.current && !proSettingChanged()) {
             settingChanged.current = false;
-        setWordpressSyncFieldsChose( getUnselectedFields( 'wordpress' ) );
-        setMoodleSyncFieldsChose( getUnselectedFields( 'moodle' ) );
+
+            onChange( selectedFields );
         }
     }, [selectedFields] );
 

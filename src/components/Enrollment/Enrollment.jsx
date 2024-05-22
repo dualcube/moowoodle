@@ -265,13 +265,7 @@ const Enrollment = () => {
 	];
 
 	const handleButtonClick = (row) => {
-		const data= {
-			orderId : row.order_id,
-			courseId : row.course_id,
-			userId : row.customer_id,
-			action : row.status == 'enrolled' ? 'Unenroll' : 'Enroll'
-		};
-		
+	
 		if ( confirm('Are you sure you want to proceed?') === true ) {
 			axios({
 				method: 'post',

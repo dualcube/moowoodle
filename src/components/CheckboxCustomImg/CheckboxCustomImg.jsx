@@ -4,11 +4,23 @@ import Moodle from "../../assets/images/Moodle.png";
 import './CheckboxCustomImg.scss';
 
 const CheckboxCustomImg = (props) => {
+  let value = props.value || [];
+
   return (
     <>
       <div className="custom-sync-section">
         <div className="sync-direction-items">
-          <input type="checkbox" />
+          <input
+            checked={ props.value.includes( 'wordpress_to_moodle' ) }
+            onClick={(e) => {
+              value = value.filter(element => element !== 'wordpress_to_moodle' );
+              if ( e.target.checked ){
+                value.push( 'wordpress_to_moodle' );
+              } 
+              props.onChange( value )
+            }}
+            type="checkbox"
+          />
             <div className="sync-meta-wrapper">
               <img src={WordPress} alt="" />
               <i className="admin-font font-arrow-right"></i>
@@ -17,7 +29,17 @@ const CheckboxCustomImg = (props) => {
           <p className="sync-label">WordPress to Moodle</p>
         </div>
         <div className="sync-direction-items">
-          <input type="checkbox" />
+          <input
+            checked={ props.value.includes( 'moodle_to_wordpress' ) }
+            onClick={(e) => {
+              value = value.filter(element => element !== 'moodle_to_wordpress' );
+              if ( e.target.checked ){
+                value.push( 'moodle_to_wordpress' );
+              } 
+              props.onChange( value )
+            }}
+            type="checkbox"
+          />
             <div className="sync-meta-wrapper">
               <img src={Moodle} alt="" />
               <i className="admin-font font-arrow-right"></i>

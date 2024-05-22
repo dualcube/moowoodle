@@ -672,9 +672,16 @@ const DynamicForm = (props) => {
         
         case "sync_map":
           input = <SyncMap
-          description = {inputField.desc}
-          proSetting={isProSetting(inputField.proSetting)}
-          proSettingChanged={() => proSettingChanged( inputField.proSetting )}
+            description = {inputField.desc}
+            proSetting={isProSetting(inputField.proSetting)}
+            proSettingChanged={() => proSettingChanged( inputField.proSetting )}
+            value={value}
+            onChange={( value ) => {
+              if (!proSettingChanged(inputField.proSetting) && true) {
+                settingChanged.current = true;
+                updateSetting(inputField.key, value)
+              }
+            }}
           />
           break;
         
@@ -736,9 +743,15 @@ const DynamicForm = (props) => {
           break;
 
           case "checkbox-custom-img":
-            input = <CheckboxCustomImg 
+            input = <CheckboxCustomImg
             proSetting={isProSetting(inputField.proSetting)}
-			proSettingChanged={() => proSettingChanged( inputField.proSetting )}
+            value={value}
+            onChange={(data) => {
+              if (!proSettingChanged(inputField.proSetting)) {
+                settingChanged.current = true;
+                updateSetting(inputField.key, data)
+              }
+            }}
           />
           break;
 
