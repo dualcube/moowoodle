@@ -26,7 +26,7 @@ const Propopup = () => {
                                     <p>8. Stock Manager Dashboard</p>
                                     <p>9. Export/Import Stock   </p>
                                 </div>
-                                <a className="woo-go-pro-btn" target="_blank" href={appLocalizer.pro_url}>Upgrade to Pro</a>
+                                <a className="woo-go-pro-btn" target="_blank" href={appLocalizer.shop_url}>Upgrade to Pro</a>
                             </div>
                         </div>
                     </div>
