@@ -177,7 +177,7 @@ $color-active: #65438f;
         background-color: transparent;
         width: 100%;
         outline: none;
-        height: 35px !important;
+        height: 2.205rem !important; // To overwrite default wordpress css
         border: 0.115rem solid rgba(0, 0, 0, 0.125);
   
         &:focus{
