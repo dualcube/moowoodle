@@ -1,42 +1,46 @@
 <?php
 /**
  * New enrollment email (html)
- *
  */
 
-if (!defined('ABSPATH')) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit();
 
-$i = 0;
-do_action('woocommerce_email_header', $email_heading);
-$enrollment_list = array();
+do_action( 'woocommerce_email_header', $email_heading );
+
+$user_details 	 = get_user_by( 'email', $user_email );
+$user_id 		 = $user_details->data->ID;
+$moodle_user_id  =  get_user_meta( $user_id, 'moowoodle_moodle_user_id', true );
+$password 		 = get_user_meta( $user_id, 'moowoodle_moodle_user_pwd', true );
+
 ?>
-<p>
-	<?php
-$user_details = get_user_by('email', $user_data);
-$pwd = get_user_meta($user_details->data->ID, 'moowoodle_moodle_user_pwd', true);
-if (!get_user_meta($user_id, 'moowoodle_moodle_user_id')) {
-	echo esc_html__('Username : ', 'moowoodle') . esc_html__($user_details->data->user_login) . '<br><br>';
-	echo esc_html__('Password : ', 'moowoodle') . esc_html__($pwd) . '<br><br>';
-}
-echo esc_html__('To access your course please click on the course link given below :', 'moowoodle') . '<br><br>';
-?>
-</p>
-<?php
-foreach ($enrollments['enrolments'] as $enrollment) {
-	$enrollment_list[] = MooWoodle()->Course->get_moowoodle_course_url($enrollment['courseid'], $enrollment['course_name']);
-	?>
 	<p>
-		<?php echo esc_html__('To access your course ', 'moowoodle') . $enrollment_list[$i] . ' <br><br>'; ?>
+	<?php
+		if ( ! $moodle_user_id ) {
+			echo __( 'Username : ', 'moowoodle' ) . esc_html( $user_details->data->user_login );
+			echo __( 'Password : ', 'moowoodle' ) . esc_html( $password ) ;
+		}
+
+		echo __( 'To enroll and access your course please click on the course link given below :', 'moowoodle' );
+	?>
 	</p>
 <?php
-$i++;
+
+foreach ( $enrollments[ 'enrolments' ] as $enrollment ) {
+	$course_url = MooWoodle()->course->get_course_url( $enrollment[ 'courseid' ], $enrollment[ 'course_name' ] );
+	?>
+		<p>
+		<?php echo( 'You are enrolled in ' . $course_url ); ?>
+		</p>
+	<?php
 }
-?>
-<p> <?php if (!get_user_meta($user_id, 'moowoodle_moodle_user_id')) {?>
-		<?php echo esc_html__('You need to change your password after first login.', 'moowoodle') . '<br><br>'; ?>
-	<?php }?>
-</p>
-<?php
-do_action('woocommerce_email_footer');
+
+
+if ( ! get_user_meta( $moodle_user_id, 'moowoodle_moodle_user_id' ) ) {
+	?>
+		<p>
+		<?php echo __( 'You need to change your password after first login.', 'moowoodle' ) . '\n\n'; ?>
+		</p>
+	<?php
+}
+
+do_action( 'woocommerce_email_footer' );

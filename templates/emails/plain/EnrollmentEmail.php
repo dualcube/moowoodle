@@ -1,29 +1,28 @@
 <?php
 /**
  * New enrollment email (plain)
- *
  */
 
-use MooWoodle\Helper;
+defined( 'ABSPATH' ) || exit();
 
-if (!defined('ABSPATH')) {
-	exit;
+$user_details 	 = get_user_by( 'email', $user_email );
+$user_id 		 = $user_details->data->ID;
+$moodle_user_id  = get_user_meta( $user_id, 'moowoodle_moodle_user_id', true );
+$password 		 = get_user_meta( $user_id, 'moowoodle_moodle_user_pwd', true );
+
+if ( ! $moodle_user_id ) {
+	echo __( 'Username : ', 'moowoodle' ) . esc_html( $user_details->data->user_login ) . '\n\n';
+	echo __( 'Password : ', 'moowoodle' ) . esc_html( $password ) . '\n\n';
 }
 
-$i = 0;
-$enrollment_list = array();
-$user_details = get_user_by('email', $user_data);
-$pwd = get_user_meta($user_details->data->ID, 'moowoodle_moodle_user_pwd', true);
-if (!get_user_meta($user_id, 'moowoodle_moodle_user_id')) {
-	echo esc_html('Username : ', 'moowoodle') . esc_html($user_details->data->user_login) . '\n\n';
-	echo esc_html('Password : ', 'moowoodle') . esc_html($pwd) . '\n\n';
+echo __( 'To enroll and access your course please click on the course link given below :', 'moowoodle' ) . '\n\n';
+
+foreach ( $enrollments[ 'enrolments' ] as $enrollment ) {
+
+	$course_url = MooWoodle()->course->get_course_url( $enrollment[ 'courseid' ], $enrollment[ 'course_name' ] );
+	echo( 'You are enrolled in ' . $course_url ) . ' \n\n';
 }
-echo esc_html('To enroll and access your course please click on the course link given below :', 'moowoodle') . '\n\n';
-foreach ($enrollments['enrolments'] as $enrollment) {
-	$enrollment_list[] = MooWoodle()->Course->get_moowoodle_course_url($enrollment['courseid'], $enrollment['course_name']);
-	echo esc_html('You are enrolled in ' . $enrollment_list[$i]) . ' \n\n';
-	$i++;
-}
-if (!get_user_meta($user_id, 'moowoodle_moodle_user_id')) {
-	echo esc_html('You need to change your password after first login.', 'moowoodle') . '\n\n';
+
+if ( ! $moodle_user_id ) {
+	echo __( 'You need to change your password after first login.', 'moowoodle' ) . '\n\n';
 }

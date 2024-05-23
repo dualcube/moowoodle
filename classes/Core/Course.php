@@ -203,9 +203,8 @@ class Course {
 		$course 	   = $moodle_course_id;
 		$class 		   = "moowoodle";
 		$target 	   = '_blank';
-		$content 	   = $course_name;
 		$redirect_uri  = MooWoodle()->setting->get_setting( 'moodle_url' ) . "/course/view.php?id=" . $course;
-		$url 		   = '<a target="' . esc_attr( $target ) . '" class="' . esc_attr( $class ) . '" href="' . $redirect_uri . '">' . $content . '</a>';
+		$url 		   = '<a target="' . esc_attr( $target ) . '" class="' . esc_attr( $class ) . '" href="' . $redirect_uri . '">' . $course_name . '</a>';
 		
 		return $url;
 	}

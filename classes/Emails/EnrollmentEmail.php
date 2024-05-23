@@ -37,6 +37,26 @@ class EnrollmentEmail extends \WC_Email {
 	}
 
 	/**
+	 * Get email subject.
+	 *
+	 * @since  1.4.7
+	 * @return string
+	 */
+	public function get_default_subject() {
+		return apply_filters( 'moowoodle_enrollment_email_subject', __( 'New Moodle Enrollment', 'woocommerce-stock-manager' ) );
+	} 
+
+	/**
+	 * Get email heading.
+	 *
+	 * @since  1.4.7
+	 * @return string
+	 */
+	public function get_default_heading() {
+		return apply_filters( 'moowoodle_enrollment_email_heading', __( 'Welcome to {site_title} ', 'woocommerce-stock-manager' ) );
+	} 
+
+	/**
 	 * get_content_html function.
 	 * @return string
 	 */
@@ -45,7 +65,7 @@ class EnrollmentEmail extends \WC_Email {
 
 		wc_get_template( $this->template_html, [
 			'enrollments' 	=> $this->email_data,
-			'user_data' 	=> $this->recipient,
+			'user_email' 	=> $this->recipient,
 			'email_heading' => $this->get_heading(),
 			'sent_to_admin' => false,
 			'plain_text' 	=> false,
@@ -63,6 +83,7 @@ class EnrollmentEmail extends \WC_Email {
 
 		wc_get_template( $this->template_plain, [
 			'enrollments' 	=> $this->email_data,
+			'user_email' 	=> $this->recipient,
 			'email_heading' => $this->get_heading(),
 			'sent_to_admin' => false,
 			'plain_text' 	=> true,
