@@ -216,7 +216,6 @@ class Enrollment {
 			$user_data[ 'username' ] = $username;
 			$user_data[ 'password' ] = $password;
 			$user_data[ 'auth' ] 	 = 'manual';
-			$user_data[ 'lang' ] 	 = substr( strtolower( get_locale() ), 0, 2 );
 		}
 
 		$user_data[ 'firstname' ] = $this->order->get_billing_first_name();
