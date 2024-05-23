@@ -17221,7 +17221,14 @@ const DynamicForm = props => {
           input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SyncMap_SyncMap__WEBPACK_IMPORTED_MODULE_11__["default"], {
             description: inputField.desc,
             proSetting: isProSetting(inputField.proSetting),
-            proSettingChanged: () => proSettingChanged(inputField.proSetting)
+            proSettingChanged: () => proSettingChanged(inputField.proSetting),
+            value: value,
+            onChange: value => {
+              if (!proSettingChanged(inputField.proSetting) && true) {
+                settingChanged.current = true;
+                updateSetting(inputField.key, value);
+              }
+            }
           });
           break;
         case "testconnection":
@@ -17278,7 +17285,13 @@ const DynamicForm = props => {
         case "checkbox-custom-img":
           input = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_CheckboxCustomImg_CheckboxCustomImg__WEBPACK_IMPORTED_MODULE_13__["default"], {
             proSetting: isProSetting(inputField.proSetting),
-            proSettingChanged: () => proSettingChanged(inputField.proSetting)
+            value: value,
+            onChange: data => {
+              if (!proSettingChanged(inputField.proSetting)) {
+                settingChanged.current = true;
+                updateSetting(inputField.key, data);
+              }
+            }
           });
           break;
         case "select-custom-radio":
@@ -19419,7 +19432,7 @@ function banner() {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "admin-pro-txt-items"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Automated user and course synchronization with scheduler ", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Utilize personalized scheduling options to synchronize users and courses between WordPress and Moodle.", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-    href: appLocalizer.pro_url,
+    href: appLocalizer.shop_url,
     target: "_blank",
     className: "admin-btn btn-red"
   }, "View Pricing"))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
@@ -19427,7 +19440,7 @@ function banner() {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "admin-pro-txt-items"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Convenient Single Sign-On login", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "SSO enables students to access their purchased courses without the need to log in separately to the Moodle site.", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-    href: appLocalizer.pro_url,
+    href: appLocalizer.shop_url,
     target: "_blank",
     className: "admin-btn btn-red"
   }, "View Pricing"))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
@@ -19435,7 +19448,7 @@ function banner() {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "admin-pro-txt-items"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Steady Income through Course Subscriptions ", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Generate consistent revenue by offering courses with subscription-based model.", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-    href: appLocalizer.pro_url,
+    href: appLocalizer.shop_url,
     target: "_blank",
     className: "admin-btn btn-red"
   }, "View Pricing"))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
@@ -19443,7 +19456,7 @@ function banner() {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "admin-pro-txt-items"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Synchronize Courses in Bulk", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Effortlessly synchronize multiple courses  at once, ideal for managing large course catalogs.", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-    href: appLocalizer.pro_url,
+    href: appLocalizer.shop_url,
     target: "_blank",
     className: "admin-btn btn-red"
   }, "View Pricing"))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
@@ -19451,7 +19464,7 @@ function banner() {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "admin-pro-txt-items"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Automatic User Synchronization for Moodle\u2122 and WordPress", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Synchronizes user accounts between Moodle\u2122 and WordPress, ensuring consistent user management across both platforms without manual intervention.", ' '), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-    href: appLocalizer.pro_url,
+    href: appLocalizer.shop_url,
     target: "_blank",
     className: "admin-btn btn-red"
   }, "View Pricing"))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -19491,11 +19504,20 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const CheckboxCustomImg = props => {
+  let value = props.value || [];
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "custom-sync-section"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sync-direction-items"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    checked: props.value.includes('wordpress_to_moodle'),
+    onClick: e => {
+      value = value.filter(element => element !== 'wordpress_to_moodle');
+      if (e.target.checked) {
+        value.push('wordpress_to_moodle');
+      }
+      props.onChange(value);
+    },
     type: "checkbox"
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sync-meta-wrapper"
@@ -19512,6 +19534,14 @@ const CheckboxCustomImg = props => {
   }, "WordPress to Moodle")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sync-direction-items"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    checked: props.value.includes('moodle_to_wordpress'),
+    onClick: e => {
+      value = value.filter(element => element !== 'moodle_to_wordpress');
+      if (e.target.checked) {
+        value.push('moodle_to_wordpress');
+      }
+      props.onChange(value);
+    },
     type: "checkbox"
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sync-meta-wrapper"
@@ -19842,6 +19872,7 @@ function Course() {
       if (!bulkSelectRef.current.value) {
         return window.alert(__('Select bulk action', 'moowoodle'));
       }
+      setData(null);
       (0,axios__WEBPACK_IMPORTED_MODULE_7__["default"])({
         method: 'post',
         url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)(`course-bulk-action`),
@@ -19859,6 +19890,7 @@ function Course() {
         }
       }).then(response => {
         // handle after bulk action success
+        requestData();
       }).catch(error => {
         console.error('Error:', error);
       });
@@ -19988,7 +20020,9 @@ function Course() {
         value: "create_product"
       }, __('Create Product')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
         value: "update_product"
-      }, __('Update Product'))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+      }, __('Update Product'))), !appLocalizer.pro_active && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+        className: "admin-pro-tag"
+      }, "pro"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
         name: "bulk-action-apply",
         onClick: handleBulkAction
       }, __('Apply')));
@@ -20007,11 +20041,6 @@ function Course() {
       }, "Category"), Object.entries(category).map(([categoryId, categoryName]) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
         value: categoryId
       }, categoryName)))));
-    }
-  }, {
-    name: "blank",
-    render: () => {
-      return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null));
     }
   }, {
     name: "searchCourseField",
@@ -20314,12 +20343,6 @@ const Enrollment = () => {
     }, row.status === 'enrolled' ? 'Unenroll' : 'Enroll'))
   }];
   const handleButtonClick = row => {
-    const data = {
-      orderId: row.order_id,
-      courseId: row.course_id,
-      userId: row.customer_id,
-      action: row.status == 'enrolled' ? 'Unenroll' : 'Enroll'
-    };
     if (confirm('Are you sure you want to proceed?') === true) {
       (0,axios__WEBPACK_IMPORTED_MODULE_9__["default"])({
         method: 'post',
@@ -20587,7 +20610,7 @@ const Propopup = () => {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("strong", null, "Boost to Product Stock Manager & Notifier Pro to access premium features!"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "\xA0"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "1. Double Opt-in."), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "2. Ban Spam Mail."), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "3. Export Subscribers."), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "4. Subscription Dashboard."), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "5. MailChimp Integration."), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "6. Recaptcha Support."), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "7. Subscription Details."), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "8. Stock Manager Dashboard"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "9. Export/Import Stock   ")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
     className: "woo-go-pro-btn",
     target: "_blank",
-    href: appLocalizer.pro_url
+    href: appLocalizer.shop_url
   }, "Upgrade to Pro")))))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Propopup);
@@ -20736,7 +20759,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const ScheduleInterval = props => {
   const optionsData = [];
-  let defaultValue = '';
+  let defaultValue = {};
   props.options.forEach((option, index) => {
     optionsData[index] = {
       value: option.value,
@@ -20753,6 +20776,10 @@ const ScheduleInterval = props => {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       class: "radio-button"
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+      checked: item.value === defaultValue.value,
+      onChange: e => {
+        props.onChange(item);
+      },
       name: "radio-group",
       id: index,
       class: "radio-button__input",
@@ -20883,7 +20910,6 @@ const SyncMap = props => {
     proSettingChanged,
     description
   } = props;
-  const settingChanged = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(false);
   const wordpressSyncFieldsMap = {
     'firstname': 'First name',
     'lastname': 'Last name',
@@ -20896,11 +20922,42 @@ const SyncMap = props => {
     'username': 'User name',
     'password': 'Password'
   };
-  const wordpressSyncFields = Object.keys(wordpressSyncFieldsMap);
-  const moodleSyncFields = Object.keys(moodleSyncFieldsMap);
-  const [selectedFields, setSelectedFields] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(value || []);
-  const [wordpressSyncFieldsChose, setWordpressSyncFieldsChose] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(wordpressSyncFields);
-  const [moodleSyncFieldsChose, setMoodleSyncFieldsChose] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(moodleSyncFields);
+  const settingValue = value || [];
+  const [selectedFields, setSelectedFields] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(settingValue);
+  const settingChanged = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(false);
+
+  // Select unselected fields.
+  const wordpressSyncFields = [];
+  const moodleSyncFields = [];
+  Object.keys(wordpressSyncFieldsMap).forEach(ele => {
+    let hasSelect = false;
+    settingValue.forEach(([wpSetting, moodleSetting]) => {
+      if (wpSetting == ele) {
+        hasSelect = true;
+      }
+    });
+    if (!hasSelect) {
+      wordpressSyncFields.push(ele);
+    }
+  });
+  Object.keys(moodleSyncFieldsMap).forEach(ele => {
+    let hasSelect = false;
+    settingValue.forEach(([wpSetting, moodleSetting]) => {
+      if (moodleSetting == ele) {
+        hasSelect = true;
+      }
+    });
+    if (!hasSelect) {
+      moodleSyncFields.push(ele);
+    }
+  });
+  const [wordpressSyncFieldsChose, setWordpressSyncFieldsChose] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const [moodleSyncFieldsChose, setMoodleSyncFieldsChose] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const [btnAllow, setBtnAllow] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    setWordpressSyncFieldsChose(wordpressSyncFields);
+    setMoodleSyncFieldsChose(moodleSyncFields);
+  }, [settingValue]);
 
   // Get all unselected fields for a site.
   const getUnselectedFields = site => {
@@ -20948,6 +21005,7 @@ const SyncMap = props => {
     setSelectedFields(selectedFields => {
       return selectedFields.filter((fieldPair, index) => index != fieldIndex);
     });
+    setBtnAllow(false);
   };
   const insertSelectedFields = () => {
     if (wordpressSyncFieldsChose.length && moodleSyncFieldsChose.length) {
@@ -20956,6 +21014,9 @@ const SyncMap = props => {
       setSelectedFields(selectedFields => {
         return [...selectedFields, [wpField, mdField]];
       });
+      if (wordpressSyncFieldsChose.length == 0 && moodleSyncFieldsChose.length == 0) {
+        setBtnAllow(true);
+      }
     } else {
       alert('Unable to add sync fields');
     }
@@ -20963,13 +21024,18 @@ const SyncMap = props => {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     if (settingChanged.current && !proSettingChanged()) {
       settingChanged.current = false;
-      setWordpressSyncFieldsChose(getUnselectedFields('wordpress'));
-      setMoodleSyncFieldsChose(getUnselectedFields('moodle'));
+      onChange(selectedFields);
     }
   }, [selectedFields]);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sync-map-container"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "WordPress"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Moodle")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "container-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "main-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "main-wrapper-heading"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "WordPress"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Moodle")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "map-content-wrapper"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
     class: "",
@@ -20988,6 +21054,7 @@ const SyncMap = props => {
       className: "map-content-wrapper"
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
       className: "",
+      value: mwField,
       onChange: e => {
         settingChanged.current = true;
         changeSelectedFields(index, e.target.value, 'wordpress');
@@ -21034,10 +21101,12 @@ const SyncMap = props => {
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
       d: "M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"
     })))));
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "btn-container"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "add-mapping-container"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    className: "add-mapping",
+    className: `add-mapping ${btnAllow ? "not-allow" : ""}`,
     onClick: e => {
       e.preventDefault();
       settingChanged.current = true;
@@ -21056,7 +21125,7 @@ const SyncMap = props => {
     d: "M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"
   })))), proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     class: "admin-pro-tag"
-  }, "pro")), description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+  }, "pro")))), description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: "settings-metabox-description"
   }, description));
 };
@@ -21932,23 +22001,6 @@ __webpack_require__.r(__webpack_exports__);
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Define the user profile information mapping between WordPress and Moodle. Add multiple rows above to define all the profile data you wish to map. Any remaining profile field will be excluded from the synchronization process.<br> User will be created based on their e-mail id, hence email id can't be mapped.", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Profile information mapping", 'moowoodle'),
     select_deselect: true,
-    options: [{
-      key: "sync_user_first_name",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('First name', 'moowoodle'),
-      value: "sync_user_first_name"
-    }, {
-      key: "sync_user_last_name",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Last name', 'moowoodle'),
-      value: "sync_user_last_name"
-    }, {
-      key: "sync_username",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Username', 'moowoodle'),
-      value: "sync_username"
-    }, {
-      key: "sync_password",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Password', 'moowoodle'),
-      value: "sync_password"
-    }],
     proSetting: true
   }, {
     key: 'separator_content',
@@ -21959,20 +22011,6 @@ __webpack_require__.r(__webpack_exports__);
     type: "checkbox-custom-img",
     // desc: __("<b>Prior to updating existing user info, you must select the user info to be synchronized at </b>", 'moowoodle') . $moowoodle_sync_setting_url . __("<br><br>While synchronizing user information, we use the email address as the unique identifier for each user. We check the username associated with that email address, and if we find the same username in the other instance but with a different email address, the user's information cannot be synchronized.", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Site-to-site data synchronization direction", 'moowoodle'),
-    // options: [
-    //     {
-    //         key: "wordpress_to_moodle",
-    //         label: __('Wordpress to Moodle', 'moowoodle'),
-    //         img: 'ggg',
-    //         value: "wordpress_to_moodle",
-    //     },
-    //     {
-    //         key: "moodle_to_wordpress",
-    //         img: '',
-    //         label: __('Moodle to Wordpress', 'moowoodle'),
-    //         value: "moodle_to_wordpress",
-    //     }
-    // ],
     proSetting: true
   }, {
     key: "user_schedule_interval",
@@ -21980,29 +22018,29 @@ __webpack_require__.r(__webpack_exports__);
     desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select the interval for the user synchronization process. Based on this schedule, the cron job will run to sync users between WordPress and Moodle.", 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Automatic synchronization frequency", 'moowoodle'),
     options: [{
-      key: "realtime",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Real-time on user changes", 'moowoodle'),
-      value: "realtime"
+      key: "perminute",
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Per minute", 'moowoodle'),
+      value: "perminute"
     }, {
-      key: "hour",
+      key: "hourly",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Hourly", 'moowoodle'),
-      value: "hour"
+      value: "hourly"
     }, {
-      key: "hour6",
+      key: "six_hours",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("In 6 hours", 'moowoodle'),
-      value: "hour6"
+      value: "six_hours"
     }, {
-      key: "day",
+      key: "daily",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Daily", 'moowoodle'),
-      value: "day"
+      value: "daily"
     }, {
-      key: "week",
+      key: "weekly",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Weekly", 'moowoodle'),
-      value: "week"
+      value: "weekly"
     }, {
-      key: "month",
+      key: "monthly",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Monthly", 'moowoodle'),
-      value: "month"
+      value: "monthly"
     }],
     proSetting: true
   }, {
@@ -22012,7 +22050,7 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "sync_user_btn",
     type: "syncbutton",
-    apilink: 'sync-users',
+    apilink: 'cron-sync-users',
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Manual synchronization mode", 'moowoodle'),
     value: "Synchronize user profile now!! ",
     desc: "This will synchronize user accounts between WordPress and Moodle instantly according to the selected ‘Sync Direction’.",

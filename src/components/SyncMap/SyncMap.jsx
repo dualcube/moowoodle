@@ -165,10 +165,11 @@ const SyncMap = (props) => {
                                     {/* Wordpress select */}
                                     <select 
                                         className=""
-                                onChange={(e) => {
-                                    settingChanged.current = true;
-                                    changeSelectedFields( index, e.target.value, 'wordpress' )
-                                } }
+                                        value={mwField}
+                                        onChange={(e) => {
+                                            settingChanged.current = true;
+                                            changeSelectedFields( index, e.target.value, 'wordpress' )
+                                        } }
                                     >
                                         <option value={wpField} selected>{wordpressSyncFieldsMap[wpField]}</option>
                                         {
@@ -184,10 +185,10 @@ const SyncMap = (props) => {
                                     <select 
                                         className=""
                                         value={mwField}
-                                onChange={(e) => {
-                                    settingChanged.current = true;
-                                    changeSelectedFields( index, e.target.value, 'moodle' ) 
-                                }}
+                                        onChange={(e) => {
+                                            settingChanged.current = true;
+                                            changeSelectedFields( index, e.target.value, 'moodle' ) 
+                                        }}
                                     >
                                         <option value={mwField} selected>{moodleSyncFieldsMap[mwField]}</option>
                                         {
