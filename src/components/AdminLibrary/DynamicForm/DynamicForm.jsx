@@ -640,7 +640,10 @@ const DynamicForm = (props) => {
 
         case "section":
           input = (
-            <CustomInput.Section wrapperClass="setting-section-divider" />
+            <CustomInput.Section 
+              wrapperClass="setting-section-divider" 
+              value = {inputField.desc}
+            />
           );
           break;
 

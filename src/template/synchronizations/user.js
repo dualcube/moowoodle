@@ -35,6 +35,7 @@ export default {
             key: 'separator_content',
             type: 'section',
             label: "",
+            desc: __("Manual synchronization", 'moowoodle')
         },
         {
             key: "user_sync_direction",

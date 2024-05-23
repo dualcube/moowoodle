@@ -154,6 +154,16 @@ $color-active: #65438f;
       padding: 0;
       height: 0;
       border-top: 0.05rem solid rgba(82, 44, 129, 0.09);
+      position: relative;
+
+      span{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 0 1rem;
+        background: #fff;
+      }
     }
 
     .conditional-section {

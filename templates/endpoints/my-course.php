@@ -13,7 +13,7 @@ if ( count( $customer_orders ) > 0 ) {
     ?>
     <p>
         <div class="auto">
-            <table class="table table-bordered responsive-table moodle-linked-courses widefat">
+            <table id="moowoodle_table" class="table table-bordered responsive-table moodle-linked-courses widefat">
                 <thead>
                     <tr>
                         <?php foreach ( $table_heading as $heading_key => $heading_value ) : ?>

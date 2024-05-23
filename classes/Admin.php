@@ -8,6 +8,19 @@ class Admin {
 		// Register submenu for admin menu
 		add_action( 'admin_menu', [ &$this, 'add_submenu' ] );
 		add_action( 'admin_enqueue_scripts', [ &$this, 'enqueue_admin_script' ] );
+
+		// Enqueue CSS for WooCommerce "My Account" page
+		add_action('wp_enqueue_scripts', [ &$this, 'enqueue_my_account_style' ]);
+	}
+
+	public function enqueue_my_account_style() {
+		die("Hellllllloooooo");
+		wp_enqueue_style(
+			'moowoodle_my_account_css',
+			MOOWOODLE_PLUGIN_URL . 'templates/endpoints/my-course.css',
+			array(),
+			MOOWOODLE_PLUGIN_VERSION
+		);
 	}
 
 	/**
