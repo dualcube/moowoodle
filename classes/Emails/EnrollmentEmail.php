@@ -3,7 +3,7 @@
 namespace MooWoodle\Emails;
 
 class EnrollmentEmail extends \WC_Email {
-	public $recipient;
+	public $recipient = '';
 	public $email_data;
 
 	function __construct() {
@@ -11,9 +11,9 @@ class EnrollmentEmail extends \WC_Email {
 		$this->title 		  = __( 'New Moodle Enrollment', 'moowoodle' );
 		$this->description 	  = __( 'This is a notification email sent to the enrollees for new enrollment.', 'moowoodle' );
 		$this->heading 		  = __( 'New Enrollment', 'moowoodle' );
-		$this->template_html  = 'emails/new-enrollment.php';
-		$this->template_plain = 'emails/plain/new-enrollment.php';
-		$this->template_base  = MooWoodle()->plugin_path . '/templates/';
+		$this->template_html  = 'emails/EnrollmentEmail.php';
+		$this->template_plain = 'emails/plain/EnrollmentEmail.php';
+		$this->template_base  = MooWoodle()->plugin_path . 'templates/';
 		
 		// Call parent constructor
 		parent::__construct();
@@ -49,7 +49,7 @@ class EnrollmentEmail extends \WC_Email {
 			'email_heading' => $this->get_heading(),
 			'sent_to_admin' => false,
 			'plain_text' 	=> false,
-		]);
+		], '', $this->template_base );
 
 		return ob_get_clean();
 	}
@@ -66,7 +66,7 @@ class EnrollmentEmail extends \WC_Email {
 			'email_heading' => $this->get_heading(),
 			'sent_to_admin' => false,
 			'plain_text' 	=> true,
-		]);
+		], '', $this->template_base );
 
 		return ob_get_clean();
 	}

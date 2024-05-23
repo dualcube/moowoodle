@@ -4,8 +4,6 @@
  *
  */
 
-use MooWoodle\Helper;
-
 if (!defined('ABSPATH')) {
 	exit;
 }
