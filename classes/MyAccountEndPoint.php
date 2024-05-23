@@ -99,7 +99,6 @@ class MyAccountEndPoint {
 	 */
 	public function frontend_styles() {
 		$suffix = defined( 'MOOWOODLE_SCRIPT_DEBUG' ) && MOOWOODLE_SCRIPT_DEBUG ? '' : '.min';
-		$suffix = "";
 		wp_enqueue_style( 'frontend_css', MOOWOODLE_PLUGIN_URL . 'assets/frontend/css/frontend' . $suffix . '.css', array(), MOOWOODLE_PLUGIN_VERSION );
 	}
 
