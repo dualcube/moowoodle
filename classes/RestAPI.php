@@ -251,7 +251,7 @@ class RestAPI {
 
         // Filter by course
         if ( $search_action == 'course' ) {
-            $args[ 'title' ] = $search_field;
+            $args[ 's' ] = $search_field;
         }
 
         // Filter by category
@@ -278,8 +278,9 @@ class RestAPI {
         if ( $search_action == 'shortname' ) {
             $args[ 'meta_query' ] = [
                 [
-                    'key'   => '_course_short_name',
-                    'value' => $search_field,
+                    'key'     => '_course_short_name',
+                    'value'   => $search_field,
+                    'compare' => 'LIKE'
                 ]
             ];
         }

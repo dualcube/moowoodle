@@ -137,7 +137,7 @@ const SyncMap = (props) => {
     }
     
     useEffect(() => {
-        if (settingChanged.current && !proSettingChanged()) {
+        if (settingChanged.current) {
             settingChanged.current = false;
 
             onChange( selectedFields );
@@ -167,8 +167,10 @@ const SyncMap = (props) => {
                                         className=""
                                         value={mwField}
                                         onChange={(e) => {
-                                            settingChanged.current = true;
-                                            changeSelectedFields( index, e.target.value, 'wordpress' )
+                                            if (!proSettingChanged()) {
+                                                settingChanged.current = true;
+                                                changeSelectedFields( index, e.target.value, 'wordpress' )
+                                            }
                                         } }
                                     >
                                         <option value={wpField} selected>{wordpressSyncFieldsMap[wpField]}</option>
@@ -186,8 +188,10 @@ const SyncMap = (props) => {
                                         className=""
                                         value={mwField}
                                         onChange={(e) => {
-                                            settingChanged.current = true;
-                                            changeSelectedFields( index, e.target.value, 'moodle' ) 
+                                            if (!proSettingChanged()) {
+                                                settingChanged.current = true;
+                                                changeSelectedFields( index, e.target.value, 'moodle' ) 
+                                            }
                                         }}
                                     >
                                         <option value={mwField} selected>{moodleSyncFieldsMap[mwField]}</option>
@@ -201,8 +205,10 @@ const SyncMap = (props) => {
                                         className="remove-mapping"
                                         onClick={(e) => {
                                             e.preventDefault();
-                                    settingChanged.current = true;
-                                            removeSelectedFields( index );
+                                            if (!proSettingChanged()) {
+                                                settingChanged.current = true;
+                                                removeSelectedFields( index );
+                                            }
                                         }}
                                     >
                                         <span class="text">Clear</span>
@@ -221,8 +227,10 @@ const SyncMap = (props) => {
                             className={`add-mapping ${btnAllow ? "not-allow" : ""}`}
                             onClick={(e) => {
                                 e.preventDefault();
-                        settingChanged.current = true;
-                                insertSelectedFields();
+                                if (!proSettingChanged()) {
+                                    settingChanged.current = true;
+                                    insertSelectedFields();
+                                }
                             }}
                         >
                             <span class="text">Add</span>

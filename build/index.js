@@ -21022,7 +21022,7 @@ const SyncMap = props => {
     }
   };
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    if (settingChanged.current && !proSettingChanged()) {
+    if (settingChanged.current) {
       settingChanged.current = false;
       onChange(selectedFields);
     }
@@ -21056,8 +21056,10 @@ const SyncMap = props => {
       className: "",
       value: mwField,
       onChange: e => {
-        settingChanged.current = true;
-        changeSelectedFields(index, e.target.value, 'wordpress');
+        if (!proSettingChanged()) {
+          settingChanged.current = true;
+          changeSelectedFields(index, e.target.value, 'wordpress');
+        }
       }
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
       value: wpField,
@@ -21072,8 +21074,10 @@ const SyncMap = props => {
       className: "",
       value: mwField,
       onChange: e => {
-        settingChanged.current = true;
-        changeSelectedFields(index, e.target.value, 'moodle');
+        if (!proSettingChanged()) {
+          settingChanged.current = true;
+          changeSelectedFields(index, e.target.value, 'moodle');
+        }
       }
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
       value: mwField,
@@ -21086,8 +21090,10 @@ const SyncMap = props => {
       className: "remove-mapping",
       onClick: e => {
         e.preventDefault();
-        settingChanged.current = true;
-        removeSelectedFields(index);
+        if (!proSettingChanged()) {
+          settingChanged.current = true;
+          removeSelectedFields(index);
+        }
       }
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
       class: "text"
@@ -21109,8 +21115,10 @@ const SyncMap = props => {
     className: `add-mapping ${btnAllow ? "not-allow" : ""}`,
     onClick: e => {
       e.preventDefault();
-      settingChanged.current = true;
-      insertSelectedFields();
+      if (!proSettingChanged()) {
+        settingChanged.current = true;
+        insertSelectedFields();
+      }
     }
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     class: "text"
@@ -21862,7 +21870,7 @@ __webpack_require__.r(__webpack_exports__);
   modal: [{
     key: "course_sync_direction",
     type: "checkbox",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`<p class="highlighted-part">This functionality allows you to fetche  Moodle courses with it's product in WordPress.</p> <p class="highlighted-part">With the '<b>Course-to-Product Handling</b>' option, you have the ability to specify whether you want to create new products, update existing ones, or perform both actions.</p> <p class="highlighted-part">Furthermore, through the '<b>Course Information Mapping</b> feature, you gain the flexibility to define which specific course data gets imported from Moodle. By default we will fetch only the category of the product.</p>`, 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)(`<p class="highlighted-part">This functionality allows you to fetch  Moodle courses with it's product in WordPress.</p> <p class="highlighted-part">With the '<b>Course-to-Product Handling</b>' option, you have the ability to specify whether you want to create new products, update existing ones, or perform both actions.</p> <p class="highlighted-part">Furthermore, through the '<b>Course Information Mapping</b> feature, you gain the flexibility to define which specific course data gets imported from Moodle. By default we will fetch only the category of the product.</p>`, 'moowoodle'),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Initiate synchronization", 'moowoodle'),
     options: [{
       key: "moodle_to_wordpress",
