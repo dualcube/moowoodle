@@ -17,6 +17,9 @@ const BasicInput = (props) => {
                     onFocus=    {(e) => { props.onFocus?.(e) }}
                 />
                 {
+                    props.parameter && <span className="parameter" dangerouslySetInnerHTML={{__html: props.parameter}}></span>
+                }
+                {
                     props.proSetting && <span className="admin-pro-tag">pro</span>
                 }
                 {
