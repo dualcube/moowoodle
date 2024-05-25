@@ -11,15 +11,12 @@ import './Enrollment.scss';
 import Popoup from "../PopupContent/PopupContent.jsx";
 
 const Enrollment = () => {
-	const [students, setStudents] = useState([]);
 	const [courses, setCourses] = useState([]);
     const [data, setData] = useState(null);
     const [selectedRows, setSelectedRows] = useState([]);
     const [totalRows, setTotalRows] = useState();
     const [openDialog, setOpenDialog] = useState(false);
     const [openDatePicker, setOpenDatePicker] = useState(false);
-    const [openModal, setOpenModal] = useState(false);
-    const [modalDetails, setModalDetails] = useState(false);
 	const dateRef = useRef();
 
 	useEffect(() => {
@@ -48,18 +45,6 @@ const Enrollment = () => {
 	useEffect(() => {
 		if (appLocalizer.pro_active) {
 		  requestData();
-		}
-	}, []);
-
-	
-	useEffect(() => {
-		if (appLocalizer.pro_active) {
-			axios({
-				method: "get",
-				url: getApiLink('all-customers'),
-			}).then((response) => {
-				setStudents(response.data)
-			});
 		}
 	}, []);
 
@@ -92,8 +77,7 @@ const Enrollment = () => {
 		courseField = "",
 		statusField = "",
 		start_date = new Date(0),
-		end_date = new Date(),
-		postStatus
+		end_date = new Date()
 	  ) {
 
 		//Fetch the data to show in the table
@@ -130,27 +114,6 @@ const Enrollment = () => {
 	};
 
 	const realtimeFilter = [
-		// {
-		// 	name: "studentField",
-		// 	render: (updateFilter, filterValue) => {
-		// 	return (
-		// 	<>
-		// 		<div className="admin-header-search-section">
-		// 		<select
-		// 			name="studentField"
-		// 			onChange={(e) => updateFilter(e.target.name, e.target.value)}
-		// 			value={filterValue || ""}
-		// 		>
-		// 			<option value="">Student</option>
-		// 			{Object.entries(students).map(([userId, userName]) => (
-		// 				<option value={userId}>{userName}</option>
-		// 			))}
-		// 		</select>
-		// 		</div>
-		// 	</>
-		// 	);
-		// 	},
-		// },
 		{
 			name: "courseField",
 			render: (updateFilter, filterValue) => {
@@ -276,6 +239,7 @@ const Enrollment = () => {
 		name: __("Student", "moowoodle"),
 		cell: (row) =>
 		<TableCell title="student_name">
+			<img src="" alt="" />
 			<p>{row.customer_name}</p>
 		</TableCell>,
 	},
@@ -283,22 +247,16 @@ const Enrollment = () => {
 		name: __("Enrollment Date", "moowoodle"),
 		cell: (row) => <TableCell title="Date" > {row.date} </TableCell>,
 	},
-	// {
-	// 	name: __("Status", "moowoodle"),
-	// 	cell: (row) => <TableCell title="Status" > 
-	// 	<p>{row.status == 'enrolled' ? 'Enrolled' : 'Unenrolled'}</p>
-	// 	</TableCell>,
-	// },
 	{
 		name: __("Status", "moowoodle"),
 		cell: (row) => (
 		  <TableCell title="Status">
 			<div className='status-section'>
-				<button className={`${row.status == 'enrolled' ? 'unenroll' : 'enroll'}`} >
-				{row.status === 'enrolled' ? 'Unenroll' : 'Enroll'}
+				<button className={`status-show-btn ${row.status === 'enrolled' ? 'unenroll' : 'enroll'}`}	>
+				{row.status === 'enrolled' ? 'Enrolled' : 'Unenrolled'}
 				</button>
 				<div className='action-btn'>
-					<button onClick={() => handleButtonClick(row)}>{row.status === 'enrolled' ? 'Unenroll' : 'Enroll'}</button>
+					<button className={row.status === 'enrolled' ? 'unenroll' : 'enroll'} onClick={() => handleButtonClick(row)}>{row.status === 'enrolled' ? 'Unenroll Now' : 'Enroll Now'}</button>
 				</div>
 			</div>
 		  </TableCell>
