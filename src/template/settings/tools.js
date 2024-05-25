@@ -9,6 +9,23 @@ export default {
     submitUrl: "save-moowoodle-setting",
     modal: [
         {
+            key: "moowoodle_adv_log",
+            type: "checkbox",
+            label: __("Advance Log", 'moowoodle'),
+            desc: __(`<span class="highlighted-part">Activating this option will log more detailed error information. Enable it only when essential, as it may result in a larger log file.</span>`, 'moowoodle'),
+            options: [
+                {
+                    key: "moowoodle_adv_log",
+                    value: "moowoodle_adv_log"
+                }
+            ]
+        },
+        {
+            key: 'separator_content',
+            type: 'section',
+            label: "",
+        },
+        {
             key: "moodle_timeout",
             type: "text",
             desc: __('When WordPress sends a request to the Moodle server for data, communication delays might exceed the default server connection timeout. You can customize the timeout parameters by adjusting them here. <br>Default: 5 seconds. ', 'moowoodle'),
@@ -54,4 +71,3 @@ export default {
             proSetting: true,
         },
     ]
-};

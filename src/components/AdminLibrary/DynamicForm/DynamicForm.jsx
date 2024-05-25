@@ -643,6 +643,7 @@ const DynamicForm = (props) => {
             <CustomInput.Section 
               wrapperClass="setting-section-divider" 
               value = {inputField.desc}
+              hint = {inputField.hint}
             />
           );
           break;

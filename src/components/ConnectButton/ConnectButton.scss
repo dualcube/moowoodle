@@ -211,3 +211,30 @@ $color-active: #65438f;
     background-color: green !important;
   }
 }
+
+.fetch-display-output{
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0.5rem 0.75rem;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &.failed{
+    color: red;
+    background: rgba(227, 79, 71, 0.1254901961);
+  }
+  
+  &.success{
+    color: green;
+    background-color: #00800036;
+  }
+}
+.errorlog-link{
+  font-weight: 600;
+  color: red;
+  
+  &:hover{
+    color: red;
+  }
+}
