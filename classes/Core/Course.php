@@ -111,7 +111,7 @@ class Course {
 				$updated_ids[] = $course_id;
 			}
 
-			\MooWoodle\Util::increment_sync_count();
+			\MooWoodle\Util::increment_sync_count( 'course' );
 		}
 
 		// remove courses that not exist in moodle.

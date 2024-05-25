@@ -6,61 +6,73 @@ import { getApiLink } from "../../services/apiService";
 import "./SyncNow.scss";
 
 const SyncNow = (props) => {
-  const { buttonKey, proSetting, proSettingChanged, value, description, apilink } = props;
+  const { buttonKey, interval, proSetting, proSettingChanged, value, description, apilink, statusApiLink } = props;
  
   const [modelOpen, setModelOpen] = useState(false);
-  const [syncCourseStart, setSyncCourseStart] = useState(false);
-  // const [syncUserStart, setSyncUserStart] = useState(false);
   const [syncStatus, setSyncStatus] = useState([]);
-  const syncStart = useRef(false);
+  const syncStart = useRef(true);
   const [handleClick, setHandleClick] = useState(false);
+
+  console.log(syncStatus);
 
   const fetchSyncStatus = () => {
     axios({
       method: "post",
-      url: getApiLink('sync-status'),
+      url: getApiLink(statusApiLink),
       headers: { "X-WP-Nonce": appLocalizer.nonce },
     }).then((response) => {
+      // Sync data is not avialable or sync is over
+      if ( ! response.data || ! response.data.length ) {
+        setHandleClick(false);
+        syncStart.current = false;
+      }
+
       if (syncStart.current) {
         setSyncStatus(response.data);
         setTimeout(() => {
+          setHandleClick(true);
           fetchSyncStatus();
-        }, 0)
+        }, interval)
       }
     });
   }
 
   useEffect(() => {
-    if (syncStart) {
+    fetchSyncStatus();
+  }, []);
+
+  useEffect(() => {
+    if (syncStart.current) {
       fetchSyncStatus();
     }
   }, [syncStart.current]);
 
-  const handleUserSync = (event) => {
-    if (!appLocalizer.pro_active) {
-      return setModelOpen(true);
-    }
-  }
-
-  const handleCourseSync = (event) => {
+  const handleSync = (event) => {
     event.preventDefault();
-    setHandleClick(true);
-    if (syncCourseStart) {
+
+    if (proSettingChanged()) {
+      setModelOpen(true);
       return;
     }
 
-    syncStart.current = true;
-    setSyncCourseStart(true);
+    // setHandleClick(true);
+    // if (syncStart.current) {
+    //   return;
+    // }
+
+    // syncStart.current = true;
 
     axios({
       method: "post",
       url: getApiLink(apilink),
       headers: { "X-WP-Nonce": appLocalizer.nonce },
     }).then((response) => {
-      setSyncStatus(response.data);
-      setSyncCourseStart(false);
-      syncStart.current = false;
-      setHandleClick(false);
+      if (response.data) {
+        setSyncStatus(response.data);
+        syncStart.current = false;
+        setHandleClick(false);
+      }
+      fetchSyncStatus();
     });
   }
 
@@ -81,7 +93,7 @@ const SyncNow = (props) => {
       
       <div className="section-synchronize-now">
         <div className="button-section">
-          <button className="synchronize-now-button" onClick={handleCourseSync}>
+          <button className="synchronize-now-button" onClick={handleSync}>
             {value}
           </button>
           {handleClick && (

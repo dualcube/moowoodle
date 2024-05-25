@@ -28,8 +28,7 @@ export default function Course() {
             method: "get",
             url: getApiLink('all-courses'),
         }).then((response) => {
-            console.log(response.data);
-            setCourses(response.data.courses);
+                                                                                                                                                                                                setCourses(response.data.courses);
             setProducts(response.data.products);
             setCategory(response.data.category);
             setShortName(response.data.shortname);
@@ -329,7 +328,7 @@ export default function Course() {
                                 value={filterValue || ""}
                             >
                                 <option value="">Category</option>
-                                { category && Object.entries(category).map(([categoryId, categoryName]) => (
+                                {Object.entries(category).map(([categoryId, categoryName]) => (
                                     <option value={categoryId}>{categoryName}</option>
                                 ))}
                             </select>
@@ -346,7 +345,7 @@ export default function Course() {
                     <input
                         name="searchCourseField"
                         type="text"
-                        placeholder={__("Search by...","moowoodle")}
+                        placeholder={__("Search...","moowoodle")}
                         onChange={(e) => updateFilter(e.target.name, e.target.value)}
                         value={filterValue || ""}
                     />           

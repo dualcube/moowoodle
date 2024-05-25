@@ -2,7 +2,7 @@ import { __ } from '@wordpress/i18n';
 
 export default {
     id: 'log',
-    priority: 50,
+    priority: 60,
     name: __("Log", "moowoodle"),
     desc: __("Review all system logs and errors", "moowoodle"),
     icon: 'font-support',

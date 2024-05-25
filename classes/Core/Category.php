@@ -57,7 +57,7 @@ class Category {
 					$updated_ids[] = $categorie_id;
 				}
 
-				\MooWoodle\Util::increment_sync_count();
+				\MooWoodle\Util::increment_sync_count( 'course' );
 			}
 		}
 

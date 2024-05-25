@@ -80,7 +80,7 @@ class Product {
                 $updated_ids[] = $product_id;
             }
 
-			\MooWoodle\Util::increment_sync_count();
+			\MooWoodle\Util::increment_sync_count( 'course' );
 		}
 
         self::remove_exclude_ids( $updated_ids );

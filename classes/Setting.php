@@ -72,6 +72,7 @@ class Setting {
             'moowoodle_display_settings',
             'moowoodle_sso_settings',
             'moowoodle_notification_settings',
+            'moowoodle_tool_settings',
             'moowoodle_log_settings',
             'moowoodle_synchronize_course_settings',
             'moowoodle_synchronize_user_settings',

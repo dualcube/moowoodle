@@ -10,6 +10,7 @@ const ConnectButton = (props) => {
     const taskNumber = useRef(0);
     const [loading, setLoading] = useState(false);
     const [taskSequence, setTaskSequence] = useState([]);
+    const [testStatus, setTestStatus] = useState('');
 
     // Sleep for a given time.
     const sleep = (time) => {
@@ -77,6 +78,7 @@ const ConnectButton = (props) => {
 
         connectTaskStarted.current = false;
         setLoading(false);
+        setTestStatus('Success');
     }
 
     const doSequencialTask = async () => {
@@ -145,7 +147,8 @@ const ConnectButton = (props) => {
         });
 
         // If task status is not success exist from task sequence
-        if ( taskStatus === 'failed' ) {
+        if (taskStatus === 'failed') {
+            setTestStatus( 'Failed' );
             return;
         }
 
@@ -183,6 +186,10 @@ const ConnectButton = (props) => {
                     );
                 })}
             </div>
+            {
+                testStatus &&
+                <div> {testStatus} </div>
+            }
         </div>
     );
 }

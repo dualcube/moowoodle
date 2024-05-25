@@ -58,7 +58,7 @@ const DynamicForm = (props) => {
             knowladgebase_id: props.knowladgebaseId || "",
           }).then((response) => {
             // Set success messaage for 2second.
-            setSuccessMsg(response.error);
+            setSuccessMsg(response);
             setTimeout(() => setSuccessMsg(""), 2000);
     
             // If response has redirect link then redirect.
@@ -669,7 +669,9 @@ const DynamicForm = (props) => {
             value={inputField.value}
             description={inputField.desc}
             proSetting={isProSetting(inputField.proSetting)}
-            proSettingChanged={proSettingChanged}
+            proSettingChanged={() => proSettingChanged(inputField.proSetting)}
+            interval={inputField.interval}
+            statusApiLink={inputField.statusApiLink}
           />
           break;
         

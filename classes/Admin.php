@@ -118,6 +118,7 @@ class Admin {
 			'general',
 			'display',
 			'sso',
+			'tool',
 			'log',
 			'notification',
 			'synchronize-course',
