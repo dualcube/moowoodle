@@ -120,3 +120,22 @@ div.enrollment-img {
   }
 }
 }
+
+.selectable-table{
+  .admin-table-wrapper-filter{
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: .875rem;
+    gap: .5rem;
+    justify-content: flex-start;
+    margin-bottom: .75rem;
+
+    &>div{
+      cursor: pointer;
+    }
+    .type-count-active{
+      color: #522c81;
+    }
+  }
+}
