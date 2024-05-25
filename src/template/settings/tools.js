@@ -33,42 +33,41 @@ export default {
         },
         {
             key: "user_schedule_interval",
-            type: "text",
+            type: "select-custom-radio",
             desc: __("Select the interval for the user synchronization process. Based on this schedule, the cron job will run to sync users between WordPress and Moodle.", 'moowoodle'),
             label: __("Automatic synchronization frequency", 'moowoodle'),
-            // options: [
-            //     {
-            //         key: "perminute",
-            //         label: __("Per minute", 'moowoodle'),
-            //         value: "perminute",
-            //     },
-            //     {
-            //         key: "hourly",
-            //         label: __("Hourly", 'moowoodle'),
-            //         value: "hourly",
-            //     },
-            //     {
-            //         key: "six_hours",
-            //         label: __("In 6 hours", 'moowoodle'),
-            //         value: "six_hours",
-            //     },
-            //     {
-            //         key: "daily",
-            //         label: __("Daily", 'moowoodle'),
-            //         value: "daily",
-            //     },
-            //     {
-            //         key: "weekly",
-            //         label: __("Weekly", 'moowoodle'),
-            //         value: "weekly",
-            //     },
-            //     {
-            //         key: "monthly",
-            //         label: __("Monthly", 'moowoodle'),
-            //         value: "monthly",
-            //     }
-            // ],
+            options: [
+                {
+                    key: "perminute",
+                    label: __("Per minute", 'moowoodle'),
+                    value: "perminute",
+                },
+                {
+                    key: "hourly",
+                    label: __("Hourly", 'moowoodle'),
+                    value: "hourly",
+                },
+                {
+                    key: "six_hours",
+                    label: __("In 6 hours", 'moowoodle'),
+                    value: "six_hours",
+                },
+                {
+                    key: "daily",
+                    label: __("Daily", 'moowoodle'),
+                    value: "daily",
+                },
+                {
+                    key: "weekly",
+                    label: __("Weekly", 'moowoodle'),
+                    value: "weekly",
+                },
+                {
+                    key: "monthly",
+                    label: __("Monthly", 'moowoodle'),
+                    value: "monthly",
+                }
+            ],
             proSetting: true,
         },
     ]
-};
