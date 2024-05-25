@@ -49,6 +49,7 @@ const CheckboxCustomImg = (props) => {
         </div>
         {props.proSetting && <span className="admin-pro-tag">pro</span>}
       </div>
+      {props.description && (<p className="settings-metabox-description" dangerouslySetInnerHTML= {{__html: props.description}}></p>)}
     </>
   );
 };

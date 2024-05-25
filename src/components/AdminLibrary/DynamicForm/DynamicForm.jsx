@@ -750,6 +750,7 @@ const DynamicForm = (props) => {
           case "checkbox-custom-img":
             input = <CheckboxCustomImg
             proSetting={isProSetting(inputField.proSetting)}
+            description = {inputField.desc}
             value={value}
             onChange={(data) => {
               if (!proSettingChanged(inputField.proSetting)) {
