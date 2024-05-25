@@ -279,6 +279,12 @@ span.admin-pro-tag{
   }
 }
 
+.sc-lnsjTu.epZUJV{
+  svg{
+    display: none; // To prevent extra svg from dataTable
+  }
+}
+
 .rdt_Pagination{
   grid-template-columns: 6rem 1fr 8.19rem 10.08rem !important; // To overwrite default adminComponent css
 }

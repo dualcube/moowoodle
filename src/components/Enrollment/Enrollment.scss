@@ -70,7 +70,7 @@ div.enrollment-img {
 
       .selectable-table{
         .wrap-bulk-all-date{
-            max-width: 42rem !important; // To overwrite default custom table css for adjust select input width
+            max-width: 100% !important; // To overwrite default custom table css for adjust select input width
 
             & > div{
                 select {
@@ -83,18 +83,81 @@ div.enrollment-img {
 }
 
 .table-row-custom{
-    button.unenroll{
-        padding: 0.5rem 0.75rem;
-        background: #ff0000ad;
-        color: #fff;
-        border-radius: 0.25rem;
-        cursor: pointer;
+  .status-show-btn{
+    padding: 0.5rem 1rem;
+    background: #f0f0f0;
+    color: rgb(30, 30, 30);
+    width: 110px;
+    border-radius: 0.25rem;
+  }
+  .action-btn{
+    .unenroll{
+      color: #e35047;
+      cursor: pointer;
     }
-    button.enroll{
-        padding: 0.5rem 0.75rem;
-        background: #008000ad;
-        color: #fff;
-        border-radius: 0.25rem;
-        cursor: pointer;
+    .enroll{
+      color: #522c81;
+      cursor: pointer;
     }
+  }
+}
+
+.rdt_Table {
+  .rdt_TableBody {
+    .rdt_TableRow {
+      .rdt_TableCell{
+        &:nth-child(5){
+          .table-row-custom{
+            align-items: flex-start;
+            .status-section{
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              padding: 0.5rem 0;
+              gap: 0.25rem;
+
+              &:hover{
+                .action-btn{
+                  visibility: visible;
+                }
+              }
+
+              .action-btn{
+                display: flex;
+                gap: 0.5rem;
+                visibility: hidden;
+                transition: all 0.3s linear;
+                align-items: flex-start;
+                justify-content: flex-start;
+                
+                button{
+                  background: transparent;
+                  text-align: left;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.filter-wrapper{
+  .wrap-bulk-all-date {
+  .search_student_field{
+    max-width: 12.6rem;
+    margin-left: auto;
+  }
+}
+}
+
+@media only screen and (max-width: 1015px) {
+.filter-wrapper {
+  .wrap-bulk-all-date {
+    .search_student_field {
+      margin: 0;
+    }
+  }
+}
 }

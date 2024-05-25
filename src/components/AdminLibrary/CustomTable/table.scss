@@ -111,7 +111,6 @@ $color-active: #65438f;
     .admin-header-search-section{
       input{
         padding: 0.15rem 0.5rem;
-        min-height: 2.52rem;
       }
     }
   
@@ -178,6 +177,7 @@ $color-active: #65438f;
         background-color: transparent;
         width: 100%;
         outline: none;
+        height: 2.205rem !important; // To overwrite default wordpress css
         border: 0.115rem solid rgba(0, 0, 0, 0.125);
   
         &:focus{
