@@ -63,10 +63,10 @@
                     cursor: pointer;
                     display: flex;
                     align-items: center;
-                    background: #e35047;
+                    background: #e34f4720;
+                    color: #e35047;
                     justify-content: space-between;
                     border-radius: 0.25rem;
-                    color: white;
                     gap: 0.75rem;
                     transition: all 0.3s linear;
         
@@ -78,7 +78,7 @@
                         svg{
                             width: 0.693rem;
                             height: 0.693rem;
-                            fill: #fff;
+                            fill: #e35047;
                         }
                     }
                 }

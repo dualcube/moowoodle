@@ -89,56 +89,15 @@ div.enrollment-img {
     color: rgb(30, 30, 30);
     width: 110px;
     border-radius: 0.25rem;
+
+    &.unenroll{
+      background: #e34f4720;
+      color: #e35047;
+    }
   }
   .action-btn{
     .unenroll{
-      color: #e35047;
-      cursor: pointer;
-    }
-    .enroll{
-      color: #522c81;
-      cursor: pointer;
-    }
-  }
-}
-
-.rdt_Table {
-  .rdt_TableBody {
-    .rdt_TableRow {
-      .rdt_TableCell{
-        &:nth-child(5){
-          .table-row-custom{
-            align-items: flex-start;
-            .status-section{
-              display: flex;
-              flex-direction: column;
-              align-items: flex-start;
-              padding: 0.5rem 0;
-              gap: 0.25rem;
-
-              &:hover{
-                .action-btn{
-                  visibility: visible;
-                }
-              }
-
-              .action-btn{
-                display: flex;
-                gap: 0.5rem;
-                visibility: hidden;
-                transition: all 0.3s linear;
-                align-items: flex-start;
-                justify-content: flex-start;
-                
-                button{
-                  background: transparent;
-                  text-align: left;
-                }
-              }
-            }
-          }
-        }
-      }
+      color: #e35047 !important; // To overwrite default table scss
     }
   }
 }
