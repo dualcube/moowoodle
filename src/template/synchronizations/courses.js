@@ -60,6 +60,7 @@ export default {
             type: "checkbox-default",
             desc: __("", 'moowoodle'),
             label: __("Course-to-product handling", 'moowoodle'),
+            select_deselect: true,
             options: [
                 {
                     key: "create_update",

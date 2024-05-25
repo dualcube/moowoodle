@@ -78,12 +78,12 @@ const ConnectButton = (props) => {
 
         connectTaskStarted.current = false;
         setLoading(false);
-        setTestStatus('Success');
     }
 
     const doSequencialTask = async () => {
         // There is no task to display
         if (taskNumber.current >= tasks.length) {
+            setTestStatus('Test Successful');
             return;
         }
 
@@ -119,7 +119,7 @@ const ConnectButton = (props) => {
             const validCourse = response?.courses?.[1];
 
             if ( ! validCourse ) {
-                taskStatus = 'falid';
+                taskStatus = 'failed';
             } else {
                 additionalData.current['course_id'] = validCourse.id;
             }
@@ -129,7 +129,7 @@ const ConnectButton = (props) => {
             const validUser = response?.data?.users?.[0];
 
             if ( ! validUser ) {
-                taskStatus = 'falid';
+                taskStatus = 'failed';
             } else {
                 additionalData.current['user_id'] = validUser.id;
             }
@@ -185,10 +185,22 @@ const ConnectButton = (props) => {
                         <div className={`${task.status} details-status-row`}>{ task.message } {task.status !== "running" && <i className={`admin-font ${task.status === "failed" ? "font-cross" : "font-icon-yes"}`}></i>}</div>
                     );
                 })}
+            {/* {
+                testStatus &&
+                <div className={`fetch-display-output ${testStatus == 'Failed' ? 'failed': 'success' }`}> {testStatus} {testStatus == 'Failed' ? <i className="admin-font font-cross"></i> : <i className="admin-font font-icon-yes"></i> }</div>
+            } */}
             </div>
             {
                 testStatus &&
-                <div> {testStatus} </div>
+                <div className={`fetch-display-output ${testStatus === 'Failed' ? 'failed' : 'success'}`}>
+                    {testStatus === 'Failed' 
+                        ? (
+                        <p>
+                            Test connection failed. Check further details in <a className="errorlog-link" href="">error log</a>.
+                        </p>
+                        ) 
+                        : 'Test connection successful'}
+                    </div>
             }
         </div>
     );

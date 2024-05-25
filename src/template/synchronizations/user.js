@@ -24,16 +24,23 @@ export default {
         //     proSetting: true,
         // },
         {
-            key: "user_sync_direction",
-            type: "checkbox-custom-img",
-            desc: __("Initiate the <b>real-time synchronization</b> direction between your WordPress and Moodle sites.<br>When a new user is added, their profile will be synchronized between WordPress and Moodle according to the Profile Information Mapping settings.<br>For an existing user, if they update their profile and the updated data matches any criteria set in the 'Profile Information Mapping', their information will also be synchronized between WordPress and Moodle.", 'moowoodle'),
-            label: __("Site-to-site data synchronization direction", 'moowoodle'),
-            proSetting: true,
+            key: 'separator_content',
+            type: 'section',
+            label: "",
+            desc: "Automatic mode",
+            hint: "Initiate the <b>real-time synchronization</b> direction between your WordPress and Moodle sites.<br>When a new user is added, their profile will be synchronized between WordPress and Moodle according to the Profile Information Mapping settings.<br>For an existing user, if they update their profile and the updated data matches any criteria set in the 'Profile Information Mapping', their information will also be synchronized between WordPress and Moodle."
         },
         {
             key: 'separator_content',
             type: 'section',
             label: "",
+        },
+        {
+            key: "user_sync_direction",
+            type: "checkbox-custom-img",
+            desc: __("Initiate the <b>real-time synchronization</b> direction between your WordPress and Moodle sites.<br>When a new user is added, their profile will be synchronized between WordPress and Moodle according to the Profile Information Mapping settings.<br>For an existing user, if they update their profile and the updated data matches any criteria set in the 'Profile Information Mapping', their information will also be synchronized between WordPress and Moodle.", 'moowoodle'),
+            label: __("Site-to-site data synchronization direction", 'moowoodle'),
+            proSetting: true,
         },
         {
             key: "sync-user-options",
@@ -47,6 +54,7 @@ export default {
             key: 'separator_content',
             type: 'section',
             label: "",
+            desc: "Manual mode",
         },
         {
             key: "sync_user_btn",

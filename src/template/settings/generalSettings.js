@@ -26,16 +26,5 @@ export default {
             desc: __(`Refer to the ${ appLocalizer.setupguide } to complete all necessary configurations on the Moodle site, and subsequently, perform a Test Connection to verify the functionality of all services.`, 'moowoodle'),
             label: __("MooWoodle test connection", 'moowoodle'),
         },
-        {
-            key: 'separator_content',
-            type: 'section',
-            label: "",
-        },
-        {
-            key: "moodle_timeout",
-            type: "text",
-            desc: __('When WordPress sends a request to the Moodle server for data, communication delays might exceed the default server connection timeout. You can customize the timeout parameters by adjusting them here. <br>Default: 5 seconds. ', 'moowoodle'),
-            label: __("Connection timeout", 'moowoodle'),
-        },
     ]
 };
