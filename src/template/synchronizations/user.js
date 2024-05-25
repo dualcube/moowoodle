@@ -3,8 +3,8 @@ import { __ } from '@wordpress/i18n';
 export default {
     id: "synchronize-user",
     priority: 10,
-    name: __("Users", 'moowoodle'),
-    desc: __("Information management - Manual & Automatic mode", 'moowoodle'),
+    name: __("Users - Manual & Automatic mode", 'moowoodle'),
+    desc: __("Information management", 'moowoodle'),
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     proDependent: true,
