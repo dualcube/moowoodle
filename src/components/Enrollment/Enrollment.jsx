@@ -9,11 +9,13 @@ import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import './Enrollment.scss';
 import Popoup from "../PopupContent/PopupContent.jsx";
+import defaultImage from '../../assets/images/moowoodle-product-default.png';
 
 const Enrollment = () => {
 	const [courses, setCourses] = useState([]);
     const [data, setData] = useState(null);
     const [selectedRows, setSelectedRows] = useState([]);
+	const [enrollemntStatus, setEnrollemntStatus] = useState(null);
     const [totalRows, setTotalRows] = useState();
     const [openDialog, setOpenDialog] = useState(false);
     const [openDatePicker, setOpenDatePicker] = useState(false);
@@ -57,6 +59,38 @@ const Enrollment = () => {
 		});
 	}, []);
 
+	useEffect(() => {
+		if (appLocalizer.pro_active) {
+		  axios({
+			method: "post",
+			url: getApiLink('get-table-segment'),
+			headers: { "X-WP-Nonce": appLocalizer.nonce },
+		  }).then((response) => {
+			response = response.data;
+			console.log(response);
+			setTotalRows(response["all"]);
+	
+			setEnrollemntStatus([
+			  {
+				key: "all",
+				name: __("All", "moowoodle"),
+				count: response["all"],
+			  },
+			  {
+				key: "enrolled",
+				name: __("Enrolled", "moowoodle"),
+				count: response["enrolled"],
+			  },
+			  {
+				key: "unenrolled",
+				name: __("Unenrolled", "moowoodle"),
+				count: response["unenrolled"],
+			  },
+			]);
+		  });
+		}
+	}, []);
+
     const handleDateOpen = ()=>{
         setOpenDatePicker(!openDatePicker);
       }
@@ -75,7 +109,7 @@ const Enrollment = () => {
 		search_student_field = "",
 		search_student_action = "",
 		courseField = "",
-		statusField = "",
+		typeCount = "",
 		start_date = new Date(0),
 		end_date = new Date()
 	  ) {
@@ -91,7 +125,7 @@ const Enrollment = () => {
 			student: search_student_field,
 			student_action: search_student_action,
 			course: courseField,
-			status: statusField,
+			status: typeCount == 'all' ? '' : typeCount,
 			start_date: start_date,
 			end_date: end_date,
 		  },
@@ -101,13 +135,14 @@ const Enrollment = () => {
 	  }
 	
 	const requestApiForData = (rowsPerPage, currentPage, filterData = {}) => {
+		console.log(filterData)
 		requestData(
 		  rowsPerPage,
 		  currentPage,
 		  filterData?.search_student_field,
 		  filterData?.search_student_action,
 		  filterData?.courseField,
-		  filterData?.statusField,
+		  filterData?.typeCount,
 		  filterData?.date?.start_date,
 		  filterData?.date?.end_date,
 		);
@@ -232,11 +267,11 @@ const Enrollment = () => {
 		name: __("Course", "moowoodle"),
 		cell: (row) => 
 		<TableCell title="course_name" >
-			<img src="" alt="" />
+			<img src={row.course_img || defaultImage} alt="" />
 			<div className="action-section">
 				<p>{ row.course_name }</p>
 				<div className='action-btn'>
-					<button className="">Edit link product</button>
+					<a target='_blank' href={row.course_url} className="">Edit link product</a>
 				</div>
 			</div>
 		</TableCell>,
@@ -245,11 +280,11 @@ const Enrollment = () => {
 		name: __("Student", "moowoodle"),
 		cell: (row) =>
 		<TableCell title="student_name">
-			<img src="" alt="" />
+			{<span dangerouslySetInnerHTML={{ __html: row.customer_img }}></span> || <img src={defaultImage} alt="" />}
 			<div className="action-section">
 				<p>{row.customer_name}</p>
 				<div className='action-btn'>
-					<button className="">Edit user</button>
+					<a target='_blank' href={row.customer_url} className="">Edit user</a>
 				</div>
 			</div>
 		</TableCell>,
@@ -339,6 +374,7 @@ const Enrollment = () => {
                 defaultTotalRows={totalRows}
                 perPageOption={[10, 25, 50]}
                 realtimeFilter={realtimeFilter}
+				typeCounts={enrollemntStatus}
               />
             }
           </div>
