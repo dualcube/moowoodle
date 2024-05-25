@@ -106,7 +106,7 @@ const SyncNow = (props) => {
           
         </div>
 
-        <p className="btn-description">{description}</p>
+        <p className="btn-description" dangerouslySetInnerHTML={{__html: description}}></p>
         {
             proSetting && <span className="admin-pro-tag">pro</span>
         }

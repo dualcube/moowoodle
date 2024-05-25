@@ -90,7 +90,7 @@ export default {
             statusApiLink: 'sync-status-course',
             // label: __("Manual synchronization mode", 'moowoodle'),
             value: "Synchronize courses now!",
-            desc: "Initiate the immediate synchronization of all courses from Moodle to WordPress."
+            desc: "Initiate the immediate synchronization of all courses from Moodle to WordPress.<br><span class='highlighted-part'>With the <b>'Course-to-Product Handling'</b> option, you have the ability to specify whether you want to create new products, update existing ones, or perform both actions.<br>Furthermore, through the <b>'Course Information Mapping'</b> feature, you gain the flexibility to define which specific course data gets imported from Moodle. By default we will fetch only the category of the product.</span>"
         },
     ]
 };
