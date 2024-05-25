@@ -232,7 +232,13 @@ const Enrollment = () => {
 		name: __("Course", "moowoodle"),
 		cell: (row) => 
 		<TableCell title="course_name" >
-			<p>{ row.course_name }</p> 
+			<img src="" alt="" />
+			<div className="action-section">
+				<p>{ row.course_name }</p>
+				<div className='action-btn'>
+					<button className="">Edit link product</button>
+				</div>
+			</div>
 		</TableCell>,
 	},
 	{
@@ -240,7 +246,12 @@ const Enrollment = () => {
 		cell: (row) =>
 		<TableCell title="student_name">
 			<img src="" alt="" />
-			<p>{row.customer_name}</p>
+			<div className="action-section">
+				<p>{row.customer_name}</p>
+				<div className='action-btn'>
+					<button className="">Edit user</button>
+				</div>
+			</div>
 		</TableCell>,
 	},
 	{
@@ -251,8 +262,8 @@ const Enrollment = () => {
 		name: __("Status", "moowoodle"),
 		cell: (row) => (
 		  <TableCell title="Status">
-			<div className='status-section'>
-				<button className={`status-show-btn ${row.status === 'enrolled' ? 'unenroll' : 'enroll'}`}	>
+			<div className='action-section'>
+				<button className={`status-show-btn ${row.status === 'enrolled' ? 'enroll' : 'unenroll'}`}	>
 				{row.status === 'enrolled' ? 'Enrolled' : 'Unenrolled'}
 				</button>
 				<div className='action-btn'>
