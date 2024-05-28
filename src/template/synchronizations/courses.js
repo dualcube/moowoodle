@@ -5,7 +5,7 @@ export default {
     priority: 20,
     name: __("Courses and Products - Manual mode.", 'moowoodle'),
     desc: __("Fetch Moodle courses & generate products.", 'moowoodle'),
-    icon: "font-mail",
+    icon: "font-menu_book",
     submitUrl: "save-moowoodle-setting",
     modal: [
         // {
@@ -30,20 +30,20 @@ export default {
             options: [
                 {
                     key: "sync_courses",
-                    label: __( 'Course categories', 'moowoodle' ),
+                    label: __('Course categories', 'moowoodle'),
                     hints: __("This function will retrieve all Moodle course data and synchronize it with the courses listed in WordPress.", 'moowoodle'),
                     value: "sync_courses",
                 },
                 {
                     key: "sync_courses_category",
-                    label: __( 'Course SKU', 'moowoodle' ),
+                    label: __('Course SKU', 'moowoodle'),
                     hints: __("This feature will scan the entire Moodle course category structure and synchronize it with the WordPress category listings.", 'moowoodle'),
-                    value: "sync_courses_category",                    
+                    value: "sync_courses_category",
                     proSetting: true,
                 },
                 {
                     key: "sync_image",
-                    label: __( 'Course images', 'moowoodle' ),
+                    label: __('Course images', 'moowoodle'),
                     hints: __("This function copies course images and sets them as WooCommerce product images.", 'moowoodle'),
                     value: "sync_image",
                     proSetting: true,
