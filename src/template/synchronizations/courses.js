@@ -8,19 +8,6 @@ export default {
     icon: "font-mail",
     submitUrl: "save-moowoodle-setting",
     modal: [
-        // {
-        //     key: "course_sync_direction",
-        //     type: "checkbox",
-        //     desc: __(`<p class="highlighted-part">This functionality allows you to fetche  Moodle courses with it's product in WordPress.</p> <p class="highlighted-part">With the '<b>Course-to-Product Handling</b>' option, you have the ability to specify whether you want to create new products, update existing ones, or perform both actions.</p> <p class="highlighted-part">Furthermore, through the '<b>Course Information Mapping</b> feature, you gain the flexibility to define which specific course data gets imported from Moodle. By default we will fetch only the category of the product.</p>`, 'moowoodle'),
-        //     label: __("Initiate synchronization", 'moowoodle'),
-        //     options: [
-        //         {
-        //             key: "moodle_to_wordpress",
-        //             label: __('', 'moowoodle'),
-        //             value: "moodle_to_wordpress",
-        //         }
-        //     ],
-        // },
         {
             key: "sync-course-options",
             type: "checkbox-default",

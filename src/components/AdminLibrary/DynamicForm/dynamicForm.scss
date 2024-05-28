@@ -112,17 +112,6 @@ $color-active: #65438f;
             background: $body-background;
           }
         }
-        .setting-form-input{
-          position: relative;
-
-          .parameter{
-            position: absolute;
-            top: .35rem;
-            right: 5px;
-            border-left: 1px solid rgba(0, 0, 0, 0.45);
-            padding: 0 0.75rem;
-          }
-        }
         .settings-metabox-description {
           margin-top: 0.625rem;
           font-style: italic;

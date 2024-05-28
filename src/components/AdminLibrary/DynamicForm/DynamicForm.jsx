@@ -236,7 +236,6 @@ const DynamicForm = (props) => {
                   handleChange(e, inputField.key);
                 }
               }}
-              parameter={inputField.parameter}
             />
           );
           break;
