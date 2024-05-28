@@ -9,20 +9,6 @@ export default {
     submitUrl: "save-moowoodle-setting",
     proDependent: true,
     modal: [
-        // {
-        //     key: "update_moodle_user",
-        //     type: "checkbox",
-        //     desc: __('Enableing this will start the synchornization between WordPress and Moodle sites at specified intervals (Default: daily). <br>Select the "Site-to-site data synchronization direction" to set the synchronization direction and use "<b>Automatic synchronization frequency</b>" to define how frequentl the synchronization process runs.', 'moowoodle'),
-        //     label: __("Initiate synchronization", 'moowoodle'),
-        //     options: [
-        //         {
-        //             key: "update_moodle_user",
-        //             label:  __('', 'moowoodle'), 
-        //             value: "update_moodle_user"
-        //         }
-        //     ],
-        //     proSetting: true,
-        // },
         {
             key: 'separator_content',
             type: 'section',
@@ -43,7 +29,37 @@ export default {
             proSetting: true,
         },
         {
-            key: "sync-user-options",
+            key: "wordpress_user_role",
+            type: "checkbox-default",
+            desc: __("Select WordPress user roll for sync", 'moowoodle'),
+            label: __("Wordpress user role", 'moowoodle'),
+            options: Object.entries(appLocalizer.wp_user_roles).map(( [key, name ] ) => {
+                return {
+                    key: key,
+                    label: name,
+                    value: key
+                }
+            }),
+            select_deselect: true,
+            proSetting: true,
+        },
+        {
+            key: "moodle_user_role",
+            type: "checkbox-default",
+            desc: __("Select Moodle user roll for sync", 'moowoodle'),
+            label: __("Moodle user role", 'moowoodle'),
+            options: Object.entries(appLocalizer.md_user_roles).map(( [key, name ] ) => {
+                return {
+                    key: key,
+                    label: name,
+                    value: key
+                }
+            }),
+            select_deselect: true,
+            proSetting: true,
+        },
+        {
+            key: "user_sync_options",
             type: "sync_map",
             desc: __("Define the user profile information mapping between WordPress and Moodle. Add multiple rows above to define all the profile data you wish to map. Any remaining profile field will be excluded from the synchronization process.<br>User will be created based on their e-mail id, hence email id can't be mapped.", 'moowoodle'),
             label: __("Profile information mapping", 'moowoodle'),
@@ -59,10 +75,9 @@ export default {
         {
             key: "sync_user_btn",
             type: "syncbutton",
-            interval: 60000,
+            interval: 10000,
             apilink: 'realtime-sync-users',
             statusApiLink: 'sync-status-user',
-            // label: __("Manual synchronization mode", 'moowoodle'),
             value: "Synchronize all existing user profile now!! ",
             desc: __("This will synchronize all existing user accounts between WordPress and Moodle instantly according to the selected ‘Site-to-site data synchronization direction’. <br> <span class='highlighted-part'>While synchronizing user information, we use the email address as the unique identifier for each user. We check the username associated with that email address, and if we find the same username in the other instance but with a different email address, the user's information cannot be synchronized.</span>", 'moowoodle'),
             proSetting: true,
