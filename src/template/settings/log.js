@@ -5,7 +5,7 @@ export default {
     priority: 60,
     name: __("Log", "moowoodle"),
     desc: __("Review all system logs and errors", "moowoodle"),
-    icon: 'font-support',
+    icon: 'font-credit_card',
     submitUrl: "save-moowoodle-setting",
     modal: [
         {

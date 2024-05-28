@@ -28,7 +28,7 @@ export default function Course() {
             method: "get",
             url: getApiLink('all-courses'),
         }).then((response) => {
-                                                                                                                                                                                                setCourses(response.data.courses);
+            setCourses(response.data.courses);
             setProducts(response.data.products);
             setCategory(response.data.category);
             setShortName(response.data.shortname);
@@ -47,7 +47,7 @@ export default function Course() {
         productField = '',
         catagoryField = '',
         searchAction = '',
-        searchCourseField =''
+        searchCourseField = ''
     ) {
         //Fetch the data to show in the table
         axios({
@@ -178,10 +178,10 @@ export default function Course() {
                         Object.keys(row.products).length ? (
                             Object.entries(row.products).map(([name, url], index) => {
                                 return (
-                                <>
-                                    <img src={ row.productimage || defaultImage }/>
-                                    <a key={index} href={url}> {name} </a>
-                                </>
+                                    <>
+                                        <img src={row.productimage || defaultImage} />
+                                        <a key={index} href={url}> {name} </a>
+                                    </>
                                 )
                             })
                         ) : (
@@ -207,7 +207,7 @@ export default function Course() {
             name: __('Short Name', 'moowoodle'),
             selector: row => row.course_short_name,
             cell: (row) => (
-                <TableCell>
+                <TableCell title={row.course_short_name}>
                     {row.course_short_name}
                 </TableCell>
             ),
@@ -340,17 +340,17 @@ export default function Course() {
         {
             name: "searchCourseField",
             render: (updateFilter, filterValue) => (
-              <>
-                <div className="admin-header-search-section searchCourseField">
-                    <input
-                        name="searchCourseField"
-                        type="text"
-                        placeholder={__("Search...","moowoodle")}
-                        onChange={(e) => updateFilter(e.target.name, e.target.value)}
-                        value={filterValue || ""}
-                    />           
-                </div>
-              </>
+                <>
+                    <div className="admin-header-search-section searchCourseField">
+                        <input
+                            name="searchCourseField"
+                            type="text"
+                            placeholder={__("Search...", "moowoodle")}
+                            onChange={(e) => updateFilter(e.target.name, e.target.value)}
+                            value={filterValue || ""}
+                        />
+                    </div>
+                </>
             ),
         },
         {
@@ -401,7 +401,7 @@ export default function Course() {
                     <div className="admin-page-title">
                         <p>{__("All Courses", "moowoodle")}</p>
                     </div>
-                   
+
                     <div className="admin-table-wrapper">
                         {
                             <CustomTable

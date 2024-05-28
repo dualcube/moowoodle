@@ -5,7 +5,7 @@ export default {
     priority: 20,
     name: __("Shop Central", 'moowoodle'),
     desc: __("Efficient course information handling for customers.", 'moowoodle'),
-    icon: "font-mail",
+    icon: "font-shopping_cart",
     submitUrl: "save-moowoodle-setting",
     modal: [
         {
@@ -16,7 +16,7 @@ export default {
             options: [
                 {
                     key: "start_end_date",
-                    label:  __('', 'moowoodle'), 
+                    label: __('', 'moowoodle'),
                     value: "start_end_date"
                 }
             ]
@@ -26,7 +26,7 @@ export default {
             type: "select",
             desc: __("'<b>My Course</b>' menu will appear beneath the selected menu on the WooCommerce 'My Account' page of customer dashboard.", 'moowoodle'),
             label: __("Endpoint menu position - My Course", 'moowoodle'),
-            options: Object.entries(appLocalizer.accountmenu).map(( [key, name ], index) => {
+            options: Object.entries(appLocalizer.accountmenu).map(([key, name], index) => {
                 return {
                     key: index,
                     label: name,
