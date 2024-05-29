@@ -271,7 +271,7 @@ const Enrollment = () => {
 			<div className="action-section">
 				<p>{ row.course_name }</p>
 				<div className='action-btn'>
-					<a target='_blank' href={row.course_url} className="">Edit link product</a>
+					<a target='_blank' href={row.course_url} className="">View product</a>
 				</div>
 			</div>
 		</TableCell>,
@@ -302,7 +302,7 @@ const Enrollment = () => {
 				{row.status === 'enrolled' ? 'Enrolled' : 'Unenrolled'}
 				</button>
 				<div className='action-btn'>
-					<button className={row.status === 'enrolled' ? 'unenroll' : 'enroll'} onClick={() => handleButtonClick(row)}>{row.status === 'enrolled' ? 'Unenroll Now' : 'Enroll Now'}</button>
+					<button className={row.status === 'enrolled' ? 'unenroll' : 'enroll'} onClick={() => handleButtonClick(row)}>{row.status === 'enrolled' ? 'Unenroll from course' : 'Enroll Now'}</button>
 				</div>
 			</div>
 		  </TableCell>

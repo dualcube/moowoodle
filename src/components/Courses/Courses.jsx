@@ -170,7 +170,7 @@ export default function Course() {
     //columns for the data table
     const columns = [
         {
-            name: __('Product Name', 'moowoodle'),
+            name: __('Product', 'moowoodle'),
             selector: row => row.products,
             cell: (row) => (
                 <TableCell title={'Product Name'}>
@@ -192,7 +192,7 @@ export default function Course() {
             ),
         },
         {
-            name: __('Course Name', 'moowoodle'),
+            name: __('Course', 'moowoodle'),
             selector: row => row.course_name,
             cell: (row) => (
                 <TableCell>
@@ -214,7 +214,7 @@ export default function Course() {
             sortable: true,
         },
         {
-            name: __('Category Name', 'moowoodle'),
+            name: __('Category', 'moowoodle'),
             selector: row => row.category_name,
             cell: (row) => (
                 <TableCell title={'Category Name'}>
@@ -226,7 +226,7 @@ export default function Course() {
             sortable: true,
         },
         {
-            name: __('Course Duration', 'moowoodle'),
+            name: __('Duration', 'moowoodle'),
             cell: (row) => (
                 <TableCell title={'Date'}>
                     {row.date}
@@ -280,7 +280,7 @@ export default function Course() {
                                 onClick={(e) => {
                                     handleSingleAction(
                                         'create_product',
-                                        row.id,
+                                        row.id, 
                                         row.moodle_course_id,
                                     )
                                 }}
