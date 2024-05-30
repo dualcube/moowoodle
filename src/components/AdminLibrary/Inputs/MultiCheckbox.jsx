@@ -35,7 +35,7 @@ const MultiCheckBox = (props) => {
                                         value={option.value}
                                         checked={checked}
                                         onChange={(e) => {
-                                            if (option.proSetting) {
+                                            if (option.proSetting && !appLocalizer.pro_active) {
                                                 return props.proChanged();
                                             }
                                             props.onChange?.(e)
@@ -57,7 +57,7 @@ const MultiCheckBox = (props) => {
                                     </span>
                                 }
                                 {
-                                    option.proSetting && <span className="admin-pro-tag">pro</span>
+                                    (option.proSetting && !appLocalizer.pro_active) && <span className="admin-pro-tag">pro</span>
                                 }
                             </div>
                         );
