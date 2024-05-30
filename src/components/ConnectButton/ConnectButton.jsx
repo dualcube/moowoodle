@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { sendApiResponse, getApiLink } from "../../services/apiService";
 import './ConnectButton.scss';
+import { Link } from "react-router-dom";
 
 const ConnectButton = (props) => {
     const { __ } = wp.i18n;
@@ -20,7 +21,7 @@ const ConnectButton = (props) => {
             }, time)
         });
     }
-    
+
     // Sequence task
     const tasks = [
         {
@@ -62,13 +63,13 @@ const ConnectButton = (props) => {
             'message': __('User Remove', 'moowoodle'),
         }
     ];
-    
+
     const startConnectionTask = async () => {
         // Connection task is already running
-        if ( connectTaskStarted.current ) {
+        if (connectTaskStarted.current) {
             return;
         }
-        
+
         connectTaskStarted.current = true;
         setLoading(true);
 
@@ -87,16 +88,16 @@ const ConnectButton = (props) => {
             return;
         }
 
-        const currentTask = tasks[ taskNumber.current ];
-        
+        const currentTask = tasks[taskNumber.current];
+
         // Set the task sequence to current task.
         setTaskSequence((taskes) => {
             return [
                 ...taskes,
                 {
-                    name    : currentTask.action,
-                    message : currentTask.message,
-                    status  : 'running',
+                    name: currentTask.action,
+                    message: currentTask.message,
+                    status: 'running',
                 }
             ];
         });
@@ -115,10 +116,10 @@ const ConnectButton = (props) => {
         let taskStatus = 'success';
 
         // Collect course id
-        if ( currentTask.cache === 'course_id' ) {
+        if (currentTask.cache === 'course_id') {
             const validCourse = response?.courses?.[1];
 
-            if ( ! validCourse ) {
+            if (!validCourse) {
                 taskStatus = 'failed';
             } else {
                 additionalData.current['course_id'] = validCourse.id;
@@ -128,41 +129,41 @@ const ConnectButton = (props) => {
         else if (currentTask.cache === 'user_id') {
             const validUser = response?.data?.users?.[0];
 
-            if ( ! validUser ) {
+            if (!validUser) {
                 taskStatus = 'failed';
             } else {
                 additionalData.current['user_id'] = validUser.id;
             }
         }
         // Check where it is a success of failure
-        else if ( ! response.success ) {
+        else if (!response.success) {
             taskStatus = 'failed';
         }
-        
+
         // Update task status
         setTaskSequence((tasks) => {
             const updatedTask = [...tasks];
-            updatedTask[ updatedTask.length - 1 ][ 'status' ] = taskStatus;
+            updatedTask[updatedTask.length - 1]['status'] = taskStatus;
             return updatedTask;
         });
 
         // If task status is not success exist from task sequence
         if (taskStatus === 'failed') {
-            setTestStatus( 'Failed' );
+            setTestStatus('Failed');
             return;
         }
 
         taskNumber.current++;
-        
+
         // Call next task recursively
         await doSequencialTask();
     }
-    
+
     return (
         <div className="connection-test-wrapper">
             <div className="section-connection-test">
-                <button 
-                // className="disable"
+                <button
+                    // className="disable"
                     onClick={(e) => {
                         e.preventDefault();
                         startConnectionTask();
@@ -182,10 +183,10 @@ const ConnectButton = (props) => {
             <div className="fetch-details-wrapper">
                 {taskSequence.map((task) => {
                     return (
-                        <div className={`${task.status} details-status-row`}>{ task.message } {task.status !== "running" && <i className={`admin-font ${task.status === "failed" ? "font-cross" : "font-icon-yes"}`}></i>}</div>
+                        <div className={`${task.status} details-status-row`}>{task.message} {task.status !== "running" && <i className={`admin-font ${task.status === "failed" ? "font-cross" : "font-icon-yes"}`}></i>}</div>
                     );
                 })}
-            {/* {
+                {/* {
                 testStatus &&
                 <div className={`fetch-display-output ${testStatus == 'Failed' ? 'failed': 'success' }`}> {testStatus} {testStatus == 'Failed' ? <i className="admin-font font-cross"></i> : <i className="admin-font font-icon-yes"></i> }</div>
             } */}
@@ -193,14 +194,14 @@ const ConnectButton = (props) => {
             {
                 testStatus &&
                 <div className={`fetch-display-output ${testStatus === 'Failed' ? 'failed' : 'success'}`}>
-                    {testStatus === 'Failed' 
+                    {testStatus === 'Failed'
                         ? (
-                        <p>
-                            Test connection failed. Check further details in <a className="errorlog-link" href="">error log</a>.
-                        </p>
-                        ) 
+                            <p>
+                                Test connection failed. Check further details in <Link className="errorlog-link" to={'?page=moowoodle#&tab=settings&sub-tab=log'}>error log</Link>.
+                            </p>
+                        )
                         : 'Test connection successful'}
-                    </div>
+                </div>
             }
         </div>
     );

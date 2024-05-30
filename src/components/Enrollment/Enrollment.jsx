@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { __ } from "@wordpress/i18n";
-import CustomTable, {TableCell} from "../AdminLibrary/CustomTable/CustomTable";
+import CustomTable, { TableCell } from "../AdminLibrary/CustomTable/CustomTable";
 import { getApiLink } from "../../services/apiService";
 import axios from 'axios';
 import Dialog from "@mui/material/Dialog";
@@ -13,18 +13,18 @@ import defaultImage from '../../assets/images/moowoodle-product-default.png';
 
 const Enrollment = () => {
 	const [courses, setCourses] = useState([]);
-    const [data, setData] = useState(null);
-    const [selectedRows, setSelectedRows] = useState([]);
+	const [data, setData] = useState(null);
+	const [selectedRows, setSelectedRows] = useState([]);
 	const [enrollemntStatus, setEnrollemntStatus] = useState(null);
-    const [totalRows, setTotalRows] = useState();
-    const [openDialog, setOpenDialog] = useState(false);
-    const [openDatePicker, setOpenDatePicker] = useState(false);
+	const [totalRows, setTotalRows] = useState();
+	const [openDialog, setOpenDialog] = useState(false);
+	const [openDatePicker, setOpenDatePicker] = useState(false);
 	const dateRef = useRef();
 
 	useEffect(() => {
 		document.body.addEventListener("click", (event) => {
-			if (! dateRef?.current?.contains(event.target) ) {
-			  setOpenDatePicker(false);
+			if (!dateRef?.current?.contains(event.target)) {
+				setOpenDatePicker(false);
 			}
 		})
 	}, [])
@@ -33,10 +33,10 @@ const Enrollment = () => {
 		if (appLocalizer.pro_active) {
 			axios({
 				method: "post",
-				url:  getApiLink('get-enrollments'),
+				url: getApiLink('get-enrollments'),
 				headers: { "X-WP-Nonce": appLocalizer.nonce },
 				data: {
-					counts : true
+					counts: true
 				},
 			}).then((response) => {
 				setTotalRows(response.data);
@@ -46,7 +46,7 @@ const Enrollment = () => {
 
 	useEffect(() => {
 		if (appLocalizer.pro_active) {
-		  requestData();
+			requestData();
 		}
 	}, []);
 
@@ -61,47 +61,47 @@ const Enrollment = () => {
 
 	useEffect(() => {
 		if (appLocalizer.pro_active) {
-		  axios({
-			method: "post",
-			url: getApiLink('get-table-segment'),
-			headers: { "X-WP-Nonce": appLocalizer.nonce },
-		  }).then((response) => {
-			response = response.data;
-			console.log(response);
-			setTotalRows(response["all"]);
-	
-			setEnrollemntStatus([
-			  {
-				key: "all",
-				name: __("All", "moowoodle"),
-				count: response["all"],
-			  },
-			  {
-				key: "enrolled",
-				name: __("Enrolled", "moowoodle"),
-				count: response["enrolled"],
-			  },
-			  {
-				key: "unenrolled",
-				name: __("Unenrolled", "moowoodle"),
-				count: response["unenrolled"],
-			  },
-			]);
-		  });
+			axios({
+				method: "post",
+				url: getApiLink('get-table-segment'),
+				headers: { "X-WP-Nonce": appLocalizer.nonce },
+			}).then((response) => {
+				response = response.data;
+				console.log(response);
+				setTotalRows(response["all"]);
+
+				setEnrollemntStatus([
+					{
+						key: "all",
+						name: __("All", "moowoodle"),
+						count: response["all"],
+					},
+					{
+						key: "enrolled",
+						name: __("Enrolled", "moowoodle"),
+						count: response["enrolled"],
+					},
+					{
+						key: "unenrolled",
+						name: __("Unenrolled", "moowoodle"),
+						count: response["unenrolled"],
+					},
+				]);
+			});
 		}
 	}, []);
 
-    const handleDateOpen = ()=>{
-        setOpenDatePicker(!openDatePicker);
-      }
-    
-    const [selectedRange, setSelectedRange] = useState([
-    {
-        startDate: new Date(),
-        endDate: new Date(),
-        key: 'selection'
-    }
-    ]);
+	const handleDateOpen = () => {
+		setOpenDatePicker(!openDatePicker);
+	}
+
+	const [selectedRange, setSelectedRange] = useState([
+		{
+			startDate: new Date(),
+			endDate: new Date(),
+			key: 'selection'
+		}
+	]);
 
 	function requestData(
 		rowsPerPage = 10,
@@ -112,39 +112,39 @@ const Enrollment = () => {
 		typeCount = "",
 		start_date = new Date(0),
 		end_date = new Date()
-	  ) {
+	) {
 
 		//Fetch the data to show in the table
 		axios({
-		  method: "post",
-		  url:  getApiLink('get-enrollments'),
-		  headers: { "X-WP-Nonce": appLocalizer.nonce },
-		  data: {
-			page: currentPage,
-			row: rowsPerPage,
-			student: search_student_field,
-			student_action: search_student_action,
-			course: courseField,
-			status: typeCount == 'all' ? '' : typeCount,
-			start_date: start_date,
-			end_date: end_date,
-		  },
+			method: "post",
+			url: getApiLink('get-enrollments'),
+			headers: { "X-WP-Nonce": appLocalizer.nonce },
+			data: {
+				page: currentPage,
+				row: rowsPerPage,
+				student: search_student_field,
+				student_action: search_student_action,
+				course: courseField,
+				status: typeCount == 'all' ? '' : typeCount,
+				start_date: start_date,
+				end_date: end_date,
+			},
 		}).then((response) => {
-		  	setData(response.data);
+			setData(response.data);
 		});
-	  }
-	
+	}
+
 	const requestApiForData = (rowsPerPage, currentPage, filterData = {}) => {
 		console.log(filterData)
 		requestData(
-		  rowsPerPage,
-		  currentPage,
-		  filterData?.search_student_field,
-		  filterData?.search_student_action,
-		  filterData?.courseField,
-		  filterData?.typeCount,
-		  filterData?.date?.start_date,
-		  filterData?.date?.end_date,
+			rowsPerPage,
+			currentPage,
+			filterData?.search_student_field,
+			filterData?.search_student_action,
+			filterData?.courseField,
+			filterData?.typeCount,
+			filterData?.date?.start_date,
+			filterData?.date?.end_date,
 		);
 	};
 
@@ -152,235 +152,215 @@ const Enrollment = () => {
 		{
 			name: "courseField",
 			render: (updateFilter, filterValue) => {
-			return (
-			<>
-				<div className="admin-header-search-section">
-				<select
-					name="courseField"
-					onChange={(e) => updateFilter(e.target.name, e.target.value)}
-					value={filterValue || ""}
-				>
-					<option value="">Courses</option>
-					{Object.entries(courses).map(([courseId, courseName]) => (
-						<option value={courseId}>{courseName}</option>
-					))}
-				</select>
-				</div>
-			</>
-			);
+				return (
+					<>
+						<div className="admin-header-search-section">
+							<select
+								name="courseField"
+								onChange={(e) => updateFilter(e.target.name, e.target.value)}
+								value={filterValue || ""}
+							>
+								<option value="">Courses</option>
+								{Object.entries(courses).map(([courseId, courseName]) => (
+									<option value={courseId}>{courseName}</option>
+								))}
+							</select>
+						</div>
+					</>
+				);
 			},
 		},
-
 		{
-		  name: "statusField",
-		  render: (updateFilter, filterValue) => (
-			<>
-			  <div className="admin-header-search-section">
-			  <select 
-					name="statusField"
-					placeholder={__("All Statuses", "moowoodle")}
-					onChange={(e) => updateFilter(e.target.name, e.target.value)}
-					value={filterValue || ""}
-					>
-					<option value="">All statuses</option>
-					<option value="enrolled">Enroll</option>
-					<option value="unenrolled">Unenroll</option>
-            	</select>
-			  </div>
-			</>
-		  ),
-		},
-		{
-		  name: "date",
-		  render: (updateFilter, value) => (
-			<div ref={dateRef}>
-			  <div className="admin-header-search-section">
-				<input value={`${selectedRange[0].startDate.toLocaleDateString()} - ${selectedRange[0].endDate.toLocaleDateString()}`} onClick={()=>handleDateOpen()} className="date-picker-input-custom" type="text" placeholder={__("DD/MM/YYYY", "moowoodle")} />
-			  </div>
-			  {openDatePicker &&
-			   <div className="date-picker-section-wrapper">
-				<DateRangePicker
-				  ranges={selectedRange}
-				  months={1}
-				  direction="vertical"
-				  scroll={{ enabled: true }}
-				  maxDate={ new Date() }
-				  shouldDisableDate={date => isAfter(date, new Date())}
-				  onChange={(dates) => {
-					if (dates.selection) {
-					  dates = dates.selection;
-					  dates.endDate?.setHours(23, 59, 59, 999)
-					  setSelectedRange([dates])
-					  updateFilter("date", {
-						start_date: dates.startDate,
-						end_date: dates.endDate,
-					  });
+			name: "date",
+			render: (updateFilter, value) => (
+				<div ref={dateRef}>
+					<div className="admin-header-search-section">
+						<input value={`${selectedRange[0].startDate.toLocaleDateString()} - ${selectedRange[0].endDate.toLocaleDateString()}`} onClick={() => handleDateOpen()} className="date-picker-input-custom" type="text" placeholder={__("DD/MM/YYYY", "moowoodle")} />
+					</div>
+					{openDatePicker &&
+						<div className="date-picker-section-wrapper">
+							<DateRangePicker
+								ranges={selectedRange}
+								months={1}
+								direction="vertical"
+								scroll={{ enabled: true }}
+								maxDate={new Date()}
+								shouldDisableDate={date => isAfter(date, new Date())}
+								onChange={(dates) => {
+									if (dates.selection) {
+										dates = dates.selection;
+										dates.endDate?.setHours(23, 59, 59, 999)
+										setSelectedRange([dates])
+										updateFilter("date", {
+											start_date: dates.startDate,
+											end_date: dates.endDate,
+										});
+									}
+								}}
+							/>
+						</div>
 					}
-				  }}
-				/>
 				</div>
-			  }
-			</div>
-		  ),
+			),
 		},
 		{
-            name: "search_student_field",
-            render: (updateFilter, filterValue) => (
-              <>
-                <div className="admin-header-search-section search_student_field">
-                    <input
-                        name="search_student_field"
-                        type="text"
-                        placeholder={__("Search...","moowoodle")}
-                        onChange={(e) => updateFilter(e.target.name, e.target.value)}
-                        value={filterValue || ""}
-                    />           
-                </div>
-              </>
-            ),
-        },
-        {
-            name: "search_student_action",
-            render: (updateFilter, filterValue) => {
-                return (
-                    <>
-                        <div className="admin-header-search-section search_student_action">
-                            <select
-                                name="search_student_action"
-                                onChange={(e) => updateFilter(e.target.name, e.target.value)}
-                                value={filterValue || ""}
-                            >
-                                <option value="" >--Select--</option>
-                                <option value="name" >Name</option>
-                                <option value="email">Email</option>
-                            </select>
-                        </div>
-                    </>
-                );
-            },
-        }
-	  ];
-	
+			name: "search_student_field",
+			render: (updateFilter, filterValue) => (
+				<>
+					<div className="admin-header-search-section search_student_field">
+						<input
+							name="search_student_field"
+							type="text"
+							placeholder={__("Search...", "moowoodle")}
+							onChange={(e) => updateFilter(e.target.name, e.target.value)}
+							value={filterValue || ""}
+						/>
+					</div>
+				</>
+			),
+		},
+		{
+			name: "search_student_action",
+			render: (updateFilter, filterValue) => {
+				return (
+					<>
+						<div className="admin-header-search-section search_student_action">
+							<select
+								name="search_student_action"
+								onChange={(e) => updateFilter(e.target.name, e.target.value)}
+								value={filterValue || ""}
+							>
+								<option value="" >--Select--</option>
+								<option value="name" >Name</option>
+								<option value="email">Email</option>
+							</select>
+						</div>
+					</>
+				);
+			},
+		}
+	];
+
 	//columns for the data table
 	const columns = [
-	{
-		name: __("Course", "moowoodle"),
-		cell: (row) => 
-		<TableCell title="course_name" >
-			<img src={row.course_img || defaultImage} alt="" />
-			<div className="action-section">
-				<p>{ row.course_name }</p>
-				<div className='action-btn'>
-					<a target='_blank' href={row.course_url} className="">Edit link product</a>
-				</div>
-			</div>
-		</TableCell>,
-	},
-	{
-		name: __("Student", "moowoodle"),
-		cell: (row) =>
-		<TableCell title="student_name">
-			{<span dangerouslySetInnerHTML={{ __html: row.customer_img }}></span> || <img src={defaultImage} alt="" />}
-			<div className="action-section">
-				<p>{row.customer_name}</p>
-				<div className='action-btn'>
-					<a target='_blank' href={row.customer_url} className="">Edit user</a>
-				</div>
-			</div>
-		</TableCell>,
-	},
-	{
-		name: __("Enrollment Date", "moowoodle"),
-		cell: (row) => <TableCell title="Date" > {row.date} </TableCell>,
-	},
-	{
-		name: __("Status", "moowoodle"),
-		cell: (row) => (
-		  <TableCell title="Status">
-			<div className='action-section'>
-				<button className={`status-show-btn ${row.status === 'enrolled' ? 'enroll' : 'unenroll'}`}	>
-				{row.status === 'enrolled' ? 'Enrolled' : 'Unenrolled'}
-				</button>
-				<div className='action-btn'>
-					<button className={row.status === 'enrolled' ? 'unenroll' : 'enroll'} onClick={() => handleButtonClick(row)}>{row.status === 'enrolled' ? 'Unenroll Now' : 'Enroll Now'}</button>
-				</div>
-			</div>
-		  </TableCell>
-		),
-	  }	  
-	  
+		{
+			name: __("Course", "moowoodle"),
+			cell: (row) =>
+				<TableCell title="course_name" >
+					<img src={row.course_img || defaultImage} alt="" />
+					<div className="action-section">
+						<p>{row.course_name}</p>
+						<div className='action-btn'>
+							<a target='_blank' href={row.course_url} className="">Edit link product</a>
+						</div>
+					</div>
+				</TableCell>,
+		},
+		{
+			name: __("Student", "moowoodle"),
+			cell: (row) =>
+				<TableCell title="student_name">
+					{<span dangerouslySetInnerHTML={{ __html: row.customer_img }}></span> || <img src={defaultImage} alt="" />}
+					<div className="action-section">
+						<p>{row.customer_name}</p>
+						<div className='action-btn'>
+							<a target='_blank' href={row.customer_url} className="">Edit user</a>
+						</div>
+					</div>
+				</TableCell>,
+		},
+		{
+			name: __("Enrollment Date", "moowoodle"),
+			cell: (row) => <TableCell title="Date" > {row.date} </TableCell>,
+		},
+		{
+			name: __("Status", "moowoodle"),
+			cell: (row) => (
+				<TableCell title="Status">
+					<div className='action-section'>
+						<button className={`status-show-btn ${row.status === 'enrolled' ? 'enroll' : 'unenroll'}`}	>
+							{row.status === 'enrolled' ? 'Enrolled' : 'Unenrolled'}
+						</button>
+						<div className='action-btn'>
+							<button className={row.status === 'enrolled' ? 'unenroll' : 'enroll'} onClick={() => handleButtonClick(row)}>{row.status === 'enrolled' ? 'Unenroll Now' : 'Enroll Now'}</button>
+						</div>
+					</div>
+				</TableCell>
+			),
+		}
+
 	];
 
 	const handleButtonClick = (row) => {
-	
-		if ( confirm('Are you sure you want to proceed?') === true ) {
+
+		if (confirm('Are you sure you want to proceed?') === true) {
 			axios({
 				method: 'post',
 				url: getApiLink('manage-enrollment'),
 				data: {
-					order_id : row.order_id,
-					course_id : row.course_id,
-					user_id : row.customer_id,
-					action : row.status == 'enrolled' ? 'unenroll' : 'enrolled'
+					order_id: row.order_id,
+					course_id: row.course_id,
+					user_id: row.customer_id,
+					action: row.status == 'enrolled' ? 'unenroll' : 'enrolled'
 				},
 			}).then((response) => {
 				requestData();
 			});
 		}
 	}
-      
-    return(
-        <>
-		{ ! appLocalizer.pro_active ? (
-			<>
-			<Dialog
-            className="admin-module-popup"
-            open={openDialog}
-            onClose={() => {
-              setOpenDialog(false);
-            }}
-            aria-labelledby="form-dialog-title"
-          >
-            <span
-              className="admin-font font-cross stock-manager-popup-cross"
-              onClick={() => {
-                setOpenDialog(false);
-              }}
-            ></span>
-            <Popoup />
-          </Dialog>
-          <div
-            className="enrollment-img"
-            onClick={() => {
-              setOpenDialog(true);
-            }}>
-          </div>
+
+	return (
+		<>
+			{!appLocalizer.pro_active ? (
+				<>
+					<Dialog
+						className="admin-module-popup"
+						open={openDialog}
+						onClose={() => {
+							setOpenDialog(false);
+						}}
+						aria-labelledby="form-dialog-title"
+					>
+						<span
+							className="admin-font font-cross stock-manager-popup-cross"
+							onClick={() => {
+								setOpenDialog(false);
+							}}
+						></span>
+						<Popoup />
+					</Dialog>
+					<div
+						className="enrollment-img"
+						onClick={() => {
+							setOpenDialog(true);
+						}}>
+					</div>
+				</>
+			) : (
+				<div className="admin-enrollment-list">
+					<div className="admin-page-title">
+						<p>{__("All Enrollments", "moowoodle")}</p>
+					</div>
+					{
+						<CustomTable
+							data={data}
+							columns={columns}
+							selectable={true}
+							handleSelect={(selectRows) => {
+								setSelectedRows(selectRows);
+							}}
+							handlePagination={requestApiForData}
+							defaultRowsParPage={10}
+							defaultTotalRows={totalRows}
+							perPageOption={[10, 25, 50]}
+							realtimeFilter={realtimeFilter}
+							typeCounts={enrollemntStatus}
+						/>
+					}
+				</div>
+			)}
 		</>
-      ) : (
-        <div className="admin-enrollment-list">
-          <div className="admin-page-title">
-            <p>{__("All Enrollments", "moowoodle")}</p>
-          </div>
-            {
-                <CustomTable
-                data={data}
-                columns={columns}
-                selectable = {true}
-                handleSelect = {(selectRows) => {
-                  setSelectedRows(selectRows);
-                }}
-                handlePagination={requestApiForData}
-                defaultRowsParPage={10}
-                defaultTotalRows={totalRows}
-                perPageOption={[10, 25, 50]}
-                realtimeFilter={realtimeFilter}
-				typeCounts={enrollemntStatus}
-              />
-            }
-          </div>
-		  )}
-        </>
-        
-    );
+
+	);
 }
 export default Enrollment;
