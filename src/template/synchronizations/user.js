@@ -5,7 +5,7 @@ export default {
     priority: 10,
     name: __("Users - Manual & Automatic mode", 'moowoodle'),
     desc: __("Information management", 'moowoodle'),
-    icon: "font-mail",
+    icon: "font-supervised_user_circle",
     submitUrl: "save-moowoodle-setting",
     proDependent: true,
     modal: [

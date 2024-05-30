@@ -5,7 +5,7 @@ export default {
     priority: 10,
     name: __("General", 'moowoodle'),
     desc: __("Effortlessly configure and verify your WordPress-Moodle connection.", 'moowoodle'),
-    icon: "font-mail",
+    icon: "font-settings",
     submitUrl: "save-moowoodle-setting",
     modal: [
         {
@@ -23,7 +23,7 @@ export default {
         {
             key: "test_connection",
             type: "testconnection",
-            desc: __(`Refer to the ${ appLocalizer.setupguide } to complete all necessary configurations on the Moodle site, and subsequently, perform a Test Connection to verify the functionality of all services.`, 'moowoodle'),
+            desc: __(`Refer to the ${appLocalizer.setupguide} to complete all necessary configurations on the Moodle site, and subsequently, perform a Test Connection to verify the functionality of all services.`, 'moowoodle'),
             label: __("MooWoodle test connection", 'moowoodle'),
         },
     ]
