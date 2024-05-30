@@ -97,7 +97,7 @@ const Enrollment = () => {
 
 	const [selectedRange, setSelectedRange] = useState([
 		{
-			startDate: new Date(),
+			startDate: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000),
 			endDate: new Date(),
 			key: 'selection'
 		}
@@ -272,6 +272,7 @@ const Enrollment = () => {
 		{
 			name: __("Enrollment Date", "moowoodle"),
 			cell: (row) => <TableCell title="Date" > {row.date} </TableCell>,
+			sortable: true,
 		},
 		{
 			name: __("Status", "moowoodle"),
