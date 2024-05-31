@@ -12,7 +12,7 @@ export default {
         {
             key: "user_sync_direction",
             type: "checkbox-custom-img",
-            desc: __("<b>All current user accounts & profile information will be synchronized according to the synchronization direction.</b><br> User uniqueness will be checked based on email. If the user exists in the other system, their profile information will be synchronized; otherwise, a new user will be created. <br>However, synchronization of user information is not possible if the same username is found in another instance but with a different email address.            ", 'moowoodle'),
+            desc: __("<b>Once enabled, all current user accounts & profile information will be synchronized according to the synchronization direction.</b><br> User uniqueness will be checked based on email. If the user exists in the other system, their profile information will be synchronized; otherwise, a new user will be created. <br>However, synchronization of user information is not possible if the same username is found in another instance but with a different email address.            ", 'moowoodle'),
             label: __("Synchronization flow between sites", 'moowoodle'),
             proSetting: true,
         },
