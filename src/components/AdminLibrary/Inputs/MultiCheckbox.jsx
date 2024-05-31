@@ -55,9 +55,7 @@ const MultiCheckBox = (props) => {
                                 }
                                 {
                                     option.hints &&
-                                    <span className={props.hintOuterClass}>
-                                        {option.hints}
-                                    </span>
+                                    <span className={props.hintOuterClass} dangerouslySetInnerHTML={{__html: option.hints}}></span>
                                 }
                                 {
                                     (option.proSetting && !appLocalizer.pro_active) && <span className="admin-pro-tag">pro</span>
