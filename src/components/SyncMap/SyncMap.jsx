@@ -242,7 +242,7 @@ const SyncMap = (props) => {
                     </div>
                 </div>
             </div>
-            { description && <p className="settings-metabox-description">{description}</p> }
+            { description && <p className="settings-metabox-description" dangerouslySetInnerHTML={{__html: description}}></p> }
         </div>
     );
 }
