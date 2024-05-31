@@ -1,19 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import Dialog from "@mui/material/Dialog";
-import Popoup from "../PopupContent/PopupContent";
 import { getApiLink } from "../../services/apiService";
 import "./SyncNow.scss";
 
 const SyncNow = (props) => {
-  const { buttonKey, interval, proSetting, proSettingChanged, value, description, apilink, statusApiLink } = props;
+  const { interval, proSetting, proSettingChanged, value, description, apilink, statusApiLink } = props;
  
-  const [modelOpen, setModelOpen] = useState(false);
   const [syncStatus, setSyncStatus] = useState([]);
   const syncStart = useRef(true);
   const [handleClick, setHandleClick] = useState(false);
-
-  console.log(syncStatus);
 
   const fetchSyncStatus = () => {
     axios({
@@ -77,20 +72,7 @@ const SyncNow = (props) => {
   }
 
   return (
-    <>
-      <Dialog
-        className="admin-module-popup"
-        open={modelOpen}
-        onClose={() => setModelOpen(false)}
-        aria-labelledby="form-dialog-title"
-      >
-        <span
-          className="admin-font font-cross"
-          onClick={() => setModelOpen(false)}
-        ></span>
-        <Popoup />
-      </Dialog>
-      
+    <>      
       <div className="section-synchronize-now">
         <div className="button-section">
           <button className="synchronize-now-button" onClick={handleSync}>
