@@ -4,12 +4,15 @@ const MultiCheckBox = (props) => {
             {
                 props.selectDeselect &&
                 <>
-                    <div
+                    <button
                         className={props.selectDeselectClass}
-                        onClick={(e) => { props.onMultiSelectDeselectChange?.(e) }}
+                        onClick={(e) => { 
+                            e.preventDefault();
+                            props.onMultiSelectDeselectChange?.(e) 
+                        }}
                     >
                         {props.selectDeselectValue}
-                    </div>
+                    </button>
                 </>
             }
             <div className="wrapper">
