@@ -12,7 +12,7 @@ export default {
         {
             key: "user_sync_direction",
             type: "checkbox-custom-img",
-            desc: __("<b>Once enabled, all current user accounts & profile information will be synchronized according to the synchronization direction.</b><br> User uniqueness will be checked based on email. If the user exists in the other system, their profile information will be synchronized; otherwise, a new user will be created. <br>However, synchronization of user information is not possible if the same username is found in another instance but with a different email address.            ", 'moowoodle'),
+            desc: __("<b>Once enabled, all current user accounts & profile information will be synchronized.</b><br> User uniqueness will be checked based on email. If the user exists in the other system, their profile information will be synchronized; otherwise, a new user will be created. <br>However, synchronization of user information is not possible if the same username is found in another instance but with a different email address.            ", 'moowoodle'),
             label: __("Synchronization flow between sites", 'moowoodle'),
             proSetting: true,
         },
@@ -57,8 +57,8 @@ export default {
         {
             key: "start_end_date",
             type: "checkbox",
-            desc: __('Once enabled, the real-time profile update scheduler will initiate based on the synchronization direction you set.<br>When a new user is added or updates their profile information, it will be synchronized between WordPress to Moodle, or vice versa, according to the profile information mapping settings below, based on the specified direction.', 'moowoodle'),
-            label: __("Real-Time Profile Sync", 'moowoodle'),
+            desc: __('Once enabled, the real-time profile update scheduler will initiate based on the "synchronization flow" you set.<br>When a new user is added or updates their profile information, it will be synchronized between WordPress to Moodle, or vice versa, according to the profile information mapping settings below, based on the specified direction.', 'moowoodle'),
+            label: __("Real-Time Profile Synchronization", 'moowoodle'),
             options: [
                 {
                     key: "start_end_date",
