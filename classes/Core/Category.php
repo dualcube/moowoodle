@@ -21,8 +21,11 @@ class Category {
 			'taxonomy' 	 => $taxonomy,
 			'hide_empty' => false,
 			'meta_query' => [
-				'key' 	=> '_category_id',
-				'value' => $category_id
+				[
+					'key' 	  => '_category_id',
+					'value'   => $category_id,
+					'compare' => '='
+				]
 			]
 		]);
 		
@@ -72,7 +75,7 @@ class Category {
 	 * @return int | null catagory id
 	 */
 	public static function update_category( $category, $taxonomy ) {
-
+		
 		$term = self::get_category( $category[ 'id' ], $taxonomy );
 
 		// If term is exist update it.

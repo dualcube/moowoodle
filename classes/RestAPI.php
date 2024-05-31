@@ -234,20 +234,24 @@ class RestAPI {
      */
     public function get_courses( $request ) {
         $count_courses  = $request->get_param( 'count' );
-        $limit          = $request->get_param( 'row' );
-        $offset         = ( $request->get_param( 'page' ) - 1 ) * $limit;
+        $par_page       = $request->get_param( 'row' );
+        $page           = $request->get_param( 'page' );
         $product_field  = $request->get_param( 'product' );
         $catagory_field = $request->get_param( 'catagory' );
-        $search_action  =  $request->get_param( 'searchaction' );
+        $search_action  = $request->get_param( 'searchaction' );
         $search_field   = $request->get_param( 'search');
 
         // Prepare argument for database query
         $args = [
             'fields'      => 'ids',
             'numberposts' => -1,
-            'limit'       => $limit,
-            'offset'      => $offset
+            'limit'       => $par_page,
+            'offset'      => ( $page - 1 ) * $par_page,
         ];
+
+        // if ( $page == null || $par_page == null ) {
+        //     $args [ 'numberposts' ] = -1;
+        // }
 
         // Filter by course
         if ( $search_action == 'course' ) {
