@@ -3,7 +3,7 @@ import { __ } from '@wordpress/i18n';
 export default {
     id: "synchronize-user",
     priority: 10,
-    name: __("Users - Manual & Automatic mode", 'moowoodle'),
+    name: __("User Profile Synchronization", 'moowoodle'),
     desc: __("Synchronize user data as needed, with automatic, real-time updates when users update their profiles.", 'moowoodle'),
     icon: "font-supervised_user_circle",
     submitUrl: "save-moowoodle-setting",
