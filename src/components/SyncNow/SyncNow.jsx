@@ -92,7 +92,6 @@ const SyncNow = (props) => {
       </Dialog>
       
       <div className="section-synchronize-now">
-        <p className="btn-description" dangerouslySetInnerHTML={{__html: description}}></p>
         <div className="button-section">
           <button className="synchronize-now-button" onClick={handleSync}>
             {value}
@@ -104,8 +103,8 @@ const SyncNow = (props) => {
               <div class="three-body__dot"></div>
             </div>
           )}
-          
         </div>
+          <p className="btn-description" dangerouslySetInnerHTML={{__html: description}}></p>
 
         {
             proSetting && <span className="admin-pro-tag">pro</span>
