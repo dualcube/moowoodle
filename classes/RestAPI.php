@@ -335,9 +335,9 @@ class RestAPI {
             $moodle_course_id = $course_meta[ 'moodle_course_id' ];
 
             // Prepare url
-            $moodle_url   = esc_url( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . '/course/edit.php?id=' . $moodle_course_id;
-            $category_url = add_query_arg( [ 'course_cat' => $term->slug, 'post_type' => 'course' ], admin_url( 'edit.php' ) );
-
+            $moodle_url    = trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . 'course/edit.php?id=' . $moodle_course_id;
+            $view_user_url = trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . 'user/index.php?id=' . $moodle_course_id;
+            $category_url  = add_query_arg( [ 'course_cat' => $term->slug, 'post_type' => 'course' ], admin_url( 'edit.php' ) );
             /**
              * Filter for add additional data.
              * @var array formatted course data.
@@ -353,6 +353,7 @@ class RestAPI {
 				'category_name'     => $term->name,
 				'category_url'      => $category_url,
 				'enroled_user'      => $count_enrolment,
+                'view_users_url'    => $view_user_url,
 				'date'              => $date,
 			]);
 		}
@@ -364,7 +365,7 @@ class RestAPI {
      * @param mixed $request
      * @return \WP_Error|\WP_REST_Response
      */
-	function get_all_courses() {
+	public function get_all_courses() {
 		$course_ids = MooWoodle()->course->get_courses([
             'fields'      => 'ids',
             'numberposts' => -1,

@@ -95,6 +95,7 @@ export default function Course() {
      */
     const handleSingleAction = (actionName, courseId, moodleCourseId) => {
         if (appLocalizer.pro_active) {
+            setData(null);
             axios({
                 method: 'post',
                 url: getApiLink(`course-bulk-action`),
@@ -108,6 +109,7 @@ export default function Course() {
                 },
             }).then((response) => {
                 // Handle after single row action success.
+                requestData()
             }).catch((error) => {
                 console.error('Error:', error);
             });
@@ -177,7 +179,6 @@ export default function Course() {
                     <img src={row.productimage || defaultImage} />
                     <div className="action-section">
                         <p>{row.course_name}</p>
-                        {console.log(row)}
                         <div className='action-btn'>
                             <a target='_blank' href={row.moodle_url} className="">Edit course</a>
                         </div>
@@ -245,7 +246,12 @@ export default function Course() {
             name: __('Enrolled Users', 'moowoodle'),
             cell: (row) => (
                 <TableCell title={'Enrolled Users'}>
-                    {row.enroled_user}
+                    <div className="action-section">
+                        <p>{row.enroled_user}</p>
+                        <div className='action-btn'>
+                            <a target='_blank' href={row.view_users_url} className="">View users</a>
+                        </div>
+                    </div>
                 </TableCell>
             ),
             sortable: true,
