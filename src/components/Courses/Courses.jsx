@@ -170,35 +170,18 @@ export default function Course() {
     //columns for the data table
     const columns = [
         {
-            name: __('Product', 'moowoodle'),
-            selector: row => row.products,
-            cell: (row) => (
-                <TableCell title={'Product Name'}>
-                    {
-                        Object.keys(row.products).length ? (
-                            Object.entries(row.products).map(([name, url], index) => {
-                                return (
-                                    <>
-                                        <img src={row.productimage || defaultImage} />
-                                        <a key={index} href={url}> {name} </a>
-                                    </>
-                                )
-                            })
-                        ) : (
-                            "-"
-                        )
-                    }
-                </TableCell>
-            ),
-        },
-        {
             name: __('Course', 'moowoodle'),
             selector: row => row.course_name,
             cell: (row) => (
                 <TableCell>
-                    <a href={row.moodle_url} alt="moowoodle_url">
-                        {row.course_name}
-                    </a>
+                    <img src={row.productimage || defaultImage} />
+                    <div className="action-section">
+                        <p>{row.course_name}</p>
+                        {console.log(row)}
+                        <div className='action-btn'>
+                            <a target='_blank' href={row.moodle_url} className="">Edit course</a>
+                        </div>
+                    </div>
                 </TableCell>
             ),
             sortable: true,
@@ -214,7 +197,7 @@ export default function Course() {
             sortable: true,
         },
         {
-            name: __('Category', 'moowoodle'),
+            name: __('Category Name', 'moowoodle'),
             selector: row => row.category_name,
             cell: (row) => (
                 <TableCell title={'Category Name'}>
@@ -226,12 +209,37 @@ export default function Course() {
             sortable: true,
         },
         {
-            name: __('Duration', 'moowoodle'),
+            name: __('Course Duration', 'moowoodle'),
             cell: (row) => (
                 <TableCell title={'Date'}>
                     {row.date}
                 </TableCell>
             )
+        }, {
+            name: __('Product Name', 'moowoodle'),
+            selector: row => row.products,
+            cell: (row) => (
+                <TableCell title={'Product Name'}>
+                    {
+                        Object.keys(row.products).length ? (
+                            Object.entries(row.products).map(([name, url], index) => {
+                                return (
+                                    <>
+                                        <div key={index} className="action-section">
+                                            <p>{name}</p>
+                                            <div className='action-btn'>
+                                                <a target='_blank' href={url} className="">Edit product</a>
+                                            </div>
+                                        </div>
+                                    </>
+                                )
+                            })
+                        ) : (
+                            "-"
+                        )
+                    }
+                </TableCell>
+            ),
         },
         {
             name: __('Enrolled Users', 'moowoodle'),
@@ -239,7 +247,8 @@ export default function Course() {
                 <TableCell title={'Enrolled Users'}>
                     {row.enroled_user}
                 </TableCell>
-            )
+            ),
+            sortable: true,
         },
         {
             name: <div className="table-action-column">{__('Action', 'moowoodle')}{!appLocalizer.pro_active && <span className="admin-pro-tag">pro</span>}</div>,
@@ -280,7 +289,7 @@ export default function Course() {
                                 onClick={(e) => {
                                     handleSingleAction(
                                         'create_product',
-                                        row.id, 
+                                        row.id,
                                         row.moodle_course_id,
                                     )
                                 }}
