@@ -46,7 +46,7 @@ export default {
         {
             key: "moodle_user_role",
             type: "checkbox-default",
-            desc: __("Moodle user role to synchronize", 'moowoodle'),
+            desc: __("Moodle user role to synchronize.", 'moowoodle'),
             label: __("Moodle user role", 'moowoodle'),
             options: Object.entries(appLocalizer.md_user_roles).map(( [key, name ] ) => {
                 return {
