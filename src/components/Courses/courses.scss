@@ -1,7 +1,7 @@
 @font-face {
   font-family: 'admin-font';
-  src:  url('./fonts/admin-font.eot?ovt9cm');
-  src:  url('./fonts/admin-font.eot?ovt9cm#iefix') format('embedded-opentype'),
+  src: url('./fonts/admin-font.eot?ovt9cm');
+  src: url('./fonts/admin-font.eot?ovt9cm#iefix') format('embedded-opentype'),
     url('./fonts/admin-font.ttf?ovt9cm') format('truetype'),
     url('./fonts/admin-font.woff?ovt9cm') format('woff'),
     url('./fonts/admin-font.svg?ovt9cm#admin-font') format('svg');
@@ -10,7 +10,8 @@
   font-display: block;
 }
 
-[class^="font-"], [class*=" font-"] {
+[class^="font-"],
+[class*=" font-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'admin-font' !important;
   speak: never;
@@ -28,30 +29,39 @@
 .font-tools:before {
   content: "\e700";
 }
+
 .font-options:before {
   content: "\e700";
 }
+
 .font-repair:before {
   content: "\e700";
 }
+
 .font-menu_book:before {
   content: "\e701";
 }
+
 .font-supervised_user_circle:before {
   content: "\e702";
 }
+
 .font-credit_card:before {
   content: "\e753";
 }
+
 .font-payment:before {
   content: "\e753";
 }
+
 .font-vpn_key:before {
   content: "\e704";
 }
+
 .font-_store:before {
   content: "\e7085";
 }
+
 .font-shopping_cart:before {
   content: "\e7085";
 }
@@ -89,6 +99,7 @@ $color-active: #65438f;
       display: flex;
       align-items: center;
       justify-content: center;
+
       &:first-child {
         background-color: $color-active;
       }
@@ -115,10 +126,15 @@ $color-active: #65438f;
       .rdt_TableHeadRow {
         .rdt_TableCol {
           &:nth-child(2) {
-            min-width: 12rem !important; // To overwrite default table css
+            min-width: 14rem !important; // To overwrite default table css
           }
+
+          &:nth-child(5) {
+            min-width: 15rem !important; // To overwrite default table css
+          }
+
           &:nth-child(6) {
-            min-width: 17rem !important; // To overwrite default table css
+            min-width: 12rem !important; // To overwrite default table css
           }
         }
       }
@@ -127,10 +143,15 @@ $color-active: #65438f;
     .rdt_TableRow {
       .rdt_TableCell {
         &:nth-child(2) {
-          min-width: 12rem !important; // To overwrite default table css
+          min-width: 14rem !important; // To overwrite default table css
         }
+
+        &:nth-child(5) {
+          min-width: 15rem !important; // To overwrite default table css
+        }
+
         &:nth-child(6) {
-          min-width: 17rem !important; // To overwrite default table css
+          min-width: 12rem !important; // To overwrite default table css
         }
       }
     }
@@ -159,6 +180,7 @@ $color-active: #65438f;
     .rdt_TableBody {
       .rdt_TableRow {
         .rdt_TableCell {
+
           &:nth-child(1),
           &:nth-child(2),
           &:nth-child(3) {
