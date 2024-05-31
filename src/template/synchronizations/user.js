@@ -12,7 +12,7 @@ export default {
         {
             key: "user_sync_direction",
             type: "checkbox-custom-img",
-            desc: __("Once enabled, the real-time profile update scheduler will initiate based on the synchronization direction you set between your WordPress and Moodle sites. <br>The user roles to be synchronized are defined by selecting the appropriate settings below.", 'moowoodle'),
+            desc: __("All current user accounts between WordPress and Moodle will be synchronized according to the data synchronization direction. <br> User uniqueness will be checked based on email. If the user exists in the other system, their profile information will be synchronized. <br>If the user does not exist, a new user will be created. <br>If we discover the same username in another instance but with a different email address, synchronization of the user's information is not possible.", 'moowoodle'),
             label: __("Synchronization flow between sites", 'moowoodle'),
             proSetting: true,
         },
@@ -57,8 +57,8 @@ export default {
         {
             key: "start_end_date",
             type: "checkbox",
-            desc: __('When enabled, the course duration, such as the start and end dates, will be visible on the shop page.', 'moowoodle'),
-            label: __("Display course duration in Shop Page", 'moowoodle'),
+            desc: __('Once enabled, the real-time profile update scheduler will initiate based on the synchronization direction you set.<br>When a new user is added or updates their profile information, it will be synchronized between WordPress to Moodle, or vice versa, according to the profile information mapping settings below, based on the specified direction.', 'moowoodle'),
+            label: __("Real-Time Profile Sync", 'moowoodle'),
             options: [
                 {
                     key: "start_end_date",
