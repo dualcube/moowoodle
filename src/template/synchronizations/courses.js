@@ -3,7 +3,7 @@ import { __ } from '@wordpress/i18n';
 export default {
     id: "synchronize-course",
     priority: 20,
-    name: __("Courses and Products - Manual mode.", 'moowoodle'),
+    name: __("Courses and Products synchronization", 'moowoodle'),
     desc: __("Fetch Moodle courses & generate products on demand.", 'moowoodle'),
     icon: "font-menu_book",
     submitUrl: "save-moowoodle-setting",
