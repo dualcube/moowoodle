@@ -170,7 +170,7 @@ export default function Course() {
     //columns for the data table
     const columns = [
         {
-            name: __('Course Name', 'moowoodle'),
+            name: __('Course', 'moowoodle'),
             selector: row => row.course_name,
             cell: (row) => (
                 <TableCell>

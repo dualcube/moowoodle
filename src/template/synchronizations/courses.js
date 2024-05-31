@@ -51,19 +51,19 @@ export default {
             options: [
                 {
                     key: "create_update",
-                    label: __('Create and Update Products', 'moowoodle'),
+                    label: __('Create and update products', 'moowoodle'),
                     hints: __('This feature allows you to update previously created product information using Moodle course data. NOTE: This action will overwrite all existing product details with those from Moodle course details.', 'moowoodle'),
                     value: "create_update",
                 },
                 {
                     key: "create",
-                    label: __('Create Products', 'moowoodle'),
+                    label: __('Create products', 'moowoodle'),
                     hints: __('This functionality enables automatic creation of new products based on Moodle course data if they do not already exist in WordPress.', 'moowoodle'),
                     value: "create",
                 },
                 {
                     key: "update",
-                    label: __('Update Products', 'moowoodle'),
+                    label: __('Update products', 'moowoodle'),
                     hints: __('This feature allows you to update previously created product information using Moodle course data. NOTE: This action will overwrite all existing product details with those from Moodle course details.', 'moowoodle'),
                     value: "update",
                 }

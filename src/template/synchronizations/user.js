@@ -32,7 +32,7 @@ export default {
             key: "wordpress_user_role",
             type: "checkbox-default",
             desc: __("Select WordPress user roll for sync", 'moowoodle'),
-            label: __("Wordpress user role", 'moowoodle'),
+            label: __("WordPress user role", 'moowoodle'),
             options: Object.entries(appLocalizer.wp_user_roles).map(( [key, name ] ) => {
                 return {
                     key: key,
