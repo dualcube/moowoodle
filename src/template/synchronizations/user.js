@@ -3,8 +3,8 @@ import { __ } from '@wordpress/i18n';
 export default {
     id: "synchronize-user",
     priority: 10,
-    name: __("User Profile Synchronization", 'moowoodle'),
-    desc: __("Synchronize user data as needed, with automatic, real-time updates when users update their profiles.", 'moowoodle'),
+    name: __("User Synchronization", 'moowoodle'),
+    desc: __("Synchronization on demand with automatic, real-time updates.", 'moowoodle'),
     icon: "font-supervised_user_circle",
     submitUrl: "save-moowoodle-setting",
     proDependent: true,
@@ -12,7 +12,7 @@ export default {
         {
             key: "user_sync_direction",
             type: "checkbox-custom-img",
-            desc: __("All current user accounts between WordPress and Moodle will be synchronized according to the data synchronization direction. <br> User uniqueness will be checked based on email. If the user exists in the other system, their profile information will be synchronized; otherwise, a new user will be created. <br>However, synchronization of user information is not possible if the same username is found in another instance but with a different email address.            ", 'moowoodle'),
+            desc: __("<b>All current user accounts & profile information will be synchronized according to the synchronization direction.</b><br> User uniqueness will be checked based on email. If the user exists in the other system, their profile information will be synchronized; otherwise, a new user will be created. <br>However, synchronization of user information is not possible if the same username is found in another instance but with a different email address.            ", 'moowoodle'),
             label: __("Synchronization flow between sites", 'moowoodle'),
             proSetting: true,
         },
