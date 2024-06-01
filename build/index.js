@@ -17644,9 +17644,10 @@ __webpack_require__.r(__webpack_exports__);
 const MultiCheckBox = props => {
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: props.wrapperClass
-  }, props.selectDeselect && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, props.selectDeselect && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: props.selectDeselectClass,
     onClick: e => {
+      e.preventDefault();
       props.onMultiSelectDeselectChange?.(e);
     }
   }, props.selectDeselectValue)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -20118,8 +20119,11 @@ function Course() {
         onChange: e => updateFilter(e.target.name, e.target.value),
         value: filterValue || ""
       }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
-        value: ""
-      }, "All"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+        value: "",
+        style: {
+          textAlign: 'center'
+        }
+      }, "-- Select --"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
         value: "course"
       }, "Course"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
         value: "shortname"
@@ -20246,13 +20250,15 @@ const Enrollment = () => {
     if (appLocalizer.pro_active) {
       (0,axios__WEBPACK_IMPORTED_MODULE_10__["default"])({
         method: "post",
-        url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_3__.getApiLink)('get-table-segment'),
+        url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_3__.getApiLink)('get-enrollments'),
         headers: {
           "X-WP-Nonce": appLocalizer.nonce
+        },
+        data: {
+          segment: true
         }
       }).then(response => {
         response = response.data;
-        console.log(response);
         setTotalRows(response["all"]);
         setEnrollemntStatus([{
           key: "all",
@@ -21235,8 +21241,11 @@ const SyncMap = props => {
   })))), proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     class: "admin-pro-tag"
   }, "pro")))), description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
-    className: "settings-metabox-description"
-  }, description));
+    className: "settings-metabox-description",
+    dangerouslySetInnerHTML: {
+      __html: description
+    }
+  }));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SyncMap);
 
@@ -21255,13 +21264,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var _mui_material_Dialog__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/material/Dialog */ "./node_modules/@mui/material/Dialog/Dialog.js");
-/* harmony import */ var _PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../PopupContent/PopupContent */ "./src/components/PopupContent/PopupContent.jsx");
-/* harmony import */ var _services_apiService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/apiService */ "./src/services/apiService.js");
-/* harmony import */ var _SyncNow_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./SyncNow.scss */ "./src/components/SyncNow/SyncNow.scss");
-
-
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var _services_apiService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/apiService */ "./src/services/apiService.js");
+/* harmony import */ var _SyncNow_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SyncNow.scss */ "./src/components/SyncNow/SyncNow.scss");
 
 
 
@@ -21269,7 +21274,6 @@ __webpack_require__.r(__webpack_exports__);
 
 const SyncNow = props => {
   const {
-    buttonKey,
     interval,
     proSetting,
     proSettingChanged,
@@ -21278,15 +21282,13 @@ const SyncNow = props => {
     apilink,
     statusApiLink
   } = props;
-  const [modelOpen, setModelOpen] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [syncStatus, setSyncStatus] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const syncStart = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(true);
   const [handleClick, setHandleClick] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
-  console.log(syncStatus);
   const fetchSyncStatus = () => {
-    (0,axios__WEBPACK_IMPORTED_MODULE_4__["default"])({
+    (0,axios__WEBPACK_IMPORTED_MODULE_3__["default"])({
       method: "post",
-      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)(statusApiLink),
+      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)(statusApiLink),
       headers: {
         "X-WP-Nonce": appLocalizer.nonce
       }
@@ -21327,9 +21329,9 @@ const SyncNow = props => {
 
     // syncStart.current = true;
 
-    (0,axios__WEBPACK_IMPORTED_MODULE_4__["default"])({
+    (0,axios__WEBPACK_IMPORTED_MODULE_3__["default"])({
       method: "post",
-      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)(apilink),
+      url: (0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)(apilink),
       headers: {
         "X-WP-Nonce": appLocalizer.nonce
       }
@@ -21342,22 +21344,9 @@ const SyncNow = props => {
       fetchSyncStatus();
     });
   };
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: "admin-module-popup",
-    open: modelOpen,
-    onClose: () => setModelOpen(false),
-    "aria-labelledby": "form-dialog-title"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "admin-font font-cross",
-    onClick: () => setModelOpen(false)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PopupContent_PopupContent__WEBPACK_IMPORTED_MODULE_1__["default"], null)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "section-synchronize-now"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
-    className: "btn-description",
-    dangerouslySetInnerHTML: {
-      __html: description
-    }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "button-section"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: "synchronize-now-button",
@@ -21370,7 +21359,12 @@ const SyncNow = props => {
     class: "three-body__dot"
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "three-body__dot"
-  }))), proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    className: "btn-description",
+    dangerouslySetInnerHTML: {
+      __html: description
+    }
+  }), proSetting && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "admin-pro-tag"
   }, "pro"), syncStatus.length > 0 && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, syncStatus.map(status => {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -22026,18 +22020,18 @@ __webpack_require__.r(__webpack_exports__);
     options: [{
       key: "sync_courses",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Course categories', 'moowoodle'),
-      hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This function will retrieve all Moodle course data and synchronize it with the courses listed in WordPress.", 'moowoodle'),
+      hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Scan the entire Moodle course category structure and synchronize it with the WordPress category listings.", 'moowoodle'),
       value: "sync_courses"
     }, {
       key: "sync_courses_category",
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Course SKU', 'moowoodle'),
-      hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This feature will scan the entire Moodle course category structure and synchronize it with the WordPress category listings.", 'moowoodle'),
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Course ID', 'moowoodle'),
+      hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Retrieves the course ID and assigns it as the product SKU.", 'moowoodle'),
       value: "sync_courses_category",
       proSetting: true
     }, {
       key: "sync_image",
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Course images', 'moowoodle'),
-      hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This function copies course images and sets them as WooCommerce product images.", 'moowoodle'),
+      hints: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Copies course images and sets them as WooCommerce product images.", 'moowoodle'),
       value: "sync_image",
       proSetting: true
     }]
@@ -22099,32 +22093,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   id: "synchronize-user",
   priority: 10,
-  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Users - Manual & Automatic mode", 'moowoodle'),
-  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Information management", 'moowoodle'),
+  name: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("User Synchronization", 'moowoodle'),
+  desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchronization on demand with automatic, real-time updates.", 'moowoodle'),
   icon: "font-supervised_user_circle",
   submitUrl: "save-moowoodle-setting",
   proDependent: true,
   modal: [{
-    key: 'separator_content',
-    type: 'section',
-    label: "",
-    desc: "Automatic mode",
-    hint: "Initiate the <b>real-time synchronization</b> direction between your WordPress and Moodle sites.<br>When a new user is added, their profile will be synchronized between WordPress and Moodle according to the Profile Information Mapping settings.<br>For an existing user, if they update their profile and the updated data matches any criteria set in the 'Profile Information Mapping', their information will also be synchronized between WordPress and Moodle."
-  }, {
-    key: 'separator_content',
-    type: 'section',
-    label: ""
-  }, {
     key: "user_sync_direction",
     type: "checkbox-custom-img",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Initiate the <b>real-time synchronization</b> direction between your WordPress and Moodle sites.<br>When a new user is added, their profile will be synchronized between WordPress and Moodle according to the Profile Information Mapping settings.<br>For an existing user, if they update their profile and the updated data matches any criteria set in the 'Profile Information Mapping', their information will also be synchronized between WordPress and Moodle.", 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Site-to-site data synchronization direction", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("The synchronization flow specifies the direction of data transfer. To enable two-way synchronization, select both directions. This applies to existing users as well. With 'Real-time profile synchronization', user profile information will sync immediately whenever users update their profiles.<br><br> <span class='highlighted-part'>User uniqueness will be checked based on email. If the user exists in the other system, their profile information will be synchronized; otherwise, a new user will be created. <br>Synchronizing user information fails if the same username is found in another instance but linked to a different email address.</span>", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Synchronization flow between sites", 'moowoodle'),
     proSetting: true
   }, {
     key: "wordpress_user_role",
     type: "checkbox-default",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select WordPress user roll for sync", 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("WordPress user role", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Users from the chosen roles will be added or updated in Moodle.", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("WordPress user role to synchronize", 'moowoodle'),
     options: Object.entries(appLocalizer.wp_user_roles).map(([key, name]) => {
       return {
         key: key,
@@ -22137,8 +22121,8 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     key: "moodle_user_role",
     type: "checkbox-default",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Select Moodle user roll for sync", 'moowoodle'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Moodle user role", 'moowoodle'),
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Users from the chosen roles will be added or updated in WordPress.", 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Moodle user role to synchronize", 'moowoodle'),
     options: Object.entries(appLocalizer.md_user_roles).map(([key, name]) => {
       return {
         key: key,
@@ -22156,18 +22140,24 @@ __webpack_require__.r(__webpack_exports__);
     select_deselect: true,
     proSetting: true
   }, {
-    key: 'separator_content',
-    type: 'section',
-    label: "",
-    desc: "Manual mode"
+    key: "start_end_date",
+    type: "checkbox",
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('If enabled, the real-time profile update scheduler will initiate based on the "synchronization flow" settings.<br>When a new user is added or updates their profile information, it will be synchronized between WordPress to Moodle, or vice versa, according to the profile information mapping settings above, based on the specified direction.', 'moowoodle'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Real-Time profile synchronization", 'moowoodle'),
+    options: [{
+      key: "start_end_date",
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('', 'moowoodle'),
+      value: "start_end_date"
+    }]
   }, {
     key: "sync_user_btn",
     type: "syncbutton",
     interval: 10000,
     apilink: 'realtime-sync-users',
     statusApiLink: 'sync-status-user',
-    value: "Synchronize all existing user profile now!! ",
-    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This will synchronize all existing user accounts between WordPress and Moodle instantly according to the selected ‘Site-to-site data synchronization direction’. <br> <span class='highlighted-part'>While synchronizing user information, we use the email address as the unique identifier for each user. We check the username associated with that email address, and if we find the same username in the other instance but with a different email address, the user's information cannot be synchronized.</span>", 'moowoodle'),
+    label: "Sync profiles of existing users ",
+    value: "Synchronize users now!! ",
+    desc: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("This will trigger immediate synchronization of all existing user accounts between WordPress and Moodle based on the configured data synchronization flow.<br><br><span class='highlighted-part'>User uniqueness will be checked based on email. If the user exists in the other system, their profile information will be synchronized; otherwise, a new user will be created.<br>Synchronizing user information fails if the same username is found in another instance but linked to a different email address.</span>", 'moowoodle'),
     proSetting: true
   }]
 });

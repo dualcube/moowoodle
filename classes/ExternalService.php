@@ -71,7 +71,7 @@ class ExternalService {
 			$show_adv_log   = in_array( 'moowoodle_adv_log', $show_adv_log );
 
             // Log the response relult.
-            if ( $show_adv_log ) {
+            if ( 	$show_adv_log ) {
 				MooWoodle()->util->log( "moowoodle moodle_url:" . $request_url . '&' . $request_query . "\n\t\tmoowoodle response:" . wp_json_encode( $response ) . "\n\n");
 			}
 		}
