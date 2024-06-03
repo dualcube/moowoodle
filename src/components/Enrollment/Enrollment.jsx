@@ -63,18 +63,17 @@ const Enrollment = () => {
 		if (appLocalizer.pro_active) {
 			axios({
 				method: "post",
-				url: getApiLink('get-table-segment'),
+				url: getApiLink('get-enrollments'),
 				headers: { "X-WP-Nonce": appLocalizer.nonce },
+				data: { segment: true },
 			}).then((response) => {
 				response = response.data;
-				console.log(response);
-				setTotalRows(response["all"]);
 
 				setEnrollemntStatus([
 					{
 						key: "all",
 						name: __("All", "moowoodle"),
-						count: response["all"],
+						count: response[ "all" ],
 					},
 					{
 						key: "enrolled",
@@ -260,7 +259,7 @@ const Enrollment = () => {
 			name: __("Student", "moowoodle"),
 			cell: (row) =>
 				<TableCell title="student_name">
-					{<span dangerouslySetInnerHTML={{ __html: row.customer_img }}></span> || <img src={defaultImage} alt="" />}
+					<span dangerouslySetInnerHTML={{ __html: row.customer_img }}></span>
 					<div className="action-section">
 						<p>{row.customer_name}</p>
 						<div className='action-btn'>

@@ -11,6 +11,7 @@ class Course {
 		// Add Link Moodle Course in WooCommerce edit product tab.
 		add_filter( 'woocommerce_product_data_tabs', [ &$this, 'moowoodle_linked_course_tab' ], 99, 1 );
 		add_action( 'woocommerce_product_data_panels', [ &$this, 'moowoodle_linked_course_panals' ] );
+		add_action('woocommerce_process_product_meta', [ &$this, 'save_product_meta_data' ] );
 	}
 
 	/**
@@ -136,6 +137,7 @@ class Course {
 				'fields'	 	=> 'ids'
 			]
 		);
+
 		$course_id = $course_id ? $course_id[0] : 0;
 		
 		// prepare argument for update or create course.
@@ -200,13 +202,12 @@ class Course {
 	 * @return string
 	 */
 	public function get_course_url( $moodle_course_id, $course_name ) {
-		$course 	   = $moodle_course_id;
 		$class 		   = "moowoodle";
 		$target 	   = '_blank';
-		$redirect_uri  = MooWoodle()->setting->get_setting( 'moodle_url' ) . "/course/view.php?id=" . $course;
-		$url 		   = '<a target="' . esc_attr( $target ) . '" class="woocommerce-button wp-element-button ' . esc_attr( $class ) . '" href="' . $redirect_uri . '">' . $course_name . '</a>';
+		$redirect_uri  = trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "course/view.php?id=" . $moodle_course_id;
+		$redirect_uri  = '<a target="' . esc_attr( $target ) . '" class="woocommerce-button wp-element-button ' . esc_attr( $class ) . '" href="' . $redirect_uri . '">' . $course_name . '</a>';
 		
-		return $url;
+		return $redirect_uri;
 	}
 
 	/**
@@ -230,7 +231,18 @@ class Course {
 		global $post;
 
 		$linked_course_id = get_post_meta( $post->ID, 'linked_course_id', true );
-		$courses 		  = $this->get_courses(['numberposts' => -1, 'fields' => 'ids']);
+
+		$courses 		  = $this->get_courses([
+			'numberposts' => -1,
+			'fields' 	  => 'ids',
+			'meta_query'  => [
+				[
+					'key'     => "linked_product_id",
+					'compare' => 'NOT EXISTS',
+				],
+			],
+		]);
+
 		?>
 		<div id="moowoodle_course_link_tab" class="panel woocommerce_options_panel">
 		<p>
@@ -261,5 +273,31 @@ class Course {
 		<?php
 		// Nonce field (for security)
 		echo '<input type="hidden" name="product_meta_nonce" value="' . wp_create_nonce() . '"></div>';
+	}
+
+	/**
+	 * Linked course with a product
+	 * @param int $product_id
+	 * @return mixed
+	 */
+	public function save_product_meta_data( $product_id ) {
+		// Security check
+		if ( !filter_input( INPUT_POST, 'product_meta_nonce', FILTER_DEFAULT ) === null 
+			|| !wp_verify_nonce( filter_input( INPUT_POST, 'product_meta_nonce', FILTER_DEFAULT ) )
+			|| !current_user_can( 'edit_product', $product_id )
+		) {
+			return $product_id;
+		}
+
+		$course_id = filter_input( INPUT_POST, 'course_id', FILTER_DEFAULT );
+		
+		// Linked product to course.
+		if ( $course_id !== null ) {
+			update_post_meta( $course_id, 'linked_product_id', $product_id );
+			update_post_meta( $product_id, 'linked_course_id', wp_kses_post( $course_id ) );
+			update_post_meta( $product_id, 'moodle_course_id', get_post_meta( $course_id, 'moodle_course_id', true ) );
+		}
+
+		return $product_id;
 	}
 }

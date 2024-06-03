@@ -130,7 +130,7 @@ class Product {
 		])[0];
 		
 		// Linked product to course.
-		add_post_meta( $wp_course->ID, 'linked_product_id', $product->get_id() );
+		update_post_meta( $wp_course->ID, 'linked_product_id', $product->get_id() );
 
         // Set product meta data.
         $product->update_meta_data( '_course_startdate', $course[ 'startdate' ] );

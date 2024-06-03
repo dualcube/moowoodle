@@ -188,7 +188,7 @@ export default function Course() {
             sortable: true,
         },
         {
-            name: __('Short Name', 'moowoodle'),
+            name: __('Short name', 'moowoodle'),
             selector: row => row.course_short_name,
             cell: (row) => (
                 <TableCell title={row.course_short_name}>
@@ -198,7 +198,7 @@ export default function Course() {
             sortable: true,
         },
         {
-            name: __('Category Name', 'moowoodle'),
+            name: __('Category', 'moowoodle'),
             selector: row => row.category_name,
             cell: (row) => (
                 <TableCell title={'Category Name'}>
@@ -210,14 +210,14 @@ export default function Course() {
             sortable: true,
         },
         {
-            name: __('Course Duration', 'moowoodle'),
+            name: __('Course duration', 'moowoodle'),
             cell: (row) => (
                 <TableCell title={'Date'}>
                     {row.date}
                 </TableCell>
             )
         }, {
-            name: __('Product Name', 'moowoodle'),
+            name: __('Product', 'moowoodle'),
             selector: row => row.products,
             cell: (row) => (
                 <TableCell title={'Product Name'}>
@@ -243,9 +243,10 @@ export default function Course() {
             ),
         },
         {
-            name: __('Enrolled Users', 'moowoodle'),
+            name: __('Enrolled users', 'moowoodle'),
+            selector: row => row.enroled_user,
             cell: (row) => (
-                <TableCell title={'Enrolled Users'}>
+                <TableCell title={'Enrolled users'}>
                     <div className="action-section">
                         <p>{row.enroled_user}</p>
                         <div className='action-btn'>
@@ -262,7 +263,7 @@ export default function Course() {
                 <div class="moowoodle-course-actions">
                     <button
                         class={`sync-single-course button-primary`}
-                        title={__('Sync Course Data')}
+                        title={__('Sync course data')}
                         onClick={(e) => {
                             handleSingleAction(
                                 'sync_courses',
@@ -315,10 +316,10 @@ export default function Course() {
                 return (
                     <div className="course-bulk-action bulk-action">
                         <select name="action" ref={bulkSelectRef} >
-                            <option value="">{__('Bulk Actions')}</option>
-                            <option value="sync_courses">{__('Sync Course')}</option>
-                            <option value="create_product">{__('Create Product')}</option>
-                            <option value="update_product">{__('Update Product')}</option>
+                            <option value="">{__('Bulk actions')}</option>
+                            <option value="sync_courses">{__('Sync course')}</option>
+                            <option value="create_product">{__('Create product')}</option>
+                            <option value="update_product">{__('Update product')}</option>
                         </select>
                         {!appLocalizer.pro_active && <span className="admin-pro-tag">pro</span>}
                         <button
@@ -381,7 +382,7 @@ export default function Course() {
                             >
                                 <option value="" style={{textAlign:'center'}}>-- Select --</option>
                                 <option value="course">Course</option>
-                                <option value="shortname">Short Name</option>
+                                <option value="shortname">Short name</option>
                             </select>
                         </div>
                     </>
@@ -414,7 +415,7 @@ export default function Course() {
             (
                 <div className="course-container-wrapper">
                     <div className="admin-page-title">
-                        <p>{__("All Courses", "moowoodle")}</p>
+                        <p>{__("Courses", "moowoodle")}</p>
                     </div>
 
                     <div className="admin-table-wrapper">

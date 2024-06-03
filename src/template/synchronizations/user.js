@@ -78,7 +78,7 @@ export default {
         {
             key: "sync_user_btn",
             type: "syncbutton",
-            interval: 10000,
+            interval: 2500,
             apilink: 'realtime-sync-users',
             statusApiLink: 'sync-status-user',
             label: "Sync profiles of existing users ",

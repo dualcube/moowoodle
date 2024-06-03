@@ -155,7 +155,10 @@ class RestAPI {
      * @return \WP_Error | \WP_REST_Response
      */
     public function synchronize_course( $request ) {
+        // Flusk course sync status before sync start.
         Util::flush_sync_status( 'course' );
+
+        set_transient( 'course_sync_running', true );
 
         $sync_setting = MooWoodle()->setting->get_setting( 'sync-course-options' );
         $sync_setting = is_array( $sync_setting ) ? $sync_setting : [];
@@ -187,14 +190,16 @@ class RestAPI {
 		// get all caurses from moodle.
 		$response = MooWoodle()->external_service->do_request( 'get_courses' );
         $courses  = $response[ 'data' ];
-        
-        Util::set_sync_status( [
-            'action'    => __( 'Update Course', 'moowoodle' ),
-            'total'     => count( $courses ),
-            'current'   => 0
-        ], 'course' );
 
-        MooWoodle()->course->update_courses( $courses );
+        if ( in_array( 'sync_courses', $sync_setting ) ) {
+            Util::set_sync_status( [
+                'action'    => __( 'Update Course', 'moowoodle' ),
+                'total'     => count( $courses ),
+                'current'   => 0
+            ], 'course' );
+
+            MooWoodle()->course->update_courses( $courses );
+        }
         
         Util::set_sync_status( [
             'action'    => __( 'Update Product', 'moowoodle' ),
@@ -204,16 +209,14 @@ class RestAPI {
 
         MooWoodle()->product->update_products( $courses );
         
+        delete_transient( 'course_sync_running' );
+
         /**
          * Action hook after moowoodle course sync.
          */
         do_action( 'moowoodle_after_sync_course' );
-        
-        // Retrive the sync status and flush it
-        $sync_status = Util::get_sync_status( 'course' );
-        Util::flush_sync_status( 'course' );
 
-        return rest_ensure_response( $sync_status );
+        return rest_ensure_response( true );
     }
 
     /**
@@ -222,7 +225,10 @@ class RestAPI {
      * @return \WP_Error|\WP_REST_Response
      */
     public function get_sync_status( $reques ) {
-        return rest_ensure_response( Util::get_sync_status( 'course' ) );
+        return rest_ensure_response([
+            'status'  => Util::get_sync_status( 'course' ),
+            'running' => get_transient( 'course_sync_running' ),
+        ]);
     }
 
     /**
@@ -243,9 +249,13 @@ class RestAPI {
         $args = [
             'fields'      => 'ids',
             'numberposts' => -1,
-            'posts_per_page' => $par_page,
-            'paged'          => $page,
+            'limit'       => $par_page,
+            'offset'      => ( $page - 1 ) * $par_page,
         ];
+
+        // if ( $page == null || $par_page == null ) {
+        //     $args [ 'numberposts' ] = -1;
+        // }
 
         // Filter by course
         if ( $search_action == 'course' ) {

@@ -66,7 +66,7 @@ export default {
         {
             key: "sync_course_btn",
             type: "syncbutton",
-            interval: 1000,
+            interval: 2500,
             apilink: 'sync-course',
             statusApiLink: 'sync-status-course',
             value: "Synchronize courses now!",
