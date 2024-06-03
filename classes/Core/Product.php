@@ -67,8 +67,8 @@ class Product {
 		$product_sync_setting = MooWoodle()->setting->get_setting( 'product_sync_option' );
 		$product_sync_setting = is_array( $product_sync_setting ) ? $product_sync_setting : [];
 
-		$create_product = ( bool ) array_intersect( $product_sync_setting, [ 'create_update', 'create' ] );
-		$update_product = ( bool ) array_intersect( $product_sync_setting, [ 'create_update', 'update' ] );
+		$create_product = in_array( 'create', $product_sync_setting );
+		$update_product = in_array( 'update', $product_sync_setting );
 
 		// None of the option is choosen.
 		if ( ! $create_product && ! $update_product ) return;

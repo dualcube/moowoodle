@@ -3,7 +3,7 @@ import { __ } from '@wordpress/i18n';
 export default {
     id: 'tool',
     priority: 50,
-    name: __("Tool", "moowoodle"),
+    name: __("Tools", "moowoodle"),
     desc: __("Review all system logs and errors", "moowoodle"),
     icon: 'font-tools',
     submitUrl: "save-moowoodle-setting",
@@ -37,7 +37,8 @@ export default {
             type: "text",
             desc: __("Select the interval for the user synchronization process. Based on this schedule, the cron job will run to sync users between WordPress and Moodle.", 'moowoodle'),
             proSetting: true,
-            parameter: __("Minutes", 'moowoodle')
+            parameter: __("Minutes", 'moowoodle'),
+            label: __("Automatic synchronization frequency", 'moowoodle'),
         },
     ]
 }

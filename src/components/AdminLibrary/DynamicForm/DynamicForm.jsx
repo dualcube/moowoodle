@@ -207,7 +207,7 @@ const DynamicForm = (props) => {
         if (inputField.dependent.set === false && isContain(inputField.dependent.key)) {
           return;
         }
-        if (inputField.dependent.value && isContain(inputField.dependent.key, inputField.dependent.value)) {
+        if (inputField.dependent.value && !isContain(inputField.dependent.key, inputField.dependent.value)) {
           return;
         }
       }
