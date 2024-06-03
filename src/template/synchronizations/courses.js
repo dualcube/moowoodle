@@ -16,16 +16,16 @@ export default {
             select_deselect: true,
             options: [
                 {
-                    key: "sync_courses",
+                    key: "sync_courses_category",
                     label: __('Course categories', 'moowoodle'),
                     hints: __("Scan the entire Moodle course category structure and synchronize it with the WordPress category listings.", 'moowoodle'),
-                    value: "sync_courses",
+                    value: "sync_courses_category",
                 },
                 {
-                    key: "sync_courses_category",
+                    key: "sync_courses_sku",
                     label: __('Course ID number - Product SKU', 'moowoodle'),
                     hints: __("Retrieves the course ID number and assigns it as the product SKU.", 'moowoodle'),
-                    value: "sync_courses_category",
+                    value: "sync_courses_sku",
                     proSetting: true,
                 },
                 {

@@ -35,7 +35,6 @@ class Installer {
         $general_settings = [
             'moodle_url'          => '',
             'moodle_access_token' => '',
-            'moodle_timeout'      => 10,
         ];
         // Default value for sso setting
         $sso_settings = [
@@ -44,27 +43,25 @@ class Installer {
         ];
         // Default value for display setting
         $display_settings = [
-            'start_end_date'                    => [],
-            'my_courses_priority'               => [],
+            'start_end_date'                    => ['start_end_date'],
+            'my_courses_priority'               => 0,
             'moowoodle_create_user_custom_mail' => [],
         ];
         // Default value for log setting
-        $log_settings = [
+        $tool_settings = [
             'moowoodle_adv_log' => [],
+            'moodle_timeout'    => 5,
+            'schedule_interval' => 1
         ];
         // Default value sync course setting
         $course_settings = [
-            'course_sync_direction'    => [ 'moodle_to_wordpress' ],
-            'course_sync_options'      => [ 'sync_courses', 'sync_courses_category' ],
-            'course_schedule_interval' => [],
-            'product_sync_option'      => [ 'create_update', 'create', 'update' ],
+            'sync-course-options'      => [ 'sync_courses_category', 'sync_courses_sku' ],
+            'product_sync_option'      => [ 'create', 'update' ],
         ];
         // Default value for sync user setting
         $user_settings = [
-            'update_moodle_user'     => [],
-            'user_sync_options'      => [],
-            'user_sync_direction'    => [],
-            'user_schedule_interval' => [],
+            'wordpress_user_role'  => ['customer'],
+            'moodle_user_role'     => ['5'],
         ];
         // Update default settings
         update_option( 'moowoodle_general_settings', array_merge(
@@ -76,7 +73,7 @@ class Installer {
             get_option( 'moowoodle_sso_settings', [] )
         ));
         update_option( 'moowoodle_display_settings', $display_settings );
-        update_option( 'moowoodle_log_settings', $log_settings );
+        update_option( 'moowoodle_tool_settings', $tool_settings );
         update_option( 'moowoodle_synchronize_course_settings', $course_settings );
         update_option( 'moowoodle_synchronize_user_settings',$user_settings );
     }

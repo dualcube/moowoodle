@@ -187,16 +187,14 @@ class RestAPI {
 		// get all caurses from moodle.
 		$response = MooWoodle()->external_service->do_request( 'get_courses' );
         $courses  = $response[ 'data' ];
+        
+        Util::set_sync_status( [
+            'action'    => __( 'Update Course', 'moowoodle' ),
+            'total'     => count( $courses ),
+            'current'   => 0
+        ], 'course' );
 
-        if ( in_array( 'sync_courses', $sync_setting ) ) {
-            Util::set_sync_status( [
-                'action'    => __( 'Update Course', 'moowoodle' ),
-                'total'     => count( $courses ),
-                'current'   => 0
-            ], 'course' );
-
-            MooWoodle()->course->update_courses( $courses );
-        }
+        MooWoodle()->course->update_courses( $courses );
         
         Util::set_sync_status( [
             'action'    => __( 'Update Product', 'moowoodle' ),
@@ -245,13 +243,9 @@ class RestAPI {
         $args = [
             'fields'      => 'ids',
             'numberposts' => -1,
-            'limit'       => $par_page,
-            'offset'      => ( $page - 1 ) * $par_page,
+            'posts_per_page' => $par_page,
+            'paged'          => $page,
         ];
-
-        // if ( $page == null || $par_page == null ) {
-        //     $args [ 'numberposts' ] = -1;
-        // }
 
         // Filter by course
         if ( $search_action == 'course' ) {

@@ -30,6 +30,10 @@ export default {
             }),
             select_deselect: true,
             proSetting: true,
+            dependent: {
+                key: "user_sync_direction",
+                value: 'wordpress_to_moodle'
+            }
         },
         {
             key: "moodle_user_role",
@@ -45,6 +49,10 @@ export default {
             }),
             select_deselect: true,
             proSetting: true,
+            dependent: {
+                key: "user_sync_direction",
+                value: 'moodle_to_wordpress'
+            }
         },
         {
             key: "user_sync_options",
