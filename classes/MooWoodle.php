@@ -62,7 +62,7 @@ class MooWoodle {
         // initialise plugin
         add_action( 'admin_menu', [ Admin::class, 'add_menu' ] );
         add_action( 'before_woocommerce_init', [ $this, 'declare_compatibility' ] );
-        add_action( 'woocommerce_loaded', [ $this, 'init_plugin' ] );
+        add_action( 'woocommerce_loaded', [ $this, 'load_plugin' ] );
         add_action( 'plugins_loaded', [ $this , 'is_woocommerce_loaded'] );
 	}
 
@@ -94,7 +94,7 @@ class MooWoodle {
      * Init plugin on woocommerce_loaded hook
      * @return void
      */
-    public function init_plugin() {
+    public function load_plugin() {
 
         // add link on pugin 'active' button
         if ( is_admin() && !defined( 'DOING_AJAX' ) ) {
@@ -102,7 +102,7 @@ class MooWoodle {
         }
 
         // Init required classes.
-        $this->init_classes();
+        $this->initialize_classes();
 
 		// Init Text Domain
 		$this->load_plugin_textdomain();
@@ -118,7 +118,7 @@ class MooWoodle {
      * Access this classes using magic method.
      * @return void
      */
-    public function init_classes() {
+    public function initialize_classes() {
         if ( is_admin() ) {
 			$this->container[ 'admin' ] = new Admin();
 		}
@@ -131,9 +131,9 @@ class MooWoodle {
 		$this->container[ 'category' ] = new Core\Category();
 		$this->container[ 'product' ] = new Core\Product();
         $this->container[ 'external_service' ] = new ExternalService();
-
 		$this->container[ 'enrollment' ] = new Enrollment();
-		$this->container[ 'MyAccountEndPoint' ] = new MyAccountEndPoint();
+		
+        new EndPoint();
     }
 
     /**

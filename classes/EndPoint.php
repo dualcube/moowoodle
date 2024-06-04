@@ -2,10 +2,11 @@
 
 namespace MooWoodle;
 
-class MyAccountEndPoint {
-    private $endpoint_slug = '';
+class EndPoint {
+    private $endpoint_slug = 'my-courses';
 	
 	public function __construct() {
+		Util::log("endpoints");
 		// define 'my_course' table enpoint.
 		add_action( 'init', [ &$this, 'register_my_courses_endpoint' ] );
 
@@ -20,8 +21,7 @@ class MyAccountEndPoint {
 	 *Adds my-courses endpoints table heade
 	 * @return void
 	 */
-	public function register_my_courses_endpoint() {
-		$this->endpoint_slug = 'my-courses';	
+	public function register_my_courses_endpoint() {	
 		add_rewrite_endpoint( $this->endpoint_slug, EP_ROOT | EP_PAGES );
 		flush_rewrite_rules();
 	}
