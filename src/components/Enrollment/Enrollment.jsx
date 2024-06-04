@@ -73,7 +73,7 @@ const Enrollment = () => {
 					{
 						key: "all",
 						name: __("All", "moowoodle"),
-						count: response[ "all" ],
+						count: response["all"],
 					},
 					{
 						key: "enrolled",
@@ -96,7 +96,7 @@ const Enrollment = () => {
 
 	const [selectedRange, setSelectedRange] = useState([
 		{
-			startDate: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000),
+			startDate: null,
 			endDate: new Date(),
 			key: 'selection'
 		}
@@ -174,7 +174,17 @@ const Enrollment = () => {
 			render: (updateFilter, value) => (
 				<div ref={dateRef}>
 					<div className="admin-header-search-section">
-						<input value={`${selectedRange[0].startDate.toLocaleDateString()} - ${selectedRange[0].endDate.toLocaleDateString()}`} onClick={() => handleDateOpen()} className="date-picker-input-custom" type="text" placeholder={__("DD/MM/YYYY", "moowoodle")} />
+						<input
+							value={
+								selectedRange[0].startDate
+									? `${selectedRange[0].startDate.toLocaleDateString()} - ${selectedRange[0].endDate.toLocaleDateString()}`
+									: '-- -- ----' // Placeholder value when startDate is null
+							}
+							onClick={() => handleDateOpen()}
+							className="date-picker-input-custom"
+							type="text"
+							placeholder={__("DD/MM/YYYY", "moowoodle")}
+						/>
 					</div>
 					{openDatePicker &&
 						<div className="date-picker-section-wrapper">
