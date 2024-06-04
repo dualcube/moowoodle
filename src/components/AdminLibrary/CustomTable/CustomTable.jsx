@@ -53,6 +53,7 @@ const CustomTable = (props) => {
     defaultTotalRows, // default total rows for the dataset. user should always provide this.
     perPageOption, // per page option array. user should always provide.
     realtimeFilter, // filter filds for realtime filter.
+    autoLoading, // Filter variable for auto refresh on filter change.
     typeCounts,
     bulkActionComp,
   } = props;
@@ -123,7 +124,9 @@ const CustomTable = (props) => {
       // Cooldown compleate time for db request.
       if (counter.current < 0) {
         // Set the loading
-        setLoading(true);
+        if (autoLoading) {
+          setLoading(true);
+        }
         // Call filter function
         handlePagination?.(rowsPerPage, 1, filterData);
         // Set current page to one.

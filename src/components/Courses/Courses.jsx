@@ -75,6 +75,14 @@ export default function Course() {
      * @param {*} filterData 
      */
     const requestApiForData = (rowsPerPage, currentPage, filterData = {}) => {
+        
+        // If serch action or search text fields any one of is missing then do nothing 
+        if ( Boolean( filterData?.searchAction ) ^ Boolean( filterData?.searchCourseField ) ) {
+            return;
+        }
+
+        setData(null);
+
         requestData(
             rowsPerPage,
             currentPage,
@@ -430,6 +438,7 @@ export default function Course() {
                                 selectable={true}
                                 handleSelect={handleRowSelect}
                                 realtimeFilter={realtimeFilter}
+                                autoLoading={false}
                             />
                         }
                     </div>

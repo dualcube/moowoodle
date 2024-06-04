@@ -134,7 +134,14 @@ const Enrollment = () => {
 	}
 
 	const requestApiForData = (rowsPerPage, currentPage, filterData = {}) => {
-		console.log(filterData)
+
+		// If serch action or search text fields any one of is missing then do nothing 
+        if ( Boolean( filterData?.search_student_field ) ^ Boolean( filterData?.search_student_action ) ) {
+            return;
+		}
+		
+		setData(null);
+
 		requestData(
 			rowsPerPage,
 			currentPage,
@@ -365,6 +372,7 @@ const Enrollment = () => {
 							perPageOption={[10, 25, 50]}
 							realtimeFilter={realtimeFilter}
 							typeCounts={enrollemntStatus}
+							autoLoading={false}
 						/>
 					}
 				</div>
