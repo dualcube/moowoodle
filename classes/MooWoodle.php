@@ -102,7 +102,7 @@ class MooWoodle {
         }
 
         // Init required classes.
-        add_action('init', [$this, 'init_classes']);
+        $this->init_classes();
 
 		// Init Text Domain
 		$this->load_plugin_textdomain();

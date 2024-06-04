@@ -12,7 +12,7 @@ extract($args);
 ?>
 <div class="auto">
     <?php if (count($customer_orders) > 0): ?>
-        <p>Total Courses: <?php echo count($customer_orders); ?></p>
+        <p><?php _e( 'Total Courses: ', 'moowoodle-pro' ) ?><?php echo count($customer_orders); ?></p>
     <?php endif; ?>
 
     <table id="moowoodle_table" class="moowoodle-table shop_table shop_table_responsive my_account_orders ">
@@ -52,7 +52,9 @@ extract($args);
                                     ?>
                                 </td>
                                 <td class="woocommerce-orders-table__cell-order-number">
-                                    <?php echo apply_filters('moodle_course_view_url', MooWoodle()->course->get_course_url($moodle_course_id, 'View'), $moodle_course_id); ?>
+                                    <a target="_blank" class="woocommerce-button wp-element-button moowoodle" href="
+                                    <?php echo apply_filters('moodle_course_view_url', MooWoodle()->course->get_course_url( $moodle_course_id ), $moodle_course_id); ?>
+                                    "><?php _e( 'View', 'moowoodle-pro' ) ?></a>
                                 </td>
                             </tr>
                             <?php
@@ -62,7 +64,7 @@ extract($args);
             } else {
                 ?>
                 <tr>
-                    <td colspan="5" class="no-data-row">You haven't purchase any course yet.</td>
+                    <td colspan="5" class="no-data-row"><?php _e( 'You haven\'t purchase any course yet.', 'moowoodle-pro' ) ?></td>
                 </tr>
                 <?php
             }

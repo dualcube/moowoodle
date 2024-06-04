@@ -201,12 +201,8 @@ class Course {
 	 * @param mixed $course_name
 	 * @return string
 	 */
-	public function get_course_url( $moodle_course_id, $course_name ) {
-		$class 		   = "moowoodle";
-		$target 	   = '_blank';
+	public function get_course_url( $moodle_course_id ) {
 		$redirect_uri  = trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "course/view.php?id=" . $moodle_course_id;
-		$redirect_uri  = '<a target="' . esc_attr( $target ) . '" class="woocommerce-button wp-element-button ' . esc_attr( $class ) . '" href="' . $redirect_uri . '">' . $course_name . '</a>';
-		
 		return $redirect_uri;
 	}
 
