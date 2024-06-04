@@ -7,7 +7,7 @@ class MyAccountEndPoint {
 	
 	public function __construct() {
 		// define 'my_course' table enpoint.
-		$this->register_my_courses_endpoint();
+		add_action( 'init', [ &$this, 'register_my_courses_endpoint' ] );
 
 		// Resister 'my_course' end point page in WooCommerce 'my_account'.
 		add_filter( 'woocommerce_account_menu_items', [ &$this, 'my_courses_page_link' ] );
@@ -20,7 +20,7 @@ class MyAccountEndPoint {
 	 *Adds my-courses endpoints table heade
 	 * @return void
 	 */
-	private function register_my_courses_endpoint() {
+	public function register_my_courses_endpoint() {
 		$this->endpoint_slug = 'my-courses';	
 		add_rewrite_endpoint( $this->endpoint_slug, EP_ROOT | EP_PAGES );
 		flush_rewrite_rules();

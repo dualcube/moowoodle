@@ -4,21 +4,20 @@ namespace MooWoodle\Core;
 
 class Course {
 	public function __construct() {
-		// Register 'course' in post DB.
-		$this->register_course_post_type();
-		$this->register_course_taxonomy();
-
 		// Add Link Moodle Course in WooCommerce edit product tab.
 		add_filter( 'woocommerce_product_data_tabs', [ &$this, 'moowoodle_linked_course_tab' ], 99, 1 );
 		add_action( 'woocommerce_product_data_panels', [ &$this, 'moowoodle_linked_course_panals' ] );
-		add_action('woocommerce_process_product_meta', [ &$this, 'save_product_meta_data' ] );
+		add_action( 'woocommerce_process_product_meta', [ &$this, 'save_product_meta_data' ] );
+
+		add_action( 'init', [ &$this, 'register_course_taxonomy' ] );
+		add_action( 'init', [ &$this, 'register_course_post_type' ] );
 	}
 
 	/**
 	 * Register 'course' post tipe.
 	 * @return void
 	 */
-	private function register_course_post_type() {
+	public function register_course_post_type() {
 		$args = [
 			'labels' => [
 				'name' 			 	 => sprintf(_x('%s', 'post type general name', 'moowoodle'), __('Courses', 'moowoodle')),
@@ -56,7 +55,7 @@ class Course {
 	 * Register 'course_cat' taxonomy.
 	 * @return void
 	 */
-	private function register_course_taxonomy() {
+	public function register_course_taxonomy() {
 		register_taxonomy(
 			'course_cat',
 			'course',
