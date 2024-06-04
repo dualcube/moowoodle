@@ -6,7 +6,7 @@ class EndPoint {
     private $endpoint_slug = 'my-courses';
 	
 	public function __construct() {
-		Util::log("endpoints");
+
 		// define 'my_course' table enpoint.
 		add_action( 'init', [ &$this, 'register_my_courses_endpoint' ] );
 
@@ -21,7 +21,7 @@ class EndPoint {
 	 *Adds my-courses endpoints table heade
 	 * @return void
 	 */
-	public function register_my_courses_endpoint() {	
+	public function register_my_courses_endpoint() {
 		add_rewrite_endpoint( $this->endpoint_slug, EP_ROOT | EP_PAGES );
 		flush_rewrite_rules();
 	}
@@ -101,5 +101,4 @@ class EndPoint {
 		$suffix = defined( 'MOOWOODLE_SCRIPT_DEBUG' ) && MOOWOODLE_SCRIPT_DEBUG ? '' : '.min';
 		wp_enqueue_style( 'frontend_css', MOOWOODLE_PLUGIN_URL . 'assets/frontend/css/frontend' . $suffix . '.css', array(), MOOWOODLE_PLUGIN_VERSION );
 	}
-
 }

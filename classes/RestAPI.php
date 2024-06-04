@@ -247,15 +247,11 @@ class RestAPI {
 
         // Prepare argument for database query
         $args = [
-            'fields'      => 'ids',
-            'numberposts' => -1,
-            'limit'       => $par_page,
-            'offset'      => ( $page - 1 ) * $par_page,
+            'fields'         => 'ids',
+            'numberposts'    => -1,
+            'posts_per_page' => $par_page,
+            'paged'          => $page
         ];
-
-        // if ( $page == null || $par_page == null ) {
-        //     $args [ 'numberposts' ] = -1;
-        // }
 
         // Filter by course
         if ( $search_action == 'course' ) {
