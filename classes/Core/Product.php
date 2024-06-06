@@ -116,11 +116,17 @@ class Product {
         $product->set_slug( $course[ 'shortname'] );
         $product->set_description( $course[ 'summary' ] );
         $product->set_status( 'publish' );
-		$product->set_sku( $course[ 'idnumber' ] );
         $product->set_sold_individually( true );
         $product->set_category_ids( [ $term->term_id ] );
         $product->set_virtual( true );
         $product->set_catalog_visibility( $course[ 'visible' ] ? 'visible' : 'hidden' );
+
+		// Set product's squ
+		try {
+			$product->set_sku( $course[ 'idnumber' ] );
+		} catch ( \Exception $error ) {
+			\MooWoodle\Util::log( "Unable to set product's( id=" . $product->get_id() . ") SQU." );
+		}
 
 		// get the course id linked with moodle.
         $wp_course = MooWoodle()->course->get_courses([

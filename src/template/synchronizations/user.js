@@ -63,15 +63,15 @@ export default {
             proSetting: true,
         },
         {
-            key: "start_end_date",
+            key: "realtime_user_sync",
             type: "checkbox",
             desc: __('If enabled, the real-time profile update scheduler will initiate based on the "synchronization flow" settings.<br>When a new user is added or updates their profile information, it will be synchronized between WordPress to Moodle, or vice versa, according to the profile information mapping settings above, based on the specified direction.', 'moowoodle'),
             label: __("Real-Time profile synchronization", 'moowoodle'),
             options: [
                 {
-                    key: "start_end_date",
+                    key: "realtime_user_sync",
                     label: __('', 'moowoodle'),
-                    value: "start_end_date"
+                    value: "realtime_user_sync"
                 }
             ]
         },

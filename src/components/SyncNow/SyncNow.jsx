@@ -56,7 +56,6 @@ const SyncNow = (props) => {
 
     // Start loading
     setSyncStarted(true);
-    setSyncStatus([]);
 
     // Rest call for start sync.
     axios({
