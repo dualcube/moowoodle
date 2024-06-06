@@ -191,16 +191,16 @@ class RestAPI {
 		$response = MooWoodle()->external_service->do_request( 'get_courses' );
         $courses  = $response[ 'data' ];
 
-        if ( in_array( 'sync_courses', $sync_setting ) ) {
-            Util::set_sync_status( [
-                'action'    => __( 'Update Course', 'moowoodle' ),
-                'total'     => count( $courses ),
-                'current'   => 0
-            ], 'course' );
+        // Update all course
+        Util::set_sync_status( [
+            'action'    => __( 'Update Course', 'moowoodle' ),
+            'total'     => count( $courses ),
+            'current'   => 0
+        ], 'course' );
 
-            MooWoodle()->course->update_courses( $courses );
-        }
+        MooWoodle()->course->update_courses( $courses );
         
+        // Update all product
         Util::set_sync_status( [
             'action'    => __( 'Update Product', 'moowoodle' ),
             'total'     => count( $courses ),
