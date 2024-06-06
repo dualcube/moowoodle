@@ -63,7 +63,6 @@ class ExternalService {
 			$timeout 		= MooWoodle()->setting->get_setting( 'moodle_timeout' );
 			$timeout		= $timeout ? $timeout : '10';
 
-
 			$response       = wp_remote_post( $request_url, [ 'body' => $request_query, 'timeout' => $timeout ] );
 			
 			$show_adv_log 	= MooWoodle()->setting->get_setting( 'moowoodle_adv_log' );
@@ -71,7 +70,7 @@ class ExternalService {
 			$show_adv_log   = in_array( 'moowoodle_adv_log', $show_adv_log );
 
             // Log the response relult.
-            if ( 	$show_adv_log ) {
+            if ( $show_adv_log ) {
 				MooWoodle()->util->log( "moowoodle moodle_url:" . $request_url . '&' . $request_query . "\n\t\tmoowoodle response:" . wp_json_encode( $response ) . "\n\n");
 			}
 		}
@@ -85,7 +84,7 @@ class ExternalService {
 
 	/**
 	 * check server resposne result .
-	 * @param string | null $response
+	 * @param object | null $response
 	 * @return array $response
 	 */
 	private function check_connection( $response ) {

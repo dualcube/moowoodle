@@ -125,10 +125,9 @@ class TestConnection {
 	 */
 	public static function get_user() {
 		$response = MooWoodle()->external_service->do_request( 'get_moodle_users', [ 'criteria' => [ [
-			'key' 	=> 'email',
-			'value' => 'moowoodletestuser@gmail.com'
+			'key' 	=> 'username',
+			'value' => 'moowoodletestuser'
 		] ] ] );
-
 		
 		if ( $response && ! isset( $response[ 'error' ] ) && count( $response[ 'data' ][ 'users' ] ) ) {
 			$response[ 'success' ] = true;
