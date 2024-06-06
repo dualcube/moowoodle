@@ -2,7 +2,7 @@ import { __ } from '@wordpress/i18n';
 
 export default {
     id: "synchronize-user",
-    priority: 10,
+    priority: 20,
     name: __("User Synchronization", 'moowoodle'),
     desc: __("Synchronization on demand with automatic, real-time updates.", 'moowoodle'),
     icon: "font-supervised_user_circle",

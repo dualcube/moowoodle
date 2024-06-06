@@ -48,7 +48,7 @@ class Admin {
 			],
 			"synchronization" => [
 				'name'   => __("Synchronization", 'moowoodle'),
-				'subtab' => 'synchronize-user'
+				'subtab' => 'synchronize-course'
 			],
 		];
 

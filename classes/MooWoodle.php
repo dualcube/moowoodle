@@ -167,14 +167,14 @@ class MooWoodle {
         
         // Create moowoodle plugin page link
         $plugin_links = array(
-            '<a href="' . admin_url('admin.php?page=moowoodle-settings') . '">' . __('Settings', 'moowoodle') . '</a>',
+            '<a href="' . admin_url('admin.php?page=moowoodle#&tab=settings&sub-tab=general') . '">' . __('Settings', 'moowoodle') . '</a>',
             '<a href="' . MOOWOODLE_SUPPORT_URL . '">' . __('Support', 'moowoodle') . '</a>',
         );
 
         // Append the link
         $links = array_merge( $plugin_links, $links );
 
-        if ( apply_filters( 'moowoodle_upgrage_to_pro', true ) ) {
+        if ( ! Util::is_pro_active() ) {
             $links[] = '<a href="' . MOOWOODLE_PRO_SHOP_URL . '" target="_blank" style="font-weight: 700;background: linear-gradient(110deg, rgb(63, 20, 115) 0%, 25%, rgb(175 59 116) 50%, 75%, rgb(219 75 84) 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;">' . __('Upgrade to Pro', 'moowoodle') . '</a>';
         }
 
