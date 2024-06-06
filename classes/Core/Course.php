@@ -228,11 +228,17 @@ class Course {
 		$linked_course_id = get_post_meta( $post->ID, 'linked_course_id', true );
 
 		$courses 		  = $this->get_courses([
+			'relation' 	  => 'OR',
 			'numberposts' => -1,
 			'fields' 	  => 'ids',
 			'meta_query'  => [
+				'relation' 	  => 'OR',
 				[
-					'key'     => "linked_product_id",
+					'key'     => 'linked_product_id',
+					'value'   => $post->ID,
+				],
+				[
+					'key'     => 'linked_product_id',
 					'compare' => 'NOT EXISTS',
 				],
 			],

@@ -11,7 +11,15 @@ const SyncNow = (props) => {
 
   // state variable for store sync status
   const [syncStatus, setSyncStatus] = useState([]);
-  console.log(syncStatus);
+
+  // state variable for check button has clicked or not.
+  const [buttonClicked, setButtonClicked] = useState(false);
+
+  // fetch data in interval
+  useEffect(() => {
+    fetchSyncStatus();
+  }, []);
+  
   /**
    * Function for fetch sync status.
    */
@@ -38,12 +46,7 @@ const SyncNow = (props) => {
     });
   }
 
-  // fetch data in interval
-  useEffect(() => {
-    fetchSyncStatus();
-  }, []);
-
-  const handleSync = (event) => {
+  const handleSync = async (event) => {
     event.preventDefault();
 
     // Check it is a pro setting or not.
