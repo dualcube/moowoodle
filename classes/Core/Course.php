@@ -104,6 +104,11 @@ class Course {
 		$updated_ids = [];
 
 		foreach ( $courses as $course ) {
+			// do nothing when course is site course.
+			if ( $course[ 'format' ] == 'site' ) {
+				continue;
+			}
+
 			// sync courses post data.
 			$course_id = $this->update_course( $course );
 

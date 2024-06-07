@@ -194,7 +194,7 @@ class RestAPI {
         // Update all course
         Util::set_sync_status( [
             'action'    => __( 'Update Course', 'moowoodle' ),
-            'total'     => count( $courses ),
+            'total'     => count( $courses ) - 1,
             'current'   => 0
         ], 'course' );
 
@@ -203,7 +203,7 @@ class RestAPI {
         // Update all product
         Util::set_sync_status( [
             'action'    => __( 'Update Product', 'moowoodle' ),
-            'total'     => count( $courses ),
+            'total'     => count( $courses ) - 1,
             'current'   => 0
         ], 'course' );
 

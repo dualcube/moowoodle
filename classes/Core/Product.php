@@ -74,6 +74,12 @@ class Product {
 		if ( ! $create_product && ! $update_product ) return;
 
         foreach ( $courses as $course ) {
+
+			// do nothing when course is site course.
+			if ( $course[ 'format' ] == 'site' ) {
+				continue;
+			}
+
             $product_id = self::update_product( $course, $create_product );
 
             if ( $product_id ) {
