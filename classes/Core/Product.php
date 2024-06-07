@@ -140,9 +140,6 @@ class Product {
             'meta_value' 	=> $course[ 'id' ],
             'meta_compare' 	=> '=',
 		])[0];
-		
-		// Linked product to course.
-		update_post_meta( $wp_course->ID, 'linked_product_id', $product->get_id() );
 
         // Set product meta data.
         $product->update_meta_data( '_course_startdate', $course[ 'startdate' ] );
@@ -151,6 +148,9 @@ class Product {
         $product->update_meta_data( 'linked_course_id', $wp_course->ID );
 		$product->set_status( 'publish' );
 		$product->save();
+
+		// Linked product to course.
+		update_post_meta( $wp_course->ID, 'linked_product_id', $product->get_id() );
 
 		return $product->get_id();
 	}

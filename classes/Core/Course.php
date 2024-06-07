@@ -295,13 +295,19 @@ class Course {
 			return $product_id;
 		}
 
-		$course_id = filter_input( INPUT_POST, 'course_id', FILTER_DEFAULT );
+		// Get the selected course id
+		$course_id = intval( filter_input( INPUT_POST, 'course_id', FILTER_DEFAULT ) );
 		
 		// Linked product to course.
-		if ( $course_id !== null ) {
+		if ( $course_id ) {
 			update_post_meta( $course_id, 'linked_product_id', $product_id );
 			update_post_meta( $product_id, 'linked_course_id', wp_kses_post( $course_id ) );
 			update_post_meta( $product_id, 'moodle_course_id', get_post_meta( $course_id, 'moodle_course_id', true ) );
+		} else {
+			// Deattach previously set linked
+			$linked_course_id = intval( get_post_meta( $product_id, 'linked_course_id', true ) );
+			delete_post_meta( $linked_course_id, 'linked_product_id' );
+			delete_post_meta( $product_id, 'linked_course_id' );
 		}
 
 		return $product_id;

@@ -36,6 +36,10 @@ class Enrollment {
 			}
 		}
 
+		if ( ! $has_course ) {
+			\MooWoodle\Util::log( "Unable to enroll on order compleate. Order item is't linked with any course." );
+		}
+
 		// Enroll moodle user
 		if ( $has_course && ! $order->get_meta( 'moodle_user_enrolled', true ) ) {
 			$this->order	= $order;
