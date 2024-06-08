@@ -276,7 +276,14 @@ const Enrollment = () => {
 			name: __("Student", "moowoodle"),
 			cell: (row) =>
 				<TableCell title="student_name">
-					<span dangerouslySetInnerHTML={{ __html: row.customer_img }}></span>
+					{
+						row.customer_img ?
+							(
+								<span dangerouslySetInnerHTML={{ __html: row.customer_img }}></span>
+							): (
+								<img src={defaultImage} alt="defaultimage" />
+							)
+					}
 					<div className="action-section">
 						<p>{row.customer_name}</p>
 						<div className='action-btn'>
