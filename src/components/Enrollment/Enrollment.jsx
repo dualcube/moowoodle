@@ -284,6 +284,7 @@ const Enrollment = () => {
 								<img src={defaultImage} alt="defaultimage" />
 							)
 					}
+					
 					<div className="action-section">
 						<p>{row.customer_name}</p>
 						<div className='action-btn'>
