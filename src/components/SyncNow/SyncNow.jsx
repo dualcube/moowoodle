@@ -54,9 +54,13 @@ const SyncNow = (props) => {
       return;
     }
 
+    
     // Start loading
     setSyncStarted(true);
-
+    
+    // Set button click event to true.
+    setButtonClicked(true);
+    
     // Rest call for start sync.
     axios({
       method: "post",

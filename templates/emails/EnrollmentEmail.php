@@ -38,7 +38,7 @@ foreach ( $enrollments[ 'enrolments' ] as $enrollment ) {
 if ( ! get_user_meta( $moodle_user_id, 'moowoodle_moodle_user_id' ) ) {
 	?>
 		<p>
-		<?php echo __( 'You need to change your password after first login.', 'moowoodle' ) . '\n\n'; ?>
+		<?php echo __( 'You need to change your password after first login.', 'moowoodle' ); ?>
 		</p>
 	<?php
 }

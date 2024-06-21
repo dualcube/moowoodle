@@ -45,6 +45,10 @@ class Enrollment {
 			$this->order	= $order;
 			$moodle_user_id = $this->get_moodle_user_id();
 
+			if ( ! $moodle_user_id ) {
+				\MooWoodle\Util::log( 'Unable to enroll user, unable to create user in moodle' );
+			}
+
 			$this->enrol_moodle_user( $moodle_user_id );
 		}
 	}
