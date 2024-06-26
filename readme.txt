@@ -1,5 +1,5 @@
 === MooWoodle - WordPress & Moodle LMS Integration Bridge ===
-Contributors: dualcube, kndnsow
+Contributors: dualcube
 Tags: Moodle Integration, LMS Integration, WordPress LMS, e-Learning, Moodle Connector
 Donate link: https://dualcube.com/
 Requires at least: 5.0.0
@@ -15,13 +15,23 @@ Unlock the power of seamless course import and sales with MooWoodle's WordPress 
 
 ### MooWoodle - WordPress and Moodle Integration Bridge for Creating and Selling Online Courses ###
 
-🏆 **#1** Moodle WooCommerce Bridge, **MooWoodle**, provides effortless e-learning integration. It seamlessly connects WooCommerce and Moodle, ensuring smooth course synchronization and facilitating hassle-free course sales.
+MooWoodle is the ultimate Moodle-WooCommerce bridge, allowing you to sell your Moodle courses directly on your WordPress site. Enjoy effortless course synchronization and automatic user enrollment for a smooth and integrated experience.
 
 [youtube https://www.youtube.com/watch?v=fL7wPVYopTU]
 
-📝 Explore our **[Documentation](https://dualcube.com/docs/moowoodle-pro/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree)**
+🌐Explore our  **[Documentation](https://dualcube.com/docs/moowoodle-pro/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree)**
 
 👉 Learn More About **[MooWoodle (PRO)](https://dualcube.com/product/moowoodle-pro/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree)**
+👉 View Live Demo :
+
+➡️ **[WordPress](http://demo.dualcube.com/moowoodle/wp-admin)**
+➡️ **[Moodle](http://demo.dualcube.com/moodledemo/login/index.php)**
+
+👉 Listen to What People Have to Say:
+
+🙆This versatile Product Catalog plugin offers comprehensive features for an enhanced online presence. The expert support team ensures seamless issue resolution with their deep knowledge and customer-oriented approach. –adelaidedownee
+
+🙆I spoke with Ria, who was fantastic at helping me resolve my issue. I had gone through and tried deactivating plugins and themes, and the error still happened. Ria went through and worked some magic and now has got the plug in working how it is supposed to. Really helpful, really friendly, very understanding. Will be sure to use it again. – lloydcox
 
 ## ✌️ Benefits
 
@@ -38,12 +48,6 @@ Unlock the power of seamless course import and sales with MooWoodle's WordPress 
 * 🖼️ Effortlessly sync Moodle course images to your WordPress.[PRO]
 * 🔄 Sync users in real-time between Moodle and WordPress.[PRO]
 * ✍️ Specify the user information (Username, Password, First Name, Last Name) for synchronization. [PRO]
-
-
-👉 Official Demo Link: Try out **MooWoodle** Demo sites
-
-➡️ **[WordPress](http://demo.dualcube.com/moowoodle/wp-admin)**
-➡️ **[Moodle](http://demo.dualcube.com/moodledemo/login/index.php)**
 
 ## ➡️ Key Features
 
