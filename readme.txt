@@ -172,20 +172,17 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 
 
 == Screenshots ==
-1. Fill up the Moodle Site URL, Moodle Access Token and the other setting field. 
-2. Fill up the display settings according to your need.
-3. Enable the settings and click sync now to sync all your courses and categories from your moodle site.
-4. In advanced features check Enable web service check box and save changes to enable web service for your moodle site.
-5. Enable REST protocol from manage protocol of your moodle site.
-6. In External services click on Add to add your external service.
-7. Give a Name to your external service and check Enabled then Add service to add your external service.
-8. Click on Add functions to add functions to your service.
-9. Add above mentioned functions mentioned to your service.
-10. In Manage tokens click on Add to generate new webservice token for your service.
-11. Select your admin user from the User list and your service form Service list and then click save changes.
-12. The token generated for your service. (Copy this token and paste it in Webservice token field in our WordPress plugin settings.)
-13. Paste the token generated for your service in the Webservice token and fill up the other settings.
-14.  List of Courses after sync.
+1. Fill up the Moodle Site URL, Moodle Access Token and run test connection. 
+2. Click sync now to sync all your courses, categories, images etc from your moodle site.
+3. Click sync now to sync user from moodle and wordpress as per user role. 
+4. List of Courses after sync.
+5. List of all enrolled user and it's corresponding course.
+6. Setting of shop page and enrollment button display.
+7. Single sign on configuration form WordPress end.
+8. Single sign on configuration form Moodle end.
+9. Usage of tool settings.
+10. Log file dipslay to detect error with MooWoodle configuration.
+11. In External services click on Add to add your external service.
 
 == Changelog ==
 
