@@ -2,10 +2,10 @@
 Contributors: dualcube
 Tags: Moodle Integration, LMS Integration, WordPress LMS, e-Learning, Moodle Connector
 Donate link: https://dualcube.com/
-Requires at least: 5.0.0
-Tested up to: 6.4.2
+Requires at least: 6.0.0
+Tested up to: 6.6.1
 Requires PHP: 8.0
-Stable tag: 3.1.10
+Stable tag: 3.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -189,8 +189,15 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 
 == Changelog ==
 
+= 3.2.0 – 2024-08-14 =
+* Added  - Support WordPress 6.6.1.
+* Added  - Support WooCommerce 9.1.4.
+* Revamped  - Refactored core code for improved loading times and reduced server load.
+* Revamped  - Introduced a modern, intuitive dashboard with a more user-friendly layout.
+* Enhancement  - Simplified menu structure and added quick-access buttons for frequently used features.
+
 = 3.1.10 – 2024-03-05 =
-* Fixed - Moodle course id is not lincked.
+* Fixed - Moodle course id is not linked.
 
 = 3.1.9 – 2024-02-28 =
 * Fixed - Product was not getting added with the course manually.
