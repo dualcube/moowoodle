@@ -116,8 +116,9 @@ class MooWoodle {
 		$this->MW_log('');
 	}
 	function mwdl_admin_init() {
+		$previous_plugin_version = get_option('dc_moowoodle_plugin_db_version');
         /* Migrate MooWoodle data */
-        do_mwdl_data_migrate();
+        do_mwdl_data_migrate($previous_plugin_version, $this->version);
 	}
 	/**
 	 * Load Localisation files.
@@ -195,23 +196,23 @@ class MooWoodle {
 		}
 		if ($wp_filesystem) {
 			// log folder create
-			if (!file_exists(MW_LOGS . "/error.txt")) {
+			if (!file_exists(MW_LOGS . "/error.log")) {
 				wp_mkdir_p(MW_LOGS);
-				$wp_filesystem->put_contents(MW_LOGS . "/error.txt", gmdate("d/m/Y H:i:s", time()) . ': ' . "MooWoodle Log file Created\n");
+				$wp_filesystem->put_contents(MW_LOGS . "/error.log", gmdate("d/m/Y H:i:s", time()) . ': ' . "MooWoodle Log file Created\n");
 			}
 			// Clear log file
 			if (filter_input(INPUT_POST, 'clearlog', FILTER_DEFAULT) !== null) {
-				$wp_filesystem->put_contents(MW_LOGS . "/error.txt", gmdate("d/m/Y H:i:s", time()) . ': ' . "MooWoodle Log file Cleared\n");
+				$wp_filesystem->put_contents(MW_LOGS . "/error.log", gmdate("d/m/Y H:i:s", time()) . ': ' . "MooWoodle Log file Cleared\n");
 			}
 			// Write Log
 			if($message != ''){
 				$log_entry = gmdate("d/m/Y H:i:s", time()) . ': ' . $message;
-				$existing_content = $wp_filesystem->get_contents(get_site_url(null, str_replace(ABSPATH, '', MW_LOGS) . "/error.txt"));
+				$existing_content = $wp_filesystem->get_contents(get_site_url(null, str_replace(ABSPATH, '', MW_LOGS) . "/error.log"));
 				if (!empty($existing_content)) {
 					$log_entry = "\n" . $log_entry;
 				}
 				$new_content = $existing_content . $log_entry;
-				return $wp_filesystem->put_contents(MW_LOGS . "/error.txt", $new_content);
+				return $wp_filesystem->put_contents(MW_LOGS . "/error.log", $new_content);
 			}
 		}
 		return false;

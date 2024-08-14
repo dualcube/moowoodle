@@ -58,7 +58,7 @@ class MooWoodle_Settings {
 		$layout = $this->moowoodle_get_page_layout();?>
     <div class="mw-admin-dashbord <?php echo $this->page; ?>">
       <div class="mw-general-wrapper">
-        <div class="mw-header-wapper">MooWoodle</div>
+        <div class="mw-header-wapper"><?php echo __('MooWoodle', 'moowoodle'); ?></div>
         <div class="mw-container">
           <div class="mw-middle-container-wrapper mw-horizontal-tabs">
             <div class="mw-middle-child-container">
@@ -240,7 +240,7 @@ class MooWoodle_Settings {
 				<div class="mw-overlay-content">
 				<span class="dashicons dashicons-no-alt mw-modal cross"></span>
 				<h1 class="banner-header">Unlock <span class="banner-pro-tag">Pro</span> </h1>
-				<h2>' . esc_html__('Upgrade to MooWoodle Pro', 'moowoodle') . '</h2>
+				<h2>' . esc_html__('Upgrade to Moowoodle Pro', 'moowoodle') . '</h2>
 			   <!-- <h3 class="mw-banner-thrd">' . esc_html__('Activate 30+ Pro Modules', 'moowoodle') . '</h3>-->
 				<div class="mw-banner-content">Boost to MooWoodle Pro to access premium features and enhancements!
 					<p> </p>
@@ -259,7 +259,7 @@ class MooWoodle_Settings {
 			   <!--<div class="mw-img-overlay-arrow">
 				 <span class="dashicons dashicons-arrow-down-alt"></span>
 				 </div>-->
-				<a class="mw-go-pro-btn" target="_blank" href="' . MOOWOODLE_PRO_SHOP_URL . '">' . esc_html__('Buy', 'moowoodle') . ' MooWoodle Pro</a>
+				<a class="mw-go-pro-btn" target="_blank" href="' . MOOWOODLE_PRO_SHOP_URL . '">' . esc_html__('Buy MooWoodle Pro', 'moowoodle') . '</a>
 				<!--<p class="upgrade"><b>Already Upgraded?</b></p>-->
 				</div>
 	  
@@ -286,7 +286,7 @@ class MooWoodle_Settings {
 				echo '<label scope="row" class="mw-form-label ' . esc_attr($field_id) . '"><p>' . $field['title'] . '</p></label>';
 			}
 			if (isset($field_id) && $field_id == 'test_connect_nolabel') {
-				echo '<label class="mw-form-label " for=""><p>' . __('Connection Testing', 'moowoodle') . '</p></label>';
+				echo '<label class="mw-form-label " for=""><p>' . __('Mooowoodle Test Connection', 'moowoodle') . '</p></label>';
 			}
 
 			if (!str_contains($field_id, 'nolabel')) {
