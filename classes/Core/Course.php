@@ -262,10 +262,10 @@ class Course {
 						return $term->name;
 					}, get_the_terms( $course_id, 'course_cat' ) );
 					$course_name = implode( ' / ', $course_path );
-					$course_name .= ' - ' . esc_html( get_the_title( $course_id ) );
+					$course_name .= ' - ' . esc_html__( get_the_title( $course_id ) );
 					?>
 					<option value="<?php echo esc_attr( $course_id ); ?>" <?php selected( $course_id, $linked_course_id ); ?>>
-						<?php echo esc_html( $course_name ) . ( ! empty( $course_short_name ) ? " ( " . esc_html( $course_short_name ) . " )" : ''); ?>
+						<?php echo esc_html__( $course_name ) . ( ! empty( $course_short_name ) ? " ( " . esc_html__( $course_short_name ) . " )" : ''); ?>
 					</option>
 					<?php
 				}
