@@ -11,8 +11,8 @@ extract($args);
 // Render template
 ?>
 <div class="auto">
-    <?php if (count($customer_orders) > 0): ?>
-        <p><?php _e( 'Total Courses: ', 'moowoodle-pro' ) ?><?php echo count($customer_orders); ?></p>
+    <?php if ( count($enrollments) > 0): ?>
+        <p><?php _e( 'Total Courses: ', 'moowoodle-pro' ) ?><?php echo count($enrollments); ?></p>
     <?php endif; ?>
 
     <table id="moowoodle_table" class="moowoodle-table shop_table shop_table_responsive my_account_orders ">
@@ -25,41 +25,34 @@ extract($args);
         </thead>
         <tbody>
             <?php
-            if (count($customer_orders) > 0) {
-                foreach ($customer_orders as $order) {
-                    // Get unenrolled course
-                    $unenrolled_course = $order->get_meta('_course_unenroled', true);
-                    $unenrolled_courses = $unenrolled_course ? explode(',', $unenrolled_course) : [];
+            if (count($enrollments) > 0) {
+                foreach ($enrollments as $enrollment) {
+                    $linked_course_id = $enrollment[ 'course_id' ];
+                    $moodle_course_id = get_post_meta( $linked_course_id, 'moodle_course_id', true );
+                    $item    		  = new \WC_Order_Item_Product( $enrollment[ 'item_id' ] );
+                    $enrolment_date   = $enrollment[ 'date' ];
 
-                    foreach ($order->get_items() as $enrolment) {
-                        $moodle_course_id = get_post_meta($enrolment->get_product_id(), 'moodle_course_id', true);
-                        $enrolment_date = $order->get_meta('moodle_user_enrolment_date', true);
-                        $linked_course_id = get_post_meta($enrolment->get_product_id(), 'linked_course_id', true);
-
-                        if ($linked_course_id && !in_array($moodle_course_id, $unenrolled_courses)):
-            ?>
-                            <tr>
-                                <td class="woocommerce-orders-table__cell-order-number"><?php echo get_the_title($enrolment->get_product_id()); ?></td>
-                                <td class="woocommerce-orders-table__cell-order-number"><?php echo $customer->user_login; ?></td>
-                                <?php if ($password): ?>
-                                    <td class="woocommerce-orders-table__cell-order-number"><?php echo $password; ?></td>
-                                <?php endif; ?>
-                                <td class="woocommerce-orders-table__cell-order-number">
-                                    <?php
-                                    if (!empty($enrolment_date)) {
-                                        echo get_date_from_gmt(gmdate('M j, Y-H:i', $enrolment_date));
-                                    }
-                                    ?>
-                                </td>
-                                <td class="woocommerce-orders-table__cell-order-number">
-                                    <a target="_blank" class="woocommerce-button wp-element-button moowoodle" href="
-                                    <?php echo apply_filters('moodle_course_view_url', MooWoodle()->course->get_course_url( $moodle_course_id ), $moodle_course_id); ?>
-                                    "><?php _e( 'View', 'moowoodle-pro' ) ?></a>
-                                </td>
-                            </tr>
-                            <?php
-                        endif;
-                    }
+                    ?>
+                        <tr>
+                            <td class="woocommerce-orders-table__cell-order-number"><?php echo get_the_title($item->get_product_id()); ?></td>
+                            <td class="woocommerce-orders-table__cell-order-number"><?php echo $customer->user_login; ?></td>
+                            <?php if ($password): ?>
+                                <td class="woocommerce-orders-table__cell-order-number"><?php echo $password; ?></td>
+                            <?php endif; ?>
+                            <td class="woocommerce-orders-table__cell-order-number">
+                                <?php
+                                if (!empty($enrolment_date)) {
+                                    echo $enrolment_date;
+                                }
+                                ?>
+                            </td>
+                            <td class="woocommerce-orders-table__cell-order-number">
+                                <a target="_blank" class="woocommerce-button wp-element-button moowoodle" href="
+                                <?php echo apply_filters('moodle_course_view_url', MooWoodle()->course->get_course_url( $moodle_course_id ), $moodle_course_id); ?>
+                                "><?php _e( 'View', 'moowoodle-pro' ) ?></a>
+                            </td>
+                        </tr>
+                    <?php
                 }
             } else {
                 ?>
