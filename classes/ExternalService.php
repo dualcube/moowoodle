@@ -28,8 +28,8 @@ class ExternalService {
 			'enrol_users'       => 'enrol_manual_enrol_users',
 			'get_course_image'  => 'core_course_get_courses_by_field',
 			'unenrol_users'     => 'enrol_manual_unenrol_users',
-			'get_users_data'    => 'auth_moowoodle_get_users',
-			'sync_users_data'   => 'auth_moowoodle_user_sync',
+			// 'get_users_data'    => 'auth_moowoodle_get_users',
+			// 'sync_users_data'   => 'auth_moowoodle_user_sync',
         ];
 	}
 
