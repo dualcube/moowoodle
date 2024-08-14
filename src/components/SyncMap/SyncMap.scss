@@ -1,0 +1,128 @@
+.sync-map-container{
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+    .container-wrapper{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: flex-end;
+
+        .main-wrapper{
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 0.5rem;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            position: relative;
+
+            .main-wrapper-heading{
+                display: flex;
+                flex-wrap: wrap;
+                column-gap: 2.25rem;
+                row-gap: 0.5rem;
+
+                span{
+                    width: 6.93rem;
+                }
+            }
+    
+            .map-content-wrapper{
+                display: flex;
+                align-content: center;
+                justify-content: flex-start;
+                gap: 0.5rem;
+                flex-wrap: wrap;
+        
+                select{
+                    background-color: transparent !important;
+                    border: 0.115rem solid rgba(0, 0, 0, 0.125) !important;
+                    border-radius: 0.25rem !important;
+                    padding: 0.125rem 1.5rem 0.15rem 0.5rem;
+                    width: 6.93rem;
+        
+                    &:active, &:focus{
+                        box-shadow: none;
+                    }
+                }
+        
+                .connection-icon{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.25rem;
+                }
+        
+                .remove-mapping{
+                    padding: 0.504rem 1rem;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    background: #e34f4720;
+                    color: #e35047;
+                    justify-content: space-between;
+                    border-radius: 0.25rem;
+                    gap: 0.75rem;
+                    transition: all 0.3s linear;
+        
+                    .icon{
+                        display: flex;
+                        align-items: center;
+                        margin-top: 0.126rem;
+        
+                        svg{
+                            width: 0.693rem;
+                            height: 0.693rem;
+                            fill: #e35047;
+                        }
+                    }
+                }
+            }
+        }
+    
+        .btn-container{
+
+            .add-mapping-container{
+                min-width: 8.19rem;
+                position: relative;
+        
+                .add-mapping{
+                    padding: 0.504rem 1rem;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    background: #65438f;
+                    justify-content: space-between;
+                    border-radius: 0.25rem;
+                    color: white;
+                    gap: 0.75rem;
+                    transition: all 0.3s linear;
+
+                    &.not-allow{
+                        opacity: 0.5;
+                        cursor: not-allowed;
+                    }
+        
+                    .icon{
+                        display: flex;
+                        align-items: center;
+                        margin-top: 0.126rem;
+        
+                        svg{
+                            width: 0.819rem;
+                            height: 0.819rem;
+                            fill: #fff;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+}
