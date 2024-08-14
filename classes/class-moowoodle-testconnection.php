@@ -7,7 +7,7 @@ class MooWoodle_Testconnection {
 		$this->response_data['message'] = __('Failed, please check the', 'moowoodle') . '<a href="' . admin_url("admin.php?page=moowoodle-settings&tab=moowoodle-log") . '"> ' . __('error log', 'moowoodle') . ' </a>';
 		$this->user_data['email'] = 'moowoodletestuser@gmail.com';
 		$this->user_data['username'] = 'moowoodletestuser';
-		$this->user_data['password'] = 'MooWoodle@123';
+		$this->user_data['password'] = 'Moowoodle@123';
 		$this->user_data['auth'] = 'manual';
 		$a = get_locale();
 		$b = strtolower($a);
@@ -65,8 +65,8 @@ class MooWoodle_Testconnection {
 					global $MooWoodle_Pro;
 					if (!in_array('auth_moowoodle_user_sync_get_all_users_data', $response_functions) && version_compare( MOOWOODLE_PRO_PLUGIN_VERSION, '1.0.5', '<' ) ) {
 						$MooWoodle->MW_log( "\n\n        It seems that you are using MooWoodle Pro but Moodle external web service functions 'auth_moowoodle_user_sync_get_all_users_data' is not configured correctly.\n\n");
-					} else if (!in_array('auth_moowoodle_user_sync', $response_functions) && version_compare( MOOWOODLE_PRO_PLUGIN_VERSION, '1.0.5', '>=' ) ) {
-						$MooWoodle->MW_log( "\n\n        It seems that you are using MooWoodle Pro but Moodle external web service functions 'auth_moowoodle_user_sync' is not configured correctly.\n\n");
+					} else if (!in_array('auth_moowoodle_moodle_connector_user_sync', $response_functions) && version_compare( MOOWOODLE_PRO_PLUGIN_VERSION, '1.0.5', '>=' ) ) {
+						$MooWoodle->MW_log( "\n\n        It seems that you are using MooWoodle Pro but Moodle external web service functions 'auth_moowoodle_moodle_connector_user_sync' is not configured correctly.\n\n");
 					} else if ($response_arr['downloadfiles'] != 1) {
 						$MooWoodle->MW_log( "\n\n        It seems that you are using MooWoodle Pro but Moodle external web service is not configured correctly. Please edit your Moodle External service and enable 'Can download files' (you can find it from 'Show more...' options)\n\n");
 					} else {
@@ -261,8 +261,8 @@ class MooWoodle_Testconnection {
 		if (!is_wp_error($response) && $response != null && $response['response']['code'] == 200) {
 			if (is_string($response['body'])) {
 				$response_arr = json_decode($response['body'], true);
-				if ($response_arr !== null || json_last_error() === JSON_ERROR_NONE) {
-					if (!array_key_exists('exception', $response_arr)) {
+				if (json_last_error() === JSON_ERROR_NONE) {
+					if (is_null($response_arr) || !array_key_exists('exception', $response_arr)) {
 						return 'success';
 					} else {
 						if (str_contains($response_arr['message'], 'Access control exception')) {
@@ -274,7 +274,7 @@ class MooWoodle_Testconnection {
 						$error_massage = $response_arr['message'] . ' ' . $url_check . $response_arr['debuginfo'];
 					}
 				} else {
-					$error_massage = __('Invalid JSON response', 'moowoodle');
+					$error_massage = __('Response is not JSON decodeable', 'moowoodle');
 				}
 			} else {
 				$error_massage = __('Not String response', 'moowoodle');

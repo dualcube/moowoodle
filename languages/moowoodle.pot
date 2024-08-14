@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MooWoodle\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-05 07:35+0000\n"
+"POT-Creation-Date: 2024-02-14 12:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -117,7 +117,7 @@ msgid "Bulk Actions"
 msgstr ""
 
 #: admin/class-moowoodle-settings.php:262
-msgid "Buy"
+msgid "Buy MooWoodle Pro"
 msgstr ""
 
 #: classes/class-moowoodle-product-data-tabs.php:71
@@ -151,10 +151,6 @@ msgstr ""
 
 #: classes/class-moowoodle-library.php:95
 msgid "Connection Settings"
-msgstr ""
-
-#: admin/class-moowoodle-settings.php:289
-msgid "Connection Testing"
 msgstr ""
 
 #: framework/field-types/textbox.php:15
@@ -275,7 +271,7 @@ msgstr ""
 
 #: moowoodle.php:75
 msgid ""
-"Ensure that all MooWoodle files are present in your WordPress installation."
+"Ensure that all Moowoodle files are present in your WordPress installation."
 msgstr ""
 
 #: classes/class-moowoodle-library.php:101
@@ -342,7 +338,7 @@ msgstr ""
 
 #: moowoodle.php:76
 msgid ""
-"If you suspect any missing files, consider reinstalling MooWoodle to resolve "
+"If you suspect any missing files, consider reinstalling Moowoodle to resolve "
 "the issue."
 msgstr ""
 
@@ -377,6 +373,7 @@ msgstr ""
 msgid "Manage tokens"
 msgstr ""
 
+#: classes/class-moowoodle-library.php:13
 #: classes/class-moowoodle-library.php:17
 #: classes/class-moowoodle-library.php:18
 msgid "Moodle"
@@ -402,11 +399,18 @@ msgstr ""
 msgid "Moodle User Name"
 msgstr ""
 
+#: admin/class-moowoodle-settings.php:289
+#: classes/class-moowoodle-library.php:111
+msgid "Mooowoodle Test Connection"
+msgstr ""
+
 #. Name of the plugin
+#: admin/class-moowoodle-settings.php:61 classes/class-moowoodle-library.php:56
+#: classes/class-moowoodle-library.php:85
 msgid "MooWoodle"
 msgstr ""
 
-#: classes/class-moowoodle.php:180
+#: classes/class-moowoodle.php:181
 msgid "MooWoodle Pro"
 msgstr ""
 
@@ -641,7 +645,6 @@ msgstr ""
 msgid "System Settings"
 msgstr ""
 
-#: classes/class-moowoodle-library.php:111
 #: framework/field-types/test-connect-nolabel.php:4
 msgid "Test Connection"
 msgstr ""
@@ -717,7 +720,7 @@ msgid "Timeout"
 msgstr ""
 
 #: moowoodle.php:72
-msgid "To access MooWoodle, please follow these steps:"
+msgid "To access Moowoodle, please follow these steps:"
 msgstr ""
 
 #: templates/emails/new-enrollment.php:31
@@ -740,7 +743,7 @@ msgid "Update Product"
 msgstr ""
 
 #: admin/class-moowoodle-settings.php:243
-msgid "Upgrade to MooWoodle Pro"
+msgid "Upgrade to Moowoodle Pro"
 msgstr ""
 
 #: moowoodle.php:45 admin/class-moowoodle-settings.php:42
@@ -790,14 +793,14 @@ msgid "View %s"
 msgstr ""
 
 #: moowoodle.php:71
-msgid "Warning: Activate WooCommerce and Verify MooWoodle Files"
+msgid "Warning: Activate WooCommerce and Verify Moowoodle Files"
 msgstr ""
 
 #: moowoodle.php:74
 msgid "website"
 msgstr ""
 
-#: classes/class-moowoodle.php:180
+#: classes/class-moowoodle.php:181
 msgid ""
 "WooComerce Subbcription and WooComerce Product Bundles is supported only "
 "with "

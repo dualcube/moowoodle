@@ -4,12 +4,12 @@
  * Plugin URI: https://dualcube.com/
  * Description: The MooWoodle plugin is an extention of WooCommerce that acts as a bridge between WordPress/Woocommerce and Moodle.
  * Author: DualCube
- * Version: 3.1.10
+ * Version: 3.1.7
  * Author URI: https://dualcube.com/
  * Requires at least: 5.0
  * Tested up to: 6.4.3
  * WC requires at least: 8.2.2
- * WC tested up to: 8.6.1
+ * WC tested up to: 8.5.2
  *
  * Text Domain: moowoodle
  * Domain Path: /languages/
@@ -68,12 +68,12 @@ if (!class_exists('MooWoodle') && MooWoodle_Dependencies::woocommerce_active_che
 } elseif (filter_input(INPUT_POST, 'page', FILTER_DEFAULT) == 'moowoodle-settings') {
 	?>
 	<div style="text-align: center; padding: 20px; height: 100%">
-        <h2><?php echo __('Warning: Activate WooCommerce and Verify MooWoodle Files', 'moowoodle'); ?></h2>
-        <p><?php echo __('To access MooWoodle, please follow these steps:', 'moowoodle'); ?></p>
+        <h2><?php echo __('Warning: Activate WooCommerce and Verify Moowoodle Files', 'moowoodle'); ?></h2>
+        <p><?php echo __('To access Moowoodle, please follow these steps:', 'moowoodle'); ?></p>
         <ol style="text-align: left; margin-left: 40px;">
             <li><?php echo __('Activate WooCommerce on your <a href="', 'moowoodle') . home_url() . '/wp-admin/plugins.php'; ?>"><?php echo __('website', 'moowoodle'); ?></a><?php echo __(', if it\'s not already activated.', 'moowoodle'); ?></li>
-            <li><?php echo __('Ensure that all MooWoodle files are present in your WordPress installation.', 'moowoodle'); ?></li>
-            <li><?php echo __('If you suspect any missing files, consider reinstalling MooWoodle to resolve the issue.', 'moowoodle'); ?></li>
+            <li><?php echo __('Ensure that all Moowoodle files are present in your WordPress installation.', 'moowoodle'); ?></li>
+            <li><?php echo __('If you suspect any missing files, consider reinstalling Moowoodle to resolve the issue.', 'moowoodle'); ?></li>
         </ol>
         <p><?php echo __('After completing these steps, refresh this page to proceed.', 'moowoodle'); ?></p>
     </div>

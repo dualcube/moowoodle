@@ -9,8 +9,8 @@ class MooWoodle_Library {
 		$pro_sticker = '';
 		$woocom_new_user_mail = '<a href="'. site_url() .'/wp-admin/admin.php?page=wc-settings&tab=email&section=moowoodle_emails_new_enrollment">here!</a>';
 		if ($url != null) {
-			$moodle_tokens_url = '<a href="' . $url . '/admin/webservice/tokens.php"> ' . __('Manage tokens', 'moowoodle') . '</a>';
-			$moodle_sso_url = '<a href="' . $url . '/admin/settings.php?section=auth_moowoodleconnect"> Moodle</a>';
+			$moodle_tokens_url = '<a href="' . $url . 'admin/webservice/tokens.php"> ' . __('Manage tokens', 'moowoodle') . '</a>';
+			$moodle_sso_url = '<a href="' . $url . 'admin/settings.php?section=auth_moowoodleconnect"> ' . __('Moodle', 'moowoodle') . '</a>';
 			$moowoodle_sync_setting_url = '<a href="' . get_admin_url() . '/admin.php?page=moowoodle-synchronization&tab=moowoodle-sync-options"> ' . __('Synchronization Settings', 'moowoodle') . '</a>';
 		} else {
 			$moodle_tokens_url = __('Manage tokens', 'moowoodle');
@@ -53,7 +53,7 @@ class MooWoodle_Library {
 				"moowoodle-manage-enrolment" => array(
 					"name" => __("Manage Enrolment", 'moowoodle') . $pro_sticker,
 					"menu_type" => "add_menu_page",
-					"page_name" => "MooWoodle",
+					"page_name" => __("MooWoodle", 'moowoodle'),
 					"layout" => "2-col",
 					"tabs" => array(
 						"moowoodle-manage-enrolment" => array(
@@ -82,7 +82,7 @@ class MooWoodle_Library {
 				"moowoodle-settings" => array(
 					"menu_type" => "add_menu_page",
 					"name" => __("Settings", 'moowoodle'),
-					"page_name" => "MooWoodle",
+					"page_name" => __("MooWoodle", 'moowoodle'),
 					"layout" => "2-col",
 					"tabs" => array(
 						"moowoodle-general" => array(
@@ -108,7 +108,7 @@ class MooWoodle_Library {
 										),
 										"test_connect_nolabel" => array(
 											"type" => "test-connect-nolabel",
-											"label" => "MooWoodle" . __("Test Connection", 'moowoodle'),
+											"label" => __("Mooowoodle Test Connection", 'moowoodle'),
 											"desc" => __("", 'moowoodle'),
 											"option_values" => array(
 												'Enable' => __('', 'moowoodle'),
