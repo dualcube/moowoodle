@@ -11,8 +11,8 @@ $moodle_user_id  = get_user_meta( $user_id, 'moowoodle_moodle_user_id', true );
 $password 		 = get_user_meta( $user_id, 'moowoodle_moodle_user_pwd', true );
 
 if ( ! $moodle_user_id ) {
-	echo __( 'Username : ', 'moowoodle' ) . esc_html( $user_details->data->user_login ) . '\n\n';
-	echo __( 'Password : ', 'moowoodle' ) . esc_html( $password ) . '\n\n';
+	echo __( 'Username : ', 'moowoodle' ) . esc_html__( $user_details->data->user_login ) . '\n\n';
+	echo __( 'Password : ', 'moowoodle' ) . esc_html__( $password ) . '\n\n';
 }
 
 echo __( 'To enroll and access your course please click on the course link given below :', 'moowoodle' ) . '\n\n';
