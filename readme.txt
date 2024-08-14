@@ -172,17 +172,17 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 
 
 == Screenshots ==
-1. Fill up the Moodle Site URL, Moodle Access Token and run test connection. 
-2. Click sync now to sync all your courses, categories, images etc from your moodle site.
-3. Click sync now to sync user from moodle and wordpress as per user role. 
-4. List of Courses after sync.
-5. List of all enrolled user and it's corresponding course.
-6. Setting of shop page and enrollment button display.
-7. Single sign on configuration form WordPress end.
-8. Single sign on configuration form Moodle end.
-9. Usage of tool settings.
-10. Log file dipslay to detect error with MooWoodle configuration.
-11. In External services click on Add to add your external service.
+1. Enter your Moodle Site URL and Moodle Access Token, then run the test connection.
+2. Click "Sync Now" to import all courses, categories, images, and other content from your Moodle site.
+3. Click "Sync Now" to synchronize users between Moodle and WordPress according to their roles.
+4. View the list of courses after synchronization.
+5. See the list of all enrolled users and their corresponding courses.
+6. Configure the shop page and the display settings for the enrollment button.
+7. Set up Single Sign-On (SSO) from the WordPress side.
+8. Configure Single Sign-On (SSO) from the Moodle side.
+9. Learn how to use the tool settings.
+10. View the log file to detect any errors related to MooWoodle configuration.
+11. In "External Services," click "Add" to include your external service.
 
 == Changelog ==
 
