@@ -1,0 +1,102 @@
+$menu-btn-color: #522c81;
+$body-background: #f9f9f9;
+$color-white: #fff;
+$menu-color: #f9f8fb;
+$color-active: #65438f;
+
+.sso-key-section {
+  display: flex;
+  align-items: center;
+
+  .input-section{
+    width: 100%;
+    position: relative;
+
+    .clear-btn{
+        background: transparent;
+        cursor: pointer;
+        outline: none;
+        border: none;
+        position: absolute;
+        top: 50%;
+        right: 0.315rem;
+        transform: translateY(-50%);
+        
+        &:focus{
+            box-shadow: none;
+        }
+        
+        svg{
+            width: 0.756rem;
+
+            path{
+                fill: rgba(255, 0, 0, 0.522);
+            }
+        }
+    }
+
+    input {
+      margin: 0;
+      border-right: none !important;
+
+      @media screen and (max-width: 49.266rem) {
+        min-height: 1.26rem !important;
+      }
+    }
+  }
+
+
+  .copy-btn {
+    padding: 0.4rem 0.75rem;
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    color: #fff;
+    background-color: $color-active;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    
+    span {
+      position: absolute;
+      background: $color-active;
+      padding: 0.5rem 0.75rem;
+      top: -2.835rem;
+      border-radius: 0.25rem;
+      
+      &::after {
+          position: absolute;
+        content: "";
+        bottom: -0.189rem;
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+        width: 0.504rem;
+        height: 0.504rem;
+        background: $color-active;
+      }
+    }
+
+    svg {
+      width: 0.945rem;
+    }
+  }
+  
+  .generate-btn {
+    padding: 0.3rem 0.75rem;
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    cursor: pointer;
+    color: #fff;
+    background-color: $color-active;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    gap: 0.25rem;
+
+    svg{
+        width: 0.945rem;
+    }
+  }
+}
