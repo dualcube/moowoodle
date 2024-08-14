@@ -1,0 +1,488 @@
+$font-color: #333;
+$background-color: #fff;
+$primary-color: #65438f;
+$background-secondary-color: #ccc;
+$even-row-color: rgb(245, 245, 245);
+$head-row-background: #e7e7e7;
+$border-color: rgba(0, 0, 0, 0.2);
+$shine-background: linear-gradient(90deg,
+    #f4f4f4 0rem,
+    rgba(229, 229, 229, 0.8) 2.52rem,
+    #f4f4f4 5.04rem);
+
+$padding-small: 0.4rem;
+$padding-medium: 1rem;
+
+$line-height-small: 1.008rem;
+$line-height-medium: 2.25rem;
+
+$border-width-small: 0.063rem;
+$border-width-medium: 0rem;
+
+$border-radius-small: 0.25rem;
+$border-radius-medium: 0.441rem;
+$border-radius-large: 0.5rem;
+
+$animation-duration: 2s;
+
+.load-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  border-color: $border-color;
+  width: 100%;
+
+  td {
+    padding: $padding-small;
+    border-style: solid;
+    border-width: $border-width-medium;
+    overflow: hidden;
+    word-break: normal;
+    border-color: $border-color;
+    color: $font-color;
+    background-color: $background-color;
+    flex-grow: 1;
+
+    &:first-child {
+      display: block;
+    }
+  }
+
+  tr:first-child .load-table-td {
+    font-weight: normal;
+    padding: $padding-small;
+    border-style: solid;
+    border-width: $border-width-medium;
+    overflow: hidden;
+    word-break: normal;
+    border-color: $border-color;
+    color: $font-color;
+    background-color: $head-row-background;
+  }
+}
+
+.line {
+  float: left;
+  width: 100%;
+  height: $line-height-small;
+  margin-top: $padding-small;
+  border-radius: $border-radius-medium;
+  background-image: $shine-background;
+  background-size: 37.8rem;
+  animation: shine-lines $animation-duration infinite ease-out;
+}
+
+@keyframes shine-lines {
+  0% {
+    background-position: -$line-height-small;
+  }
+
+  40%,
+  100% {
+    background-position: 8.82rem;
+  }
+}
+
+
+$menu-btn-color: #522c81;
+$body-background: #f9f9f9;
+$color-white: #fff;
+$menu-color: #f9f8fb;
+$color-active: #65438f;
+
+.filter-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+
+  .wrap-bulk-all-date {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    max-width: 37.8rem;
+    flex-wrap: wrap;
+    position: relative;
+    width: 100%;
+
+    .admin-header-search-section {
+      input {
+        padding: 0.15rem 0.5rem;
+      }
+    }
+
+    &>div {
+      flex: 1 0 9.45rem;
+      width: 100%;
+
+      div {
+        background-color: transparent;
+      }
+
+
+      .date-picker-section-wrapper {
+        position: absolute;
+        left: 0;
+        top: 105%;
+        background: #fff !important;
+        z-index: 5;
+        padding: 1rem;
+
+        .rdrDateRangePickerWrapper {
+          // flex-wrap: wrap;
+
+          .rdrDefinedRangesWrapper {
+            .rdrInputRanges {
+              .rdrInputRange {
+                input {
+                  width: 3.15rem;
+                }
+              }
+            }
+          }
+
+
+          &>div {
+            // flex: 1;
+
+            input {
+              width: fit-content;
+            }
+
+            .rdrDateDisplay {
+              span {
+                border-radius: 0;
+                box-shadow: none;
+                border: none;
+              }
+            }
+          }
+        }
+
+        @media screen and (max-width: 41.58rem) {
+          .rdrDateRangePickerWrapper {
+            flex-direction: column;
+
+            &>div {
+              width: 100%;
+            }
+          }
+        }
+      }
+
+      input,
+      select {
+        background-color: transparent;
+        width: 100%;
+        outline: none;
+        height: 2.205rem !important; // To overwrite default wordpress css
+        border: 0.115rem solid rgba(0, 0, 0, 0.125);
+
+        &:focus {
+          box-shadow: none;
+        }
+      }
+    }
+
+
+    .course-bulk-action {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+
+      select {
+        background-color: transparent !important;
+        border: 0.115rem solid rgba(0, 0, 0, 0.125) !important;
+        border-radius: 0.25rem !important;
+        padding: 0.125rem 1.5rem 0.15rem 0.5rem;
+        width: 100%;
+
+        &:hover,
+        &:active {
+          box-shadow: none;
+        }
+      }
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        border-radius: 0.25rem;
+        background-color: #65438f;
+        padding: 0.5rem 1rem;
+        height: fit-content;
+        color: #fff;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.koyZDM {
+  overflow: visible !important; // To overwrite default react data table css
+}
+
+.rdt_Table {
+  border-radius: 0.25rem;
+  overflow: hidden;
+  box-shadow: 0 0 1rem rgba($color: #000000, $alpha: 0.125);
+  width: 100%;
+  z-index: 1;
+
+  * {
+    font-size: 0.875rem;
+  }
+
+  .rdt_TableHead {
+    border-radius: 0.25rem;
+    background-color: $color-white;
+    font-size: 0.9rem;
+
+    .rdt_TableHeadRow {
+      padding: 0.313rem;
+      font-weight: 400;
+
+      .rdt_TableCol {
+        padding: 0 0.5rem;
+
+        &:first-child {
+          min-width: 2.25rem;
+          max-width: 2.25rem;
+
+          input[type=checkbox] {
+            margin: 0;
+          }
+        }
+
+        &:last-child {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .rdt_TableBody {
+    .rdt_TableRow {
+      background: $color-white;
+      position: relative;
+      padding: 0 0.313rem;
+
+      &:nth-child(odd) {
+        background: $body-background;
+      }
+
+      .rdt_TableCell {
+        font-size: 0.85rem;
+        padding: 0.313rem 0.5rem;
+        font-size: 0.95rem;
+
+        &:first-child {
+          min-width: 2.5rem;
+          max-width: 2.5rem;
+        }
+
+        &:last-child {
+          position: absolute;
+          top: 1.15rem;
+          right: 0.938rem;
+          display: none;
+          border-radius: 0.188rem;
+          width: 3rem !important; // To overwrite default table cell width / height
+          height: 3rem !important; // To overwrite default table cell width / height
+
+          .table-dropdown_btn {
+            width: 100%;
+
+            button {
+              width: 100%;
+              height: 1.563rem;
+              padding: 0;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              i {
+                font-size: 0.75rem !important; // To overwrite default table font size
+              }
+            }
+          }
+        }
+
+        .table-row-custom {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 0.5rem;
+
+          h4 {
+            display: none;
+            font-size: 0.95rem;
+            font-weight: 400;
+            min-width: 7.5rem;
+            text-align: left;
+          }
+
+          img {
+            width: 3.15rem;
+            height: 3.15rem;
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+            box-shadow: 0 0 .125rem rgba($color: #000000, $alpha: 0.125);
+          }
+
+          &:has(.action-section) {
+            align-items: flex-start;
+
+            .action-section {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              padding: 0.5rem 0;
+              gap: 0.25rem;
+
+              &:hover {
+                .action-btn {
+                  visibility: visible;
+                }
+              }
+
+              .action-btn {
+                display: flex;
+                gap: 0.5rem;
+                visibility: hidden;
+                transition: all 0.3s linear;
+                align-items: flex-start;
+                justify-content: flex-start;
+                
+                button, a {
+                  background: transparent;
+                  font-size: 0.75rem;
+                  font-weight: 500;
+                  color: #522c81;
+                  background: transparent;
+                  text-align: left;
+                  padding: 0;
+                  cursor: pointer;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+.rdt_Pagination {
+  display: grid !important;
+  grid-template-columns: 8.19rem 1fr 8.19rem 10.08rem;
+  place-content: center;
+
+  .sc-lmoLKH.lcunyj {
+    select {
+      &:focus {
+        border: none;
+        color: $color-active;
+        box-shadow: none;
+      }
+    }
+
+    svg {
+      display: none;
+    }
+  }
+}
+
+@media only screen and (max-width: 85.365rem) {
+  .rdt_Table {
+    .rdt_TableHead {
+      .rdt_TableHeadRow {
+        display: flex;
+
+        .rdt_TableCol {
+          display: none;
+
+          &:nth-child(1),
+          &:nth-child(2),
+          &:nth-child(3) {
+            display: inline-flex;
+            max-width: 33% !important; // To overwrite default table width for only responsive device
+            min-width: 5% !important; // To overwrite default table width for only responsive device
+          }
+        }
+      }
+    }
+
+    .rdt_TableBody {
+      .rdt_TableRow {
+        display: flex;
+        position: relative;
+        max-height: 4.25rem;
+        transition: max-height 0.4s linear;
+        overflow: hidden;
+        flex-wrap: wrap;
+        padding: 0 0.313rem 0.313rem;
+
+        &.active {
+          max-height: 62.5rem;
+        }
+
+        .rdt_TableCell {
+          min-width: 100% !important; // force to set width for laptop screen
+          display: flex;
+          background: rgb(238, 238, 238);
+
+          &:nth-child(1),
+          &:nth-child(2),
+          &:nth-child(3) {
+            background: transparent;
+            display: inline-flex !important; // force to set display type for laptop screen
+            max-width: 33% !important; // To overwrite default table cell size only responsive device
+            min-width: 5% !important; // To overwrite default table cell size only responsive device
+
+            .table-row-custom {
+              padding: 0;
+
+              h4 {
+                display: none;
+              }
+            }
+          }
+
+          &:last-child {
+            display: flex;
+            padding: 0;
+            width: 2.205rem !important; // To overwrite as a drop-down button width
+            min-width: 1.26rem !important; // To overwrite as a drop-down button width
+            height: 1.89rem !important; // To overwrite as a drop-down button height
+          }
+
+          .table-row-custom {
+            max-width: 18.75rem;
+            position: relative;
+            word-wrap: unset;
+            text-wrap: nowrap;
+            overflow: hidden;
+            padding: 0.313rem 0.625rem;
+
+            h4 {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+@media screen and (max-width:37.737rem) {
+  .rdt_Pagination {
+    display: flex !important;
+  }
+}

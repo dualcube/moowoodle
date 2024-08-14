@@ -1,0 +1,141 @@
+
+$menu-btn-color: #522c81;
+$body-background: #f9f9f9;
+$color-white: #fff;
+$menu-color: #f9f8fb;
+$color-active: #65438f;
+
+
+div.enrollment-img {
+    background-image: url("../../assets/images/Enrollment-pc.png") !important; // force to set image for ungrade with pro for desktop-screen
+    background-repeat: no-repeat;
+    background-position: top left;
+    background-size: contain;
+    height: 100vh;
+  }
+  
+  @media only screen and (max-width: 69.3rem) {
+    div.enrollment-img {
+      background-image: url("../../assets/images/Enrollment-tab.png") !important; // force to set image for ungrade with pro for laptop-screen
+      background-repeat: no-repeat;
+      background-position: top;
+      background-size: contain;
+    }
+  }
+  
+  @media only screen and (max-width: 34.65rem) {
+    div.enrollment-img {
+      background-image: url("../../assets/images/Enrollment-phone.png") !important; // force to set image for ungrade with pro for mobile-screen
+      background-repeat: no-repeat;
+      background-position: top;
+      background-size: contain;
+    }
+  }
+
+.admin-enrollment-list{
+    .admin-page-title{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.75rem;
+        position: relative;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    
+        p{
+          font-size: 1.5rem;
+        }
+    
+        .download-btn-enrollment-list{
+          border-radius: 0.25rem;
+          background-color: $color-active;
+          padding: 0.5rem 1rem;
+            
+            a{
+              color: $color-white;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 0.5rem;
+              text-decoration: none;
+    
+              .dashicons-before {
+                &::before{
+                  padding: 0;
+                }
+              }
+            }
+        }
+      }
+
+      .selectable-table{
+        .wrap-bulk-all-date{
+            max-width: 100% !important; // To overwrite default custom table css for adjust select input width
+
+            & > div{
+                select {
+                    padding-top: 0.14rem !important;
+                    padding-bottom: 0.14rem !important;
+                }
+            }
+        }
+      }
+}
+
+.table-row-custom{
+  .status-show-btn{
+    padding: 0.5rem 1rem;
+    background: #f0f0f0;
+    color: rgb(30, 30, 30);
+    width: 110px;
+    border-radius: 0.25rem;
+
+    &.unenroll{
+      background: #e34f4720;
+      color: #e35047;
+    }
+  }
+  .action-btn{
+    .unenroll{
+      color: #e35047 !important; // To overwrite default table scss
+    }
+  }
+}
+
+.filter-wrapper{
+  .wrap-bulk-all-date {
+  .search_student_field{
+    max-width: 12.6rem;
+    margin-left: auto;
+  }
+}
+}
+
+@media only screen and (max-width: 1015px) {
+.filter-wrapper {
+  .wrap-bulk-all-date {
+    .search_student_field {
+      margin: 0;
+    }
+  }
+}
+}
+
+.selectable-table{
+  .admin-table-wrapper-filter{
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: .875rem;
+    gap: .5rem;
+    justify-content: flex-start;
+    margin-bottom: .75rem;
+
+    &>div{
+      cursor: pointer;
+    }
+    .type-count-active{
+      color: #522c81;
+    }
+  }
+}

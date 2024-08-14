@@ -55,7 +55,7 @@ MooWoodle is the perfect Moodle-WooCommerce integration solution, enabling you t
 
    📋 **Enrollment Management**: Effortlessly manage course enrollments right within WordPress, reducing administrative complexity and enhancing the enrollment process via automation. Check for [more details](https://dualcube.com/docs/moowoodle-set-up-guide/#7-toc-title?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
 
-  🔄 **User Synchronization**: Say goodbye to duplicate user management. MooWoodle keeps your user profiles in sync between WordPress and Moodle, reducing administrative overhead. [Check for more details](https://dualcube.com/docs/moowoodle-set-up-guide/#8-toc-title?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
+  🔄 **User Synchronization**: Say goodbye to duplicate user management. Moowoodle keeps your user profiles in sync between WordPress and Moodle, reducing administrative overhead. [Check for more details](https://dualcube.com/docs/moowoodle-set-up-guide/#8-toc-title?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
 
    💳 **WooCommerce Integration**: If you're using WooCommerce for e-commerce on your WordPress site, MooWoodle integrates seamlessly. This allows you to sell Moodle courses through your WooCommerce store, manage orders, and provide access to enrolled users. [Check for more details](https://dualcube.com/docs/moowoodle-set-up-guide/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
 
@@ -67,13 +67,13 @@ MooWoodle is the perfect Moodle-WooCommerce integration solution, enabling you t
 
    💳 **WooCommerce Payment Gateway**: Choose any WooCommerce payment method that suits your requirements to accept payments from students.
 
-   🖥️ **User-Friendly Interface**: MooWoodle offers an intuitive and user-friendly interface, making integration straightforward for users of all technical levels.
+   🖥️ **User-Friendly Interface**: Moowoodle offers an intuitive and user-friendly interface, making integration straightforward for users of all technical levels.
 
    🎨 **Customizable Solution**: MooWoodle is customizable, allowing you to match the design and style of your Moodle courses with your WordPress site for a cohesive user experience.
 
-### ➡️ Upgrade to [MooWoodle Pro](https://dualcube.com/product/moowoodle-pro/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree) for Enhanced Features:
+### ➡️ Upgrade to [Moowoodle Pro](https://dualcube.com/product/moowoodle-pro/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree) for Enhanced Features:
 
-Unlock even more possibilities with MooWoodle Pro:
+Unlock even more possibilities with Moowoodle Pro:
 
    🚪 **Single Sign-On (SSO) [PRO]**: When you log in or log out of either Moodle™ or WordPress, the other platform automatically follows suit. Say goodbye to login hassles as your learners can effortlessly access both Moodle™ and WordPress with the same user profile, saving time and reducing the need for login-related support. [Check for more details](https://dualcube.com/docs/single-sign-on/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
 
@@ -130,9 +130,9 @@ Unlock even more possibilities with MooWoodle Pro:
 
 👥 **Existing Users [PRO]**: Utilize this option to synchronize user data manually between Moodle and WordPress bidirectionally. When adding a new user on one platform, our system instantly syncs their profile to the other. Check for more details.
 
-Join the ranks of satisfied users who have transformed their e-learning experiences with MooWoodle. Download it now and revolutionize your online education platform!
+Join the ranks of satisfied users who have transformed their e-learning experiences with Moowoodle. Download it now and revolutionize your online education platform!
 
-Don't miss out on the opportunity to enhance your e-learning ecosystem. Get started with MooWoodle today!
+Don't miss out on the opportunity to enhance your e-learning ecosystem. Get started with Moowoodle today!
 
 ## 🤝 Contributions
 
@@ -189,8 +189,7 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 
 == Changelog ==
 
-= 3.1.10 – 2024-03-05 =
-* Fixed - Moodle course id is not lincked.
+= 3.1.10 – 2024-03-1 =
 
 = 3.1.9 – 2024-02-28 =
 * Fixed - Product was not getting added with the course manually.

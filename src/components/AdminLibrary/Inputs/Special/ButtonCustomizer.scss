@@ -1,0 +1,251 @@
+.settings-input-content {
+  .btn-wrapper {
+    position: relative;
+    .btn-customizer {
+      width: fit-content;
+      position: absolute;
+      margin-top: 0.5rem;
+      padding-bottom: 3rem;
+      z-index: 1;
+
+      .btn-customizer-menu {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        position: relative;
+        background: rgb(13, 0, 23);
+        width: fit-content;
+        border-radius: 0.15rem;
+        padding: 0.5rem 0;
+
+        .btn-customizer-menu-items {
+          padding: 0 0.5rem;
+          border-right: 0.063rem solid #cccccc4e;
+          color: #fff;
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          &:last-child {
+            border: none;
+          }
+
+          .color-img {
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 0.25rem;
+            background: #90EE90;
+            background: linear-gradient(to top left, #90EE90 0%, #FFFFFF 50%, #FF47D0 100%),linear-gradient(to bottom left, #FFFF00 0%, #FFFFFF 50%, #0000FF 100%);
+          }
+          i {
+            color: #fff;
+            font-size: 1.15rem;
+          }
+        }
+      }
+
+      .customizer-setting-wrapper {
+        position: relative;
+        top: 0.315rem;
+        background: #f8f8f8;
+        width: 17.64rem;
+        padding: 1rem;
+        border: 0.125rem solid rgba($color: #000000, $alpha: 0.125);
+        box-shadow: 0 0.25rem 0.5rem rgba($color: #000000, $alpha: 0.125);
+        border-radius: 0.25rem;
+
+        .wrapper-close {
+          position: absolute;
+          right: -0.756rem;
+          top: -0.945rem;
+          background: #fff;
+          box-shadow: 0 0.25rem 0.5rem rgba($color: #000000, $alpha: 0.125);
+          border-radius: 50%;
+          width: 1.701rem;
+          height: 1.701rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 1.25rem;
+        }
+
+        .color,
+        .border,
+        .font,
+        .size,
+        .link {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+
+          .simple {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            .section {
+              display: flex;
+              flex-direction: column;
+              gap: 0.5rem;
+
+              .lable {
+                color: #000;
+                font-weight: 400;
+              }
+
+              .property-section {
+                display: flex;
+                gap: 0.5rem;
+
+                input[type="text"] {
+                  background: transparent;
+                }
+
+                input[type="color"] {
+                  background: transparent;
+                  border: none;
+                  outline: none;
+                  width: 2.646rem;
+                  height: 2.016rem;
+                  padding: 0;
+                }
+              }
+            }
+
+            .link-box {
+              width: 100%;
+              display: flex;
+              border: 0.063rem solid #d4d1d9;
+              align-items: center;
+              gap: 0.25rem;
+              padding: 0.25rem;
+              border-radius: 0.25rem;
+
+              .link-input {
+                border: none;
+                outline: none;
+                background: transparent;
+              }
+
+              button {
+                background: transparent;
+                border: none;
+                outline: none;
+              }
+            }
+          }
+
+          .hover {
+            background-color: #f2eff5;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            .section {
+              display: flex;
+              flex-direction: column;
+              gap: 0.5rem;
+
+              .lable {
+                color: #000;
+                font-weight: 400;
+              }
+
+              .property-section {
+                display: flex;
+                gap: 0.5rem;
+
+                input[type="text"] {
+                  background: transparent;
+                }
+
+                input[type="color"] {
+                  background: transparent;
+                  border: none;
+                  outline: none;
+                  width: 2.646rem;
+                  height: 2.016rem;
+                  padding: 0;
+                }
+              }
+            }
+          }
+        }
+
+        .link {
+          p {
+            font-size: 0.73rem;
+
+            span {
+              color: red;
+              font-weight: 800;
+              padding-right: 0.126rem;
+            }
+          }
+        }
+      }
+    }
+
+    .btn-wrapper-edit-button {
+      cursor: pointer;
+      background: transparent;
+    }
+
+    .btn-preview {
+
+      &.active, &:hover {
+        box-shadow:
+        0.0rem 0.0rem 0.0rem 0.126rem rgb(255, 255, 255), 0.0rem 0.0rem 0.0rem 0.189rem rgba(33, 33, 33, 0.5) !important; // // To make as a selectable and overwrite for prevent all button
+      }
+    }
+  }
+}
+
+.PB-range-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 0.252rem;
+  border-radius: 0.315rem;
+  background: #d5dbe1;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+
+.PB-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 0.945rem;
+  height: 0.945rem;
+  border-radius: 50%;
+  background-color: #000000;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.PB-range-slider::-webkit-slider-thumb:hover {
+  box-shadow: 0rem 0rem 0rem 0.504rem rgba(0, 0, 0, 0.16);
+  transition: 0.3s ease-in-out;
+}
+
+.PB-range-slider::-moz-range-thumb {
+  width: 0.945rem;
+  height: 0.945rem;
+  border-radius: 50%;
+  background-color: #000000;
+  cursor: pointer;
+}
+
+.PB-range-slider-div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.PB-range-slidervalue {
+  font-weight: 600;
+}

@@ -1,0 +1,134 @@
+.fromcustomizer-wrapper {
+    border: 0.115rem solid rgba($color: #000000, $alpha: 0.125);
+    padding: 1rem 1.25rem;
+
+    .wrapper-content {
+        .label-section {
+            margin-bottom: 0.55rem;
+
+            input {
+                border: none !important; // To overwrite dynamic form scss
+                font-size: 0.95rem;
+                cursor: pointer;
+                width: 100%;
+                &.active, &:hover{
+                    box-shadow:
+                    0.0rem 0.0rem 0.0rem 0.126rem rgb(255, 255, 255), 0.0rem 0.0rem 0.0rem 0.189rem rgba(33, 33, 33, 0.5)
+                }
+            }
+        }
+
+        .form-section {
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(11.34rem, 1fr));
+            width: 100%;
+            row-gap: 0.75rem;
+            column-gap: 0.75rem;
+            
+            .input-section {
+                max-width: 100%;
+                display: flex;
+                align-items: center;
+                position: relative;
+                
+                input {
+                    cursor: pointer;
+                    width: 100%;
+                    padding: 0.25rem 0.5rem;
+                    
+                    &:hover, &.active, &:focus{
+                        box-shadow:
+                        0.0rem 0.0rem 0.0rem 0.126rem rgb(255, 255, 255), 0.0rem 0.0rem 0.0rem 0.189rem rgba(33, 33, 33, 0.5) !important; // To overwrite stock manager.scss
+                    }
+                }
+
+                .input-editor{
+                    position: absolute;
+                    bottom: 111%;
+                    left: 0.0rem;
+                    background: rgb(13, 0, 23);
+                    color: #fff;
+                    padding: 0.35rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0.5rem;
+                    cursor: pointer;
+
+                    span{
+                        
+                    }
+                }
+
+                .setting-wrapper{
+                    position: absolute;
+                    background: #f8f8f8;
+                    width: 15.75rem;
+                    top: 3.15rem;
+                    padding: 1rem;
+                    border: 0.125rem solid rgba(0, 0, 0, 0.125);
+                    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.125);
+                    border-radius: 0.25rem;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.75rem;
+                    z-index: 1;
+
+                    .setting-nav{
+                        position: absolute;
+                        top: 0;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        cursor: move;
+                        user-select: none;
+                        line-height: 0;
+                        user-select: none;
+                        font-size: 1.5rem;
+                    }
+
+                    .setting-section-dev{
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.5rem;
+
+                        .label{
+                            color: #000;
+                            font-weight: 400;
+                        }
+
+                        .property-section{
+                            display: flex;
+                            gap: 0.5rem;
+
+                            input{
+                                &:hover, &:focus{
+                                    box-shadow: none !important; // To overwrite default wordpress css
+                                }
+                            }
+                        }
+                    }
+
+                    .wrapper-close{
+                        position: absolute;
+                        right: -0.756rem;
+                        top: -0.945rem;
+                        background: #fff;
+                        box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.125);
+                        border-radius: 50%;
+                        width: 1.701rem;
+                        height: 1.701rem;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 1.25rem;
+                    }
+                }
+            }
+
+            .button-section {
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+}

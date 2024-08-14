@@ -1,0 +1,67 @@
+$menu-btn-color: #522c81;
+$body-background: #f9f9f9;
+$color-white: #fff;
+$menu-color: #f9f8fb;
+$color-active: #65438f;
+
+.radio-buttons-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  
+    .radio-button {
+      display: inline-block;
+      position: relative;
+      cursor: pointer;
+  
+      .radio-button__input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+  
+      .radio-button__label {
+        display: inline-block;
+        padding-left: 1.575rem;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  
+        &:hover {
+          .radio-button__custom {
+            transform: translateY(-50%) scale(1.1);
+            border-color: $color-active;
+            box-shadow: 0 0 0.63rem #65438f3f;
+          }
+        }
+      }
+  
+      .radio-button__custom {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        width: 0.63rem;
+        height: 0.63rem;
+        border-radius: 50%;
+        border: 0.126rem solid #555;
+        transition: all 0.3s linear;
+      }
+  
+      .radio-button__input:checked + .radio-button__label {
+        color: $color-active;
+  
+        .radio-button__custom {
+          transform: translateY(-50%) scale(0.8);
+          border: 0.126rem solid transparent;
+          background-color: $color-active;
+          box-shadow: 0 0 0.5rem rgba($color: #000000, $alpha: 1.0);
+          box-shadow: 0.0rem 0.0rem 0.0rem 0.15rem $color-white,
+            0.0rem 0.0rem 0.0rem 0.25rem ;
+        }
+      }
+    }
+  }
+  

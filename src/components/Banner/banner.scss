@@ -1,0 +1,139 @@
+$primary-color: #65438f;
+$secondary-color: #fdfdfe;
+$text-color: #f9f8fb;
+$background-color: #f2eff5;
+$accent-color: #e35047;
+$border-color: #d4d1d9;
+
+$padding: 0.625rem;
+$container-padding: 1rem 3rem;
+$container-max-height: 12rem;
+$button-padding: 0.37rem 2.5rem;
+
+.custom-banner {
+  width: 100%;
+  margin-bottom: 0.75rem;
+
+  .admin-carousel-container {
+    padding: 0;
+    position: relative;
+    background: $background-color;
+
+    .carousel-container {
+      position: relative;
+      overflow: hidden;
+
+      .pro-slider-cross {
+        cursor: pointer;
+        position: absolute;
+        right: $padding;
+        top: $padding;
+        font-size: 1.25rem;
+        color: #c9c5c3;
+      }
+
+      .why-go-pro-tag {
+        cursor: pointer;
+        position: absolute;
+        left: -1.75rem;
+        top: 1.563rem;
+        background: $accent-color;
+        color: $text-color;
+        padding: 0.25rem 1.5rem;
+        transform: rotate(-45deg);
+      }
+    }
+
+    .carousel-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .carousel-item {
+      display: none;
+      padding: $padding;
+    }
+
+    .carousel-item.active {
+      display: block;
+      transition: 0.5s all ease-in-out;
+    }
+
+    .carousel-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      padding: $container-padding;
+      text-align: left;
+      background-size: 100% 100%;
+      background-position: center center;
+      background-repeat: no-repeat, no-repeat;
+      color: $text-color;
+      border-radius: 0.25rem;
+      border: 0.06rem solid $border-color;
+      flex-wrap: wrap;
+      transition: 0.5s all ease-in-out;
+      overflow: hidden;
+      max-height: $container-max-height;
+
+      &:hover {
+        background-size: 110% 102%;
+      }
+    }
+
+    .admin-pro-txt-items {
+      text-align: center;
+
+      h3 {
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: #000;
+      }
+      
+      p {
+        margin: 0.5rem 0 1.5rem !important; // To overwrite default common.scss margin
+        font-size: 1rem;
+        color: #000;
+      }
+
+      a.admin-btn.btn-red {
+        background-color: $accent-color;
+        color: $text-color;
+        border: 0.06rem solid $accent-color;
+        transition: all 0.3s ease;
+        border-radius: 0.25rem;
+        font-weight: 500;
+        padding: $button-padding;
+        cursor: pointer;
+        display: inline-block;
+        white-space: nowrap;
+      }
+    }
+
+    .carousel-controls {
+      position: absolute;
+      width: 90%;
+      display: flex;
+      justify-content: space-between;
+      transform: translate(-50%, -50%);
+      top: 50%;
+      left: 50%;
+
+      button {
+        color: #65438f;
+        background-color: #c9c5c3;
+        font-size: 0.65rem;
+        border-radius: 50%;
+        margin: 0;
+        line-height: 0;
+        height: 1.4rem;
+        width: 1.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}

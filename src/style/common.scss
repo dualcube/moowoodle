@@ -1,0 +1,294 @@
+@font-face {
+  font-family: "admin-font";
+  src: url("fonts/admin-font.eot?nofply");
+  src:
+    url("fonts/admin-font.eot?nofply#iefix") format("embedded-opentype"),
+    url("fonts/admin-font.ttf?nofply") format("truetype"),
+    url("fonts/admin-font.woff?nofply") format("woff"),
+    url("fonts/admin-font.svg?nofply#admin-font") format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="font-"],
+[class*=" font-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: "admin-font" !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-resize:before {
+  content: "\e90e";
+}
+
+.font-arrow-down:before {
+  content: "\e90a";
+}
+
+.font-arrow-up:before {
+  content: "\e909";
+}
+
+.font-arrow-right:before {
+  content: "\e907";
+}
+
+.font-arrow-left:before {
+  content: "\e908";
+}
+
+.font-mailchimp:before {
+  content: "\e900";
+}
+
+.font-keyboard_arrow_down:before {
+  content: "\e913";
+}
+
+.font-create:before {
+  content: "\e912";
+}
+
+.font-edit:before {
+  content: "\e912";
+}
+
+.font-support:before {
+  content: "\e911";
+}
+
+.font-link:before {
+  content: "\e90d";
+}
+
+.font-crop-free:before {
+  content: "\e90f";
+}
+
+.font-text-fields:before {
+  content: "\e910";
+}
+
+.font-send:before {
+  content: "\e90c";
+}
+
+.font-menu:before {
+  content: "\e90b";
+}
+
+.font-cross:before {
+  content: "\e905";
+}
+
+.font-icon-yes:before {
+  content: "\e906";
+}
+
+.font-mail:before {
+  content: "\e901";
+}
+
+.font-file-submission:before {
+  content: "\e902";
+}
+
+.font-submission-message:before {
+  content: "\e903";
+}
+
+.font-settings:before {
+  content: "\e904";
+}
+
+code {
+  background: #fbf5f8;
+  color: #b74f82;
+  font-style: normal;
+}
+
+p.admin-settings-metabox-description-code {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0;
+  background: #fdf9fb;
+  color: #b74f82;
+  border-radius: 0.25rem;
+  position: relative;
+
+  &::before {
+    position: absolute;
+    content: "";
+    left: 0;
+    top: 0;
+    width: 0.25rem;
+    border-radius: 0.25rem;
+    background-color: #dfb1c7;
+    height: 100%;
+  }
+}
+
+
+$menu-btn-color: #522c81;
+$body-background: #f9f9f9;
+$color-white: #fff;
+$menu-color: #f9f8fb;
+$color-active: #65438f;
+
+.notice.notice-error{
+  // display: none;
+}
+
+#footer-thankyou{
+  a{
+    color: #2271b1;
+  }
+}
+a{
+  color: #40bacb;
+
+  &:hover{
+      color: #40bacb;
+  }
+}
+h1, h2, h3, h4, h5, h6, p{
+  margin: 0;
+  padding: 0;
+}
+#moowoodle_root{
+  padding: 1.5rem 1rem 0 0;
+
+  a{
+    text-decoration: none;
+  }
+
+  button{
+    outline: none;
+    border: none;
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+-moz-appearance: textfield;
+}
+
+a:focus{
+    box-shadow: none;
+    outline: none;
+}
+
+
+.admin-notice-display-title{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  background-color: rgba(12, 216, 12, 1);
+  color: #fff;
+  max-width: 15rem;
+  width: fit-content;
+  padding: 0.5rem 0;
+  padding: 0.5rem;
+  font-weight: 400;
+  position: fixed;
+  top: 7.182rem;
+  right: 1.512rem;
+  z-index: 99999;
+
+  &:after{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    content: "";
+    width: 100%;
+    height: 0.252rem;
+    background: green;
+    animation: progress 2s linear;
+
+
+
+    @keyframes progress {
+      from {width: 100%;}
+      to {width: 0%;}
+    }
+  }
+}
+
+span.admin-pro-tag{
+  font-size: 0.5rem;
+  background: #e35047;
+  padding: 0.125rem 0.5rem;
+  color: #F9F8FB;
+  font-weight: 700;
+  line-height: 1.1;
+  position: absolute;
+  margin-left: 0.25rem;
+  border-radius: 2rem 0;
+  right: 0.25rem;
+  top: 30%;
+  transform: translateY(-50%);
+}
+
+@media screen and (max-width: 49.266rem) {
+  input[type=checkbox], input[type=radio]{
+    height: 1rem;
+    width: 1rem;
+  }
+  input[type=checkbox]:checked::before {
+    margin: -.1875rem 0 0 -.25rem;
+    height: 1.3125rem;
+    width: 1.3125rem;
+}
+}
+
+.setting-form-input{
+  span.admin-pro-tag{
+    top: 26% !important;
+  }
+}
+
+.dynamic-fields-wrapper{
+  .dynamic-form {
+    .form-group {
+      .settings-input-content {
+        .toggle-checkbox-header{
+          margin: 0;
+          
+          .toggle-checkbox-content {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.sc-lnsjTu.epZUJV{
+  svg{
+    display: none; // To prevent extra svg from dataTable
+  }
+}
+
+.rdt_Pagination{
+  grid-template-columns: 6rem 1fr 8.19rem 10.08rem !important; // To overwrite default adminComponent css
+}
+
+.highlighted-part{
+  color: #e35047;
+}
