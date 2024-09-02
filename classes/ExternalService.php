@@ -13,11 +13,11 @@ defined('ABSPATH') || exit;
 class ExternalService {
 
 	/**
-	 * Get moodle cor function
+	 * Get moodle core function
 	 * @return string[] core functions
 	 */
 	public function get_core_functions() {
-		return [
+		return apply_filters('additional_core_functions', [
 			'get_site_info' 	=> 'core_webservice_get_site_info',
             'get_categories'    => 'core_course_get_categories',
 			'get_courses'       => 'core_course_get_courses',
@@ -28,9 +28,7 @@ class ExternalService {
 			'enrol_users'       => 'enrol_manual_enrol_users',
 			'get_course_image'  => 'core_course_get_courses_by_field',
 			'unenrol_users'     => 'enrol_manual_unenrol_users',
-			// 'get_users_data'    => 'auth_moowoodle_get_users',
-			// 'sync_users_data'   => 'auth_moowoodle_user_sync',
-        ];
+        ]);
 	}
 
 	/**
