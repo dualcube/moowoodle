@@ -218,6 +218,16 @@ export default function Course() {
             sortable: true,
         },
         {
+            name: __('Course Id', 'moowoodle'),
+            selector: row => row.id,
+            cell: (row) => (
+                <TableCell title={'Course Id'}>
+                    {row.id}
+                </TableCell>
+            ),
+            sortable: true,
+        },
+        {
             name: __('Course duration', 'moowoodle'),
             cell: (row) => (
                 <TableCell title={'Date'}>
