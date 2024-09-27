@@ -40,6 +40,7 @@ export default function Course() {
      * @param {*} rowsPerPage 
      * @param {*} currentPage 
      */
+    // console.log(getApiLink('get-courses'));
     function requestData(
         rowsPerPage = 10,
         currentPage = 1,
@@ -64,6 +65,7 @@ export default function Course() {
                 search: searchCourseField
             },
         }).then((response) => {
+            // console.log(response.data);
             setData(response.data);
         });
     }
@@ -219,10 +221,10 @@ export default function Course() {
         },
         {
             name: __('Course Id', 'moowoodle'),
-            selector: row => row.id,
+            selector: row => row.moodle_course_id,
             cell: (row) => (
                 <TableCell title={'Course Id'}>
-                    {row.id}
+                    {row.moodle_course_id}
                 </TableCell>
             ),
             sortable: true,
