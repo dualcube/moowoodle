@@ -196,6 +196,16 @@ export default function Course() {
             sortable: true,
         },
         {
+            name: __('Course Id', 'moowoodle'),
+            selector: row => row.moodle_course_id,
+            cell: (row) => (
+                <TableCell title={'Course Id'}>
+                    {row.moodle_course_id}
+                </TableCell>
+            ),
+            sortable: true,
+        },
+        {
             name: __('Short name', 'moowoodle'),
             selector: row => row.course_short_name,
             cell: (row) => (
