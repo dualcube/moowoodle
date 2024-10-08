@@ -163,10 +163,16 @@ class Product {
 	public static function remove_exclude_ids( $exclude_ids ) {
         // get all product except $exclude_ids array
 		$product_ids = \wc_get_products([
-            'exclude' => $exclude_ids,
-            'status' => 'publish',
-            'return' => 'ids',
-        ]);
+			'exclude' => $exclude_ids,
+			'status'  => 'publish',
+			'return'  => 'ids',
+			'meta_query' => [
+				[
+					'key'     => 'linked_course_id',
+					'compare' => 'EXISTS',
+				],
+			],
+		]);
 
 		// delete product.
 		foreach ( $product_ids as $product_id ) {
