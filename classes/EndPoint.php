@@ -56,15 +56,20 @@ class EndPoint {
 	public function add_my_courses_endpoint() {
 		$customer = wp_get_current_user();
 
-		// Get all orders of customer
-		$customer_orders = wc_get_orders([
-			'numberposts' => -1,
-			'orderby' 	  => 'date',
-			'order'       => 'DESC',
-			'type'        => 'shop_order',
-			'status'      => 'wc-completed',
-			'customer_id' => $customer->ID,
+		$enrollments = \MooWoodle\Enrollment::get_enrollments([
+			'user_email' => $customer->user_email,
+			'status'     => 'enrolled',
 		]);
+
+		// Get all orders of customer
+		// $customer_orders = wc_get_orders([
+		// 	'numberposts' => -1,
+		// 	'orderby' 	  => 'date',
+		// 	'order'       => 'DESC',
+		// 	'type'        => 'shop_order',
+		// 	'status'      => 'wc-completed',
+		// 	'customer_id' => $customer->ID,
+		// ]);
 
 		// Define the columns for table
 		$table_heading = [
@@ -83,7 +88,7 @@ class EndPoint {
 		
 		Util::get_template( 'endpoints/my-course.php', [
 			'table_heading'   => $table_heading,
-			'customer_orders' => $customer_orders,
+			'enrollments' 	  => $enrollments,
 			'customer' 		  => $customer,
 			'password' 		  => $password,
 		]);
