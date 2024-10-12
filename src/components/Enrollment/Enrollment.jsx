@@ -323,7 +323,7 @@ const Enrollment = () => {
 				method: 'post',
 				url: getApiLink('manage-enrollment'),
 				data: {
-					order_id: row.order_id,
+					id: row.id,
 					course_id: row.course_id,
 					user_id: row.customer_id,
 					action: row.status == 'enrolled' ? 'unenroll' : 'enrolled'

@@ -21,7 +21,7 @@ class Enrollment {
 	 * @param int $order_id
 	 * @return void
 	 */
-	public function process_order( $order_id ) {	
+	public function process_order( $order_id ) {
 		$order = new \WC_Order( $order_id );
 
 		// Check order contain courses
@@ -268,13 +268,32 @@ class Enrollment {
 		foreach ( $enrolments as $key => $value ) {
 			unset( $enrolments[ $key ][ 'linked_course_id' ] );
 			unset( $enrolments[ $key ][ 'course_name' ] );
+			unset( $enrolments[ $key ][ 'item_id' ] );
 		}
 
 		// enroll user to moodle course by core external function.
 		MooWoodle()->external_service->do_request( 'enrol_users', [ 'enrolments' => $enrolments ] );
+
+		// Prepare user data.
+		$user_id  = $this->order->get_user_id();
+		$user 	  = $user_id ? get_userdata( $user_id ) : false;
+		$email 	  = $this->order->get_billing_email();
+		$email	  = $user ? $user->user_email : $email;
+
+		// Insert enrollment to enrollment table
+		foreach ( $enrolment_data as $key => $enrolment ) {
+			self::add_enrollment([
+				'user_id' 	 => $user_id,
+				'user_email' => $email,
+				'course_id'  => $enrolment[ 'linked_course_id' ],
+				'order_id'   => $this->order->get_id(),
+				'item_id'    => $enrolment[ 'item_id' ],
+				'status'     => 'enrolled',
+			]);
+		}
 		
 		$this->order->update_meta_data( 'moodle_user_enrolled', true );
-		$this->order->update_meta_data( 'moodle_user_enrolment_date', time() );
+		// $this->order->update_meta_data( 'moodle_user_enrolment_date', time() );
 		$this->order->save();
 
 		/**
@@ -314,6 +333,7 @@ class Enrollment {
 				'suspend'		   => $suspend,
 				'linked_course_id' => get_post_meta( $item->get_product_id(), 'linked_course_id', true ),
 				'course_name'	   => get_the_title( $item->get_product_id() ),
+				'item_id'		   => $item->get_id(),
 			];
 		}
 
@@ -399,5 +419,233 @@ class Enrollment {
 
 		//shuffle the password string before returning!
 		return str_shuffle( $password );
+	}
+
+	/**
+	 * Migrate enrollment data from order to our custom table
+	 * @return void
+	 */
+	public static function migrate_enrollments() {
+		// Get all enrollment data
+		$order_ids = wc_get_orders( [
+			'status' 	  => 'completed',
+			'meta_query'  => [
+				[
+					'key'     => 'moodle_user_enrolled',
+					'value'   => 1,
+					'compare' => '=',
+				],
+			],
+			'return' => 'ids',
+		]);
+
+		// Migrate all orders
+        foreach ( $order_ids as $order_id ) {
+			$order = wc_get_order( $order_id );
+			self::migrate_enrollment( $order );
+		}
+	}
+
+	/**
+	 * Migrate all enrollment from a order
+	 * @param mixed $order
+	 * @return void
+	 */
+	public static function migrate_enrollment( $order ) {
+		// Get all unenrolled courses of the order
+		$unenrolled_courses = $order->get_meta( '_course_unenroled', true );
+		$unenrolled_courses = $unenrolled_courses ? explode( ',', $unenrolled_courses ) : [];
+
+		foreach ( $order->get_items() as $enrolment ) {
+
+			$customer = $order->get_user();
+
+			if ( ! $customer ) continue;
+
+			$product = $enrolment->get_product();
+
+			if ( ! $product ) continue;
+
+			// Get linked course id
+			$linked_course_id = $product->get_meta( 'linked_course_id', true );
+			
+			// Get enrollment date
+			$enrollment_date   = $order->get_meta( 'moodle_user_enrolment_date', true );
+			if ( is_numeric( $enrollment_date) ) {
+				$enrollment_date = date( "Y-m-d H:i:s", $enrollment_date );
+			}
+			
+			// Get the enrollment status
+			$enrollment_status = in_array( $linked_course_id, $unenrolled_courses ) ? 'unenrolled' : 'enrolled';
+
+			self::add_enrollment([
+				'user_id' 	 => $customer->ID,
+				'user_email' => $customer->user_email,
+				'course_id'  => $linked_course_id,
+				'order_id'   => $order->get_id(),
+				'item_id'    => $enrolment->get_id(),
+				'status'     => $enrollment_status,
+				'date'	     => $enrollment_date,
+			]);
+		}
+	}
+
+	/**
+	 * Add new enrollment
+	 * @param mixed $args
+	 * @return bool|int|null
+	 */
+	public static function add_enrollment( $args ) {
+		global $wpdb;
+
+		try {
+			// insert data 
+			return $wpdb->insert( "{$wpdb->prefix}moowoodle_enrollment", $args );
+		} catch ( \Exception $error ) {
+			return null;
+		}
+	}
+
+	/**
+	 * Get a particular enrollment
+	 * @param mixed $id
+	 * @return array|object|null
+	 */
+	public static function get_enrollment( $id ) {
+		global $wpdb;
+
+		try {
+			// get data 
+			return $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}moowoodle_enrollment WHERE id = '$id'", ARRAY_A );
+		} catch ( \Exception $error ) {
+			return null;
+		}
+	}
+
+	/**
+	 * Get a particular enrollment
+	 * @param mixed $key
+	 * @param mixed $value
+	 * @return array|object|null
+	 */
+	public static function get_enrollment_by_field( $key, $value ) {
+		global $wpdb;
+
+		try {
+			// get data 
+			return $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}moowoodle_enrollment WHERE $key = '$value'", ARRAY_A );
+		} catch ( \Exception $error ) {
+			return null;
+		}
+	}
+
+	/**
+	 * Get enrollment by filter
+	 * @param mixed $filter
+	 * @return array|object|null
+	 */
+	public static function get_enrollments( $filter = [] ) {
+		global $wpdb;
+
+        // Handle limit and offset seperatly
+        $page       = $filter['page'] ?? 0;
+        $perpage    = $filter['perpage'] ?? 0;
+
+		// Remove page and perpage after retrive the data
+        unset( $filter['page'] );
+        unset( $filter['perpage'] );
+
+        // Preaper predicate
+        $predicate = [];
+        foreach( $filter as $column => $value ) {
+
+            // BETWEEN or IN condition
+            if ( is_array( $value ) ) {
+
+                // Check for BETWEEN 
+                if ( $value['compare'] === "BETWEEN" ) {
+                    $start_value    = $value['value'][0];
+                    $end_value      = $value['value'][1]; 
+                    $predicate[]    = "{$column} BETWEEN '$start_value' AND '$end_value'";
+                }
+
+                // Check for IN or NOT IN
+                if ( $value['compare'] === "IN" || $value['compare'] === "NOT IN" ) {
+                    $compare        = $value['compare'];
+                    $in_touple      = " (" . implode( ', ', array_map( function($value) { return "'$value'"; }, $value['value'] ) ) . ") ";
+                    $predicate[]    = "{$column} {$compare} {$in_touple}";
+                }
+            } else {
+                $predicate[] = "{$column} = '$value'";
+            }
+        }
+
+        // Preaper query
+        $query = "SELECT * FROM {$wpdb->prefix}moowoodle_enrollment";
+
+        if ( !empty( $predicate ) ) {
+            $query .= " WHERE " . implode( " AND ", $predicate );
+        }
+
+        // Pagination support
+        if ( $page && $perpage && $perpage != -1 ) {
+            $limit  = $perpage;
+            $offset = ( $page - 1 ) * $perpage;
+            $query .= " LIMIT {$limit} OFFSET {$offset}";
+        }
+        
+		try {
+			// Database query for enrollment
+			$enrollments = $wpdb->get_results( $query, ARRAY_A );
+			return $enrollments;
+		} catch ( \Exception $error ) {
+			return null;
+		}
+	}
+
+	/**
+	 * Update a particular enrollment
+	 * @param mixed $id
+	 * @param mixed $args
+	 * @return bool|int
+	 */
+	public static function update_enrollment(  $id, $args ) {
+		global $wpdb;
+
+        // Check missing arguments
+        if ( ! $id || ! $args ) {
+            return false;
+        }
+
+        // Update the row
+        $update = $wpdb->update(
+            $wpdb->prefix . "moowoodle_enrollment",
+            $args,
+            [ 'id' => $id ],
+        );
+
+        return $update;
+	}
+
+	/**
+	 * Delete a particular enrollment
+	 * @param mixed $id
+	 * @return bool|int
+	 */
+	public static function delete_enrollment( $id ) {
+		global $wpdb;
+
+        // Check missing arguments
+        if ( ! $id ) {
+            return false;
+        }
+
+        // Delete the row
+        $delete = $wpdb->delete(
+            $wpdb->prefix . "moowoodle_enrollment",
+            [ 'id' => $id ],
+        );
+
+        return $delete;
 	}
 }
