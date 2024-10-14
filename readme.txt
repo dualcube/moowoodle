@@ -186,7 +186,7 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 
 == Changelog ==
 
-= 3.2.2 – 2024-10-14 =
+= 3.2.2 – 2024-10-15 =
 * Added  - Support WordPress 6.6.2.
 * Added  - Support WooCommerce 9.3.3.
 * Fixed  - Course synchronization no longer sets products to draft status.
