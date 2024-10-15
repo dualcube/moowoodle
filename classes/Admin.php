@@ -106,7 +106,7 @@ class Admin {
 		wp_enqueue_script(
 			'moowoodle-admin-script',
 			MOOWOODLE_PLUGIN_URL . 'build/index.js',
-			['wp-element', 'wp-i18n'],
+			['wp-element', 'wp-i18n', 'react-jsx-runtime'],
 			time(),
 			true
 		);
