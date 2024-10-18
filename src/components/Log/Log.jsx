@@ -27,6 +27,9 @@ const Log = (props) => {
     axios({
         url: `${appLocalizer.apiUrl}/moowoodle/v1/download-log`,
         method: "POST",
+        headers: {
+            'X-WP-Nonce': appLocalizer.nonce
+        },
         data: {
           file: fileName
         },
@@ -57,6 +60,7 @@ const Log = (props) => {
         console.error("Error downloading file:", error);
     });
   };
+
 
   const handleClearLog = (event) => {
     event.preventDefault();

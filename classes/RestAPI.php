@@ -161,6 +161,10 @@ class RestAPI {
      * @return \WP_Error | \WP_REST_Response
      */
     public function synchronize_course( $request ) {
+        $nonce = $request->get_header( 'X-WP-Nonce' );
+        if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return new WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+        }
         // Flusk course sync status before sync start.
         Util::flush_sync_status( 'course' );
 
@@ -231,6 +235,10 @@ class RestAPI {
      * @return \WP_Error|\WP_REST_Response
      */
     public function get_sync_status( $reques ) {
+        $nonce = $reques->get_header( 'X-WP-Nonce' );
+        if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return new WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+        }
         return rest_ensure_response([
             'status'  => Util::get_sync_status( 'course' ),
             'running' => get_transient( 'course_sync_running' ),
@@ -250,6 +258,11 @@ class RestAPI {
         $catagory_field = $request->get_param( 'catagory' );
         $search_action  = $request->get_param( 'searchaction' );
         $search_field   = $request->get_param( 'search');
+        $nonce          = $request->get_header( 'X-WP-Nonce' );
+
+        if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return new WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+        }
 
         // Prepare argument for database query
         $args = [
@@ -375,7 +388,11 @@ class RestAPI {
      * @param mixed $request
      * @return \WP_Error|\WP_REST_Response
      */
-	public function get_all_courses() {
+	public function get_all_courses($request) {
+        $nonce = $request->get_header( 'X-WP-Nonce' );
+        if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return new WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+        }
 		$course_ids = MooWoodle()->course->get_courses([
             'fields'      => 'ids',
             'numberposts' => -1,
@@ -425,6 +442,12 @@ class RestAPI {
             require_once ABSPATH . '/wp-admin/includes/file.php';
             WP_Filesystem();
         }
+
+        $nonce = $request->get_header( 'X-WP-Nonce' );
+        if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return new WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+        }
+
         $log_count = $request->get_param( 'logcount' );
         $log_count = $log_count ? $log_count : 100;
 
@@ -453,7 +476,11 @@ class RestAPI {
      * @param mixed $request
      * @return \WP_Error|\WP_REST_Response
      */
-    function download_log($request) {        
+    function download_log($request) {
+        $nonce = $request->get_header( 'X-WP-Nonce' );
+        if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return new WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+        } 
         // Get the file parameter from the request
         $file = $request->get_param('file');
         $file = basename($file);
