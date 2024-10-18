@@ -22,15 +22,20 @@ const Log = (props) => {
 
   const handleDownloadLog = (event) => {
     event.preventDefault();
+    const fileName = "error.txt";
+
     axios({
-      url: appLocalizer.log_url,
-      method: "GET",
-      responseType: "blob",
+        url: `${appLocalizer.apiUrl}/moowoodle/v1/download-log`,
+        method: "POST",
+        data: {
+          file: fileName
+        },
+        responseType: "blob",
     })
-      .then((response) => {
+    .then((response) => {
         // Create a blob from the response
         const blob = new Blob([response.data], {
-          type: response.headers["content-type"],
+            type: response.headers["content-type"],
         });
 
         // Create a URL for the blob
@@ -39,7 +44,7 @@ const Log = (props) => {
         // Create a link element
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", "error.txt"); // Set the file name
+        link.setAttribute("download", fileName); // Set the file name
 
         // Trigger the download
         document.body.appendChild(link);
@@ -47,10 +52,10 @@ const Log = (props) => {
 
         // Clean up
         document.body.removeChild(link);
-      })
-      .catch((error) => {
+    })
+    .catch((error) => {
         console.error("Error downloading file:", error);
-      });
+    });
   };
 
   const handleClearLog = (event) => {

@@ -29,8 +29,17 @@ class Util {
 		}
 
 		// log folder create
-		if ( ! file_exists( MOOWOODLE_LOGS ) ) {
-			wp_mkdir_p( MOOWOODLE_LOGS_DIR );
+		if ( ! file_exists(MOOWOODLE_LOGS_DIR . '/.htaccess') ) {
+			$result = wp_mkdir_p( MOOWOODLE_LOGS_DIR );	
+			if ( true === $result ) {
+				// Create infrastructure to prevent listing contents of the logs directory.
+				try {
+					$wp_filesystem->put_contents( MOOWOODLE_LOGS_DIR . '/.htaccess', 'deny from all' );
+					$wp_filesystem->put_contents( MOOWOODLE_LOGS_DIR . '/index.html', '' );
+				} catch ( Exception $exception ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+					// Creation failed.
+				}
+			}
 			$message = "MooWoodle Log file Created\n";
 		}
 
