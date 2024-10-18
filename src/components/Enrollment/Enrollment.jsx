@@ -323,6 +323,7 @@ const Enrollment = () => {
 			axios({
 				method: 'post',
 				url: getApiLink('manage-enrollment'),
+				headers: { "X-WP-Nonce": appLocalizer.nonce },
 				data: {
 					order_id: row.order_id,
 					course_id: row.course_id,

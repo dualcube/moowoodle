@@ -87,6 +87,10 @@ class RestAPI {
      * @return \WP_Error | \WP_REST_Response
      */
     public function save_moowoodle_setting( $request ) {
+        $nonce = $request->get_header( 'X-WP-Nonce' );
+        if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return new WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+        }
         try {
             $settings_data = $request->get_param( 'setting' );
             $settingsname = $request->get_param( 'settingName' );
@@ -115,6 +119,10 @@ class RestAPI {
      * @return \WP_Error| \WP_REST_Response
      */
     public function test_connection( $request ) {
+        $nonce = $request->get_header( 'X-WP-Nonce' );
+        if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return new WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+        }
         $action    = $request->get_param( 'action' );
         $user_id   = $request->get_param( 'user_id' );
         $course_id = $request->get_param( 'course_id' );
