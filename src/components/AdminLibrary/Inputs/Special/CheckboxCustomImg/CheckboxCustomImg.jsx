@@ -1,6 +1,4 @@
 import React from "react";
-// import WordPress from "../../assets/images/WordPress.png";
-// import Moodle from "../../assets/images/Moodle.png";
 import './CheckboxCustomImg.scss';
 
 const CheckboxCustomImg = (props) => {
