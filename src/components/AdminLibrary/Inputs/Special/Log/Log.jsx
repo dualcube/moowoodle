@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { getApiLink } from "../../services/apiService";
+import { getApiLink } from "../../../../../services/apiService";
 import "./Log.scss";
 
 const Log = (props) => {
+  const { fetchApiLink, downloadApiLink } = props;
   const [data, setData] = useState([]);
 
   useEffect(() => {
     axios({
       method: "post",
-      url: getApiLink("fetch-log"),
+      url: getApiLink(fetchApiLink),
       headers: { "X-WP-Nonce": appLocalizer.nonce },
       data: {
         logcount: 100,
@@ -22,15 +23,23 @@ const Log = (props) => {
 
   const handleDownloadLog = (event) => {
     event.preventDefault();
+    const fileName = "error.txt";
+
     axios({
-      url: appLocalizer.log_url,
-      method: "GET",
-      responseType: "blob",
+        url: getApiLink(downloadApiLink),
+        method: "POST",
+        headers: {
+            'X-WP-Nonce': appLocalizer.nonce
+        },
+        data: {
+          file: fileName
+        },
+        responseType: "blob",
     })
-      .then((response) => {
+    .then((response) => {
         // Create a blob from the response
         const blob = new Blob([response.data], {
-          type: response.headers["content-type"],
+            type: response.headers["content-type"],
         });
 
         // Create a URL for the blob
@@ -39,7 +48,7 @@ const Log = (props) => {
         // Create a link element
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", "error.txt"); // Set the file name
+        link.setAttribute("download", fileName); // Set the file name
 
         // Trigger the download
         document.body.appendChild(link);
@@ -47,11 +56,12 @@ const Log = (props) => {
 
         // Clean up
         document.body.removeChild(link);
-      })
-      .catch((error) => {
+    })
+    .catch((error) => {
         console.error("Error downloading file:", error);
-      });
+    });
   };
+
 
   const handleClearLog = (event) => {
     event.preventDefault();

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { getApiLink } from "../../services/apiService";
+import { getApiLink } from "../../../../../services/apiService";
 import "./SyncNow.scss";
 
 const SyncNow = (props) => {

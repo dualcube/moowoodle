@@ -3,9 +3,9 @@
 import { useLocation } from "react-router-dom";
 import DynamicForm from "../AdminLibrary/DynamicForm/DynamicForm";
 import Tabs from '../AdminLibrary/Tabs/Tabs';
-import Support from "../AdminLibrary/Support/Support";
+import Support from "../Support/Support";
 import BannerSection from '../Banner/banner';
-import SyncNow from "../SyncNow/SyncNow";
+import SyncNow from "../../components/AdminLibrary/Inputs/Special/SyncNow/SyncNow";
 
 // import context
 import { SettingProvider, useSetting } from "../../contexts/SettingContext";

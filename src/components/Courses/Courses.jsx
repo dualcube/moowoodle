@@ -27,6 +27,7 @@ export default function Course() {
         axios({
             method: "get",
             url: getApiLink('all-courses'),
+            headers: { "X-WP-Nonce": appLocalizer.nonce },
         }).then((response) => {
             setCourses(response.data.courses);
             setProducts(response.data.products);

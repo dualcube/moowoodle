@@ -145,9 +145,12 @@ class Admin {
 				'pro_sticker' => MOOWOOLE_PRO_STICKER,
 				'shop_url'    => MOOWOODLE_PRO_SHOP_URL,
 				'accountmenu' => $my_account_menu,
+				'tab_name'    => __("MooWoodle", "moowoodle"),
 				'log_url'     => get_site_url( null, str_replace( ABSPATH, '', MOOWOODLE_LOGS ) ),
 				'wc_email_url' => admin_url( '/admin.php?page=wc-settings&tab=email&section=enrollmentemail' ),
 				'moodle_site_url' =>  MooWoodle()->setting->get_setting( 'moodle_url' ),
+				'wordpress_logo' => MOOWOODLE_PLUGIN_URL . 'src/assets/images/WordPress.png',
+				'moodle_logo'	=> MOOWOODLE_PLUGIN_URL . 'src/assets/images/Moodle.png',
 				'wp_user_roles' => wp_roles()->get_names(),
 				'md_user_roles' => [
 					1 => __( 'Manager', 'moowoodle' ),

@@ -27,7 +27,7 @@ const getApiResponse = async ( url, headers ) => {
  */
 const sendApiResponse = async ( url, data, headers = {} ) => {
     try {
-        const result = await axios.post(url, data, { 'X-WP-Nonce' : appLocalizer.nonce, ...headers });
+        const result = await axios.post(url, data, { headers: { 'X-WP-Nonce': appLocalizer.nonce, ...headers } });
         return result.data;
     } catch ( error ) {
         console.error(`Error: sending data on url ${ url } `);

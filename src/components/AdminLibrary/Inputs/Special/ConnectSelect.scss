@@ -1,7 +1,8 @@
 .connect-main-wrapper {
-  input:focus{
+  input:focus {
     box-shadow: none;
   }
+
   .button-wrapper {
     display: flex;
     margin: 0.75rem 0;
@@ -9,13 +10,13 @@
     gap: 0.75rem;
 
 
-    button{
-        padding: 0.5rem .5rem;
-        background: #65438f;
-        border-radius: 0.25rem;
-        color: white;
-        max-width: 6rem;
-        width: 100%;
+    button {
+      padding: 0.5rem .5rem;
+      background: #65438f;
+      border-radius: 0.25rem;
+      color: white;
+      max-width: 6rem;
+      width: 100%;
     }
 
     .loader {
@@ -66,8 +67,7 @@
           &::after {
             bottom: 0;
             left: 0;
-            animation: wobble1 var(--uib-speed) infinite
-              calc(var(--uib-speed) * -0.15) ease-in-out;
+            animation: wobble1 var(--uib-speed) infinite calc(var(--uib-speed) * -0.15) ease-in-out;
           }
         }
 
@@ -95,6 +95,7 @@
       }
 
       @keyframes wobble1 {
+
         0%,
         100% {
           transform: translateY(0%) scale(1);
@@ -108,6 +109,7 @@
       }
 
       @keyframes wobble2 {
+
         0%,
         100% {
           transform: translateY(0%) scale(1);

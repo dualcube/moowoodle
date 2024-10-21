@@ -1,6 +1,4 @@
 import React from "react";
-import WordPress from "../../assets/images/WordPress.png";
-import Moodle from "../../assets/images/Moodle.png";
 import './CheckboxCustomImg.scss';
 
 const CheckboxCustomImg = (props) => {
@@ -22,9 +20,9 @@ const CheckboxCustomImg = (props) => {
             type="checkbox"
           />
             <div className="sync-meta-wrapper">
-              <img src={WordPress} alt="" />
+              <img src={props.image1} alt="" />
               <i className="admin-font font-arrow-right"></i>
-              <img src={Moodle} alt="" />
+              <img src={props.image2} alt="" />
           </div>
           <p className="sync-label">WordPress to Moodle</p>
         </div>
@@ -41,9 +39,9 @@ const CheckboxCustomImg = (props) => {
             type="checkbox"
           />
             <div className="sync-meta-wrapper">
-              <img src={Moodle} alt="" />
+              <img src={props.image2} alt="" />
               <i className="admin-font font-arrow-right"></i>
-              <img src={WordPress} alt="" />
+              <img src={props.image1} alt="" />
           </div>
           <p className="sync-label">Moodle to WordPress</p>
         </div>

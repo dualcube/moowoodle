@@ -1,0 +1,46 @@
+$menu-btn-color: #522c81;
+$body-background: #f9f9f9;
+$color-white: #fff;
+$menu-color: #f9f8fb;
+$color-active: #65438f;
+
+.toggle-setting-container{
+    ul{
+        position: relative;
+        padding: 0 .4rem;
+        border: .063rem solid #d4d1d9;
+        border-radius: .125rem;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        width: max-content;
+        margin: 0;
+
+        li{
+            list-style-type: none;
+            padding: 1rem .1rem 1.15rem;
+            margin: 0;
+
+            input[type="radio"]{
+                display: none;
+            }
+
+            input:checked + label{
+                background: $color-active;
+                color: #f9f8fb;
+                border-color: $color-active;
+            }
+
+            label{
+                color: #181718;
+                font-size: 1rem;
+                line-height: 1;
+                text-align: center;
+                padding: .5rem 1rem;
+                border-radius: .125rem;
+                border: .06rem solid #d4d1d9;
+                transition: .1s ease-in-out;
+            }
+        }
+    }
+}

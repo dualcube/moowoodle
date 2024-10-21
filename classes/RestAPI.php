@@ -65,6 +65,12 @@ class RestAPI {
             'callback'            =>[ $this, 'get_log' ],
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
+
+        register_rest_route( MooWoodle()->rest_namespace, '/download-log', [
+            'methods'             => \WP_REST_Server::ALLMETHODS,
+            'callback'            =>[ $this, 'download_log' ],
+            'permission_callback' =>[ $this, 'moowoodle_permission' ],
+        ]);
     }
 
     /**
@@ -81,6 +87,10 @@ class RestAPI {
      * @return \WP_Error | \WP_REST_Response
      */
     public function save_moowoodle_setting( $request ) {
+        $nonce = $request->get_header( 'X-WP-Nonce' );
+        if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+        }
         try {
             $settings_data = $request->get_param( 'setting' );
             $settingsname = $request->get_param( 'settingName' );
@@ -109,6 +119,10 @@ class RestAPI {
      * @return \WP_Error| \WP_REST_Response
      */
     public function test_connection( $request ) {
+        $nonce = $request->get_header( 'X-WP-Nonce' );
+        if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+        }
         $action    = $request->get_param( 'action' );
         $user_id   = $request->get_param( 'user_id' );
         $course_id = $request->get_param( 'course_id' );
@@ -155,6 +169,10 @@ class RestAPI {
      * @return \WP_Error | \WP_REST_Response
      */
     public function synchronize_course( $request ) {
+        $nonce = $request->get_header( 'X-WP-Nonce' );
+        if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+        }
         // Flusk course sync status before sync start.
         Util::flush_sync_status( 'course' );
 
@@ -225,6 +243,10 @@ class RestAPI {
      * @return \WP_Error|\WP_REST_Response
      */
     public function get_sync_status( $reques ) {
+        $nonce = $reques->get_header( 'X-WP-Nonce' );
+        if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+        }
         return rest_ensure_response([
             'status'  => Util::get_sync_status( 'course' ),
             'running' => get_transient( 'course_sync_running' ),
@@ -244,6 +266,11 @@ class RestAPI {
         $catagory_field = $request->get_param( 'catagory' );
         $search_action  = $request->get_param( 'searchaction' );
         $search_field   = $request->get_param( 'search');
+        $nonce          = $request->get_header( 'X-WP-Nonce' );
+
+        if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+        }
 
         // Prepare argument for database query
         $args = [
@@ -369,7 +396,11 @@ class RestAPI {
      * @param mixed $request
      * @return \WP_Error|\WP_REST_Response
      */
-	public function get_all_courses() {
+	public function get_all_courses($request) {
+        $nonce = $request->get_header( 'X-WP-Nonce' );
+        if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+        }
 		$course_ids = MooWoodle()->course->get_courses([
             'fields'      => 'ids',
             'numberposts' => -1,
@@ -414,22 +445,74 @@ class RestAPI {
      * @return \WP_Error|\WP_REST_Response
      */
     public function get_log( $request ) {
+        global $wp_filesystem;
+        if ( ! $wp_filesystem ) {
+            require_once ABSPATH . '/wp-admin/includes/file.php';
+            WP_Filesystem();
+        }
+
+        $nonce = $request->get_header( 'X-WP-Nonce' );
+        if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+        }
+
         $log_count = $request->get_param( 'logcount' );
         $log_count = $log_count ? $log_count : 100;
 
         $clear     = $request->get_param( 'clear' );
 
         if ( $clear ) {
-            wp_delete_file( MOOWOODLE_LOGS );
+            $wp_filesystem->delete( MOOWOODLE_LOGS );
             return rest_ensure_response( true );
         }
 
         $logs = [];
 
-        if ( file_exists( MOOWOODLE_LOGS ) ) {
-            $logs = explode( "\n", wp_remote_retrieve_body( wp_remote_get( get_site_url( null, str_replace( ABSPATH, '', MOOWOODLE_LOGS ) ) ) ) );
+        if ( file_exists( MOOWOODLE_LOGS ) ) {   
+            // Get the contents of the log file using the filesystem API
+            $log_content = $wp_filesystem->get_contents( MOOWOODLE_LOGS );
+            if ( ! empty( $log_content ) ) {
+                $logs = explode( "\n", $log_content );
+            }
         }
         
         return rest_ensure_response( array_reverse( array_slice( $logs, - $log_count ) ) );
     }
+
+    /**
+     * Download the log.
+     * @param mixed $request
+     * @return \WP_Error|\WP_REST_Response
+     */
+    function download_log($request) {
+        $nonce = $request->get_header( 'X-WP-Nonce' );
+        if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+        } 
+        // Get the file parameter from the request
+        $file = $request->get_param('file');
+        $file = basename($file);
+        $filePath = MOOWOODLE_LOGS_DIR . '/' . $file;
+
+        // Check if the file exists and has the right extension
+        if (file_exists($filePath) && preg_match('/\.(txt|log)$/', $file)) {
+            // Set headers to force download
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="' . $file . '"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($filePath));
+    
+            // Clear output buffer and read the file
+            ob_clean();
+            flush();
+            readfile($filePath);
+            exit;
+        } else {
+            return new \WP_Error('file_not_found', 'File not found', array('status' => 404));
+        }
+    }
+    
 }
