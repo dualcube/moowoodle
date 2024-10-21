@@ -149,8 +149,8 @@ class Admin {
 				'log_url'     => get_site_url( null, str_replace( ABSPATH, '', MOOWOODLE_LOGS ) ),
 				'wc_email_url' => admin_url( '/admin.php?page=wc-settings&tab=email&section=enrollmentemail' ),
 				'moodle_site_url' =>  MooWoodle()->setting->get_setting( 'moodle_url' ),
-				'image1'	=> MOOWOODLE_PLUGIN_URL . 'src/assets/images/WordPress.png',
-				'image2'	=> MOOWOODLE_PLUGIN_URL . 'src/assets/images/Moodle.png',
+				'wordpress_logo' => MOOWOODLE_PLUGIN_URL . 'src/assets/images/WordPress.png',
+				'moodle_logo'	=> MOOWOODLE_PLUGIN_URL . 'src/assets/images/Moodle.png',
 				'wp_user_roles' => wp_roles()->get_names(),
 				'md_user_roles' => [
 					1 => __( 'Manager', 'moowoodle' ),
