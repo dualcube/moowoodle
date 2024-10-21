@@ -693,11 +693,15 @@ const DynamicForm = (props) => {
           break;
 
         case "testconnection":
-          input = <ConnectButton />
+          input = <ConnectButton 
+            apiLink={inputField.apiLink}
+            tasks={inputField.tasks}/>
           break;
 
         case "log":
-          input = <Log />
+          input = <Log 
+            fetchApiLink={inputField.fetchApiLink}
+            downloadApiLink={inputField.downloadApiLink}/>
           break;
 
         case "sso_key":
@@ -754,6 +758,8 @@ const DynamicForm = (props) => {
             proSetting={isProSetting(inputField.proSetting)}
             description={inputField.desc}
             value={value}
+            image1={inputField.image1}
+            image2={inputField.image2}
             onChange={(data) => {
               if (!proSettingChanged(inputField.proSetting)) {
                 settingChanged.current = true;

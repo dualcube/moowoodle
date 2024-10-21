@@ -12,6 +12,8 @@ export default {
             key: "moowoodle_adv_log",
             type: "log",
             classes: "log-section",
+            fetchApiLink: "fetch-log",
+            downloadApiLink: "download-log",
         },
     ]
 };

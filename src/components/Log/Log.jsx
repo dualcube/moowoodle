@@ -4,12 +4,13 @@ import { getApiLink } from "../../services/apiService";
 import "./Log.scss";
 
 const Log = (props) => {
+  const { fetchApiLink, downloadApiLink } = props;
   const [data, setData] = useState([]);
 
   useEffect(() => {
     axios({
       method: "post",
-      url: getApiLink("fetch-log"),
+      url: getApiLink(fetchApiLink),
       headers: { "X-WP-Nonce": appLocalizer.nonce },
       data: {
         logcount: 100,
@@ -25,7 +26,7 @@ const Log = (props) => {
     const fileName = "error.txt";
 
     axios({
-        url: `${appLocalizer.apiUrl}/moowoodle/v1/download-log`,
+        url: getApiLink(downloadApiLink),
         method: "POST",
         headers: {
             'X-WP-Nonce': appLocalizer.nonce

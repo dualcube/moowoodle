@@ -89,7 +89,7 @@ class RestAPI {
     public function save_moowoodle_setting( $request ) {
         $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
         }
         try {
             $settings_data = $request->get_param( 'setting' );
@@ -121,7 +121,7 @@ class RestAPI {
     public function test_connection( $request ) {
         $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
         }
         $action    = $request->get_param( 'action' );
         $user_id   = $request->get_param( 'user_id' );
@@ -171,7 +171,7 @@ class RestAPI {
     public function synchronize_course( $request ) {
         $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
         }
         // Flusk course sync status before sync start.
         Util::flush_sync_status( 'course' );
@@ -245,7 +245,7 @@ class RestAPI {
     public function get_sync_status( $reques ) {
         $nonce = $reques->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
         }
         return rest_ensure_response([
             'status'  => Util::get_sync_status( 'course' ),
@@ -269,7 +269,7 @@ class RestAPI {
         $nonce          = $request->get_header( 'X-WP-Nonce' );
 
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
         }
 
         // Prepare argument for database query
@@ -399,7 +399,7 @@ class RestAPI {
 	public function get_all_courses($request) {
         $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
         }
 		$course_ids = MooWoodle()->course->get_courses([
             'fields'      => 'ids',
@@ -453,7 +453,7 @@ class RestAPI {
 
         $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
         }
 
         $log_count = $request->get_param( 'logcount' );
@@ -487,7 +487,7 @@ class RestAPI {
     function download_log($request) {
         $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
         } 
         // Get the file parameter from the request
         $file = $request->get_param('file');
