@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { sendApiResponse, getApiLink } from "../../services/apiService";
+import { sendApiResponse, getApiLink } from "../../../../../services/apiService";
 import './ConnectButton.scss';
 import { Link } from "react-router-dom";
 
 const ConnectButton = (props) => {
     const { __ } = wp.i18n;
-
     const { apiLink, tasks } = props;
     const connectTaskStarted = useRef(false);
     const additionalData = useRef({});
@@ -22,6 +21,48 @@ const ConnectButton = (props) => {
             }, time)
         });
     }
+
+    // Sequence task
+    // const tasks = [
+    //     {
+    //         'action': 'get_site_info',
+    //         'message': __('Connecting to Moodle', 'moowoodle'),
+    //     },
+    //     {
+    //         'action': 'get_course',
+    //         'message': __('Courses Fetch', 'moowoodle'),
+    //         'cache': 'course_id',
+    //     },
+    //     {
+    //         'action': 'get_catagory',
+    //         'message': __('Catagory Fetch', 'moowoodle'),
+    //     },
+    //     {
+    //         'action': 'create_user',
+    //         'message': __('User Creation', 'moowoodle'),
+    //     },
+    //     {
+    //         'action': 'get_user',
+    //         'message': __('User Fetch', 'moowoodle'),
+    //         'cache': 'user_id',
+    //     },
+    //     {
+    //         'action': 'update_user',
+    //         'message': __('User Update', 'moowoodle'),
+    //     },
+    //     {
+    //         'action': 'enroll_user',
+    //         'message': __('User Enroll', 'moowoodle'),
+    //     },
+    //     {
+    //         'action': 'unenroll_user',
+    //         'message': __('User Unenroll', 'moowoodle'),
+    //     },
+    //     {
+    //         'action': 'delete_user',
+    //         'message': __('User Remove', 'moowoodle'),
+    //     }
+    // ];
 
     const startConnectionTask = async () => {
         // Connection task is already running

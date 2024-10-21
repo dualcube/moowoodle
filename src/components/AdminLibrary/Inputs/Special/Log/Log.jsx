@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { getApiLink } from "../../services/apiService";
+import { getApiLink } from "../../../../../services/apiService";
 import "./Log.scss";
 
 const Log = (props) => {

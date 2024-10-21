@@ -145,6 +145,7 @@ class Admin {
 				'pro_sticker' => MOOWOOLE_PRO_STICKER,
 				'shop_url'    => MOOWOODLE_PRO_SHOP_URL,
 				'accountmenu' => $my_account_menu,
+				'tab_name'    => __("MooWoodle", "moowoodle"),
 				'log_url'     => get_site_url( null, str_replace( ABSPATH, '', MOOWOODLE_LOGS ) ),
 				'wc_email_url' => admin_url( '/admin.php?page=wc-settings&tab=email&section=enrollmentemail' ),
 				'moodle_site_url' =>  MooWoodle()->setting->get_setting( 'moodle_url' ),
