@@ -146,7 +146,7 @@ class Admin {
 				'shop_url'    => MOOWOODLE_PRO_SHOP_URL,
 				'accountmenu' => $my_account_menu,
 				'tab_name'    => __("MooWoodle", "moowoodle"),
-				'log_url'     => get_site_url( null, str_replace( ABSPATH, '', MOOWOODLE_LOGS ) ),
+				'log_url'     => get_site_url( null, str_replace( ABSPATH, '', MooWoodle()->get_moowoodle_log_file() ) ),
 				'wc_email_url' => admin_url( '/admin.php?page=wc-settings&tab=email&section=enrollmentemail' ),
 				'moodle_site_url' =>  MooWoodle()->setting->get_setting( 'moodle_url' ),
 				'wordpress_logo' => MOOWOODLE_PLUGIN_URL . 'src/assets/images/WordPress.png',

@@ -134,6 +134,8 @@ class MooWoodle {
 		$this->container[ 'enrollment' ] = new Enrollment();
 		
         new EndPoint();
+
+        $this->get_log_file_name_from_database();
     }
 
     /**
@@ -196,6 +198,37 @@ class MooWoodle {
 
 		load_plugin_textdomain( 'moowoodle', false, plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/languages' );
 	}
+
+    /**
+     * get moowoodle log file name from database
+     * @return string
+     */
+    function get_log_file_name_from_database() {
+        $log_file = get_option( 'moowoodle_log_file' );
+        if (!$log_file) {
+            $log_file = '';
+        }
+        $this->container[ 'log_file' ] = $log_file;
+    }
+
+    /**
+     * get moowoodle log file name 
+     * @return string
+     */
+    function get_moowoodle_log_file() {
+        // Check if the log file name is stored in the options table
+        $log_file_option = Moowoodle()->log_file;
+
+        if ( ! $log_file_option ) {
+            $random_string = bin2hex( random_bytes(5) );
+            $log_file_name = 'error-' . $random_string . '.txt';
+            
+            update_option( 'moowoodle_log_file', $log_file_name );
+        } else {
+            $log_file_name = $log_file_option;
+        }
+        return MOOWOODLE_LOGS_DIR . '/' . $log_file_name;
+    }
 
 	/**
      * Magic getter function to get the reference of class.

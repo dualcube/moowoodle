@@ -462,15 +462,17 @@ class RestAPI {
         $clear     = $request->get_param( 'clear' );
 
         if ( $clear ) {
-            $wp_filesystem->delete( MOOWOODLE_LOGS );
+            $wp_filesystem->delete( MooWoodle()->get_moowoodle_log_file() );
+            delete_option( 'moowoodle_log_file' );
+
             return rest_ensure_response( true );
         }
 
         $logs = [];
 
-        if ( file_exists( MOOWOODLE_LOGS ) ) {   
+        if ( file_exists( MooWoodle()->get_moowoodle_log_file() ) ) {   
             // Get the contents of the log file using the filesystem API
-            $log_content = $wp_filesystem->get_contents( MOOWOODLE_LOGS );
+            $log_content = $wp_filesystem->get_contents( MooWoodle()->get_moowoodle_log_file() );
             if ( ! empty( $log_content ) ) {
                 $logs = explode( "\n", $log_content );
             }
