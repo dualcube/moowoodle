@@ -208,9 +208,7 @@ class MooWoodle {
         $log_file_name = get_option( 'moowoodle_log_file' );
 
         if ( ! $log_file_name ) {
-            $random_string = bin2hex( random_bytes(5) );
-            $log_file_name = 'error-' . $random_string . '.txt';
-            
+            $log_file_name = uniqid('error') . '.txt';
             update_option( 'moowoodle_log_file', $log_file_name );
         }
 
