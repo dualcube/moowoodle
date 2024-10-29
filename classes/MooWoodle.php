@@ -135,7 +135,7 @@ class MooWoodle {
 		
         new EndPoint();
 
-        $this->get_log_file_name_from_database();
+        $this->get_moowoodle_log_file();
     }
 
     /**
@@ -200,24 +200,12 @@ class MooWoodle {
 	}
 
     /**
-     * get moowoodle log file name from database
-     * @return string
-     */
-    function get_log_file_name_from_database() {
-        $log_file = get_option( 'moowoodle_log_file' );
-        if (!$log_file) {
-            $log_file = '';
-        }
-        $this->container[ 'log_file' ] = $log_file;
-    }
-
-    /**
      * get moowoodle log file name 
      * @return string
      */
     function get_moowoodle_log_file() {
         // Check if the log file name is stored in the options table
-        $log_file_option = Moowoodle()->log_file;
+        $log_file_option = get_option( 'moowoodle_log_file' );
 
         if ( ! $log_file_option ) {
             $random_string = bin2hex( random_bytes(5) );
@@ -227,7 +215,8 @@ class MooWoodle {
         } else {
             $log_file_name = $log_file_option;
         }
-        return MOOWOODLE_LOGS_DIR . '/' . $log_file_name;
+
+        $this->container[ 'log_file' ] = MOOWOODLE_LOGS_DIR . '/' . $log_file_name;
     }
 
 	/**
