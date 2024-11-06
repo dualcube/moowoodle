@@ -40,7 +40,7 @@ class ExternalService {
 	public function do_request( $key = '', $request_param = [] ) {
 		// Get register core functions
 		$moodle_core_functions = $this->get_core_functions();
-		
+
 		// Get the function name
 		$function_name = "";
 		if ( array_key_exists( $key, $moodle_core_functions ) ) {
@@ -49,7 +49,7 @@ class ExternalService {
 
 		$moodle_base_url     = MooWoodle()->setting->get_setting( 'moodle_url' );
 		$moodle_access_token = MooWoodle()->setting->get_setting( 'moodle_access_token' );
-		
+
 		$request_url = rtrim( $moodle_base_url, '/' ) . '/webservice/rest/server.php?wstoken=' . $moodle_access_token . '&wsfunction=' . $function_name . '&moodlewsrestformat=json';
 
 		// Get response from moodle server.
@@ -62,7 +62,7 @@ class ExternalService {
 			$timeout		= $timeout ? $timeout : '10';
 
 			$response       = wp_remote_post( $request_url, [ 'body' => $request_query, 'timeout' => $timeout ] );
-			
+
 			$show_adv_log 	= MooWoodle()->setting->get_setting( 'moowoodle_adv_log' );
 			$show_adv_log   = is_array( $show_adv_log ) ? $show_adv_log : [];
 			$show_adv_log   = in_array( 'moowoodle_adv_log', $show_adv_log );
@@ -72,12 +72,40 @@ class ExternalService {
 				MooWoodle()->util->log( "moowoodle moodle_url:" . $request_url . '&' . $request_query . "\n\t\tmoowoodle response:" . wp_json_encode( $response ) . "\n\n");
 			}
 		}
-		
+
 		// check the response containe error.
 		$response = self::check_connection( $response );
 
 		// return response on success.
 		return $response;
+	}
+
+	/**
+	 * Searches for an user in moodle by a specific field.
+	 * @param string $field
+	 * @param string $values
+	 * @return int
+	 */
+	public function search_for_moodle_user( $key, $value, $onlyId=true ) {
+		// find user on moodle with moodle externel function.
+		$response = $this->do_request(
+			'get_moodle_users',
+			[
+				'criteria' => [
+					[
+						'key' 	=> $key,
+						'value' => $value
+					]
+				]
+			]
+		);
+
+		if ( ! empty( $response[ 'data' ][ 'users' ]) ) {
+			$user = reset( $response[ 'data' ][ 'users' ] );
+			return $onlyId ? $user[ 'id' ] : $user;
+		}
+
+		return 0;
 	}
 
 	/**
@@ -107,7 +135,7 @@ class ExternalService {
 
 		// convert moodle response to array.
 		$response = json_decode( $response['body'], true );
-		
+
 		// if array convertion failed
 		if( json_last_error() !== JSON_ERROR_NONE ) {
 			return [ 'error' => __('Response is not JSON decodeable', 'moowoodle') ];

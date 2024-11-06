@@ -40,11 +40,26 @@ class Emails {
 	 * @return void
 	 */
 	public function send_enrollment_confirmation( $enrolments, $user_id ) {
-		$enrollment_datas 				= [];
-		$user 							= get_userdata($user_id);
-		$user_email 					= ($user == false) ? '' : $user->user_email;
-		$enrollment_datas['enrolments'] = $enrolments;
-		
+		$enrollment_datas 					= [];
+		$user 								= get_userdata($user_id);
+		$user_email 						= ($user == false) ? '' : $user->user_email;
+		$enrollment_datas['enrolments'] 	= $enrolments;
+		$enrollment_datas['is_guest_user']	= false;
+
+		// Guest user, fetch user from enrollments
+		if (!$user && count($enrolments)) {
+			$moodle_user_id = $enrolments[0]['userid'];
+			$moodle_user = MooWoodle()->external_service->search_for_moodle_user('id', $moodle_user_id, false);
+			$user_email = $moodle_user ? $moodle_user['email'] : '';
+			$enrollment_datas['is_guest_user'] = true;
+			$enrollment_datas['moodle_user'] = $moodle_user;
+		}
+
+		if (!$user_email) {
+			\MooWoodle\Util::log('No user to send enrollment email');
+		}
+
+		$enrollment_datas['user_email'] = $user_email;
 		$this->send_email( 'EnrollmentEmail', $user_email, $enrollment_datas );
 	}
 }
