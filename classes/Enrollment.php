@@ -21,7 +21,7 @@ class Enrollment {
 	 * @param int $order_id
 	 * @return void
 	 */
-	public function process_order( $order_id ) {	
+	public function process_order( $order_id ) {
 		$order = new \WC_Order( $order_id );
 
 		// Check order contain courses
@@ -60,18 +60,15 @@ class Enrollment {
 	public function get_moodle_user_id() {
 		$user_id = $this->order->get_user_id();
 
-		// if user is a guest user.
-		if ( ! $user_id ) return $user_id;
-		
 		$moodle_user_id = get_user_meta( $user_id, 'moowoodle_moodle_user_id', true );
-		
+
 		/**
 		 * Filter before moodle user create or update.
 		 * @var int $moodle_user_id
 		 * @var int user_id
 		 */
 		$moodle_user_id = apply_filters( 'moowoodle_get_moodle_user_id_before_enrollment', $moodle_user_id, $user_id );
-		
+
 		// If moodle user id exist then return it.
 		if ( $moodle_user_id ) return $moodle_user_id;
 
@@ -79,8 +76,8 @@ class Enrollment {
 		$email 	  = $this->order->get_billing_email();
 
 		// Get user id from moodle database.
-		$moodle_user_id = $this->search_for_moodle_user( 'email', ( $user ) ? $user->user_email : $email );
-		
+		$moodle_user_id = MooWoodle()->external_service->search_for_moodle_user( 'email', ( $user ) ? $user->user_email : $email );
+
 		if ( ! $moodle_user_id ) {
 			$moodle_user_id = $this->create_moodle_user();
 		} else {
@@ -103,33 +100,7 @@ class Enrollment {
 		return $moodle_user_id;
 	}
 
-	/**
-	 * Searches for an user in moodle by a specific field.
-	 * @param string $field
-	 * @param string $values
-	 * @return int
-	 */
-	private function search_for_moodle_user( $key, $value ) {
-		// find user on moodle with moodle externel function.
-		$response = MooWoodle()->external_service->do_request(
-			'get_moodle_users',
-			[ 
-				'criteria' => [
-					[
-						'key' 	=> $key,
-						'value' => $value
-					]
-				]
-			]
-		);
 
-		if ( ! empty( $response[ 'data' ][ 'users' ]) ) {
-			$user = reset( $response[ 'data' ][ 'users' ] );
-			return $user[ 'id' ];
-		}
-
-		return 0;
-	}
 
 	/**
 	 * Creates an user in moodle.
@@ -142,14 +113,14 @@ class Enrollment {
 
 			// create user on moodle.
 			$response = MooWoodle()->external_service->do_request(
-				'create_users', 
+				'create_users',
 				[
 					'users' => [ $user_data ]
 				]
 			);
 
 			// Not a valid response.
-			if ( ! $response[ 'data' ] ) return 0;
+			if ( ! $response[ 'data' ] ) throw new \Exception(json_encode($response));
 
 			$moodle_users = $response[ 'data' ];
 			$moodle_users = reset( $moodle_users );
@@ -204,7 +175,7 @@ class Enrollment {
 		$user_id  = $this->order->get_user_id();
 		$email 	  = $this->order->get_billing_email();
 		$user 	  = ( $user_id ) ? get_userdata( $user_id ) : false;
-		$username = ( $user ) ? $user->user_login : '';
+		$username = ( $user ) ? $user->user_login : $email;
 		$username = str_replace( ' ', '', strtolower( $username ) );
 		$password = get_user_meta( $user_id, 'moowoodle_moodle_user_pwd', true );
 
@@ -216,7 +187,7 @@ class Enrollment {
 
 		$user_data = [];
 
-		// Moodle user 
+		// Moodle user
 		if ( $moodle_user_id ) {
 			$user_data[ 'id' ] = $moodle_user_id;
 		} else {
@@ -257,7 +228,7 @@ class Enrollment {
 		}
 
 		$enrolments = $this->get_enrollment_data( $moodle_user_id, $suspend );
-		
+
 		if ( empty( $enrolments ) ) {
 			return;
 		}
@@ -272,7 +243,7 @@ class Enrollment {
 
 		// enroll user to moodle course by core external function.
 		MooWoodle()->external_service->do_request( 'enrol_users', [ 'enrolments' => $enrolments ] );
-		
+
 		$this->order->update_meta_data( 'moodle_user_enrolled', true );
 		$this->order->update_meta_data( 'moodle_user_enrolment_date', time() );
 		$this->order->save();
@@ -303,7 +274,7 @@ class Enrollment {
 		foreach ( $this->order->get_items() as $item ) {
 			// Get moowoodle course id
 			$course_id = get_post_meta( $item->get_product_id(), 'moodle_course_id', true );
-			
+
 			// If product is not associate with moodle course.
 			if ( empty( $course_id ) ) continue;
 
@@ -356,7 +327,7 @@ class Enrollment {
 			'start_end_date',
 			$start_end_date
 		);
-		
+
 		if ( $start_end_date ) {
 			if ( $startdate ) {
 				echo esc_html_e( "Start Date : ", 'moowoodle' ) . esc_html_e( gmdate( 'Y-m-d', $startdate ), 'moowoodle' );

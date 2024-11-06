@@ -14,7 +14,7 @@ class EnrollmentEmail extends \WC_Email {
 		$this->template_html  = 'emails/EnrollmentEmail.php';
 		$this->template_plain = 'emails/plain/EnrollmentEmail.php';
 		$this->template_base  = MooWoodle()->plugin_path . 'templates/';
-		
+
 		// Call parent constructor
 		parent::__construct();
 	}
@@ -28,7 +28,7 @@ class EnrollmentEmail extends \WC_Email {
 		$this->customer_email = $recipient;
 		$this->recipient 	  = $recipient;
 		$this->email_data 	  = $email_data;
-		
+
 		if ( ! $this->is_enabled() || ! $this->get_recipient() ) {
 			return;
 		}
@@ -44,7 +44,7 @@ class EnrollmentEmail extends \WC_Email {
 	 */
 	public function get_default_subject() {
 		return apply_filters( 'moowoodle_enrollment_email_subject', __( 'New Moodle Enrollment', 'woocommerce-stock-manager' ) );
-	} 
+	}
 
 	/**
 	 * Get email heading.
@@ -54,7 +54,7 @@ class EnrollmentEmail extends \WC_Email {
 	 */
 	public function get_default_heading() {
 		return apply_filters( 'moowoodle_enrollment_email_heading', __( 'Welcome to {site_title} ', 'woocommerce-stock-manager' ) );
-	} 
+	}
 
 	/**
 	 * get_content_html function.
@@ -64,6 +64,7 @@ class EnrollmentEmail extends \WC_Email {
 		ob_start();
 
 		wc_get_template( $this->template_html, [
+			'email_data' 	=> $this->email_data,
 			'enrollments' 	=> $this->email_data,
 			'user_email' 	=> $this->recipient,
 			'email_heading' => $this->get_heading(),
@@ -82,6 +83,7 @@ class EnrollmentEmail extends \WC_Email {
 		ob_start();
 
 		wc_get_template( $this->template_plain, [
+			'email_data' 	=> $this->email_data,
 			'enrollments' 	=> $this->email_data,
 			'user_email' 	=> $this->recipient,
 			'email_heading' => $this->get_heading(),
