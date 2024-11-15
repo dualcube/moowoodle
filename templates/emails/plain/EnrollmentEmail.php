@@ -9,8 +9,9 @@ $user_details 	 = get_user_by( 'email', $user_email );
 $user_id 		 = $user_details->data->ID;
 $moodle_user_id  = get_user_meta( $user_id, 'moowoodle_moodle_user_id', true );
 $password 		 = get_user_meta( $user_id, 'moowoodle_moodle_user_pwd', true );
+$new_user_created = get_user_meta( $user_id, 'moowoodle_moodle_new_user_created', true );
 
-if ( ! $moodle_user_id ) {
+if ( !empty($new_user_created) ) {
 	echo __( 'Username : ', 'moowoodle' ) . esc_html__( $user_details->data->user_login ) . '\n\n';
 	echo __( 'Password : ', 'moowoodle' ) . esc_html__( $password ) . '\n\n';
 }
