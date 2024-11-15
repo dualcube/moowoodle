@@ -10,7 +10,7 @@ class Enrollment {
 	public $order = null;
 
 	public function __construct() {
-		// add_action( 'woocommerce_order_status_completed', [ &$this, 'process_order' ], 10, 1 );
+		add_action( 'woocommerce_order_status_completed', [ &$this, 'process_order' ], 10, 1 );
 		add_action( 'woocommerce_thankyou', [ &$this, 'enrollment_modified_details' ] );
 		add_action( 'woocommerce_after_shop_loop_item_title', [ &$this, 'add_dates_with_product' ] );
 		add_action( 'woocommerce_product_meta_start', [ &$this, 'add_dates_with_product' ] );
@@ -333,7 +333,6 @@ class Enrollment {
 		$order = wc_get_order( $order_id );
 
 		if ( $order->get_status() == 'completed' ) {
-			 $this->process_order($order_id);
 			_e( 'Please check your mail or go to My Courses page to access your courses.', 'moowoodle' );
 		} else {
 			_e( 'Order status is :- ', 'moowoodle' ) . $order->get_status() . '<br>';
