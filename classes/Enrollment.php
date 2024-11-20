@@ -163,6 +163,7 @@ class Enrollment {
 				 * @var int $user_id newly created user id
 				 */
 				do_action( 'moowoodle_after_create_moodle_user', $user_data, $user_id );
+				update_user_meta( $this->order->get_user_id(), 'moowoodle_moodle_new_user_created', 'created' );
 
 				return $user_id;
 			} else {
