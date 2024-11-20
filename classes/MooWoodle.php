@@ -204,7 +204,7 @@ class MooWoodle {
      * @return string
      */
     function initialize_moowoodle_log_file() {
-        // Check if the log file name is stored in the options table
+        // The log file name is stored in the options table because it is generated with an arbitrary name.
         $log_file_name = get_option( 'moowoodle_log_file' );
 
         if ( ! $log_file_name ) {

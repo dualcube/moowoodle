@@ -44,7 +44,7 @@ const sendApiResponse = async ( url, data, headers = {} ) => {
  */
 const getApiLink = ( endpoint, namespace = null, rootUrl = null ) => {
     rootUrl = rootUrl || appLocalizer.apiUrl;
-    namespace = namespace || 'moowoodle/v1';
+    namespace = namespace || appLocalizer.restUrl;
     return `${rootUrl}/${namespace}/${endpoint}`;
 }
 

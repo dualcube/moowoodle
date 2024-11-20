@@ -92,6 +92,7 @@ class RestAPI {
             return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
         }
         try {
+            $all_details = [];
             $settings_data = $request->get_param( 'setting' );
             $settingsname = $request->get_param( 'settingName' );
             $settingsname = str_replace( "-", "_", "moowoodle_" . $settingsname . "_settings" );
@@ -106,10 +107,12 @@ class RestAPI {
              */
             do_action( 'moowoodle_after_setting_save', $settingsname, $settings_data );
 
-            return rest_ensure_response( __( 'Settings Saved', 'woocommerce-stock-manager' ) );
+            $all_details[ 'error' ] = __( 'Settings Saved', 'moowoodle' );
+
+            return $all_details;
 
         } catch ( \Exception $err ) {
-            return rest_ensure_response( __( 'Unabled to Saved', 'woocommerce-stock-manager' ) );
+            return rest_ensure_response( __( 'Unabled to Saved', 'moowoodle' ) );
         }
     }
 
@@ -463,6 +466,7 @@ class RestAPI {
 
         if ( $clear ) {
             $wp_filesystem->delete( MooWoodle()->log_file );
+            // delete the logfile name from options table
             delete_option( 'moowoodle_log_file' );
 
             return rest_ensure_response( true );

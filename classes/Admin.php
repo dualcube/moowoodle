@@ -97,7 +97,7 @@ class Admin {
      * @return void
      */
 	public function enqueue_admin_script() {
-		if ( get_current_screen()->id == 'toplevel_page_moowoodle' ) {
+		if ( get_current_screen()->id == 'toplevel-page-moowoodle' ) {
 			wp_enqueue_style(
 				'moowoodle_admin_css',
 				MOOWOODLE_PLUGIN_URL . 'build/index.css', array(),
@@ -140,6 +140,7 @@ class Admin {
 				'appLocalizer',
 				[
 					'apiUrl' 	  => untrailingslashit( get_rest_url() ),
+					'restUrl'     => 'moowoodle/v1',
 					'nonce'		  => wp_create_nonce('wp_rest'),
 					'preSettings' => $settings_databases_value,
 					'pro_active'  => Util::is_pro_active(),
@@ -174,7 +175,7 @@ class Admin {
 	public static function create_settings_page() {
 		
 		$page = filter_input(INPUT_GET, 'page', FILTER_DEFAULT) !== null ? filter_input(INPUT_GET, 'page', FILTER_DEFAULT) : '';?>
-		<div class="mw-admin-dashbord <?php echo $page; ?>">
+		<div id="admin-moowoodle" class="mw-admin-dashbord <?php echo $page; ?>">
 			<div class="mw-general-wrapper" id ="moowoodle_root">
 				<?php
 				if (filter_input(INPUT_GET, 'page', FILTER_DEFAULT) == 'moowoodle' && !did_action( 'woocommerce_loaded' ) ) {
