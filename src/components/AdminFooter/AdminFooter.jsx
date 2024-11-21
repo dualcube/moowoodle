@@ -30,7 +30,7 @@ const AdminFooter = () => {
                 return (
                   <>
                     <a href={item.link} target="_blank" className="card-item">
-                      <i className={`admin-font font-${item.icon}`}></i>
+                      <i className={`admin-font adminLib-${item.icon}`}></i>
                       <a href={item.link} target="_blank">
                         {item.title}
                       </a>

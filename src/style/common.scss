@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: 'AdminLibrary';
-  src:  url('fonts/AdminLibrary.eot?mr0e3c');
-  src:  url('fonts/AdminLibrary.eot?mr0e3c#iefix') format('embedded-opentype'),
-    url('fonts/AdminLibrary.ttf?mr0e3c') format('truetype'),
-    url('fonts/AdminLibrary.woff?mr0e3c') format('woff'),
-    url('fonts/AdminLibrary.svg?mr0e3c#AdminLibrary') format('svg');
+  src:  url('fonts/AdminLibrary.eot?r5ke70');
+  src:  url('fonts/AdminLibrary.eot?r5ke70#iefix') format('embedded-opentype'),
+    url('fonts/AdminLibrary.ttf?r5ke70') format('truetype'),
+    url('fonts/AdminLibrary.woff?r5ke70') format('woff'),
+    url('fonts/AdminLibrary.svg?r5ke70#AdminLibrary') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -37,8 +37,43 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.adminLib-price:before {
+.adminLib-tools:before {
+  content: "\e700";
+}
+.adminLib-supervised_user_circle:before {
+  content: "\e702";
+}
+.adminLib-vpn_key:before {
+  content: "\e704";
+}
+.adminLib-centralized-connections:before {
   content: "\e900";
+}
+.adminLib-desktop-pc-valuation:before {
+  content: "\e901";
+}
+.adminLib-dynamic-pricing:before {
+  content: "\e902";
+}
+.adminLib-sales-performance .path1:before {
+  content: "\e903";
+  color: rgb(1, 1, 1);
+}
+.adminLib-sales-performance .path2:before {
+  content: "\e904";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.adminLib-sales-performance .path3:before {
+  content: "\e905";
+  margin-left: -1em;
+  color: rgb(1, 1, 1);
+}
+.adminLib-social-media-content:before {
+  content: "\e906";
+}
+.adminLib-user-network-icon:before {
+  content: "\e907";
 }
 .adminLib-cart:before {
   content: "\8907";
@@ -103,233 +138,236 @@
 .adminLib-plus-circle-o:before {
   content: "\e8f7";
 }
-.adminLib-catalog-svgrepo-com:before {
-  content: "\e901";
-}
-.adminLib-contact-form-svgrepo-com:before {
-  content: "\e902";
-}
-.adminLib-exclude-svgrepo-com:before {
-  content: "\e903";
-}
-.adminLib-inquiry-filled-svgrepo-com:before {
-  content: "\e904";
-}
-.adminLib-price-quote-icon:before {
-  content: "\e905";
-}
-.adminLib-warehousing-icon:before {
-  content: "\e906";
-}
-.adminLib-web-page-website-svgrepo-com:before {
-  content: "\e907";
-}
-.adminLib-wholesale-svgrepo-com:before {
+.adminLib-price:before {
   content: "\e908";
 }
-.adminLib-mailchimp:before {
+.adminLib-catalog-svgrepo-com:before {
   content: "\e909";
 }
-.adminLib-mail:before {
+.adminLib-contact-form-svgrepo-com:before {
   content: "\e90a";
 }
-.adminLib-file-submission:before {
+.adminLib-exclude-svgrepo-com:before {
   content: "\e90b";
 }
-.adminLib-submission-message:before {
+.adminLib-inquiry-filled-svgrepo-com:before {
   content: "\e90c";
 }
-.adminLib-settings:before {
+.adminLib-price-quote-icon:before {
   content: "\e90d";
 }
-.adminLib-cross:before {
+.adminLib-warehousing-icon:before {
   content: "\e90e";
 }
-.adminLib-icon-yes:before {
+.adminLib-web-page-website-svgrepo-com:before {
   content: "\e90f";
 }
-.adminLib-arrow-right:before {
+.adminLib-wholesale-svgrepo-com:before {
   content: "\e910";
 }
-.adminLib-calendar:before {
+.adminLib-mailchimp:before {
   content: "\e911";
 }
-.adminLib-arrow-left:before {
+.adminLib-mail:before {
   content: "\e912";
 }
-.adminLib-arrow-up:before {
+.adminLib-file-submission:before {
   content: "\e913";
 }
-.adminLib-arrow-down:before {
+.adminLib-submission-message:before {
   content: "\e914";
 }
-.adminLib-menu:before {
+.adminLib-settings:before {
   content: "\e915";
 }
-.adminLib-send:before {
+.adminLib-cross:before {
   content: "\e916";
 }
-.adminLib-link:before {
+.adminLib-icon-yes:before {
   content: "\e917";
 }
-.adminLib-resize:before {
+.adminLib-arrow-right:before {
   content: "\e918";
 }
-.adminLib-crop-free:before {
+.adminLib-calendar:before {
   content: "\e919";
 }
-.adminLib-text-fields:before {
+.adminLib-arrow-left:before {
   content: "\e91a";
 }
-.adminLib-support:before {
+.adminLib-arrow-up:before {
   content: "\e91b";
 }
-.adminLib-create:before {
+.adminLib-arrow-down:before {
   content: "\e91c";
 }
-.adminLib-keyboard_arrow_down:before {
+.adminLib-menu:before {
   content: "\e91d";
 }
-.adminLib-button-appearance-tab:before {
+.adminLib-send:before {
   content: "\e91e";
 }
-.adminLib-enquiry-form-tab:before {
+.adminLib-link:before {
   content: "\e91f";
 }
-.adminLib-exclusion-tab:before {
+.adminLib-resize:before {
   content: "\e920";
 }
-.adminLib-general-tab:before {
+.adminLib-crop-free:before {
   content: "\e921";
 }
-.adminLib-live-preview-tab:before {
+.adminLib-text-fields:before {
   content: "\e922";
 }
-.adminLib-upgrade-to-pro-tab:before {
+.adminLib-support:before {
   content: "\e923";
 }
-.adminLib-next:before {
+.adminLib-create:before {
   content: "\e924";
 }
-.adminLib-previous:before {
+.adminLib-keyboard_arrow_down:before {
   content: "\e925";
 }
-.adminLib-select:before {
+.adminLib-button-appearance-tab:before {
   content: "\e926";
 }
-.adminLib-success-notification:before {
+.adminLib-enquiry-form-tab:before {
   content: "\e927";
 }
-.adminLib-drop-down:before {
+.adminLib-exclusion-tab:before {
   content: "\e928";
 }
-.adminLib-vendor-form-delete:before {
+.adminLib-general-tab:before {
   content: "\e929";
 }
-.adminLib-vendor-form-copy:before {
+.adminLib-live-preview-tab:before {
   content: "\e92a";
 }
-.adminLib-vendor-form-add:before {
+.adminLib-upgrade-to-pro-tab:before {
   content: "\e92b";
 }
-.adminLib-select-question-type:before {
+.adminLib-next:before {
   content: "\e92c";
 }
-.adminLib-form-url:before {
+.adminLib-previous:before {
   content: "\e92d";
 }
-.adminLib-form-textbox:before {
+.adminLib-select:before {
   content: "\e92e";
 }
-.adminLib-form-textarea:before {
+.adminLib-success-notification:before {
   content: "\e92f";
 }
-.adminLib-form-address01:before {
+.adminLib-drop-down:before {
   content: "\e930";
 }
-.adminLib-form-address02:before {
+.adminLib-vendor-form-delete:before {
   content: "\e931";
 }
-.adminLib-form-attachment:before {
+.adminLib-vendor-form-copy:before {
   content: "\e932";
 }
-.adminLib-form-checkboxes:before {
+.adminLib-vendor-form-add:before {
   content: "\e933";
 }
-.adminLib-paint-brush:before {
+.adminLib-select-question-type:before {
   content: "\e934";
 }
-.adminLib-form-city:before {
+.adminLib-form-url:before {
   content: "\e935";
 }
-.adminLib-form-country:before {
+.adminLib-form-textbox:before {
   content: "\e936";
 }
-.adminLib-form-dropdown:before {
+.adminLib-form-textarea:before {
   content: "\e937";
 }
-.adminLib-form-email:before {
+.adminLib-form-address01:before {
   content: "\e938";
 }
-.adminLib-form-multi-select:before {
+.adminLib-form-address02:before {
   content: "\e939";
 }
-.adminLib-form-paypal-email:before {
+.adminLib-form-attachment:before {
   content: "\e93a";
 }
-.adminLib-form-phone:before {
+.adminLib-form-checkboxes:before {
   content: "\e93b";
 }
-.adminLib-form-postcode:before {
+.adminLib-paint-brush:before {
   content: "\e93c";
 }
-.adminLib-form-radio:before {
+.adminLib-form-city:before {
   content: "\e93d";
 }
-.adminLib-form-recaptcha:before {
+.adminLib-form-country:before {
   content: "\e93e";
 }
-.adminLib-form-section:before {
+.adminLib-form-dropdown:before {
   content: "\e93f";
 }
-.adminLib-form-state:before {
+.adminLib-form-email:before {
   content: "\e940";
 }
-.adminLib-star_icon:before {
+.adminLib-form-multi-select:before {
   content: "\e941";
 }
-.adminLib-form-store-description:before {
+.adminLib-form-paypal-email:before {
   content: "\e942";
 }
-.adminLib-folder-open:before {
+.adminLib-form-phone:before {
   content: "\e943";
 }
-.adminLib-undo:before {
+.adminLib-form-postcode:before {
   content: "\e944";
 }
-.adminLib-dropdown-checklist:before {
+.adminLib-form-radio:before {
   content: "\e945";
 }
-.adminLib-multi-select:before {
+.adminLib-form-recaptcha:before {
   content: "\e946";
 }
-.adminLib-captcha-automatic-code-svgrepo-com:before {
+.adminLib-form-section:before {
   content: "\e947";
 }
-.adminLib-cloud-upload:before {
+.adminLib-form-state:before {
   content: "\e948";
 }
-.adminLib-help:before {
+.adminLib-star_icon:before {
   content: "\e949";
 }
-.adminLib-t-letter-bold:before {
+.adminLib-form-store-description:before {
+  content: "\e94a";
+}
+.adminLib-folder-open:before {
+  content: "\e94b";
+}
+.adminLib-undo:before {
+  content: "\e94c";
+}
+.adminLib-dropdown-checklist:before {
+  content: "\e94d";
+}
+.adminLib-multi-select:before {
   content: "\e94e";
 }
-.adminLib-clock2:before {
+.adminLib-captcha-automatic-code-svgrepo-com:before {
   content: "\e94f";
 }
-.adminLib-alarm:before {
+.adminLib-cloud-upload:before {
   content: "\e950";
+}
+.adminLib-help:before {
+  content: "\e951";
+}
+.adminLib-t-letter-bold:before {
+  content: "\e952";
+}
+.adminLib-clock2:before {
+  content: "\e953";
+}
+.adminLib-alarm:before {
+  content: "\e954";
 }
 .adminLib-unread:before {
   content: "\e9ba";
@@ -361,7 +399,6 @@
 .adminLib-credit_card:before {
   content: "\e9502";
 }
-
 
 *{
   padding: 0;
