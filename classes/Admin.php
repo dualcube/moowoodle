@@ -97,71 +97,74 @@ class Admin {
      * @return void
      */
 	public function enqueue_admin_script() {
-		wp_enqueue_style(
-			'moowoodle_admin_css',
-			MOOWOODLE_PLUGIN_URL . 'build/index.css', array(),
-			MOOWOODLE_PLUGIN_VERSION
-		);
+		if ( get_current_screen()->id == 'toplevel_page_moowoodle' ) {
+			wp_enqueue_style(
+				'moowoodle_admin_css',
+				MOOWOODLE_PLUGIN_URL . 'build/index.css', array(),
+				MOOWOODLE_PLUGIN_VERSION
+			);
 
-		wp_enqueue_script(
-			'moowoodle-admin-script',
-			MOOWOODLE_PLUGIN_URL . 'build/index.js',
-			['wp-element', 'wp-i18n', 'react-jsx-runtime'],
-			time(),
-			true
-		);
+			wp_enqueue_script(
+				'moowoodle-admin-script',
+				MOOWOODLE_PLUGIN_URL . 'build/index.js',
+				['wp-element', 'wp-i18n', 'react-jsx-runtime'],
+				time(),
+				true
+			);
 
-		// Get all tab setting's database value
-        $settings_databases_value = [];
+			// Get all tab setting's database value
+			$settings_databases_value = [];
 
-        $tabs_names = [
-			'general',
-			'display',
-			'sso',
-			'tool',
-			'log',
-			'notification',
-			'synchronize-course',
-			'synchronize-user'
-		];
+			$tabs_names = [
+				'general',
+				'display',
+				'sso',
+				'tool',
+				'log',
+				'notification',
+				'synchronize-course',
+				'synchronize-user'
+			];
 
-        foreach( $tabs_names as $tab_name ) {
-			$option_name = str_replace( '-', '_', 'moowoodle_' . $tab_name . '_settings' );
-            $settings_databases_value[ $tab_name ] = (object) MooWoodle()->setting->get_option( $option_name );
-        }
+			foreach( $tabs_names as $tab_name ) {
+				$option_name = str_replace( '-', '_', 'moowoodle_' . $tab_name . '_settings' );
+				$settings_databases_value[ $tab_name ] = (object) MooWoodle()->setting->get_option( $option_name );
+			}
 
-		// Get my account menu
-		$my_account_menu = wc_get_account_menu_items();
-		unset( $my_account_menu[ 'my-courses' ] );
+			// Get my account menu
+			$my_account_menu = wc_get_account_menu_items();
+			unset( $my_account_menu[ 'my-courses' ] );
 
-		wp_localize_script(
-			'moowoodle-admin-script',
-			'appLocalizer',
-			[
-				'apiUrl' 	  => untrailingslashit( get_rest_url() ),
-                'nonce'		  => wp_create_nonce('wp_rest'),
-				'preSettings' => $settings_databases_value,
-				'pro_active'  => Util::is_pro_active(),
-				'pro_sticker' => MOOWOOLE_PRO_STICKER,
-				'shop_url'    => MOOWOODLE_PRO_SHOP_URL,
-				'accountmenu' => $my_account_menu,
-				'tab_name'    => __("MooWoodle", "moowoodle"),
-				'log_url'     => get_site_url( null, str_replace( ABSPATH, '', MOOWOODLE_LOGS ) ),
-				'wc_email_url' => admin_url( '/admin.php?page=wc-settings&tab=email&section=enrollmentemail' ),
-				'moodle_site_url' =>  MooWoodle()->setting->get_setting( 'moodle_url' ),
-				'wordpress_logo' => MOOWOODLE_PLUGIN_URL . 'src/assets/images/WordPress.png',
-				'moodle_logo'	=> MOOWOODLE_PLUGIN_URL . 'src/assets/images/Moodle.png',
-				'wp_user_roles' => wp_roles()->get_names(),
-				'md_user_roles' => [
-					1 => __( 'Manager', 'moowoodle' ),
-					2 => __( 'Course creator', 'moowoodle' ),
-					3 => __( 'Teacher', 'moowoodle' ),
-					4 => __( 'Non-editing teacher', 'moowoodle' ),
-					5 => __( 'Student', 'moowoodle' ),
-					7 => __( 'Authenticated user', 'moowoodle' ),
-				]
-			],
-		);
+			wp_localize_script(
+				'moowoodle-admin-script',
+				'appLocalizer',
+				[
+					'apiUrl' 	  => untrailingslashit( get_rest_url() ),
+					'restUrl'     => 'moowoodle/v1',
+					'nonce'		  => wp_create_nonce('wp_rest'),
+					'preSettings' => $settings_databases_value,
+					'pro_active'  => Util::is_pro_active(),
+					'pro_sticker' => MOOWOOLE_PRO_STICKER,
+					'shop_url'    => MOOWOODLE_PRO_SHOP_URL,
+					'accountmenu' => $my_account_menu,
+					'tab_name'    => __("MooWoodle", "moowoodle"),
+					'log_url'     => get_site_url( null, str_replace( ABSPATH, '', MooWoodle()->log_file ) ),
+					'wc_email_url' => admin_url( '/admin.php?page=wc-settings&tab=email&section=enrollmentemail' ),
+					'moodle_site_url' =>  MooWoodle()->setting->get_setting( 'moodle_url' ),
+					'wordpress_logo' => MOOWOODLE_PLUGIN_URL . 'src/assets/images/WordPress.png',
+					'moodle_logo'	=> MOOWOODLE_PLUGIN_URL . 'src/assets/images/Moodle.png',
+					'wp_user_roles' => wp_roles()->get_names(),
+					'md_user_roles' => [
+						1 => __( 'Manager', 'moowoodle' ),
+						2 => __( 'Course creator', 'moowoodle' ),
+						3 => __( 'Teacher', 'moowoodle' ),
+						4 => __( 'Non-editing teacher', 'moowoodle' ),
+						5 => __( 'Student', 'moowoodle' ),
+						7 => __( 'Authenticated user', 'moowoodle' ),
+					]
+				],
+			);
+		}
 	}
 
 	/**
@@ -172,7 +175,7 @@ class Admin {
 	public static function create_settings_page() {
 		
 		$page = filter_input(INPUT_GET, 'page', FILTER_DEFAULT) !== null ? filter_input(INPUT_GET, 'page', FILTER_DEFAULT) : '';?>
-		<div class="mw-admin-dashbord <?php echo $page; ?>">
+		<div id="admin-moowoodle" class="mw-admin-dashbord <?php echo $page; ?>">
 			<div class="mw-general-wrapper" id ="moowoodle_root">
 				<?php
 				if (filter_input(INPUT_GET, 'page', FILTER_DEFAULT) == 'moowoodle' && !did_action( 'woocommerce_loaded' ) ) {

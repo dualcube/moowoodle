@@ -51,14 +51,14 @@ class Util {
 		// Write Log
 		if( $message != '' ) {
 			$log_entry 		  = gmdate( "d/m/Y H:i:s", time() ) . ': ' . $message;
-			$existing_content = $wp_filesystem->get_contents( get_site_url( null, str_replace( ABSPATH, '', MOOWOODLE_LOGS ) ) );
+			$existing_content = $wp_filesystem->get_contents( get_site_url( null, str_replace( ABSPATH, '', MooWoodle()->log_file ) ) );
 			
 			// Append existing content
 			if ( ! empty( $existing_content ) ) {
 				$log_entry = "\n" . $log_entry;
 			}
 
-			return $wp_filesystem->put_contents( MOOWOODLE_LOGS, $existing_content . $log_entry );
+			return $wp_filesystem->put_contents( MooWoodle()->log_file, $existing_content . $log_entry );
 		}
 
 		return false;
