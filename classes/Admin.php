@@ -97,7 +97,7 @@ class Admin {
      * @return void
      */
 	public function enqueue_admin_script() {
-		if ( get_current_screen()->id == 'toplevel-page-moowoodle' ) {
+		if ( get_current_screen()->id == 'toplevel_page_moowoodle' ) {
 			wp_enqueue_style(
 				'moowoodle_admin_css',
 				MOOWOODLE_PLUGIN_URL . 'build/index.css', array(),

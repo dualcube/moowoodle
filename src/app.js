@@ -8,7 +8,7 @@ import Enrollment from "./components/Enrollment/Enrollment";
 
 const App = () => {
     const currentUrl = window.location.href;
-    document.querySelectorAll('#toplevel-page-moowoodle>ul>li>a').forEach((element) => {
+    document.querySelectorAll('#toplevel_page_moowoodle>ul>li>a').forEach((element) => {
         element.parentNode.classList.remove('current');
         if (element.href === currentUrl) {
             element.parentNode.classList.add('current');
