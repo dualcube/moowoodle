@@ -237,7 +237,7 @@ const Select = (props) => {
         });
     }, [filter, option, selectedValues]);
 
-    Modal.setAppElement("#admin-plugin-elements");
+    Modal.setAppElement("#admin-moowoodle");
 
     const openModal = () => setPopupOpend(true);
     const closeModal = () => setPopupOpend(false);
