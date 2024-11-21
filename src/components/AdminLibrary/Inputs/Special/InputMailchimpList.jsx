@@ -7,9 +7,9 @@ import { getApiLink, getApiResponse } from "../../../../services/apiService";
 
 import { useSetting } from "../../../../contexts/SettingContext";
 
-import "./ConnectSelect.scss";
+import "./InputMailchimpList.scss";
 
-const ConnectSelect = (props) => {
+const InputMailchimpList = (props) => {
   const { mailchimpKey, optionKey, settingChanged } = props;
 
   // State varaible for list of options
@@ -50,7 +50,7 @@ const ConnectSelect = (props) => {
       />
   
       <div className="button-wrapper">
-        <button
+        <button class="btn-purple"
           onClick={(e) => {
             e.preventDefault();
             if ( ! props.proSettingChanged() ) {
@@ -90,4 +90,4 @@ const ConnectSelect = (props) => {
   );
 };
 
-export default ConnectSelect;
+export default InputMailchimpList;

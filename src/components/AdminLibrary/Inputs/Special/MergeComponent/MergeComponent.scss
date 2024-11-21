@@ -1,17 +1,19 @@
+@import '/src/components/config.scss';
+
 .merge-components{
     display: flex;
     align-items: center;
     justify-content: flex-start;
     gap: 0.5rem;
     flex-wrap: wrap;
-
     
     &>*{
-        flex: 1 0 100px;
+        flex: 1 0 6.25rem;
     }
     select, input{
-        min-height: 44px;
-        border-radius: 0.25rem !important;
+        min-width: 100%;
+        border: $border-light-medium;
+        border-radius: $border-radius-small;
 
         &:hover, &:active, &:focus{
             box-shadow: none;

@@ -1,45 +1,21 @@
-$font-color: #333;
-$background-color: #fff;
-$primary-color: #65438f;
-$background-secondary-color: #ccc;
-$even-row-color: rgb(245, 245, 245);
-$head-row-background: #e7e7e7;
-$border-color: rgba(0, 0, 0, 0.2);
-$shine-background: linear-gradient(90deg,
-    #f4f4f4 0rem,
-    rgba(229, 229, 229, 0.8) 2.52rem,
-    #f4f4f4 5.04rem);
+@import '/src/components/config.scss';
 
-$padding-small: 0.4rem;
-$padding-medium: 1rem;
-
-$line-height-small: 1.008rem;
-$line-height-medium: 2.25rem;
-
-$border-width-small: 0.063rem;
-$border-width-medium: 0rem;
-
-$border-radius-small: 0.25rem;
-$border-radius-medium: 0.441rem;
-$border-radius-large: 0.5rem;
-
-$animation-duration: 2s;
 
 .load-table {
   border-collapse: collapse;
   border-spacing: 0;
-  border-color: $border-color;
+  border-color: rgba(0, 0, 0, 0.2);
   width: 100%;
 
   td {
-    padding: $padding-small;
+    padding: 0.4rem;
     border-style: solid;
-    border-width: $border-width-medium;
+    border-width: 0;
     overflow: hidden;
     word-break: normal;
-    border-color: $border-color;
-    color: $font-color;
-    background-color: $background-color;
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #333;
+    background-color: $color-white;
     flex-grow: 1;
 
     &:first-child {
@@ -49,45 +25,42 @@ $animation-duration: 2s;
 
   tr:first-child .load-table-td {
     font-weight: normal;
-    padding: $padding-small;
+    padding: 0.4rem;
     border-style: solid;
-    border-width: $border-width-medium;
+    border-width: 0;
     overflow: hidden;
     word-break: normal;
-    border-color: $border-color;
-    color: $font-color;
-    background-color: $head-row-background;
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #333;
+    background-color: #e7e7e7;
   }
 }
 
 .line {
   float: left;
   width: 100%;
-  height: $line-height-small;
-  margin-top: $padding-small;
-  border-radius: $border-radius-medium;
-  background-image: $shine-background;
-  background-size: 37.8rem;
-  animation: shine-lines $animation-duration infinite ease-out;
+  height: 1rem;
+  margin-top: 0.4rem;
+  border-radius: 0.438rem;
+  background-image: linear-gradient(90deg,
+      #f4f4f4 0rem,
+      rgba(229, 229, 229, 0.8) 2.5rem,
+      #f4f4f4 5.04rem);
+  background-size: 37.5rem;
+  animation: shine-lines 2s infinite ease-out;
 }
 
 @keyframes shine-lines {
   0% {
-    background-position: -$line-height-small;
+    background-position: -1rem;
   }
 
   40%,
   100% {
-    background-position: 8.82rem;
+    background-position: 8.813rem;
   }
 }
 
-
-$menu-btn-color: #522c81;
-$body-background: #f9f9f9;
-$color-white: #fff;
-$menu-color: #f9f8fb;
-$color-active: #65438f;
 
 .filter-wrapper {
   display: flex;
@@ -102,20 +75,19 @@ $color-active: #65438f;
     align-items: center;
     justify-content: flex-start;
     gap: 0.5rem;
-    max-width: 37.8rem;
     flex-wrap: wrap;
     position: relative;
     width: 100%;
 
-    .admin-header-search-section {
-      input {
-        padding: 0.15rem 0.5rem;
-      }
+    input,
+    select{
+      padding: 0.15rem 0.5rem;
     }
 
     &>div {
       flex: 1 0 9.45rem;
       width: 100%;
+      max-width: 10rem;
 
       div {
         background-color: transparent;
@@ -126,12 +98,11 @@ $color-active: #65438f;
         position: absolute;
         left: 0;
         top: 105%;
-        background: #fff !important;
+        background: $color-white;
         z-index: 5;
         padding: 1rem;
 
         .rdrDateRangePickerWrapper {
-          // flex-wrap: wrap;
 
           .rdrDefinedRangesWrapper {
             .rdrInputRanges {
@@ -145,7 +116,6 @@ $color-active: #65438f;
 
 
           &>div {
-            // flex: 1;
 
             input {
               width: fit-content;
@@ -177,11 +147,16 @@ $color-active: #65438f;
         background-color: transparent;
         width: 100%;
         outline: none;
-        height: 2.205rem !important; // To overwrite default wordpress css
-        border: 0.115rem solid rgba(0, 0, 0, 0.125);
+        border: $border-light-medium;
 
         &:focus {
           box-shadow: none;
+        }
+      }
+
+      .rdrMonthAndYearPickers{
+        select{
+          padding: 0.313rem 1.25rem ;
         }
       }
     }
@@ -207,40 +182,28 @@ $color-active: #65438f;
       }
 
       button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
         gap: 0.5rem;
-        border-radius: 0.25rem;
-        background-color: #65438f;
+        border-radius: $border-radius-small;
+        background-color: $color-active;
         padding: 0.5rem 1rem;
         height: fit-content;
-        color: #fff;
-        cursor: pointer;
+        color: $color-white;
       }
     }
   }
 }
 
-.koyZDM {
-  overflow: visible !important; // To overwrite default react data table css
-}
-
 .rdt_Table {
-  border-radius: 0.25rem;
+  border-radius: $border-radius-small;
   overflow: hidden;
   box-shadow: 0 0 1rem rgba($color: #000000, $alpha: 0.125);
   width: 100%;
   z-index: 1;
 
-  * {
-    font-size: 0.875rem;
-  }
-
   .rdt_TableHead {
-    border-radius: 0.25rem;
+    border-radius: $border-radius-small;
     background-color: $color-white;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
 
     .rdt_TableHeadRow {
       padding: 0.313rem;
@@ -259,7 +222,7 @@ $color-active: #65438f;
         }
 
         &:last-child {
-          display: none;
+          display: none; // Hide extra div in table header
         }
       }
     }
@@ -267,18 +230,16 @@ $color-active: #65438f;
 
   .rdt_TableBody {
     .rdt_TableRow {
-      background: $color-white;
       position: relative;
       padding: 0 0.313rem;
 
       &:nth-child(odd) {
-        background: $body-background;
+        background: $background-color;
       }
 
       .rdt_TableCell {
-        font-size: 0.85rem;
         padding: 0.313rem 0.5rem;
-        font-size: 0.95rem;
+        font-size: 0.875rem;
 
         &:first-child {
           min-width: 2.5rem;
@@ -289,10 +250,8 @@ $color-active: #65438f;
           position: absolute;
           top: 1.15rem;
           right: 0.938rem;
-          display: none;
+          display: none; // Hide arrow for desktop
           border-radius: 0.188rem;
-          width: 3rem !important; // To overwrite default table cell width / height
-          height: 3rem !important; // To overwrite default table cell width / height
 
           .table-dropdown_btn {
             width: 100%;
@@ -301,9 +260,6 @@ $color-active: #65438f;
               width: 100%;
               height: 1.563rem;
               padding: 0;
-              display: flex;
-              justify-content: center;
-              align-items: center;
 
               i {
                 font-size: 0.75rem !important; // To overwrite default table font size
@@ -318,19 +274,11 @@ $color-active: #65438f;
           justify-content: flex-start;
           gap: 0.5rem;
 
-          h4 {
-            display: none;
-            font-size: 0.95rem;
-            font-weight: 400;
-            min-width: 7.5rem;
-            text-align: left;
-          }
-
           img {
             width: 3.15rem;
             height: 3.15rem;
             padding: 0.25rem;
-            border-radius: 0.25rem;
+            border-radius: $border-radius-small;
             box-shadow: 0 0 .125rem rgba($color: #000000, $alpha: 0.125);
           }
 
@@ -357,16 +305,16 @@ $color-active: #65438f;
                 transition: all 0.3s linear;
                 align-items: flex-start;
                 justify-content: flex-start;
-                
-                button, a {
+
+                button,
+                a {
                   background: transparent;
                   font-size: 0.75rem;
                   font-weight: 500;
-                  color: #522c81;
+                  color: $theme-color;
                   background: transparent;
                   text-align: left;
                   padding: 0;
-                  cursor: pointer;
                 }
               }
             }
@@ -379,8 +327,8 @@ $color-active: #65438f;
 
 
 .rdt_Pagination {
-  display: grid !important;
-  grid-template-columns: 8.19rem 1fr 8.19rem 10.08rem;
+  display: grid !important; // For overwrite defauld grid system
+  grid-template-columns: 8.18rem 1fr 8.18rem 10.08rem;
   place-content: center;
 
   .sc-lmoLKH.lcunyj {
@@ -390,10 +338,6 @@ $color-active: #65438f;
         color: $color-active;
         box-shadow: none;
       }
-    }
-
-    svg {
-      display: none;
     }
   }
 }
@@ -405,7 +349,6 @@ $color-active: #65438f;
         display: flex;
 
         .rdt_TableCol {
-          display: none;
 
           &:nth-child(1),
           &:nth-child(2),
@@ -447,10 +390,6 @@ $color-active: #65438f;
 
             .table-row-custom {
               padding: 0;
-
-              h4 {
-                display: none;
-              }
             }
           }
 
@@ -483,6 +422,6 @@ $color-active: #65438f;
 
 @media screen and (max-width:37.737rem) {
   .rdt_Pagination {
-    display: flex !important;
+    display: flex !important; 
   }
 }

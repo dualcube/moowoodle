@@ -1,12 +1,7 @@
-$menu-btn-color: #522c81;
-$body-background: #f9f9f9;
-$color-white: #fff;
-$menu-color: #f9f8fb;
-$color-active: #65438f;
+@import '/src/components/config.scss';
 
 .section-synchronize-now {
   display: flex;
-  gap: 1rem;
   flex-direction: column;
   width: fit-content;
 
@@ -17,14 +12,6 @@ $color-active: #65438f;
 
     .synchronize-now-button {
       display: inline-block;
-      padding: 0.504rem 1.26rem 0.63rem;
-      font-size: 1.008rem;
-      text-align: center;
-      text-decoration: none;
-      cursor: pointer;
-      color: #fff;
-      background-color: $color-active;
-      border-radius: 0.315rem;
       position: relative;
       overflow: hidden;
 
@@ -158,13 +145,6 @@ $color-active: #65438f;
     }
   }
 
-  .btn-description {
-    font-style: italic;
-    color: rgba(114, 114, 117, 0.6);
-    font-size: 0.813rem;
-    line-height: 1.5714285714;
-  }
-
   .details-status-row {
     padding: 0.5rem 0.5rem 0.75rem;
     position: relative;
@@ -175,7 +155,7 @@ $color-active: #65438f;
     color: #007400;
 
     &.sync-now {
-      max-width: 300px;
+      max-width: 18.75rem;
 
       .status-meta {
         display: flex;
@@ -196,6 +176,7 @@ $color-active: #65438f;
   }
 
   .sync-process {
+    margin-top: 0.5rem;
     padding: 0.5rem 1rem;
     background: #00b50055;
     color: green;

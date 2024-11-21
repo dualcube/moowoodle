@@ -43,7 +43,7 @@ class EnrollmentEmail extends \WC_Email {
 	 * @return string
 	 */
 	public function get_default_subject() {
-		return apply_filters( 'moowoodle_enrollment_email_subject', __( 'New Moodle Enrollment', 'woocommerce-stock-manager' ) );
+		return apply_filters( 'moowoodle_enrollment_email_subject', __( 'New Moodle Enrollment', 'moowoodle' ) );
 	} 
 
 	/**
@@ -53,7 +53,7 @@ class EnrollmentEmail extends \WC_Email {
 	 * @return string
 	 */
 	public function get_default_heading() {
-		return apply_filters( 'moowoodle_enrollment_email_heading', __( 'Welcome to {site_title} ', 'woocommerce-stock-manager' ) );
+		return apply_filters( 'moowoodle_enrollment_email_heading', __( 'Welcome to {site_title} ', 'moowoodle' ) );
 	} 
 
 	/**

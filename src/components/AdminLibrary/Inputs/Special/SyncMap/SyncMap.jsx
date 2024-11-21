@@ -2,229 +2,152 @@ import { useEffect, useRef, useState } from "react";
 import './SyncMap.scss';
 
 const SyncMap = (props) => {
-    const { value, onChange, proSetting, proSettingChanged, description } = props;
+    const { value = [], onChange, proSetting, proSettingChanged, description, syncFieldsMap } = props;
 
-    const wordpressSyncFieldsMap = {
-        'firstname': 'First name',
-        'lastname': 'Last name',
-        'username': 'User name',
-        'password': 'Password'
-    };
-    
-    const moodleSyncFieldsMap = {
-        'firstname': 'First name',
-        'lastname': 'Last name',
-        'username': 'User name',
-        'password': 'Password'
-    };
-
-    const settingValue = value || [];
-    
-    const [ selectedFields, setSelectedFields ] = useState( settingValue );
+    // Extract the systems (e.g., WordPress, Moodle) dynamically from syncFieldsMap
+    const systems = Object.keys(syncFieldsMap);
+    // Ensure value is an array of arrays (pairs of selected fields)
+    const formattedValue = Array.isArray(value) && value.every(Array.isArray) ? value : [];
+    const [selectedFields, setSelectedFields] = useState(formattedValue);
+    const [availableFields, setAvailableFields] = useState({});
+    const [btnAllow, setBtnAllow] = useState(false);
     const settingChanged = useRef(false);
-
-    // Select unselected fields.
-    const wordpressSyncFields = [];
-    const moodleSyncFields    = [];
-
-    Object.keys(wordpressSyncFieldsMap).forEach((ele) => {
-        let hasSelect = false;
-        
-        settingValue.forEach(([wpSetting, moodleSetting]) => {
-            if ( wpSetting == ele ) {
-                hasSelect = true;
-            }
-        });
-
-        if ( ! hasSelect ) {
-            wordpressSyncFields.push( ele );
-        }
-    });
-
-    Object.keys(moodleSyncFieldsMap).forEach((ele) => {
-        let hasSelect = false;
-
-        settingValue.forEach(([wpSetting, moodleSetting]) => {
-            if ( moodleSetting == ele ) {
-                hasSelect = true;
-            }
-        });
-
-        if ( ! hasSelect ) {
-            moodleSyncFields.push( ele );
-        }
-    });
-
-    const [wordpressSyncFieldsChose, setWordpressSyncFieldsChose] = useState([]);
-    const [moodleSyncFieldsChose, setMoodleSyncFieldsChose] = useState([]);
-    const [ btnAllow, setBtnAllow ] = useState(false);
+    // Generate available fields for each system
 
     useEffect(() => {
-        setWordpressSyncFieldsChose( wordpressSyncFields );
-        setMoodleSyncFieldsChose( moodleSyncFields );
-    }, [settingValue]);
+        const updatedAvailableFields = {};
 
-    // Get all unselected fields for a site.
-    const getUnselectedFields = ( site ) => {
-        const unSelectFields = [];
-
-        let syncFields = [];
-
-        if ( site === 'wordpress' ) {
-            syncFields = wordpressSyncFields;
-        }
-        if (site === 'moodle') {
-            syncFields = moodleSyncFields;
-        }
-
-        syncFields.forEach(( syncField ) => {
-            // Check wordpress field is present in the selected fields or not
-            let hasSelect = false;
-
-            selectedFields.forEach( ( [ wpField, mwField ] ) => {
-                if (site === 'wordpress' && wpField === syncField) hasSelect = true;
-                if (site === 'moodle' && mwField === syncField) hasSelect = true;
-            });
-            
-            if ( ! hasSelect ) {
-                unSelectFields.push( syncField );
-            }
+        systems.forEach((system) => {
+            updatedAvailableFields[system] = Object.keys(syncFieldsMap[system].fields).filter(field =>
+               !selectedFields.some(([selectedFieldA, selectedFieldB]) => selectedFieldA === field || selectedFieldB === field)
+            );
         });
 
-        return unSelectFields;
-    }
+        setAvailableFields(updatedAvailableFields);
+    }, [selectedFields, syncFieldsMap, systems]);
 
-    // Change a particular selected fields.
-    const changeSelectedFields = ( fieldIndex, value, site ) => {
-        setSelectedFields((selectedFields) => {
-            return selectedFields.map( ( fieldPair, index ) => {
-                if ( index == fieldIndex ) {
-                    if ( site == 'wordpress' ) {
-                        fieldPair[0] = value;
-                    }
-                    if ( site == 'moodle' ) {
-                        fieldPair[1] = value;
-                    }
+    // Handle field selection changes
+    const changeSelectedFields = (fieldIndex, value, systemIndex) => {
+        setSelectedFields(prevFields =>
+            prevFields.map((fieldPair, index) => {
+                if (index === fieldIndex) {
+                    const newPair = [...fieldPair];
+                    newPair[systemIndex] = value;
+                    return newPair;
                 }
-                return fieldPair
-            });
-        })
-    }
+                return fieldPair;
+            })
+        );
+    };
 
-    // Remove a particular selected fields
-    const removeSelectedFields = ( fieldIndex ) => {
-        setSelectedFields((selectedFields) => {
-            return selectedFields.filter( ( fieldPair, index ) => index != fieldIndex );
-        })
+    // Remove selected field mapping
+    const removeSelectedFields = (fieldIndex) => {
+        setSelectedFields(prevFields => prevFields.filter((_, index) => index !== fieldIndex));
         setBtnAllow(false);
-    }
+    };
 
+    // Insert new selected fields dynamically
     const insertSelectedFields = () => {
-        if ( wordpressSyncFieldsChose.length && moodleSyncFieldsChose.length ) {
-            const wpField = wordpressSyncFieldsChose.shift();
-            const mdField = moodleSyncFieldsChose.shift();
+        if (availableFields[systems[0]].length && availableFields[systems[1]].length) {
+            const systemAField = availableFields[systems[0]].shift();
+            const systemBField = availableFields[systems[1]].shift();
 
-            setSelectedFields(( selectedFields ) => {
-                return [ ...selectedFields, [ wpField, mdField ] ];
-            });
-            
-            if ( wordpressSyncFieldsChose.length == 0 && moodleSyncFieldsChose.length == 0) {
-                setBtnAllow(true);
-            }
+            setSelectedFields(prevFields => [...prevFields, [systemAField, systemBField]]);
+            setBtnAllow(availableFields[systems[0]].length === 0 && availableFields[systems[1]].length === 0);
         } else {
-            alert( 'Unable to add sync fields' );
+            alert('Unable to add sync fields');
         }
-    }
-    
+    };
+
+    // Trigger onChange when selectedFields changes
     useEffect(() => {
         if (settingChanged.current) {
             settingChanged.current = false;
-
-            onChange( selectedFields );
+            onChange(selectedFields);
         }
-    }, [selectedFields] );
+    }, [selectedFields, onChange]);
 
     return (
         <div className="sync-map-container">
             <div className="container-wrapper">
-                <div className="main-wrapper"> 
-                    <div className="main-wrapper-heading"><span>WordPress</span><span>Moodle</span></div>
-                    <div class="map-content-wrapper">
-                        <select class="" disabled>
+                <div className="main-wrapper">
+                    <div className="main-wrapper-heading">
+                        <span>{syncFieldsMap[systems[0]].heading}</span>
+                        <span>{syncFieldsMap[systems[1]].heading}</span>
+                    </div>
+                    {/* Static email mapping */}
+                    <div className="map-content-wrapper">
+                        <select className="" disabled>
                             <option value="email">Email</option>
                         </select>
-                        <span class="connection-icon">⇌</span>
-                        <select class="" disabled>
+                        <span className="connection-icon">⇌</span>
+                        <select className="" disabled>
                             <option value="email">Email</option>
                         </select>
-                    </div>  
-                    {
-                        selectedFields.map(([wpField, mwField], index) => {
-                            return (
-                                <div className="map-content-wrapper">
-                                    {/* Wordpress select */}
-                                    <select 
-                                        className=""
-                                        value={mwField}
-                                        onChange={(e) => {
-                                            if (!proSettingChanged()) {
-                                                settingChanged.current = true;
-                                                changeSelectedFields( index, e.target.value, 'wordpress' )
-                                            }
-                                        } }
-                                    >
-                                        <option value={wpField} selected>{wordpressSyncFieldsMap[wpField]}</option>
-                                        {
-                                            wordpressSyncFieldsChose.map((option) => {
-                                                return <option value={option}>{wordpressSyncFieldsMap[option]}</option>
-                                            })
+                    </div>
+                    {/* Dynamic field mappings */}
+                    {selectedFields && 
+                        selectedFields.map(([systemAField, systemBField], index) => (
+                            <div className="map-content-wrapper" key={index}>
+                                {/* System A select */}
+                                <select
+                                    className=""
+                                    value={systemAField}
+                                    onChange={(e) => {
+                                        if (!proSettingChanged()) {
+                                            settingChanged.current = true;
+                                            changeSelectedFields(index, e.target.value, 0);
                                         }
-                                    </select >
-
-                                    <span className="connection-icon">&#8652;</span>
-
-                                    {/* Moodle select */}
-                                    <select 
-                                        className=""
-                                        value={mwField}
-                                        onChange={(e) => {
-                                            if (!proSettingChanged()) {
-                                                settingChanged.current = true;
-                                                changeSelectedFields( index, e.target.value, 'moodle' ) 
-                                            }
-                                        }}
-                                    >
-                                        <option value={mwField} selected>{moodleSyncFieldsMap[mwField]}</option>
-                                        {
-                                            moodleSyncFieldsChose.map((option) => {
-                                                return <option value={option}>{moodleSyncFieldsMap[option]}</option>
-                                            })
+                                    }}
+                                >
+                                    <option value={systemAField}>{syncFieldsMap[systems[0]].fields[systemAField]}</option>
+                                    {availableFields[systems[0]]?.map(option => (
+                                        <option key={option} value={option}>
+                                            {syncFieldsMap[systems[0]].fields[option]}
+                                        </option>
+                                    ))}
+                                </select>
+                                <span className="connection-icon">&#8652;</span>
+                                {/* System B select */}
+                                <select
+                                    className=""
+                                    value={systemBField}
+                                    onChange={(e) => {
+                                        if (!proSettingChanged()) {
+                                            settingChanged.current = true;
+                                            changeSelectedFields(index, e.target.value, 1);
                                         }
-                                    </select >
-                                    <button
-                                        className="remove-mapping"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (!proSettingChanged()) {
-                                                settingChanged.current = true;
-                                                removeSelectedFields( index );
-                                            }
-                                        }}
-                                    >
-                                        <span class="text">Clear</span>
-                                        <span class="icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path></svg>
-                                        </span>
-                                    </button>
-                                </div>
-                            );
-                        })
+                                    }}
+                                >
+                                    <option value={systemBField}>{syncFieldsMap[systems[1]].fields[systemBField]}</option>
+                                    {availableFields[systems[1]]?.map(option => (
+                                        <option key={option} value={option}>
+                                            {syncFieldsMap[systems[1]].fields[option]}
+                                        </option>
+                                    ))}
+                                </select>
+                                <button
+                                    className="btn-purple  remove-mapping"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        if (!proSettingChanged()) {
+                                            settingChanged.current = true;
+                                            removeSelectedFields(index);
+                                        }
+                                    }}
+                                >
+                                    <span className="text">Clear</span>
+                                    <span className="icon adminLib-close"></span>
+                                </button>
+                            </div>
+                        ))
                     }
                 </div>
+                {/* Add new mapping button */}
                 <div className="btn-container">
                     <div className="add-mapping-container">
                         <button
-                            className={`add-mapping ${btnAllow ? "not-allow" : ""}`}
+                            className={`btn-purple add-mapping ${btnAllow ? "not-allow" : ""}`}
                             onClick={(e) => {
                                 e.preventDefault();
                                 if (!proSettingChanged()) {
@@ -233,18 +156,16 @@ const SyncMap = (props) => {
                                 }
                             }}
                         >
-                            <span class="text">Add</span>
-                            <span class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"/></svg>
-                            </span>
+                            <span className="text">Add</span>
+                            <i class="adminLib-vendor-form-add"></i>
                         </button>
-                        {proSetting && <span class="admin-pro-tag">pro</span>}
+                        {proSetting && <span className="admin-pro-tag">pro</span>}
                     </div>
                 </div>
             </div>
-            { description && <p className="settings-metabox-description" dangerouslySetInnerHTML={{__html: description}}></p> }
+            {description && <p className="settings-metabox-description" dangerouslySetInnerHTML={{ __html: description }}></p>}
         </div>
     );
-}
+};
 
 export default SyncMap;

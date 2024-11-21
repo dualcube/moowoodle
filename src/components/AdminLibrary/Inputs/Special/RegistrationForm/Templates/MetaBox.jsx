@@ -11,7 +11,8 @@ const FormFieldSelect = (props) => {
     const selectedInputType = inputTypeList.find((inputType) => inputType.value === formField.type);
 
     return (
-        <article className="modal-content-section-field">
+        <article className="modal-content-section-field"
+            onClick={(e) => e.stopPropagation()}>
             <p>Type</p>
             <select onChange={(event) => { onChange?.(event.target.value) }}>
                 {/* Render what is selected */}
@@ -39,13 +40,17 @@ const FormFieldSelect = (props) => {
 }
 
 const SettingMetaBox = (props) => {
-    const { formField, inputTypeList, onChange, onTypeChange } = props;
+    const { formField, inputTypeList, onChange, onTypeChange, opened } = props;
 
-    const [hasOpened, setHasOpend] = useState(false);
+    const [hasOpened, setHasOpend] = useState(opened.click);
+
+    useEffect( () => {
+        setHasOpend(opened.click)
+    }, [opened])
 
     return (
-        <div onClick={() => setHasOpend(true)}>
-            <i className="admin-font font-menu"></i>
+        <div onClick={() => setHasOpend(prevState => !prevState)}>
+            <i className="admin-font adminLib-menu"></i>
             {
                 hasOpened &&
                     <Draggable>
@@ -55,7 +60,7 @@ const SettingMetaBox = (props) => {
                                 event.stopPropagation();
                                 setHasOpend(false);
                             }}>
-                                <i className="admin-font font-cross"></i>
+                                <i className="admin-font adminLib-cross"></i>
                             </button>
                             
                             {/* Render main components */}
@@ -70,7 +75,8 @@ const SettingMetaBox = (props) => {
                                     />
 
                                     {/* Set the name of input field */}
-                                    <article className="modal-content-section-field">
+                                    <article className="modal-content-section-field"
+                                        onClick={(e) => e.stopPropagation()}>
                                         <p>Name</p>
                                         <input
                                             type="text"
@@ -81,7 +87,8 @@ const SettingMetaBox = (props) => {
 
                                     {
                                         ( formField.type == 'text' || formField.type == 'email' || formField.type == 'url' || formField.type == 'textarea' ) &&
-                                            <article className="modal-content-section-field">
+                                            <article className="modal-content-section-field"
+                                                onClick={(e) => e.stopPropagation()}>
                                                 <p>Placeholder</p>
                                                 <input
                                                     type="text"
@@ -94,7 +101,8 @@ const SettingMetaBox = (props) => {
                                 <div className="setting-modal-content-section">
                                     {
                                         ( formField.type == 'text' || formField.type == 'email' || formField.type == 'url' || formField.type == 'textarea' ) &&
-                                            <article className="modal-content-section-field">
+                                            <article className="modal-content-section-field"
+                                                onClick={(e) => e.stopPropagation()}>
                                                 <p>Character limit</p>
                                                 <input
                                                     type="number"
@@ -105,7 +113,8 @@ const SettingMetaBox = (props) => {
                                     }
                                     {
                                         ( formField.type == 'textarea' ) &&
-                                            <article className="modal-content-section-field">
+                                            <article className="modal-content-section-field"
+                                                onClick={(e) => e.stopPropagation()}>
                                                 <p>Row</p>
                                                 <input
                                                     type="number"
@@ -117,7 +126,8 @@ const SettingMetaBox = (props) => {
                                     {
                                         ( formField.type == 'recapta' ) &&
                                             <>
-                                                <article className="modal-content-section-field">
+                                                <article className="modal-content-section-field"
+                                                    onClick={(e) => e.stopPropagation()}>
                                                     <p>Api key</p>
                                                     <input
                                                         type="number"
@@ -126,7 +136,8 @@ const SettingMetaBox = (props) => {
                                                     />
                                                 </article>
 
-                                                <article className="modal-content-section-field">
+                                                <article className="modal-content-section-field"
+                                                    onClick={(e) => e.stopPropagation()}>
                                                     <p>Site key</p>
                                                     <input
                                                         type="number"
@@ -138,7 +149,8 @@ const SettingMetaBox = (props) => {
                                     }
                                     {
                                         ( formField.type == 'textarea' ) &&
-                                            <article className="modal-content-section-field">
+                                            <article className="modal-content-section-field"
+                                                onClick={(e) => e.stopPropagation()}>
                                                 <p>Column</p>
                                                 <input
                                                     type="number"
@@ -149,7 +161,8 @@ const SettingMetaBox = (props) => {
                                     }
                                     {
                                         ( formField.type == 'attachment' ) &&
-                                            <article className="modal-content-section-field">
+                                            <article className="modal-content-section-field"
+                                                onClick={(e) => e.stopPropagation()}>
                                                 <p>Maximum file size</p>
                                                 <input
                                                     type="number"
@@ -160,7 +173,8 @@ const SettingMetaBox = (props) => {
                                     }
                                 </div>
                                 <div className="setting-modal-content-section">
-                                    <article className="modal-content-section-field">
+                                    <article className="modal-content-section-field"
+                                        onClick={(e) => e.stopPropagation()}>
                                         <p>Visibility</p>
                                         <div className="visibility-control-container">
                                             <div className="tabs">
@@ -176,7 +190,8 @@ const SettingMetaBox = (props) => {
                                             </div>
                                         </div>
                                     </article>
-                                    <article className="modal-content-section-field">
+                                    <article className="modal-content-section-field"
+                                        onClick={(e) => e.stopPropagation()}>
                                         <p>Required</p>
                                         <input
                                             type="checkbox"

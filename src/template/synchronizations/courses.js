@@ -5,7 +5,7 @@ export default {
     priority: 10,
     name: __("Courses and Products synchronization", 'moowoodle'),
     desc: __("Fetch Moodle courses & generate products on demand.", 'moowoodle'),
-    icon: "font-menu_book",
+    icon: "adminLib-menu_book",
     submitUrl: "save-moowoodle-setting",
     modal: [
         {

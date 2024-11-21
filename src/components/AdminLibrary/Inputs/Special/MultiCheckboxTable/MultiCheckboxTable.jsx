@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from 'react-modal';
-import './GridTable.scss';
+import './MultiCheckboxTable.scss';
 
 /**
  * Components render selected option shown in top section
@@ -24,7 +24,7 @@ const SelectedOptionDisplay = (props) => {
                                 className=""
                                 onClick={(event) => { removeSelectedValues(value) }}
                             >
-                                <i className='admin-font font-close'></i>
+                                <i className='admin-font adminLib-close'></i>
                             </div>
                         </div>
                     ))
@@ -36,7 +36,7 @@ const SelectedOptionDisplay = (props) => {
 
                 {!popupOpend && selectedValues.length > 1 &&
                     <div
-                        className='open-modal'
+                        className='open-modal items-controls'
                         onClick={(event) => {
                             setPopupOpend(true);
                         }}
@@ -45,12 +45,12 @@ const SelectedOptionDisplay = (props) => {
 
                 {/* selected delete button */}
                 <div
-                    className="clear-all-data"
+                    className="clear-all-data items-controls"
                     onClick={(event) => {
                         clearSelectedValues();
                     }}
                 >
-                    <i className='admin-font font-close'></i>
+                    <i className='admin-font adminLib-close'></i>
                 </div>
             </div>
         </div>
@@ -97,7 +97,7 @@ const SearchOptionDisplay = (props) => {
                 />
 
                 <span>
-                    <i className='admin-font font-keyboard_arrow_down'></i>
+                    <i className='admin-font adminLib-keyboard_arrow_down'></i>
                 </span>
             </div>
 
@@ -237,7 +237,7 @@ const Select = (props) => {
         });
     }, [filter, option, selectedValues]);
 
-    Modal.setAppElement("#admin-catalog");
+    Modal.setAppElement("#admin-plugin-elements");
 
     const openModal = () => setPopupOpend(true);
     const closeModal = () => setPopupOpend(false);
@@ -276,7 +276,7 @@ const Select = (props) => {
                                 className={'exclusion-modal'}
                             >
                                 <div className='modal-close-btn' onClick={closeModal}>
-                                    <i className='admin-font font-cross'></i>
+                                    <i className='admin-font adminLib-cross'></i>
                                 </div>
                                 <SelectedOptionDisplay
                                     popupOpend={popupOpend}
@@ -301,10 +301,11 @@ const Select = (props) => {
     );
 }
 
-const GridTable = (props) => {
-    const { rows, columns, onChange, setting } = props;
+const MultiCheckboxTable = (props) => {
+    const { rows, columns, onChange, setting, proSetting } = props;
     return (
         <>
+            {proSetting && <span className="admin-pro-tag">pro</span>}
             <table className='grid-table'>
                 <thead>
                     <tr>
@@ -319,7 +320,6 @@ const GridTable = (props) => {
                 <tbody>
                     {
                         rows.map((row) => {
-                            // console.log(row.options)
                             return (
                                 <tr>
                                     <td >{row.label}</td>
@@ -368,4 +368,4 @@ const GridTable = (props) => {
         </>
     )
 }
-export default GridTable;
+export default MultiCheckboxTable;

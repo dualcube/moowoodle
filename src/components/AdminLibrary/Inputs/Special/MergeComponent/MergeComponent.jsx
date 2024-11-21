@@ -1,53 +1,66 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './MergeComponent.scss';
-import Select from 'react-select';
 
 const MergeComponent = (props) => {
-    const { wrapperClass, descClass, description, onChange, value, proSetting } = props;
+    const {wrapperClass, descClass, description, onChange, value, proSetting, fields = []} = props;
     const firstRender = useRef(true);
-    const [data, setData] = useState({
-        'wholesale_discount_type' : value.wholesale_discount_type || '',
-        'wholesale_amount' : value.wholesale_amount || '',
-        'minimum_quantity' : value.minimum_quantity ||''
-    });
+
+    // Initialize state based on field names dynamically
+    const initialState = fields.reduce((acc, field) => {
+        acc[field.name] = value[field.name] || '';
+        return acc;
+    }, {});
+    const [data, setData] = useState(initialState);
 
     const handleOnChange = (key, value) => {
-        setData((previousData) => {
-            return{...previousData, [key] : value }
-        })
-    }
+        setData((previousData) => ({ ...previousData, [key]: value }));
+    };
 
     useEffect(() => {
         if (firstRender.current) {
             firstRender.current = false;
             return; // Prevent the initial call
         }
-        onChange(data)
-      }, [data]);
+        onChange(data);
+    }, [data]);
 
     return (
-        <>
-            <main className={wrapperClass}>
-                <section className='select-input-section merge-components'>
-                    <select id="wholesale_discount_type" value={data.wholesale_discount_type} onChange={(e) => handleOnChange('wholesale_discount_type', e.target.value)}>
-                        <option value="">Select</option>
-                        <option value="fixed_amount"> Fixed Amount</option>
-                        <option value="percentage_amount"> Percentage Amount</option>
-                    </select>
+        <main className={wrapperClass}>
+            <section className='select-input-section merge-components'>
+                {fields.map((field, index) => {
+                    const { name, type, options = [], placeholder = "Enter a value" } = field;
 
-                    <input type="number" id="wholesale_amount" placeholder='Discount value' min="1" value={data.wholesale_amount} onChange={(e) => handleOnChange('wholesale_amount', e.target.value)}/>
-                    
-                    <input type="number" id="minimum_quantity" min="1" placeholder='Minimum quantity' value={data.minimum_quantity} onChange={(e) => handleOnChange('minimum_quantity', e.target.value)}/>
-                </section>
-                {
-                    description &&
-                    <p className={descClass} dangerouslySetInnerHTML={{ __html: description }} >
-                    </p>
-                }
-                { proSetting && <span className="admin-pro-tag">pro</span> }
-            </main>
-        </>
-    )
-}
+                    // Dynamically render field based on type
+                    if (type === 'select') {
+                        return (
+                            <select key={index} id={name} value={data[name]} onChange={(e) => handleOnChange(name, e.target.value)}>
+                                <option value="">Select</option>
+                                {options.map((option) => (
+                                    <option key={option.value} value={option.value}>{option.label}</option>
+                                ))}
+                            </select>
+                        );
+                    } else if (type === 'number') {
+                        return (
+                            <input
+                                key={index}
+                                type={type}
+                                id={name}
+                                placeholder={placeholder}
+                                value={data[name]}
+                                min="1"
+                                onChange={(e) => handleOnChange(name, e.target.value)}
+                            />
+                        );
+                    }
 
-export default MergeComponent
+                    return null; // Return null if type is not recognized
+                })}
+            </section>
+            {description && <p className={descClass} dangerouslySetInnerHTML={{ __html: description }} />}
+            {proSetting && <span className="admin-pro-tag">pro</span>}
+        </main>
+    );
+};
+
+export default MergeComponent;

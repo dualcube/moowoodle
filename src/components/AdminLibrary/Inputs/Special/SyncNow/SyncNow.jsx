@@ -80,7 +80,7 @@ const SyncNow = (props) => {
   return (
     <div className="section-synchronize-now">
       <div className="button-section">
-        <button className="synchronize-now-button" onClick={handleSync}>
+        <button className="btn-purple synchronize-now-button" onClick={handleSync}>
           {value}
         </button>
         {/* Render loader on sync start */}
@@ -96,7 +96,7 @@ const SyncNow = (props) => {
       {syncStarted && <p className="sync-process">Synchronization started please wait.</p>}
 
       {/* Render description */}
-      <p className="btn-description" dangerouslySetInnerHTML={{ __html: description }}></p>
+      <p className="settings-metabox-description" dangerouslySetInnerHTML={{ __html: description }}></p>
 
       {/* Render pro tag */}
       {
@@ -112,7 +112,7 @@ const SyncNow = (props) => {
               {status.action}
               <div className="status-meta">
                 <span className="status-icons">
-                  <i class="admin-font font-icon-yes"></i>
+                  <i class="admin-font adminLib-icon-yes"></i>
                 </span>
                 <span>{status.current} / {status.total}</span>
               </div>

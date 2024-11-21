@@ -14,7 +14,7 @@ const Elements = ( props ) => {
                                 className='elements-items'
                                 onClick={(event) => onClick(option.value)}
                             >
-                                <i className={`admin-font font-settings ${option.icon}`}></i>
+                                <i className={` ${option.icon}`}></i>
                                 <p className='list-title'>{option.label}</p>
                             </article>
                         ))
