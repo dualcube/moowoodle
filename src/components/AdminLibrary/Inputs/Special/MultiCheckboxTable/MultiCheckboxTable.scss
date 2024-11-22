@@ -7,11 +7,11 @@
         flex-direction: column;
 
         .settings-form-label {
-            width: 100% !important;
+            width: 100% !important; // To overwrite dynamic.scss
         }
 
         .settings-input-content {
-            width: 100% !important;
+            width: 100% !important; // To overwrite dynamic.scss
         }
     }
 

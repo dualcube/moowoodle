@@ -33,6 +33,7 @@
       .current-tab-lists {
         display: flex;
         flex-direction: column;
+        min-width: 16rem;
         max-width: 16rem;
         width: 100%;
 
