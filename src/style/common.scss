@@ -55,7 +55,7 @@
 .adminLib-dynamic-pricing:before {
   content: "\e902";
 }
-.adminLib-sales-performance .path1:before {
+.adminLib-sales-performance:before {
   content: "\e903";
   color: rgb(1, 1, 1);
 }
@@ -399,14 +399,12 @@
 .adminLib-credit_card:before {
   content: "\e9502";
 }
-
 *{
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 #admin-plugin-elements,
-#admin-moowoodle,
 #admin-catalog{
   padding: 1.5rem 1rem 0 0;
 } 
@@ -517,6 +515,7 @@ input[type="radio"] {
   }
 }
 
+// pro tag common style
 span.admin-pro-tag{
   font-size: 0.5rem;
   background: $accent-color;
@@ -530,6 +529,21 @@ span.admin-pro-tag{
   right: 0.25rem;
   top: 0;
   transform: translateY(-50%);
+}
+
+// admin page title common style
+.admin-page-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  position: relative;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+
+  p {
+    font-size: 1.5rem;
+  }
 }
 
 @media screen and (max-width: 49.266rem) {

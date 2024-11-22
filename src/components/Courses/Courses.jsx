@@ -412,7 +412,7 @@ export default function Course() {
                     aria-labelledby="form-dialog-title"
                 >
                     <span
-                        className="admin-font font-cross stock-manager-popup-cross"
+                        className="admin-font adminLib-cross stock-manager-popup-cross"
                         onClick={() => {
                             setOpenDialog(false);
                         }}
