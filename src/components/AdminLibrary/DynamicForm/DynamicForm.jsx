@@ -177,16 +177,16 @@ const DynamicForm = (props) => {
     updateSetting(key, mulipleOptions);
   };
 
-  const handlMultiSelectDeselectChange = ( key, options, type='' ) => {
+  const handlMultiSelectDeselectChange = (key, options) => {
     settingChanged.current = true;
 
     if (Array.isArray(setting[key]) && setting[key].length > 0) {
       updateSetting(key, []);
     } else {
-      const newValue = type === 'multi-select' ? options : options.map(({ value }) => value);
-      updateSetting(key, newValue);
+      updateSetting(key, options.filter((option) => {
+        return !isProSetting(option.proSetting);
+      }).map(({ value }) => value));
     }
-    
   };
 
   const runUploader = (key) => {
