@@ -5,7 +5,7 @@ export default {
     priority: 10,
     name: __("General", 'moowoodle'),
     desc: __("Effortlessly configure and verify your WordPress-Moodle connection.", 'moowoodle'),
-    icon: "font-settings",
+    icon: "adminLib-settings",
     submitUrl: "save-moowoodle-setting",
     modal: [
         {

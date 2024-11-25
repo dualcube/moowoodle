@@ -27,13 +27,13 @@ const CatalogCustomizer = (props) => {
   // Create menu
   const [menu, setMenu] = useState([
     {
-      name: "Enquiry", link: "hi", id: 'enquiry', icon: 'font-info',
+      name: "Enquiry", id: 'enquiry', icon: 'adminLib-info',
     },
     {
-      name: "Quote", link: "hi", id: 'quote', icon: 'font-payment',
+      name: "Quote", id: 'quote', icon: 'adminLib-credit_card',
     },
     {
-      name: "Catalog", link: "catalog", id: 'catalog', icon: 'font-payment',
+      name: "Catalog", id: 'catalog', icon: 'adminLib-credit_card',
     },
   ]);
 
@@ -55,7 +55,7 @@ const CatalogCustomizer = (props) => {
               }}
               className='button-visibility'
             >
-              <i className='admin-font font-support'></i>
+              <i className='admin-font adminLib-support'></i>
             </div>
             <p className='product-price' style={{ opacity: hideProductPrice ? "0.3" : "1" }}><span className='strikethrough'>$20.00</span> $18.00</p>
           </div>
@@ -77,7 +77,7 @@ const CatalogCustomizer = (props) => {
               }}
               className='button-visibility'
             >
-              <i className='admin-font font-support'></i>
+              <i className='admin-font adminLib-support'></i>
             </div>
             <p className='product-description' style={{ opacity: hideProductDesc ? "0.3" : "1" }}>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
           </div>
@@ -97,7 +97,7 @@ const CatalogCustomizer = (props) => {
         <>
           <section className='catalog-add-to-cart-section'>
             <div className='catalog-add-to-cart-quantity'>1</div>
-            <div class="catalog-add-to-cart-btn">Add to cart</div>
+            <div class="main-btn btn-purple catalog-add-to-cart-btn">Add to cart</div>
           </section>
         </>
       ),
@@ -346,7 +346,6 @@ const CatalogCustomizer = (props) => {
                                       onClick={() => { handleSubMenuChange(menu[0]); }}
                                       className={`button-main-container toggle-visibility ${currentTab.id === "enquiry" ? '' : 'disable'}`}
                                     >
-                                      <button className='button-visibility'><i className='admin-font font-support'></i></button>
                                       <ButtonCustomizer
                                         className='ignore-drag'
                                         text='enquiry'
@@ -373,7 +372,6 @@ const CatalogCustomizer = (props) => {
                                       onClick={() => { handleSubMenuChange(menu[1]); }}
                                       className={`button-main-container toggle-visibility ${currentTab.id === "quote" ? '' : 'disable'}`}
                                     >
-                                      <button className='button-visibility'><i className='admin-font font-support'></i></button>
                                       <ButtonCustomizer
                                         text='Add to quote'
                                         setting={setting['quote_button']}
@@ -394,9 +392,6 @@ const CatalogCustomizer = (props) => {
                               handleSubMenuChange(menu[2])
                             }}
                               className={`additional-input toggle-visibility ${currentTab.id === 'catalog' ? '' : 'disable'}`}>
-                              {/* {console.log("inputbox",currentTab)}
-                            {console.log("menu",menu)} */}
-                              <button className='button-visibility'><i className='admin-font font-support'></i></button>
                               <input
                                 placeholder='Additional input(optional)'
                                 type='text'
@@ -417,7 +412,7 @@ const CatalogCustomizer = (props) => {
             {!proSetting &&
               <article className='pro-banner'>
                 <p>Upgrade to pro for endless customization</p>
-                <a href="#" target='_blank'>Upgrade now</a>
+                <a href="#" className="main-btn btn-purple" target='_blank'>Upgrade now</a>
               </article>
             }
           </div>
@@ -425,7 +420,7 @@ const CatalogCustomizer = (props) => {
         <section className='single-product-page-description'>
           <div className='option'>
             <ul>
-              <li className='active'>Description <span><i className='admin-font font-keyboard_arrow_down'></i></span></li>
+              <li className='active'>Description <span><i className='admin-font adminLib-keyboard_arrow_down'></i></span></li>
               <li>Additional Information</li>
               <li>Review</li>
             </ul>

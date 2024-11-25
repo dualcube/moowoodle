@@ -2,6 +2,7 @@ const FileInput = (props) => {
     return (
         <>
             <div className={props.wrapperClass}>
+                <div className="file-uploader">
                 <input
                     className=  {props.inputClass}
                     id=         {props.id}
@@ -23,7 +24,7 @@ const FileInput = (props) => {
                     src=    {props.imageSrc}
                     width=  {props.imageWidth}
                     height= {props.imageHeight}
-                />
+                />                
                 <button
                     className=  {props.buttonClass}
                     type=       "button"
@@ -31,6 +32,7 @@ const FileInput = (props) => {
                 >
                     {props.openUploader}
                 </button>
+                </div>
                 {
                     props.description &&
                     <p className={props.descClass} dangerouslySetInnerHTML={{__html: props.description}}>

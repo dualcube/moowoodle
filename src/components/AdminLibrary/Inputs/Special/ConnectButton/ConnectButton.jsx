@@ -121,13 +121,13 @@ const ConnectButton = (props) => {
         <div className="connection-test-wrapper">
             <div className="section-connection-test">
                 <button
-                    // className="disable"
+                    className="btn-purple"
                     onClick={(e) => {
                         e.preventDefault();
                         startConnectionTask();
                     }}
                 >
-                    {__('Start test', 'moowoodle')}
+                    {'Start test'}
                 </button>
                 {
                     loading &&
@@ -141,12 +141,12 @@ const ConnectButton = (props) => {
             <div className="fetch-details-wrapper">
                 {taskSequence.map((task) => {
                     return (
-                        <div className={`${task.status} details-status-row`}>{task.message} {task.status !== "running" && <i className={`admin-font ${task.status === "failed" ? "font-cross" : "font-icon-yes"}`}></i>}</div>
+                        <div className={`${task.status} details-status-row`}>{task.message} {task.status !== "running" && <i className={`admin-font ${task.status === "failed" ? "adminLib-cross" : "adminLib-icon-yes"}`}></i>}</div>
                     );
                 })}
                 {/* {
                 testStatus &&
-                <div className={`fetch-display-output ${testStatus == 'Failed' ? 'failed': 'success' }`}> {testStatus} {testStatus == 'Failed' ? <i className="admin-font font-cross"></i> : <i className="admin-font font-icon-yes"></i> }</div>
+                <div className={`fetch-display-output ${testStatus == 'Failed' ? 'failed': 'success' }`}> {testStatus} {testStatus == 'Failed' ? <i className="admin-font adminLib-cross"></i> : <i className="admin-font adminLib-icon-yes"></i> }</div>
             } */}
             </div>
             {
@@ -155,7 +155,7 @@ const ConnectButton = (props) => {
                     {testStatus === 'Failed'
                         ? (
                             <p>
-                                Test connection failed. Check further details in <Link className="errorlog-link" to={'?page=moowoodle#&tab=settings&sub-tab=log'}>error log</Link>.
+                                Test connection failed. Check further details in <Link className="errorlog-link" to={'?page=moowoodle#&tab=settings&subtab=log'}>error log</Link>.
                             </p>
                         )
                         : 'Test connection successful'}

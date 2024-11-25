@@ -5,7 +5,7 @@ export default {
     priority: 30,
     name: __("Single Sign On", 'moowoodle'),
     desc: __("Manage seamless login and logout synchronization ", 'moowoodle'),
-    icon: "font-vpn_key",
+    icon: "adminLib-vpn_key",
     submitUrl: "save-moowoodle-setting",
     proDependent: true,
     modal: [
@@ -24,7 +24,7 @@ export default {
         },
         {
             key: "moowoodle_sso_secret_key",
-            type: "sso_key",
+            type: "sso-key",
             desc: __(`Generate a unique SSO secret key (must be at least 8 characters) and copy it. Then, go to your Moodle site and paste the copied SSO key <a href="${appLocalizer.moodle_site_url}admin/settings.php?section=authsettingmoowoodle" target="_blank">there</a>.`, 'moowoodle'),
             label: __("SSO Secret Key", 'moowoodle'),
             proSetting: true,

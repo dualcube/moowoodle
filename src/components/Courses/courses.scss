@@ -1,93 +1,6 @@
-@font-face {
-  font-family: 'admin-font';
-  src: url('./fonts/admin-font.eot?ovt9cm');
-  src: url('./fonts/admin-font.eot?ovt9cm#iefix') format('embedded-opentype'),
-    url('./fonts/admin-font.ttf?ovt9cm') format('truetype'),
-    url('./fonts/admin-font.woff?ovt9cm') format('woff'),
-    url('./fonts/admin-font.svg?ovt9cm#admin-font') format('svg');
-  font-weight: normal;
-  font-style: normal;
-  font-display: block;
-}
-
-[class^="font-"],
-[class*=" font-"] {
-  /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'admin-font' !important;
-  speak: never;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.font-tools:before {
-  content: "\e700";
-}
-
-.font-options:before {
-  content: "\e700";
-}
-
-.font-repair:before {
-  content: "\e700";
-}
-
-.font-menu_book:before {
-  content: "\e701";
-}
-
-.font-supervised_user_circle:before {
-  content: "\e702";
-}
-
-.font-credit_card:before {
-  content: "\e753";
-}
-
-.font-payment:before {
-  content: "\e753";
-}
-
-.font-vpn_key:before {
-  content: "\e704";
-}
-
-.font-_store:before {
-  content: "\e7085";
-}
-
-.font-shopping_cart:before {
-  content: "\e7085";
-}
-
-
-$menu-btn-color: #522c81;
-$body-background: #f9f9f9;
-$color-white: #fff;
-$menu-color: #f9f8fb;
-$color-active: #65438f;
+@import '/src/components/config.scss';
 
 .course-container-wrapper {
-  .admin-page-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.75rem;
-    position: relative;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-
-    p {
-      font-size: 1.5rem;
-    }
-  }
-
   .moowoodle-course-actions {
     display: flex;
     align-items: center;
@@ -96,9 +9,6 @@ $color-active: #65438f;
 
     button {
       box-shadow: 0 0 1rem rgba($color: #000000, $alpha: 0.025);
-      display: flex;
-      align-items: center;
-      justify-content: center;
 
       &:first-child {
         background-color: $color-active;
@@ -124,6 +34,8 @@ $color-active: #65438f;
 
     .rdt_TableHead {
       .rdt_TableHeadRow {
+
+
         .rdt_TableCol {
           &:nth-child(2) {
             min-width: 14rem !important; // To overwrite default table css
@@ -141,7 +53,16 @@ $color-active: #65438f;
     }
 
     .rdt_TableRow {
+      align-items: start;
+
+      .action-section{
+        padding: 0 !important; // To overwrite default table css
+      }
       .rdt_TableCell {
+        &:first-child {
+          margin-top: 1rem;
+        }
+
         &:nth-child(2) {
           min-width: 14rem !important; // To overwrite default table css
         }
@@ -210,6 +131,10 @@ $color-active: #65438f;
       max-width: 12.6rem;
       flex-wrap: nowrap !important;
       position: relative;
+
+      .admin-pro-tag{
+        right: -0.75rem
+      }
     }
   }
 }

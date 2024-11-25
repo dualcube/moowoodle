@@ -1,10 +1,4 @@
-
-$menu-btn-color: #522c81;
-$body-background: #f9f9f9;
-$color-white: #fff;
-$menu-color: #f9f8fb;
-$color-active: #65438f;
-
+@import '/src/components/config.scss';
 
 div.enrollment-img {
     background-image: url("../../assets/images/Enrollment-pc.png") !important; // force to set image for ungrade with pro for desktop-screen
@@ -33,21 +27,9 @@ div.enrollment-img {
   }
 
 .admin-enrollment-list{
-    .admin-page-title{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 0.75rem;
-        position: relative;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-    
-        p{
-          font-size: 1.5rem;
-        }
-    
+    .admin-page-title{    
         .download-btn-enrollment-list{
-          border-radius: 0.25rem;
+          border-radius: $border-radius-small;
           background-color: $color-active;
           padding: 0.5rem 1rem;
             
@@ -81,23 +63,32 @@ div.enrollment-img {
         }
       }
 }
+.rdt_TableRow{
+  align-items: start !important; // To overwrite default table css
 
+  .rdt_TableCell{
+    padding: 0.5rem !important; // To overwrite default table css
+  }
+  .action-section{
+    padding: 0 !important; // To overwrite default table css
+  }
+}
 .table-row-custom{
   .status-show-btn{
     padding: 0.5rem 1rem;
     background: #f0f0f0;
     color: rgb(30, 30, 30);
-    width: 110px;
-    border-radius: 0.25rem;
+    width: 6.875rem;
+    border-radius: $border-radius-small;
 
     &.unenroll{
       background: #e34f4720;
-      color: #e35047;
+      color: $accent-color;
     }
   }
   .action-btn{
     .unenroll{
-      color: #e35047 !important; // To overwrite default table scss
+      color: $accent-color !important; // To overwrite default table scss
     }
   }
 }
@@ -111,7 +102,7 @@ div.enrollment-img {
 }
 }
 
-@media only screen and (max-width: 1015px) {
+@media only screen and (max-width: 63.438rem) {
 .filter-wrapper {
   .wrap-bulk-all-date {
     .search_student_field {
@@ -135,7 +126,7 @@ div.enrollment-img {
       cursor: pointer;
     }
     .type-count-active{
-      color: #522c81;
+      color: $theme-color;
     }
   }
 }

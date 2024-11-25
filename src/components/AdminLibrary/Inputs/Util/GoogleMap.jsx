@@ -10,16 +10,19 @@ const AutoComplete = ({ map, mapApi, addPlace, placeholder }) => {
     const inputRef = useRef();
 
     useEffect(() => {
-        const options = {
-			types: ['address'],
-		};
-        setAutoComplete(new mapApi.places.Autocomplete(
-            this.searchInput,
-            options
-        ));
-		autoComplete.addListener('place_changed', handleOnPlaceChanged);
-		autoComplete.bindTo('bounds', map);
-    }, []);
+        if (mapApi && mapApi.places) {
+            const options = {
+				types: ['address'],
+			};
+            const autoCompleteInstance = new mapApi.places.Autocomplete(
+                inputRef.current,
+                options
+            );
+            autoCompleteInstance.addListener('place_changed', handleOnPlaceChanged);
+            autoCompleteInstance.bindTo('bounds', map);
+            setAutoComplete(autoCompleteInstance);
+        }
+    }, [mapApi, map]);
 
     const handleOnPlaceChanged = () => {
         const place = autoComplete.getPlace();
@@ -32,11 +35,11 @@ const AutoComplete = ({ map, mapApi, addPlace, placeholder }) => {
 		}
 		addPlace(place);
 		inputRef.current.blur();
-    }
+    };
 
     const clearSearchBox = () => {
         inputRef.current.value = '';
-    }
+    };
 
     return (
         <>
@@ -49,7 +52,7 @@ const AutoComplete = ({ map, mapApi, addPlace, placeholder }) => {
 			/>
         </>
     );
-}
+};
 
 const GoogleMap = (props) => {
     const [zoom, setZoom] = useState(12);
@@ -79,30 +82,43 @@ const GoogleMap = (props) => {
     const handleOnChange = ({center, zoom}) => {
         setZoom(zoom);
         setCenter(center);
-    }
+    };
 
     const handleOnClick = (value) => {
         setPosition({ lat: value.lat, lng: value.lng });
-    }
+    };
 
     const onMarkerInteraction = (childKey, childProps, mouse) => {
         setDraggable(false);
         setPosition({ lat: mouse.lat, lng: mouse.lng });
-    }
+    };
 
     const onMarkerInteractionMouseUp = () => {
         setDraggable(true);
         generateAddress();
-    }
+    };
 
     const apiHasLoaded = (map, maps) => {
         setMapApiLoaded(true);
         setMapInstance(map);
         setMapApi(maps);
 		generateAddress();
-    }
+    };
+
+	const addPlace = (place, target) => {
+		const place_data = [
+			{
+				place: place.formatted_address,
+				lat: place.geometry.location.lat(),
+				lng: place.geometry.location.lng(),
+			},
+		];
+		generateAddress();
+
+	};
 
     const generateAddress = () => {
+        if (!mapApi) return;
         const geocoder = new mapApi.Geocoder();
 
 		geocoder.geocode(
@@ -111,7 +127,7 @@ const GoogleMap = (props) => {
 				if (status === 'OK') {
 					if (results[0]) {
                         setZoom(12);
-						setAddress( results[0].formatted_address );
+						setAddress(results[0].formatted_address);
 					} else {
 						window.alert('No results found');
 					}
@@ -120,7 +136,7 @@ const GoogleMap = (props) => {
 				}
 			}
 		);
-    }
+    };
 
     return (
         <>
@@ -130,7 +146,7 @@ const GoogleMap = (props) => {
                     <AutoComplete
                         map={mapInstance}
                         mapApi={mapApi}
-                        addplace={(e) => props.addPlace?.(e, address)}
+                        addPlace={(e) => addPlace?.(e, address)}
                         placeholder={props.placeholder}
                     />
                 }
@@ -157,6 +173,6 @@ const GoogleMap = (props) => {
             </div>
         </>
     );
-}
+};
 
 export default GoogleMap;

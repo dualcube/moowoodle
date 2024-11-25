@@ -389,7 +389,7 @@ export default function Course() {
                                 onChange={(e) => updateFilter(e.target.name, e.target.value)}
                                 value={filterValue || ""}
                             >
-                                <option value="" style={{textAlign:'center'}}>-- Select --</option>
+                                <option value="" style={{textAlign:'center'}}>Select</option>
                                 <option value="course">Course</option>
                                 <option value="shortname">Short name</option>
                             </select>
@@ -412,7 +412,7 @@ export default function Course() {
                     aria-labelledby="form-dialog-title"
                 >
                     <span
-                        className="admin-font font-cross stock-manager-popup-cross"
+                        className="admin-font adminLib-cross stock-manager-popup-cross"
                         onClick={() => {
                             setOpenDialog(false);
                         }}

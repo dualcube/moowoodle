@@ -89,14 +89,14 @@ export default function banner() {
                             aria-labelledby="form-dialog-title"
                         >	
                             <span 
-                                className="admin-font font-cross stock-manager-popup-cross"
+                                className="admin-font adminLib-cross stock-manager-popup-cross"
                                 onClick={handleClose}
                             ></span>
                             <Popoup/>
                         </Dialog>
                         <div className="admin-carousel-container">
                             <div className="carousel-container">
-                                <div class="admin-font font-cross pro-slider-cross" onClick={handleCloseBanner}></div>
+                                <div class="admin-font adminLib-cross pro-slider-cross" onClick={handleCloseBanner}></div>
                                 <div class="why-go-pro-tag" onClick={handleOpen}>Why Premium</div>
                                 <ul className="carousel-list">
                                     <li className="carousel-item active">
@@ -167,8 +167,8 @@ export default function banner() {
                                 </ul>
                             </div>
                             <div class="carousel-controls">
-                                <button id="prevBtn"><i className='admin-font font-arrow-left'></i></button>
-                                <button id="nextBtn"><i className='admin-font font-arrow-right'></i></button>
+                                <button id="prevBtn"><i className='admin-font adminLib-arrow-left'></i></button>
+                                <button id="nextBtn"><i className='admin-font adminLib-arrow-right'></i></button>
                             </div>
                         </div>
                     </div>

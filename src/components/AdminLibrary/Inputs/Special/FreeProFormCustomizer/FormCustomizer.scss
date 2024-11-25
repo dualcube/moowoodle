@@ -1,0 +1,25 @@
+.form_customizer {
+  gap: 0;
+
+  .settings-form-label {
+    max-width: 0;
+    overflow: hidden;
+    display: none;
+  }
+  .settings-input-content {
+    width: 100% !important;
+
+    .fields-header{
+      display: flex;
+
+      .name{
+        width:30%;
+      }
+    }
+    .button-visibility{
+      i{
+        font-size: 1.25rem;
+      }
+    }
+  }
+}

@@ -28,7 +28,7 @@ const FormCustomizer = (props) => {
                             ref={currentHoverOn === 'description' ? buttonRef : null}
                             className={currentHoverOn === 'description' && 'active'}
                             onClick={(e) => setCurrentHoverOn('description')}
-                            onChange={(e) => props.onChange(e, 'alert_text' ) }
+                            onChange={(e) => props.onChange('alert_text', e.target.value ) }
                             value={setting.alert_text}
                         />
                     </div>
@@ -48,7 +48,7 @@ const FormCustomizer = (props) => {
                                         className='input-editor'
                                         onClick={(e) => setCurrentEditSection('text')}
                                     >
-                                        <p>Edit</p><span><i className='admin-font font-edit'></i></span>
+                                        <p>Edit</p><span><i className='admin-font adminLib-edit'></i></span>
                                     </div>
                                 </>
                             )}
@@ -66,14 +66,14 @@ const FormCustomizer = (props) => {
                                                 e.preventDefault();
                                                 setCurrentEditSection('');
                                                     
-                                            }} className="wrapper-close"><i class="admin-font font-cross"></i></button>
+                                            }} className="wrapper-close"><i class="admin-font adminLib-cross"></i></button>
                                             <div className="setting-section-dev">
                                                 <span class="label">Placeholder text</span>
                                                 <div class="property-section">
                                                     <input
                                                         type="text"
                                                         value={setting.email_placeholder_text}
-                                                        onChange={ (e)=> props.onChange(e, 'email_placeholder_text')} 
+                                                        onChange={ (e)=> props.onChange('email_placeholder_text', e.target.value)} 
                                                     />
                                                 </div>
                                             </div>
@@ -85,8 +85,9 @@ const FormCustomizer = (props) => {
                         </div>
                         <div className='button-section'>
                             <ButtonCustomizer
-                                buttonText={props.buttonText}
+                                text={props.buttonText}
                                 proSetting={props.proSetting}
+                                setting={setting}
                                 onChange={props.onChange}
                             />
                         </div>

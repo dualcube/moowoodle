@@ -1,24 +1,25 @@
-// //popup css are started here
-.MuiDialogContent-root:has(.woo-image-overlay) {
+@import '/src/components/config.scss';
+
+.MuiDialogContent-root:has(.admin-image-overlay) {
     &::-webkit-scrollbar {
       width: 0;
     }
   }
   
-  .woo-image-overlay {
-    .woo-overlay-content {
-      background: #fff;
+  .admin-image-overlay {
+    .admin-overlay-content {
+      background: $color-white;
       padding: 0rem 1rem;
       text-align: center;
-      border-radius: 0.25rem;
+      border-radius: $border-radius-small;
       max-width: 26rem;
       position: relative;
   
-      .woo-modal.cross {
+      .admin-modal.cross {
         position: absolute;
         right: 1.5rem;
         top: 1.5rem;
-        color: #181819;
+        color: $color-black;
       }
     }
   
@@ -27,10 +28,10 @@
   
       span.banner-pro-tag {
         line-height: 0;
-        background: #65438f;
-        color: #f9f8fb !important; // to adjust pro tag text color
+        background: $color-active;
+        color: $menu-color !important; // To adjust pro tag text color
         padding: 0 0.25rem;
-        border-radius: 0.25rem;
+        border-radius: $border-radius-small;
         margin-left: 0.125rem;
         box-shadow: 0.25rem 0.25rem 0.875rem rgb(63 20 115 / 25%);
       }
@@ -42,66 +43,42 @@
     }
   
     h3 {
-      color: #181819;
+      color: $color-black;
       font-weight: 600;
       margin-bottom: 1rem;
     }
-  
-    .discount-tag {
-      background: #fbedee;
-      color: #e26f76;
-      font-size: 0.875rem;
-      padding: 0.315rem 1.25rem;
-      width: fit-content;
-      margin: 0.5rem auto 1rem;
-      border-radius: 2rem;
-  
-      b {
-        font-weight: 600;
-      }
-    }
-  
-    p {
-      color: #5e5d60;
-      font-size: 1rem;
-    }
-  
-    .woo-banner-offer {
+      
+    .admin-banner-offer {
       margin: 1.5rem 0 1rem;
       font-size: 1.25rem;
       font-weight: 700;
-      color: #181819;
+      color: $color-black;
     }
   
     .upgrade {
       color: #181718;
     }
   
-    .woo-banner-content {
+    .admin-banner-content {
       font-size: 1rem;
       line-height: 1.6;
       letter-spacing: 0.02rem;
       font-weight: 500;
   
       p {
-        font-size: 0.9rem;
-        margin: 0 0 0.25rem;
-        text-align: left;
-        letter-spacing: 0;
-        font-weight: 400;
         font-style: italic;
         max-width: 80%;
-        margin: 0 auto 0.25rem;
+        margin: auto;
       }
     }
   
-    a.woo-go-pro-btn {
-      background: #e35047;
-      color: #f9f8fb;
+    a.admin-go-pro-btn {
+      background: $accent-color;
+      color: $menu-color;
       text-decoration: none;
       padding: 0.5rem 1.5rem;
       line-height: 1.6;
-      border-radius: 0.25rem;
+      border-radius: $border-radius-small;
       font-size: 1.25rem;
       margin: 2rem auto 0rem;
       display: block;
@@ -114,14 +91,14 @@
     padding: 2rem;
   }
   
-  .woo-module-dialog-title {
+  .admin-module-dialog-title {
     text-align: center;
   }
   
   span.stock-manager-pro-tag {
     position: absolute;
     right: 0.5rem;
-    background: #522c81;
+    background: $theme-color;
     color: #fdfdfe;
     padding: 0.125rem 0.5rem;
     top: 50%;

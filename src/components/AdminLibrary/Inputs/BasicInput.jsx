@@ -2,14 +2,19 @@ const BasicInput = (props) => {
     return (
         <>
             <div className={props.wrapperClass}>
+                <label>
+                    {props.inputLabel}
+                </label>
                 <input
                     className={props.inputClass}
                     id={props.id}
                     key={props.key}
                     type={props.type || 'text'}
                     name={props.name || 'basic-input'}
-                    value={props.value}
+                    {...(props.type !== 'file' && { value: props.value })}
                     placeholder={props.placeholder}
+                    min={props.min}
+                    max={props.max}
                     onChange={(e) => { props.onChange?.(e) }}
                     onClick={(e) => { props.onClick?.(e) }}
                     onMouseOver={(e) => { props.onMouseOver?.(e) }}
@@ -26,6 +31,10 @@ const BasicInput = (props) => {
                     props.description &&
                     <p className={props.descClass} dangerouslySetInnerHTML={{ __html: props.description }} >
                     </p>
+                }
+                {
+                    props.type == 'range' &&
+                    <output className={props.descClass}>{props.value ? props.value : 0}{props.rangeUnit}</output>
                 }
             </div>
         </>

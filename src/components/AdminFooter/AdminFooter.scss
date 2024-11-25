@@ -1,51 +1,44 @@
-$theme-color: #522c81;
+@import '/src/components/config.scss';
 
 .support-card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  max-width: 63.0rem;
-  margin: auto;
-  margin-top: 1.5rem;
-
-  .card-item {
-    padding: 1.5rem;
-    flex: 1 0 12.6rem;
-    height: 10.71rem;
-    border: 0.005rem solid #522c817a;
-    border-radius: 0.25rem;
-    background: #fff;
-    box-shadow:
-      0.63rem 0.63rem 1.26rem #ededed,
-      -0.63rem -0.63rem 1.26rem #ffffff;
+    display: flex;
+    gap: 1%;
+    margin-top: 1.5rem;
+    margin-left: 16rem;
+  
+    .card-item {
+      padding: 1.5rem;
+      flex: 1 0 12.5rem;
+      border: $border-light-small;
+      border-radius: $border-radius-small;
+      background: $color-white;
       display: flex;
-      justify-content: center;
+      justify-content: start;
       align-items: center;
       flex-direction: column;
-      
-      &:hover{
-        background: linear-gradient(-145deg, #ffffff, #e6e6e6);
+      padding: 2.5rem;
+  
+      &:hover {
+        background: linear-gradient(-145deg, $color-white, #e6e6e6);
       }
-
-      i{
+  
+      i {
         font-size: 2rem;
         color: $theme-color;
         margin-bottom: 0.75rem;
       }
-      
-      a{
+  
+      a {
         font-size: 1.25rem;
         margin-bottom: 0.5rem;
         text-align: center;
         display: block;
         color: $theme-color;
       }
-
-      p{
-        font-size: 0.85rem;
+  
+      p {
         text-align: center;
+        color: $color-black
       }
+    }
   }
-}

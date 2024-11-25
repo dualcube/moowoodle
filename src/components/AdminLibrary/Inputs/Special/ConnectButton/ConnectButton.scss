@@ -1,8 +1,4 @@
-$menu-btn-color: #522c81;
-$body-background: #f9f9f9;
-$color-white: #fff;
-$menu-color: #f9f8fb;
-$color-active: #65438f;
+@import '/src/components/config.scss';
 
 .connection-test-wrapper {
   .section-connection-test {
@@ -11,15 +7,7 @@ $color-active: #65438f;
     gap: 1rem;
 
     button {
-      display: inline-block;
-      padding: 0.504rem 1.26rem 0.63rem;
-      font-size: 1.008rem;
-      text-align: center;
-      text-decoration: none;
-      cursor: pointer;
-      color: #fff;
-      background-color: $color-active;
-      border-radius: 0.315rem;
+      display: inline-block !important; // To overwrite common btn style
       position: relative;
       overflow: hidden;
 
@@ -160,7 +148,6 @@ $color-active: #65438f;
     .details-status-row {
       margin-bottom: 0.5rem;
       padding: 0.5rem 0.5rem 0.75rem;
-    //   background: #0000ff36;
       position: relative;
       display: flex;
       justify-content: space-between;
@@ -195,7 +182,6 @@ $color-active: #65438f;
 }
 
 .failed.details-status-row {
-//   background: #ff000042 !important;
   color: red;
 
   &::after{
@@ -204,7 +190,6 @@ $color-active: #65438f;
 }
 
 .success.details-status-row {
-//   background: #008e005e !important;
   color: #007400;
 
   &::after{

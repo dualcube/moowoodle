@@ -1,41 +1,4 @@
-@font-face {
-  font-family: 'admin-font';
-  src: url('fonts/admin-font.eot?9jwf8g');
-  src: url('fonts/admin-font.eot?9jwf8g#iefix') format('embedded-opentype'),
-    url('fonts/admin-font.ttf?9jwf8g') format('truetype'),
-    url('fonts/admin-font.woff?9jwf8g') format('woff'),
-    url('fonts/admin-font.svg?9jwf8g#admin-font') format('svg');
-  font-weight: normal;
-  font-style: normal;
-  font-display: block;
-}
-
-[class^="font-"],
-[class*=" font-"] {
-  /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'admin-font' !important;
-  speak: never;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.font-delete:before {
-  content: "\e5800";
-}
-
-.font-text_fields:before {
-  content: "\e5201";
-}
-
-.font-move:before {
-  content: "\e5402";
-}
+@import '/src/components/config.scss';
 
 .settings-input-content {
   .registrationFrom-main-wrapper-section {
@@ -44,50 +7,29 @@
     justify-content: flex-start;
     position: relative;
 
-    $menu-btn-color: #522c81;
-    $body-background: #f9f9f9;
-    $color-white: #fff;
-    $menu-color: #f9f8fb;
-    $color-active: #65438f;
-    $secondary-background: #2d2d2d;
-
     .form-heading {
       width: 100%;
 
       input {
-        font-size: 1.75rem !important;
-        border: 0 !important;
-        padding: 0.5rem !important;
-        outline: 0;
-        box-shadow: none;
-        line-height: 1.5 !important;
-        width: 100% !important;
-        border-radius: 0 !important;
+        font-size: 1.75rem !important; // To overwrite dynamicForm.scss
+        border: 0 !important; // To overwrite dynamicForm.scss
 
         &:focus,
         &:hover {
           box-shadow: 0rem 0rem 0rem 0.126rem rgb(255, 255, 255), 0rem 0rem 0rem 0.189rem rgba(33, 33, 33, 0.5);
         }
       }
-
-      .registration-form-description {
-        margin-top: 0.625rem;
-        font-style: italic;
-        color: rgba(114, 114, 117, 0.6);
-        font-size: 0.875rem;
-        line-height: 1.5714285714;
-      }
     }
 
     .bth-move {
       position: absolute;
-      top: -20px;
+      top: -1.25rem;
       left: 50%;
       transform: translateX(-50%);
       background-color: $menu-color;
-      color: black;
-      width: 50px;
-      height: 22px;
+      color: $color-black;
+      width: 3.125rem;
+      height: 1.375rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -103,15 +45,15 @@
       padding: 1rem;
       border: 0.125rem solid rgba(0, 0, 0, 0.125);
       box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.125);
-      border-radius: 0.25rem;
+      border-radius: $border-radius-small;
       z-index: 12;
 
       input[type=checkbox] {
         width: 1rem !important;
         height: 1rem;
-        border: 1px solid #8c8f94;
-        border-radius: 4px;
-        background: #fff;
+        border: $border-light-small;
+        border-radius: $border-radius-small ;
+        background: $color-white;
         color: #50575e;
         line-height: 0;
         transition: .05s border-color ease-in-out
@@ -121,11 +63,10 @@
         position: absolute;
         right: -0.756rem;
         top: -0.945rem;
-        background: #fff;
+        background: $color-white;
         box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.125);
         border-radius: 50%;
-        width: 25px;
-        height: 25px;
+        width: 1.563rem;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -134,14 +75,15 @@
 
         i {
           font-size: 0.975rem;
-          color: $menu-btn-color;
+          color: $theme-color;
         }
       }
 
       .meta-setting-modal-content {
+
         h3 {
           padding-bottom: 0.75rem;
-          border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+          border-bottom: $border-black-small;
           font-size: 0.875rem;
         }
 
@@ -153,8 +95,8 @@
           flex-direction: column;
           width: 100%;
           gap: 0.25rem;
-          border-bottom: 1px solid rgba($color: #000000, $alpha: 0.3);
-          color: #2d2d2d;
+          border-bottom: $border-black-small;
+          color: $color-light-black;
 
           &:last-child {
             border-bottom: none;
@@ -167,18 +109,6 @@
             justify-content: space-between;
             gap: 0.5rem;
 
-            // .tabs{
-            //   input[type=radio]{
-            //     // display: none;
-            //   }
-            //   input[type=radio]:checked + label{
-            //     background-color: #f1f1f1;
-            //   }
-            //   label{
-            //     padding: 0.25rem 0.5rem;
-            //   }
-            // }
-
             .checkbox-container {
               display: flex;
               align-items: center;
@@ -188,26 +118,20 @@
               input[type='checkbox'] {
                 margin: 0;
                 box-shadow: none;
-                border: 1px solid rgba($color: #000000, $alpha: 0.5);
+                border: $border-black-small;
                 outline: 0;
               }
             }
 
-            p {
-              font-size: 0.875rem;
-              color: #2d2d2d;
-            }
-
             select {
-              max-width: 90px;
+              max-width: 6rem;
               width: 100%;
               font-size: 0.75rem;
               padding: 0 0.5rem;
               border: 0;
               outline: 0;
-              background-color: #f1f1f1;
+              background-color: $color-white;
               box-shadow: none;
-              color: #2d2d2d;
 
               &:focus {
                 box-shadow: none;
@@ -217,14 +141,13 @@
             input[type='text'],
             input[type='number'],
             input[type='email'] {
-              max-width: 120px;
-              background-color: #f1f1f1;
+              max-width: 7.5rem;
+              background-color: $color-white;
               padding: 0 0.25rem;
               border: none;
               outline: none;
               box-shadow: none;
               width: 100%;
-              color: #2d2d2d;
               font-size: 0.75rem;
 
               &:hover,
@@ -245,24 +168,25 @@
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      background: #2d2d2d;
-      border-radius: 0.15rem;
+      background: $color-light-black;
       padding: 0.5rem 0;
-      right: 10px;
-      top: -45px;
+      right: 0.625rem;
+      top: -2.683rem;
 
+      .btn-delete {
+        border-right: $border-light-small;
+      }
 
       &>div {
         padding: 0 0.5rem;
-        border-right: 0.063rem solid rgba(204, 204, 204, 0.3058823529);
-        color: #fff;
+        color: $color-white;
         cursor: pointer;
         display: flex;
         justify-content: center;
         align-items: center;
 
         i {
-          color: #fff;
+          color: $color-white;
           font-size: 1rem;
         }
       }
@@ -273,6 +197,7 @@
       background-color: $color-white;
       position: relative;
       margin-bottom: 0.5rem;
+      transition: all 0.8s ease;      
 
       .attachment-section {
         display: flex;
@@ -286,41 +211,33 @@
           justify-content: center;
           align-items: center;
           border-radius: 0.5rem;
-          border-width: 2px;
+          border-width: 0.125rem;
           border-color: #D1D5DB;
           border-style: dashed;
           width: 100%;
           height: 9rem;
-          background-color: #F9FAFB;
           cursor: pointer;
 
-          &:hover {
-            background-color: #F3F4F6;
-          }
-
-          .wrapper{
-            display: flex; 
-            padding-top: 1.25rem; 
-            padding-bottom: 1.5rem; 
-            flex-direction: column; 
-            justify-content: center; 
+          .wrapper {
+            display: flex;
+            padding-top: 1.25rem;
+            padding-bottom: 1.5rem;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            
-            svg{
-              margin-bottom: 1rem; 
-              width: 2rem; 
-              height: 2rem; 
-              color: #6B7280; 
+
+            i {
+              font-size: 1.5rem;
+              color: #6B7280;
             }
 
-            .heading{
-              margin-bottom: 0.5rem; 
-              font-size: 0.875rem;
-              line-height: 1.25rem; 
+            .heading {
+              margin-bottom: 0.5rem;
+              line-height: 1.25rem;
               color: #6B7280;
               text-align: center;
 
-              span{
+              span {
                 font-weight: 600;
               }
             }
@@ -329,14 +246,14 @@
       }
 
       .recapcha-img {
-        max-width: 300px;
+        max-width: 18.75rem;
         width: 100%;
       }
 
       &.active {
         .form-field-container-wrapper {
           .main-input-wrapper {
-            border: 2px solid rgba($color: #000000, $alpha: 0.45);
+            border: 0.063rem solid rgba($color: #000000, $alpha: 0.45);
           }
         }
       }
@@ -349,21 +266,37 @@
           align-items: flex-start;
           justify-content: flex-start;
           flex-direction: column;
-          border: 2px solid transparent;
-          padding: 10px;
+          border: 0.063rem solid transparent;
+          border-radius: $border-radius-small;
+          padding: 0.625rem;
           gap: 0.5rem;
+          transition: all 1s ease;
+
+          .transitions{
+
+          &.fade-out {
+            opacity: 0;
+            transform: translateY(-10%);
+          }
+    
+          &.fade-in {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
 
           &:hover {
-            border: 2px solid rgba($color: #000000, $alpha: 0.45);
+            border: 0.063rem solid rgba($color: #000000, $alpha: 0.45);
+
           }
 
           input,
           textarea {
-            width: 100%;
 
             &:hover,
             &:focus {
               box-shadow: 0rem 0rem 0rem 0.126rem rgb(255, 255, 255), 0rem 0rem 0rem 0.189rem rgba(33, 33, 33, 0.5);
+              border-radius: 0.125rem;
             }
           }
 
@@ -378,18 +311,8 @@
             box-shadow: none;
           }
 
-          .input-text-section {
-            background-color: transparent;
-            display: block;
-            padding: 0.5rem;
-            border: 1px solid rgba($color: #000000, $alpha: 0.09);
-            border-radius: 0;
-            outline: none;
-            box-shadow: none;
-          }
-
           .multiOption-wrapper {
-            max-width: 300px;
+            max-width: 18.75rem;
             width: 100%;
 
             .option-list-wrapper {
@@ -403,7 +326,7 @@
                 input {
                   background-color: transparent;
                   border-radius: 0;
-                  border: 1px solid rgba($color: #000000, $alpha: 0.09);
+                  border: 0.063rem solid rgba($color: #000000, $alpha: 0.09);
                   outline: none;
                   box-shadow: none;
 
@@ -419,6 +342,10 @@
                 align-items: center;
                 justify-content: flex-start;
                 gap: 0.5rem;
+
+                div {
+                  cursor: pointer;
+                }
               }
             }
 
@@ -426,18 +353,16 @@
               background: $menu-color;
               padding: 0.4rem 0.75rem;
               cursor: pointer;
-              border-radius: 0.25rem;
+              border-radius: $border-radius-small;
               display: flex;
               align-items: center;
               justify-content: space-between;
               gap: 0.5rem;
-              max-width: 180px;
+              max-width: 11.25rem;
               margin: 0 0.5rem;
             }
           }
         }
-
-        .input-meta {}
       }
 
       .form-field-wrapper {
@@ -467,7 +392,7 @@
         }
 
         .field-type-section {
-          max-width: 300px;
+          max-width: 18.75rem;
           width: 100%;
           position: relative;
 
@@ -476,16 +401,68 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            border: 1px solid red;
+            border: 0.063rem solid red;
             z-index: 1;
             background-color: $color-white;
             padding: 0.75rem;
-            border-radius: 0.25rem;
+            border-radius: $border-radius-small;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             justify-content: flex-start;
             gap: 0.25rem;
+          }
+        }
+      }
+
+      .edit-form-wrapper {
+        display: flex;
+
+        p,
+        .form-label {
+          width: 30%;
+          font-size: 0.9rem;
+
+        }
+
+        .settings-form-group-radio {
+          width: 70%;
+          position: relative;
+
+          input {
+            width: 100%;
+            background: #d6b5ff21 !important; // Overwrite dynamic.scss
+            border-color: #d6b5ff !important; // Overwrite dynamic.scss
+          }
+
+          input[type="checkbox"] {
+            width: fit-content;
+          }
+
+          select,
+          .input-text-section {
+            background: #d6b5ff21;
+            border-color: #d6b5ff;
+          }
+        }
+      }
+
+      .free-form {
+        margin-bottom: 1rem;
+        align-items: center;
+
+        .settings-form-group-radio {
+          width: 50% !important; // To overwrite common input width
+        }
+
+        .button-visibility {
+          width: 6%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .adminLib-eye {
+            color: #0101d9d6;
           }
         }
       }
@@ -498,12 +475,12 @@
     }
 
     .elements-section {
-      background-color: $secondary-background;
+      background-color: $color-light-black;
       padding: 1rem 0.75rem;
-      max-width: 250px;
+      max-width: 16.625rem;
       width: 100%;
       position: sticky;
-      top: 30px;
+      top: 1.875rem;
       height: 100%;
 
       .section-meta {
@@ -519,25 +496,25 @@
       }
 
       .section-container {
-        border: 1px solid #3d3d3d;
+        border: 0.063rem solid #3d3d3d;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 0.75rem;
-        padding: 16px;
-        border-radius: 0.25rem;
+        padding: 1rem;
+        border-radius: $border-radius-small;
 
         .elements-items {
-          border-radius: 0.25rem;
+          border-radius: $border-radius-small;
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 0.75rem;
           flex-direction: column;
           cursor: pointer;
-          padding: 10px;
+          padding: 0.625rem;
           color: $color-white;
-          box-shadow: 5px 5px 15px #373737b6,
-            -5px -5px 15px #43434396;
+          box-shadow: 0.31rem 0.31rem 0.938rem #373737b6,
+            0.31rem 0.31rem 0.938rem #43434396;
           ;
 
 
@@ -576,14 +553,14 @@
         .container-list {
           padding: 0 0.5rem;
           border-right: 0.063rem solid rgba(204, 204, 204, 0.3058823529);
-          color: #fff;
+          color: $color-white;
           cursor: pointer;
           display: flex;
           justify-content: center;
           align-items: center;
 
           i {
-            color: #fff;
+            color: $color-white;
             font-size: 1.15rem;
           }
         }
@@ -591,7 +568,7 @@
     }
 
     .registration-form-main-section {
-      padding: 20px;
+      padding: 1.25rem;
       background: $color-white;
     }
 
@@ -607,7 +584,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 2px solid #65438f75;
+        border: 0.125rem solid #65438f75;
         position: relative;
         z-index: 10;
       }
@@ -618,8 +595,8 @@
       }
 
       span {
-        width: 30px;
-        height: 30px;
+        width: 1.875rem;
+        height: 1.875rem;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -629,16 +606,16 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #65438f;
+        color: $color-active;
       }
     }
 
     .addnew {
-      border: 1px dotted rgba($color: #000000, $alpha: 0.125);
+      border: 0.063rem dotted rgba($color: #000000, $alpha: 0.125);
       background: $menu-color;
       padding: 2.5rem;
       cursor: pointer;
-      max-width: 600px;
+      max-width: 37.5rem;
       margin: 1.5rem auto 0;
       display: flex;
       align-items: center;
@@ -646,42 +623,22 @@
       flex-direction: column;
       gap: 0.5rem;
 
-      button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: $color-white;
-        border-radius: 50%;
-        font-size: 1rem;
-        cursor: pointer;
-        width: 30px;
-        height: 30px;
-        background: $menu-btn-color;
-      }
-
       p {
-        color: #000000;
+        color: $color-black;
       }
     }
 
   }
 
   .border-5 {
-    border: 5px solid black;
-  }
-
-  .display-none {
-    display: none !important;
+    border: 0.31rem solid $color-black;
   }
 }
-
-
-
 
 .tabs {
   display: flex;
   position: relative;
-  background: #f1f1f1;
+  background: $color-white;
   margin: 0.5rem 0;
 }
 
@@ -690,29 +647,29 @@
 }
 
 .visibility-control-container input[type="radio"] {
-  display: none;
+  display: none; // For hide radio box
 }
 
 .tab {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 25px;
-  width: 50px;
+  height: 1.563rem;
+  width: 3.125rem;
   font-size: .8rem;
-  color: black;
+  color: $color-black;
   cursor: pointer;
   transition: color 0.15s ease-in;
 }
 
 .visibility-control-container input[type="radio"]:checked+label {
-  color: #522c81;
+  color: $theme-color;
 }
 
 .visibility-control-container input[type="radio"]:checked+label>.notification {
-  background-color: #522c81;
-  color: #fff;
-  margin: 0px;
+  background-color: $theme-color;
+  color: $color-white;
+  margin: 0;
 }
 
 .visibility-control-container input[id="radio-1"]:checked~.glider {
@@ -726,21 +683,21 @@
 .glider {
   position: absolute;
   display: flex;
-  height: 25px;
-  width: 50px;
+  height: 1.563rem;
+  width: 3.125rem;
   background-color: #e7d3ff;
   z-index: 1;
   transition: 0.25s ease-out;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 43.75rem) {
 
   .tabs {
     transform: scale(0.6);
   }
 }
 
-.section-divider-container{
+.section-divider-container {
   border: 0.125rem solid rgba($color: #000000, $alpha: 0.125);
   text-align: center;
   font-size: 0.75rem;

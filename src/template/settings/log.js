@@ -5,7 +5,7 @@ export default {
     priority: 60,
     name: __("Log", "moowoodle"),
     desc: __("Review all system logs and errors", "moowoodle"),
-    icon: 'font-credit_card',
+    icon: 'adminLib-credit_card',
     submitUrl: "save-moowoodle-setting",
     modal: [
         {
@@ -14,6 +14,7 @@ export default {
             classes: "log-section",
             fetchApiLink: "fetch-log",
             downloadApiLink: "download-log",
+            fileName: "error.txt"
         },
     ]
 };
