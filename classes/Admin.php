@@ -175,8 +175,7 @@ class Admin {
 	public static function create_settings_page() {
 		
 		$page = filter_input(INPUT_GET, 'page', FILTER_DEFAULT) !== null ? filter_input(INPUT_GET, 'page', FILTER_DEFAULT) : '';?>
-		<div id="admin-main-wrapper" class="mw-admin-dashbord <?php echo $page; ?>">
-			<div class="mw-general-wrapper" id ="moowoodle_root">
+		<div id="admin-main-wrapper" class="<?php echo $page; ?>">
 				<?php
 				if (filter_input(INPUT_GET, 'page', FILTER_DEFAULT) == 'moowoodle' && !did_action( 'woocommerce_loaded' ) ) {
 					?>
@@ -195,7 +194,6 @@ class Admin {
 					return;
 				}
 				?>
-        	</div>
       	</div>
       	<?php
 	}
