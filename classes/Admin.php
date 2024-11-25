@@ -175,27 +175,25 @@ class Admin {
 	public static function create_settings_page() {
 		
 		$page = filter_input(INPUT_GET, 'page', FILTER_DEFAULT) !== null ? filter_input(INPUT_GET, 'page', FILTER_DEFAULT) : '';?>
-		<div id="admin-main-wrapper" class="mw-admin-dashbord <?php echo $page; ?>">
-			<div class="mw-general-wrapper" id ="moowoodle_root">
-				<?php
-				if (filter_input(INPUT_GET, 'page', FILTER_DEFAULT) == 'moowoodle' && !did_action( 'woocommerce_loaded' ) ) {
-					?>
-					<a href="javascript:history.back()"><?php echo __("Go Back","moowoodle");?></a>
-					<div style="text-align: center; padding: 20px; height: 100%">
-						<h2><?php echo __('Warning: Activate WooCommerce and Verify Moowoodle Files', 'moowoodle'); ?></h2>
-						<p><?php echo __('To access Moowoodle, please follow these steps:', 'moowoodle'); ?></p>
-						<ol style="text-align: left; margin-left: 40px;">
-							<li><?php echo __('Activate WooCommerce on your <a href="', 'moowoodle') . home_url() . '/wp-admin/plugins.php'; ?>"><?php echo __('website', 'moowoodle'); ?></a><?php echo __(', if it\'s not already activated.', 'moowoodle'); ?></li>
-							<li><?php echo __('Ensure that all Moowoodle files are present in your WordPress installation.', 'moowoodle'); ?></li>
-							<li><?php echo __('If you suspect any missing files, consider reinstalling Moowoodle to resolve the issue.', 'moowoodle'); ?></li>
-						</ol>
-						<p><?php echo __('After completing these steps, refresh this page to proceed.', 'moowoodle'); ?></p>
-					</div>
-					<?php
-					return;
-				}
+		<div id="admin-main-wrapper" class="<?php echo $page; ?>">
+			<?php
+			if (filter_input(INPUT_GET, 'page', FILTER_DEFAULT) == 'moowoodle' && !did_action( 'woocommerce_loaded' ) ) {
 				?>
-        	</div>
+				<a href="javascript:history.back()"><?php echo __("Go Back","moowoodle");?></a>
+				<div style="text-align: center; padding: 20px; height: 100%">
+					<h2><?php echo __('Warning: Activate WooCommerce and Verify Moowoodle Files', 'moowoodle'); ?></h2>
+					<p><?php echo __('To access Moowoodle, please follow these steps:', 'moowoodle'); ?></p>
+					<ol style="text-align: left; margin-left: 40px;">
+						<li><?php echo __('Activate WooCommerce on your <a href="', 'moowoodle') . home_url() . '/wp-admin/plugins.php'; ?>"><?php echo __('website', 'moowoodle'); ?></a><?php echo __(', if it\'s not already activated.', 'moowoodle'); ?></li>
+						<li><?php echo __('Ensure that all Moowoodle files are present in your WordPress installation.', 'moowoodle'); ?></li>
+						<li><?php echo __('If you suspect any missing files, consider reinstalling Moowoodle to resolve the issue.', 'moowoodle'); ?></li>
+					</ol>
+					<p><?php echo __('After completing these steps, refresh this page to proceed.', 'moowoodle'); ?></p>
+				</div>
+				<?php
+				return;
+			}
+			?>
       	</div>
       	<?php
 	}
