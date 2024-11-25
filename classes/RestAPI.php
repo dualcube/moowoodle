@@ -359,11 +359,12 @@ class RestAPI {
             $course_enddate   = $course_meta[ '_course_enddate' ];
 
 			if ($course_startdate || $course_enddate) {
-                $date = wp_date( 'M j, Y', $course_startdate );                if ($course_enddate) {
+                $date = wp_date( 'M j, Y', $course_startdate );                
+                if ($course_enddate) {
                     $date .= ' - ' . wp_date( 'M j, Y  ', $course_enddate );
                 }
             } else {
-                $date = 'N/A'; // Default if neither date exists.
+                $date = 'NA'; // Default if neither date exists.
             }
 
             // Get moowoodle course id
