@@ -7,16 +7,17 @@ import Courses from "./components/Courses/Courses";
 import Enrollment from "./components/Enrollment/Enrollment";
 
 const App = () => {
-    const getBaseUrl = (url) => url.split('&sub-tab=')[0];
-    const currentUrl = window.location.href;
+    const location = new URLSearchParams( useLocation().hash );
+
     document.querySelectorAll('#toplevel_page_moowoodle>ul>li>a').forEach((element) => {
+        const urlObject = new URL(element.href);
+        const hashParams = new URLSearchParams(urlObject.hash.substring(1));
+
         element.parentNode.classList.remove('current');
-        if (getBaseUrl(element.href) === getBaseUrl(currentUrl)) {
+        if ( hashParams.get('tab') === location.get('tab')) {
             element.parentNode.classList.add('current');
         }
     });
-
-    const location = new URLSearchParams( useLocation().hash );
 
     return (
         <>
