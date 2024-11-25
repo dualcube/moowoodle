@@ -2,28 +2,21 @@
 
 .support-card {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    max-width: 63rem;
-    margin: auto;
+    gap: 1%;
     margin-top: 1.5rem;
+    margin-left: 16rem;
   
     .card-item {
       padding: 1.5rem;
       flex: 1 0 12.5rem;
-      height: 13.71rem;
-      border: $border-theme-small;
+      border: $border-light-small;
       border-radius: $border-radius-small;
       background: $color-white;
-      box-shadow:
-        0.63rem 0.63rem 1.25rem #ededed,
-        -0.63rem -0.63rem 1.25rem $color-white;
       display: flex;
-      justify-content: center;
+      justify-content: start;
       align-items: center;
       flex-direction: column;
+      padding: 2.5rem;
   
       &:hover {
         background: linear-gradient(-145deg, $color-white, #e6e6e6);

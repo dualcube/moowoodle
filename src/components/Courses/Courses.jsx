@@ -389,7 +389,7 @@ export default function Course() {
                                 onChange={(e) => updateFilter(e.target.name, e.target.value)}
                                 value={filterValue || ""}
                             >
-                                <option value="" style={{textAlign:'center'}}>-- Select --</option>
+                                <option value="" style={{textAlign:'center'}}>Select</option>
                                 <option value="course">Course</option>
                                 <option value="shortname">Short name</option>
                             </select>

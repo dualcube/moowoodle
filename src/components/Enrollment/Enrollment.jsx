@@ -97,7 +97,7 @@ const Enrollment = () => {
 
 	const [selectedRange, setSelectedRange] = useState([
 		{
-			startDate: null,
+			startDate: new Date(),
 			endDate: new Date(),
 			key: 'selection'
 		}
@@ -247,7 +247,7 @@ const Enrollment = () => {
 								onChange={(e) => updateFilter(e.target.name, e.target.value)}
 								value={filterValue || ""}
 							>
-								<option value="" >--Select--</option>
+								<option value="" >Select</option>
 								<option value="name" >Name</option>
 								<option value="email">Email</option>
 							</select>

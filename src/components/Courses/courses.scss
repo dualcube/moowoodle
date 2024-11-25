@@ -59,6 +59,10 @@
         padding: 0 !important; // To overwrite default table css
       }
       .rdt_TableCell {
+        &:first-child {
+          margin-top: 1rem;
+        }
+
         &:nth-child(2) {
           min-width: 14rem !important; // To overwrite default table css
         }

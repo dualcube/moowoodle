@@ -39,6 +39,7 @@
                     border: $border-light-medium;
                     border-radius: $border-radius-small;
                     padding: 0.125rem 1.5rem 0.15rem 0.5rem;
+                    -webkit-appearance: listbox !important;
                     width: 6.93rem;
         
                     &:active, &:focus{

@@ -139,7 +139,7 @@
 
       input,
       select {
-        background-color: transparent;
+        background-color: $color-white;
         width: 100%;
         outline: none;
         border: $border-light-medium;
@@ -164,7 +164,6 @@
       align-items: center;
 
       select {
-        background-color: transparent !important;
         border: 0.115rem solid rgba(0, 0, 0, 0.125) !important;
         border-radius: 0.25rem !important;
         padding: 0.125rem 1.5rem 0.15rem 0.5rem;
@@ -178,9 +177,7 @@
 
       button {
         gap: 0.5rem;
-        border-radius: $border-radius-small;
         background-color: $color-active;
-        padding: 0.5rem 1rem;
         height: fit-content;
         color: $color-white;
       }
@@ -324,9 +321,14 @@
 
 .rdt_Pagination {
   display: grid !important; // For overwrite defauld grid system
-  grid-template-columns: 8.18rem 1fr 8.18rem 10.08rem;
+  grid-template-columns: 7rem 1fr 6rem 10rem;
   place-content: center;
 
+  .bpcekY{
+    svg{
+      display: none;
+    }
+  }
   .sc-lmoLKH.lcunyj {
     select {
       &:focus {
