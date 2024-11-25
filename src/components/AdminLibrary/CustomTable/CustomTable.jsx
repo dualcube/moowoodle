@@ -34,7 +34,6 @@ export const TableCell = (props) => {
   return (
     <>
       <div title={props.value} className="table-row-custom">
-        {/* <h4>{props.title}</h4> */}
         {props.children}
       </div>
     </>
