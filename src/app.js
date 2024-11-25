@@ -7,10 +7,11 @@ import Courses from "./components/Courses/Courses";
 import Enrollment from "./components/Enrollment/Enrollment";
 
 const App = () => {
+    const getBaseUrl = (url) => url.split('&sub-tab=')[0];
     const currentUrl = window.location.href;
     document.querySelectorAll('#toplevel_page_moowoodle>ul>li>a').forEach((element) => {
         element.parentNode.classList.remove('current');
-        if (element.href === currentUrl) {
+        if (getBaseUrl(element.href) === getBaseUrl(currentUrl)) {
             element.parentNode.classList.add('current');
         }
     });
