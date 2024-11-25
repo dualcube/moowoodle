@@ -358,13 +358,11 @@ class RestAPI {
             $course_startdate = $course_meta[ '_course_startdate' ];
             $course_enddate   = $course_meta[ '_course_enddate' ];
 
-			if ($course_startdate || $course_enddate) {
-                $date = wp_date( 'M j, Y', $course_startdate );                
-                if ($course_enddate) {
-                    $date .= ' - ' . wp_date( 'M j, Y  ', $course_enddate );
-                }
+			if (!$course_startdate && !$course_enddate) {
+                $date = 'NA';
             } else {
-                $date = 'NA'; // Default if neither date exists.
+                $date = $course_startdate ? wp_date( 'M j, Y', $course_startdate ) :  __('Not Set', 'moowoodle');
+                $date .= $course_enddate ? ' - ' . wp_date( 'M j, Y  ', $course_enddate ) :  __(' - Not Set', 'moowoodle');
             }
 
             // Get moowoodle course id
