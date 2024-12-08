@@ -8,10 +8,9 @@ const Customizer = (props) => {
   const [buttonLink, setButtonLink] = useState(setting.button_link);
 
   useEffect(() => { setButtonLink(setting.button_link) }, [setting.button_link]);
-
+  
   return (
     <>
-      {/* <div className=""> */}
       {/* Heading section */}
       <div className="btn-customizer-menu">
         <div
@@ -49,12 +48,20 @@ const Customizer = (props) => {
         >
           <i className="admin-font adminLib-link"></i>
         </div>
+        <div
+          title="Settings"
+          className="btn-customizer-menu-items"
+          onClick={(e) => setSelect("setting")}
+        >
+          <i className="admin-font adminLib-settings"></i>
+        </div>
       </div>
       {(select === "color" ||
         select === "border" ||
         select === "font" ||
         select === "size" ||
-        select === "link") && (
+        select === "link" ||
+        select ===  "setting") && (
           <div className="customizer-setting-wrapper">
             {/* Wrapper close btn */}
             <button onClick={(e) => setSelect("")} className="wrapper-close">
@@ -348,12 +355,28 @@ const Customizer = (props) => {
                 <p><span>*</span>Keep it blank for default button behavior</p>
               </div>
             )}
+            {select ===  "setting" && (
+              <div>
+                <span className="lable">
+                  {__("System settings", "woocommerce-stock-manager")}
+                </span>
+                <div className="property-section">
+                  <button onClick={(e) => {
+                      e.preventDefault();
+                      onChange('', {}, true);
+                    }}>
+                    Restore default
+                  </button>
+                  </div>
+              </div>
+            )}
           </div>
         )}
       {/* </div> */}
     </>
   );
 };
+
 const ButtonCustomizer = (props) => {
   let { onChange, setting, className } = props;
   const [hoverOn, setHoverOn] = useState(false);
@@ -362,8 +385,6 @@ const ButtonCustomizer = (props) => {
   // If setting is not set, set the setting to empty object.
   // empty object represent the default settings.
   setting = setting || {};
-
-  // Set setting helper function
 
 
   // set style based on hoverIn and hoverOut
@@ -378,12 +399,12 @@ const ButtonCustomizer = (props) => {
     borderColor: buttonHoverOn
       ? setting.button_border_color_onhover
       : setting.button_border_color,
-    borderRadius: setting.button_border_radious + 'px',
-    borderWidth: setting.button_border_size + 'px',
-    fontSize: setting.button_font_size + 'px',
+    borderRadius: setting.button_border_radious ? `${setting.button_border_radious}px` : '0px',
+    borderWidth: setting.button_border_size ? `${setting.button_border_size}px` : '0px',
+    fontSize: setting.button_font_size ,
     fontWeight: setting.button_font_width,
-    padding: setting.button_padding + 'px',
-    margin: setting.button_margin + 'px',
+    padding: setting.button_padding ? `${setting.button_padding}px` : '0px',
+    margin: setting.button_margin ? `${setting.button_margin}px` : '0px',
   };
 
   const buttonRef = useRef();

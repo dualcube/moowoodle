@@ -21,6 +21,7 @@ export default {
                 }
             ],
             proSetting: true,
+            look: "toggle"
         },
         {
             key: "moowoodle_sso_secret_key",

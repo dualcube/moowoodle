@@ -18,7 +18,8 @@ export default {
                     key: "moowoodle_adv_log",
                     value: "moowoodle_adv_log"
                 }
-            ]
+            ],
+            look: "toggle"
         },
         {
             key: 'separator_content',

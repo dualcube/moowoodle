@@ -19,7 +19,8 @@ export default {
                     label: __('', 'moowoodle'),
                     value: "start_end_date"
                 }
-            ]
+            ],
+            look: "toggle"
         },
         {
             key: "my_courses_priority",
@@ -45,6 +46,7 @@ export default {
                     value: "moowoodle_create_user_custom_mail"
                 }
             ],
+            look: "toggle"
         }
     ]
 };

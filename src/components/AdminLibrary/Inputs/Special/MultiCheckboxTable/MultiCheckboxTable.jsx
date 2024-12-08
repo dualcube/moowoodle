@@ -302,7 +302,7 @@ const Select = (props) => {
 }
 
 const MultiCheckboxTable = (props) => {
-    const { rows, columns, onChange, setting, proSetting } = props;
+    const { rows, columns, onChange, setting, proSetting, modules } = props;
     return (
         <>
             {proSetting && <span className="admin-pro-tag">pro</span>}
@@ -343,16 +343,21 @@ const MultiCheckboxTable = (props) => {
                                                 {
                                                     !row.options &&
                                                     <input
-                                                        placeholder='select'
-                                                        checked={setting[column.key] === row.key}
+                                                        placeholder="select"
                                                         type="checkbox"
+                                                        checked={Array.isArray(setting[column.key]) && setting[column.key].includes(row.key)}
                                                         onChange={(e) => {
-
-                                                            if (e.target.checked) {
-                                                                onChange(column.key, row.key);
-                                                            } else {
-                                                                onChange(column.key, '');
+                                                            if (column.moduleDepend && !modules.includes(column.moduleDepend)) {
+                                                                props.moduleChange();
+                                                                return;
                                                             }
+
+                                                            const selectedKeys = Array.isArray(setting[column.key]) ? setting[column.key] : [];
+                                                            const updatedSelection = e.target.checked
+                                                                ? [...selectedKeys, row.key] // Add key
+                                                                : selectedKeys.filter((key) => key !== row.key); // Remove key
+
+                                                            onChange(column.key, updatedSelection);
                                                         }}
                                                     />
                                                 }

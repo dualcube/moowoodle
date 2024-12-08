@@ -62,18 +62,20 @@
 
 
         .wrapper-close {
-          color: $color-active !important; // To overwrite catalogCustomizer.scss 
-          padding: 0 !important; // To overwrite catalogCustomizer.scss 
+          color: $color-active;
+          padding: 0;
           position: absolute;
           right: -0.756rem;
           top: -0.945rem;
-          background: $color-white !important; // To overwrite catalogCustomizer.scss 
+          background: $color-white;
           box-shadow: 0 0.25rem 0.5rem rgba($color: #000000, $alpha: 0.125);
-          border-radius: 50% !important; // To overwrite catalogCustomizer.scss 
+          border-radius: 50%;
           width: 1.688rem;
           height: 1.688rem;
           font-size: 1.25rem;
-          cursor: pointer !important; // To overwrite catalogCustomizer.scss 
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
 
         .color,
@@ -221,7 +223,6 @@
     }
 
     .btn-preview {
-
       &.active,
       &:hover {
         box-shadow:

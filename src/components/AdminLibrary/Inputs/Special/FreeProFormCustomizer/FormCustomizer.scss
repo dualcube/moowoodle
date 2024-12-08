@@ -1,13 +1,8 @@
 .form_customizer {
   gap: 0;
-
-  .settings-form-label {
-    max-width: 0;
-    overflow: hidden;
-    display: none;
-  }
+  
   .settings-input-content {
-    width: 100% !important;
+    width: 100% !important; // To overwrite dynamic content width
 
     .fields-header{
       display: flex;

@@ -49,8 +49,8 @@ const InputMailchimpList = (props) => {
         }}
       />
   
-      <div className="button-wrapper">
-        <button class="btn-purple"
+      <div className="loader-wrapper">
+        <button class="btn-purple btn-effect"
           onClick={(e) => {
             e.preventDefault();
             if ( ! props.proSettingChanged() ) {

@@ -27,7 +27,7 @@ const DEFAULT_OPTIONS = [
 const DEFAULT_PLACEHOLDER = (type) => `${type}`;
 const DEFAULT_LABEL_SIMPLE = (type) => `Enter your ${type}`;
 const DEFAULT_LABEL_SELECT = 'Nature of Business';
-const DEFAULT_FORM_TITLE = 'I am default form title';
+const DEFAULT_FORM_TITLE = 'Demo Form';
 
 const selectOptions = [
     {
@@ -537,11 +537,15 @@ const CustomFrom = (props) => {
                     <ButtonCustomizer
                         text='Submit'
                         setting={buttonSetting}
-                        onChange={(key, value) => {
+                        onChange={(key, value, isRestoreDefaults=false) => {
                             if (proSettingChange()) return;
                             settingHasChanged.current = true;
                             const previousSetting = buttonSetting || {};
-                            setButtonSetting({ ...previousSetting, [key]: value });
+                            if (isRestoreDefaults) {
+                                setButtonSetting(value);
+                            } else {
+                                setButtonSetting({ ...previousSetting, [key]: value });
+                            }
                         }}
                     />
                 </section>

@@ -1,32 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { ReactSortable } from "react-sortablejs";
+import HoverInputRender from "../HoverInputRender";
 import OptionMetaBox from "./OptionMetaBox";
 
-const MultipleOptions = (props) => {
-    const { formField, onChange, selected, type } = props;
+const MultipleOptions = ({ formField, onChange, type }) => {
     const settingHasChanged = useRef(false);
     const firstTimeRender = useRef(true);
     const [openOption, setOpenOption] = useState(null);
-    const [showOptions, setShowOptions] = useState(false);
-    const [isClicked, setIsClicked] = useState(false);
-    let hoverTimeout = null;
-
-    useEffect(() => {
-        const closePopup = (event) => {
-            if (event.target.closest('.meta-setting-modal, .react-draggable')) {
-                return;
-            }
-            setIsClicked(false);
-            setShowOptions(false);
-            setOpenOption(null);
-        };
-
-        document.body.addEventListener("click", closePopup);
-
-        return () => {
-            document.body.removeEventListener("click", closePopup);
-        };
-    }, []);
 
     const [options, setOptions] = useState(() => {
         if (Array.isArray(formField.options) && formField.options.length) {
@@ -78,7 +58,7 @@ const MultipleOptions = (props) => {
     };
 
     const handleInsertOption = () => {
-        const newOptions = [...options, { label: "I am label", value: "value" }];
+        const newOptions = [...options, { label: "Option value", value: "value" }];
         setOptions(newOptions);
         onChange("options", newOptions);
     };
@@ -90,51 +70,23 @@ const MultipleOptions = (props) => {
         onChange("options", newOptions);
     };
 
-    const handleMouseEnter = () => {
-        hoverTimeout = setTimeout(() => setShowOptions(true), 300);
-    };
-
-    const handleMouseLeave = () => {
-        clearTimeout(hoverTimeout);
-        if (!isClicked) {
-            setShowOptions(false);
-        }
-    };
-
     return (
-        <>
-            {!showOptions && (
-                <div
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                    style={{ cursor: "pointer" }}
-                >
-                    <div className="edit-form-wrapper">
-                        <p>{formField.label}</p>
-                        <div className="settings-form-group-radio">
-                            {renderInputFields(type)}
-                        </div>
-                    </div>
+        <HoverInputRender
+            label={formField.label}
+            onLabelChange={(newLabel) => onChange("label", newLabel)}
+            renderStaticContent={({ label }) => (
+                <div className="edit-form-wrapper">
+                    <p>{label}</p>
+                    <div className="settings-form-group-radio">{renderInputFields(type)}</div>
                 </div>
             )}
-
-            {showOptions && (
-                <div
-                    className="main-input-wrapper"
-                    onClick={() => {
-                        setShowOptions(true);
-                        setIsClicked(true);
-                    }}
-                    onMouseLeave={handleMouseLeave}
-                >
+            renderEditableContent={({ label, onLabelChange }) => (
+                <>
                     <input
                         className="input-label multipleOption-label"
                         type="text"
-                        value={formField.label}
-                        placeholder={"I am label"}
-                        onChange={(event) => {
-                            onChange("label", event.target.value);
-                        }}
+                        value={label}
+                        onChange={(event) => onLabelChange(event.target.value)}
                     />
 
                     <ReactSortable
@@ -203,9 +155,9 @@ const MultipleOptions = (props) => {
                             Add new options <span><i className="admin-font adminLib-plus-circle-o"></i></span>
                         </div>
                     </ReactSortable>
-                </div>
+                </>
             )}
-        </>
+        />
     );
 };
 

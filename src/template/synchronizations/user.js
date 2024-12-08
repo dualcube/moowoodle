@@ -34,7 +34,7 @@ export default {
         },
         {
             key: "wordpress_user_role",
-            type: "checkbox-default",
+            type: "checkbox",
             desc: __("Users from the chosen roles will be added or updated in Moodle.", 'moowoodle'),
             label: __("WordPress user role to synchronize", 'moowoodle'),
             options: Object.entries(appLocalizer.wp_user_roles).map(( [key, name ] ) => {
@@ -53,7 +53,7 @@ export default {
         },
         {
             key: "moodle_user_role",
-            type: "checkbox-default",
+            type: "checkbox",
             desc: __("Users from the chosen roles will be added or updated in WordPress.", 'moowoodle'),
             label: __("Moodle user role to synchronize", 'moowoodle'),
             options: Object.entries(appLocalizer.md_user_roles).map(( [key, name ] ) => {
@@ -109,7 +109,8 @@ export default {
                     label: __('', 'moowoodle'),
                     value: "realtime_user_sync"
                 }
-            ]
+            ],
+            look: "toggle"
         },
         {
             key: "sync_user_btn",

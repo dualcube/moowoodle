@@ -49,7 +49,7 @@
       z-index: 12;
 
       input[type=checkbox] {
-        width: 1rem !important;
+        width: 1rem ;
         height: 1rem;
         border: $border-light-small;
         border-radius: $border-radius-small ;
@@ -431,8 +431,8 @@
 
           input {
             width: 100%;
-            background: #d6b5ff21 !important; // Overwrite dynamic.scss
-            border-color: #d6b5ff !important; // Overwrite dynamic.scss
+            background: #d6b5ff21 ; // Overwrite dynamic.scss
+            border-color: #d6b5ff ; // Overwrite dynamic.scss
           }
 
           input[type="checkbox"] {
@@ -452,7 +452,7 @@
         align-items: center;
 
         .settings-form-group-radio {
-          width: 50% !important; // To overwrite common input width
+          width: 50% ; // To overwrite common input width
         }
 
         .button-visibility {

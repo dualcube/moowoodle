@@ -25,7 +25,7 @@
           position: relative;
         }
 
-        .toggle-checkbox-content {
+        .toggle-checkbox {
           position: relative;
           margin-right: 0.5rem;
 
@@ -38,7 +38,7 @@
             content: "";
             position: absolute;
             top: 50%;
-            left: 2rem;
+            right: 0.45rem;
             width: 0.25rem;
             height: 0.25rem;
             border: $border-theme-small;
@@ -138,7 +138,7 @@
         textarea,
         select {
           width: 100%;
-          border: $border-light-medium;
+          border: $border-light-small;
           border-radius: $border-radius-small;
           padding: 0.313rem 0.5rem;
           background: transparent;
@@ -531,10 +531,6 @@
           width: 100%;
           row-gap: 0.75rem;
           column-gap: 0.75rem;
-
-          .input-section {
-            width: 100%;
-          }
         }
       }
     }

@@ -27,13 +27,13 @@ const CatalogCustomizer = (props) => {
   // Create menu
   const [menu, setMenu] = useState([
     {
-      name: "Enquiry", id: 'enquiry', icon: 'adminLib-info',
+      name: "Enquiry", id: 'enquiry', icon: 'adminLib-inquiry-filled-svgrepo-com',
     },
     {
-      name: "Quote", id: 'quote', icon: 'adminLib-credit_card',
+      name: "Quote", id: 'quote', icon: 'adminLib-price-quote-icon',
     },
     {
-      name: "Catalog", id: 'catalog', icon: 'adminLib-credit_card',
+      name: "Catalog", id: 'catalog', icon: 'adminLib-catalog-svgrepo-com',
     },
   ]);
 
@@ -350,9 +350,14 @@ const CatalogCustomizer = (props) => {
                                         className='ignore-drag'
                                         text='enquiry'
                                         setting={setting['enquery_button']}
-                                        onChange={(key, value) => {
+                                        onChange={(key, value, isRestoreDefaults=false) => {
                                           const previousSetting = setting['enquery_button'] || {};
-                                          setSetting('enquery_button', { ...previousSetting, [key]: value });
+                                          if (isRestoreDefaults) {
+                                            setSetting('enquery_button', value);
+                                          } else {
+                                            setSetting('enquery_button', { ...previousSetting, [key]: value });
+                                          }
+                                          // setSetting('enquery_button', { ...previousSetting, [key]: value });
                                         }}
                                       />
                                     </div>
@@ -361,9 +366,13 @@ const CatalogCustomizer = (props) => {
                                     <ButtonCustomizer
                                       text='Add to cart'
                                       setting={setting['cart_button']}
-                                      onChange={(key, value) => {
+                                      onChange={(key, value, isRestoreDefaults=false) => {
                                         const previousSetting = setting['cart_button'] || {};
-                                        setSetting('cart_button', { ...previousSetting, [key]: value });
+                                        if (isRestoreDefaults) {
+                                          setSetting('cart_button', value);
+                                        } else {
+                                          setSetting('cart_button', { ...previousSetting, [key]: value });
+                                        }
                                       }}
                                     />
                                   )}
@@ -375,9 +384,13 @@ const CatalogCustomizer = (props) => {
                                       <ButtonCustomizer
                                         text='Add to quote'
                                         setting={setting['quote_button']}
-                                        onChange={(key, value) => {
+                                        onChange={(key, value, isRestoreDefaults=false) => {
                                           const previousSetting = setting['quote_button'] || {};
-                                          setSetting('quote_button', { ...previousSetting, [key]: value });
+                                          if (isRestoreDefaults) {
+                                            setSetting('quote_button', value);
+                                          } else {
+                                            setSetting('quote_button', { ...previousSetting, [key]: value });
+                                          }
                                         }}
                                       />
                                     </div>

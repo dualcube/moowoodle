@@ -119,9 +119,9 @@ const ConnectButton = (props) => {
 
     return (
         <div className="connection-test-wrapper">
-            <div className="section-connection-test">
+            <div className="loader-wrapper">
                 <button
-                    className="btn-purple"
+                    className="btn-purple btn-effect"
                     onClick={(e) => {
                         e.preventDefault();
                         startConnectionTask();

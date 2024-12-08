@@ -45,8 +45,8 @@
 
   button{
     position: relative;
-    border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0 !important; // To overwrite common button style
+    border-bottom-left-radius: 0 !important; // To overwrite common button style
   }
   .generate-btn {
     gap: 0.3rem;

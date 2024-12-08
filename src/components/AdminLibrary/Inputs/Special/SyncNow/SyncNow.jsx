@@ -79,8 +79,8 @@ const SyncNow = (props) => {
   // Render sync now setting
   return (
     <div className="section-synchronize-now">
-      <div className="button-section">
-        <button className="btn-purple synchronize-now-button" onClick={handleSync}>
+      <div className="loader-wrapper">
+        <button className="btn-purple btn-effect synchronize-now-button" onClick={handleSync}>
           {value}
         </button>
         {/* Render loader on sync start */}
@@ -93,7 +93,7 @@ const SyncNow = (props) => {
         )}
       </div>
 
-      {syncStarted && <p className="sync-process">Synchronization started please wait.</p>}
+      {syncStarted && <div className="fetch-display-output success">Synchronization started please wait.</div>}
 
       {/* Render description */}
       <p className="settings-metabox-description" dangerouslySetInnerHTML={{ __html: description }}></p>

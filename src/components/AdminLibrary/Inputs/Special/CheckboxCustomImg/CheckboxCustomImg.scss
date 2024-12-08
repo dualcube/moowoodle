@@ -39,6 +39,11 @@
         background: transparent;
       }
     }
+    
+    &:has(input:checked){
+      box-shadow: 0 0 0.0rem 0.126rem $color-active;
+      background: linear-gradient(45deg, #0000001c, transparent);
+    }
 
   .sync-meta-wrapper {
     display: flex;
@@ -58,12 +63,6 @@
   }
 
   .admin-pro-tag{
-    top: 0;
     position:relative;
   }
-}
-
-.sync-direction-items:has(input:checked){
-  box-shadow: 0 0 0.0rem 0.126rem $color-active;
-  background: linear-gradient(45deg, #0000001c, transparent);
 }

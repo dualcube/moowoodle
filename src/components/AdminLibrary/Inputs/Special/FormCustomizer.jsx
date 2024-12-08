@@ -85,10 +85,17 @@ const FormCustomizer = (props) => {
                         </div>
                         <div className='button-section'>
                             <ButtonCustomizer
-                                text={props.buttonText}
+                                text={props.buttonText || 'Submit'}
                                 proSetting={props.proSetting}
-                                setting={setting}
-                                onChange={props.onChange}
+                                setting={setting['customize_btn']}
+                                onChange={(key, value, isRestoreDefaults=false) => {
+                                    const previousSetting = setting['customize_btn'] || {};
+                                    if (isRestoreDefaults) {
+                                        props.onChange('customize_btn', value);
+                                    } else {
+                                        props.onChange('customize_btn', { ...previousSetting, [key]: value });
+                                    }
+                                }}
                             />
                         </div>
                     </div>
