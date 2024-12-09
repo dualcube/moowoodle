@@ -1,27 +1,32 @@
-import { useState, useEffect } from 'react';
+import HoverInputRender from '../HoverInputRender';
 
-const Timepicker = (props) => {
-    const { formField, onChange } = props;
-
+const Timepicker = ({ formField, onChange }) => {
     return (
-        <>
-            <div className='main-input-wrapper'>
-                {/* Render label */}
-                <input
-                    className='input-label textArea-label'
-                    type="text"
-                    value={formField.label}
-                    placeholder={"I am label"}
-                    onChange={(event) => {
-                        onChange('label', event.target.value);
-                    }}
-                />
-
-                {/* Render attachments */}
-                <input type="time" readOnly />
-            </div>
-        </>
-    )
-}
+        <HoverInputRender
+            label={formField.label}
+            placeholder="Select time"
+            onLabelChange={(newLabel) => onChange('label', newLabel)}
+            renderStaticContent={({ label }) => (
+                <div className="edit-form-wrapper">
+                    <p>{label}</p>
+                    <div className="settings-form-group-radio">
+                        <input type="time" readOnly />
+                    </div>
+                </div>
+            )}
+            renderEditableContent={({ label, onLabelChange }) => (
+                <>
+                    <input
+                        className="input-label textArea-label"
+                        type="text"
+                        value={label}
+                        onChange={(event) => onLabelChange(event.target.value)}
+                    />
+                    <input type="time" readOnly />
+                </>
+            )}
+        />
+    );
+};
 
 export default Timepicker;

@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { ReactSortable } from "react-sortablejs";
-import { FaArrowsAlt } from 'react-icons/fa';
+import HoverInputRender from "../HoverInputRender";
 import OptionMetaBox from "./OptionMetaBox";
 
-const MultipleOptions = (props) => {
-    const { formField, onChange, selected } = props;
+const MultipleOptions = ({ formField, onChange, type }) => {
     const settingHasChanged = useRef(false);
     const firstTimeRender = useRef(true);
     const [openOption, setOpenOption] = useState(null);
@@ -16,163 +15,150 @@ const MultipleOptions = (props) => {
         return [];
     });
 
-    useEffect(() => {
-        if (settingHasChanged.current) {
-            settingHasChanged.current = false;
-            onChange('options', options);
+    const renderInputFields = (type) => {
+        switch (type) {
+            case "radio":
+                return options.map((option, idx) => (
+                    <div className="radio-input-label-wrap" key={idx}>
+                        <input type="radio" id={`radio-${idx}`} value={option.value} />
+                        <label htmlFor={`radio-${idx}`}>{option.label}</label>
+                    </div>
+                ));
+            case "checkboxes":
+                return options.map((option, idx) => (
+                    <div className="radio-input-label-wrap" key={idx}>
+                        <input type="checkbox" id={`checkbox-${idx}`} value={option.value} />
+                        <label htmlFor={`checkbox-${idx}`}>{option.label}</label>
+                    </div>
+                ));
+            case "dropdown":
+            case "multiselect":
+                return (
+                    <section className="select-input-section merge-components">
+                        <select>
+                            <option>Select...</option>
+                            {options.map((option, idx) => (
+                                <option key={idx} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+                    </section>
+                );
+            default:
+                return <p>Unsupported input type</p>;
         }
-    }, [options]);
+    };
 
-    ///////////////////////////////////////// Functionality for button change /////////////////////////////////////////
-    
-    /**
-     * Handle the field change of option
-     */
     const handleOptionFieldChange = (index, key, value) => {
-        // copy the form field before modify
-        const newOptions = [ ...options ]
-        
-        // Update the new form field list
-        newOptions[index] = {
-            ...newOptions[index],
-            [key]: value
-        }
-
-        // Update the state variable
+        const newOptions = [...options];
+        newOptions[index] = { ...newOptions[index], [key]: value };
         setOptions(newOptions);
-    }
+        onChange("options", newOptions);
+    };
 
-    /**
-     * Insert a new option at end of option list
-     */
     const handleInsertOption = () => {
-        setOptions([...options, {
-            label: 'I am label',
-            value: 'value'
-        }]);
-    }
-
-    /**
-     * Handle the delete a particular option options
-     * it will not work if only one option is set
-     */
-    const handleDeleteOption = (index) => {
-        if (options.length <= 1) {
-            return;
-        }
-        
-        // Create a new array without the element at the specified index
-        const newOptions = options.filter((_, i) => i !== index);
-
-        // Update the state with the new array
+        const newOptions = [...options, { label: "Option value", value: "value" }];
         setOptions(newOptions);
-    }
+        onChange("options", newOptions);
+    };
+
+    const handleDeleteOption = (index) => {
+        if (options.length <= 1) return;
+        const newOptions = options.filter((_, i) => i !== index);
+        setOptions(newOptions);
+        onChange("options", newOptions);
+    };
 
     return (
-        <div className="main-input-wrapper">
-            {/* Render label */}
-            <input
-                className="input-label multipleOption-label"
-                type="text"
-                value={formField.label}
-                placeholder={"I am label"}
-                onChange={(event) => {
-                    onChange('label', event.target.value);
-                }}
-            />
+        <HoverInputRender
+            label={formField.label}
+            onLabelChange={(newLabel) => onChange("label", newLabel)}
+            renderStaticContent={({ label }) => (
+                <div className="edit-form-wrapper">
+                    <p>{label}</p>
+                    <div className="settings-form-group-radio">{renderInputFields(type)}</div>
+                </div>
+            )}
+            renderEditableContent={({ label, onLabelChange }) => (
+                <>
+                    <input
+                        className="input-label multipleOption-label"
+                        type="text"
+                        value={label}
+                        onChange={(event) => onLabelChange(event.target.value)}
+                    />
 
-            {/* Render Options */}
-            <ReactSortable
-                className="multiOption-wrapper"
-                list={options}
-                setList={(newList) => { 
-                    if (firstTimeRender.current) {
-                        firstTimeRender.current = false;
-                        return;
-                    }
-                    setOptions(newList)
-                }}
-                handle=".drag-handle-option"
-            >
-                {
-                    options && options.map((option, index) => (
-                        <div className="option-list-wrapper drag-handle-option">
-                            {/* Render label modifire */}
-                            <div className="option-label">
-                                <input
-                                    type="text"
-                                    value={option.label}
-                                    onChange={(event) => {
-                                        settingHasChanged.current = true;
-                                        handleOptionFieldChange(index, 'label', event.target.value);
-                                    }}
-                                    readOnly
-                                    onClick={(event) => {
-                                        setOpenOption(index)
-                                        event.stopPropagation()
-                                    }}
-                                />
-                            </div>
-                            
-                            {/* Render grab icon for drag and drop */}
-                            <div className="option-control-section">
-                                {/* Render delete option */}
-                                <div onClick={() => {settingHasChanged.current = true;
-                                handleDeleteOption(index)}}>Delete</div>
-                                {/* Render setting option */}
-                                <OptionMetaBox
-                                    hasOpen={openOption === index}
-                                    option={option}
-                                    onChange={(key, value) => {
-                                        settingHasChanged.current = true;
-                                        handleOptionFieldChange(index, key, value)}
-                                    }
-                                    setDefaultValue={() => {
-                                        if (option.isdefault) {
+                    <ReactSortable
+                        className="multiOption-wrapper"
+                        list={options}
+                        setList={(newList) => {
+                            if (firstTimeRender.current) {
+                                firstTimeRender.current = false;
+                                return;
+                            }
+                            setOptions(newList);
+                            onChange("options", newList);
+                        }}
+                        handle=".drag-handle-option"
+                    >
+                        {options && options.map((option, index) => (
+                            <div className="option-list-wrapper drag-handle-option" key={index}>
+                                <div className="option-label">
+                                    <input
+                                        type="text"
+                                        value={option.label}
+                                        onChange={(event) => {
                                             settingHasChanged.current = true;
-                                            handleOptionFieldChange(index, 'isdefault', false);
-                                        } else {
+                                            handleOptionFieldChange(index, "label", event.target.value);
+                                        }}
+                                        readOnly
+                                        onClick={(event) => {
+                                            setOpenOption(index);
+                                            event.stopPropagation();
+                                        }}
+                                    />
+                                </div>
+                                <div className="option-control-section">
+                                    <div
+                                        onClick={() => {
+                                            settingHasChanged.current = true;
+                                            handleDeleteOption(index);
+                                        }}
+                                    >
+                                        Delete
+                                    </div>
+                                    <OptionMetaBox
+                                        hasOpen={openOption === index}
+                                        option={option}
+                                        onChange={(key, value) => {
+                                            settingHasChanged.current = true;
+                                            handleOptionFieldChange(index, key, value);
+                                        }}
+                                        setDefaultValue={() => {
                                             let defaultValueIndex = null;
-                                            options.forEach((option, index) => {
-                                                if (option.isdefault) {
-                                                    defaultValueIndex = index;
-                                                }
+                                            options.forEach((option, idx) => {
+                                                if (option.isdefault) defaultValueIndex = idx;
                                             });
                                             if (defaultValueIndex !== null) {
                                                 settingHasChanged.current = true;
-                                                handleOptionFieldChange(defaultValueIndex, 'isdefault', false);
+                                                handleOptionFieldChange(defaultValueIndex, "isdefault", false);
                                             }
-                                            settingHasChanged.current = true;
-                                            handleOptionFieldChange(index, 'isdefault', true);
-
-                                            // copy the form field before modify
-                                            const newOptions = [ ...options ]
-                                            
-                                            // Update the new form field list
-                                            newOptions[defaultValueIndex] = { ...newOptions[defaultValueIndex], isdefault: false }
-                                            newOptions[index] = { ...newOptions[index], isdefault: true }
-
-                                            settingHasChanged.current = true;
-                                            // Update the state variable
-                                            setOptions(newOptions);
-                                        }
-                                    }}
-                                />
+                                            handleOptionFieldChange(index, "isdefault", true);
+                                        }}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                    ))
-                }
+                        ))}
 
-                {/* Render add option at last */}
-                <div className="add-more-option-section" onClick={() => {
-                    settingHasChanged.current = true;
-                    handleInsertOption()}
-                    }>
-                    Add new options <span><i className="admin-font font-support"></i></span>
-                </div>
-            </ReactSortable>
-        </div>
-    )
-}
+                        <div className="add-more-option-section" onClick={handleInsertOption}>
+                            Add new options <span><i className="admin-font adminLib-plus-circle-o"></i></span>
+                        </div>
+                    </ReactSortable>
+                </>
+            )}
+        />
+    );
+};
 
 export default MultipleOptions;

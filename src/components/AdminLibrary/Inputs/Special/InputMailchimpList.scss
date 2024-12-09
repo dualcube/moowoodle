@@ -1,0 +1,12 @@
+@import '/src/components/config.scss';
+
+.connect-main-wrapper {
+  input:focus {
+    box-shadow: none;
+  }
+
+  .loader-wrapper {    
+    justify-content: flex-end;
+    margin-top:0.5rem;
+  }
+}

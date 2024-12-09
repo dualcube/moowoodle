@@ -5,18 +5,18 @@ import SelectInput from '../SelectInput.jsx';
 const NestedInput = (props) => {
     return (
         <>
-            <div className={props.mainWrapperClass}>
+            <div className={props.wrapperClass}>
                 {
-                    props.databaseValue &&
-                    props.databaseValue.map((option, index) =>
+                    props.value &&
+                    props.value.map((option, index) =>
                         <div className={props.ParentWrapperClass}>
                             {
                                 props.parentOptions.map((parentOption) =>
-                                    parentOption.depend &&
-                                        option[parentOption.depend] &&
-                                        option[parentOption.depend].value &&
-                                        option[parentOption.depend].value != parentOption.dependvalue
-                                        ? '' :
+                                    // parentOption.depend &&
+                                    //     option[parentOption.depend] &&
+                                    //     option[parentOption.depend].value &&
+                                    //     option[parentOption.depend].value != parentOption.dependvalue
+                                    //     ? '' :
                                         <div className={props.innerParentWrapperClass}>
                                             <label className={props.parentLabelClass}>
                                                 <p>{parentOption.label}</p>

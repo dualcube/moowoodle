@@ -1,0 +1,301 @@
+@import '/src/components/config.scss';
+
+.gridTable {
+    gap: 1rem;
+
+    &.no-label {
+        flex-direction: column;
+
+        .settings-form-label {
+            width: 100% !important; // To overwrite dynamic.scss
+        }
+
+        .settings-input-content {
+            width: 100% !important; // To overwrite dynamic.scss
+        }
+    }
+
+    .settings-input-content {
+
+        .admin-pro-tag {
+            top: 10%;
+            right: 0.613rem;
+        }
+
+        .settings-metabox-description {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+        }
+
+        .grid-table {
+            width: 100%;
+            border: $border-light-medium;
+            border-radius: $border-radius-small;
+            font-size: 0.875rem;
+            padding: 1rem;
+
+            thead {
+                width: 100%;
+
+                tr {
+                    display: flex;
+                    align-items: stretch;
+                    align-content: stretch;
+                    margin: 0.5rem 0.25rem 0;
+                    padding: 0.5rem;
+
+                    th {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-grow: 1;
+                        flex-shrink: 0;
+                        flex-basis: 0;
+                        font-weight: 500;
+
+                        &:first-child {
+                            max-width: 9.375rem;
+                        }
+                    }
+                }
+            }
+
+            tbody {
+                width: 100%;
+
+                tr {
+                    display: flex;
+                    align-items: stretch;
+                    align-content: stretch;
+                    padding: 0.5rem 0;
+                    background: #f8f9fa;
+                    margin: 0.5rem 0;
+                    border-radius: $border-radius-small;
+
+                    td {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-grow: 1;
+                        flex-shrink: 0;
+                        flex-basis: 0;
+                        padding: 0 1rem;
+
+                        &:first-child {
+                            max-width: 9.5rem;
+                        }
+
+                        input[type=checkbox] {
+                            width: fit-content;
+                        }
+
+                        &:first-child {
+                            place-content: start;
+                        }
+
+                        .clear {
+                            clear: both;
+                        }
+
+                        .checkBox {
+                            display: block;
+                            cursor: pointer;
+                            width: 0.938rem;
+                            height: 0.938rem;
+                            border: 0.188rem solid rgba(255, 255, 255, 0);
+                            border-radius: $border-radius-small;
+                            position: relative;
+                            overflow: hidden;
+                            box-shadow: 0 0 0 0.125rem #65438fae;
+                        }
+
+                        .checkBox div {
+                            width: 1.875rem;
+                            height: 1.875rem;
+                            background-color: $theme-color;
+                            top: -3.25rem;
+                            left: -3.25rem;
+                            position: absolute;
+                            transform: rotateZ(45deg);
+                            z-index: 100;
+                        }
+
+                        .checkBox input[type=checkbox]:checked+div {
+                            left: -0.625rem;
+                            top: -0.625rem;
+                        }
+
+                        .checkBox input[type=checkbox] {
+                            position: absolute;
+                            left: 0;
+                            visibility: hidden;
+                        }
+
+                        .transition {
+                            transition: 300ms linear;
+                        }
+
+
+                        .grid-table-main-container {
+                            position: relative;
+                            max-width: 15.625rem;
+                            width: 100%;
+
+                            .main-container {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 0.5rem;
+
+                                .selected-container {
+                                    border: 0.115rem solid rgba(0, 0, 0, 0.125);
+                                    border-radius: 0;
+                                    height: 2.5rem;
+                                    padding: 0.5rem 0.5rem;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: flex-start;
+                                    gap: 0.25rem;
+                                    background-color: $color-white;
+                                    position: relative;
+                                    width: 100%;
+
+
+                                    &:has(.container-items-controls .open-modal) {
+                                        .selected-items-container {
+                                            max-width: calc(100% - 2.5rem);
+                                        }
+
+                                        .container-items-controls {
+                                            width: 2.5rem;
+                                        }
+                                    }
+
+                                    .selected-items-container {
+                                        display: flex;
+                                        height: 100%;
+                                        align-items: center;
+                                        justify-content: flex-start;
+                                        gap: 0.25rem;
+                                        max-width: calc(100% - 1.25rem);
+                                        flex-wrap: wrap;
+                                        overflow: hidden;
+
+                                        .selected-items {
+                                            max-width: 5rem;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: space-between;
+                                            gap: 0.25rem;
+                                            padding: 0.15rem 0.25rem;
+                                            border-radius: $border-radius-small;
+                                            font-size: 0.75rem;
+                                            background: #f2eeee;
+                                            width: 100%;
+
+                                            span {
+                                                text-overflow: ellipsis;
+                                                overflow: hidden;
+                                                max-height: 1.25rem;
+                                                height: 100%;
+                                                text-overflow: ellipsis;
+                                                overflow: hidden;
+
+                                            }
+
+                                            button {
+                                                background: transparent;
+                                                padding: 0;
+                                            }
+                                        }
+                                    }
+
+                                    .container-items-controls {
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        width: 1.2rem;
+                                        position: absolute;
+                                        top: 50%;
+                                        transform: translateY(-50%);
+                                        right: 0.313rem;
+
+                                        .items-controls {
+                                            border-radius: 50%;
+                                            width: 1.2rem;
+                                            height: 1.2rem;
+                                            cursor: pointer;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            padding: 0;
+                                        }
+
+                                        .clear-all-data {
+                                            background: transparent;
+                                            transition: all 0.3s linear;
+                                            font-size: 0.75rem;
+
+                                            &:hover {
+                                                background-color: $background-color;
+                                            }
+                                        }
+
+                                        .open-modal {
+                                            font-size: 0.65rem;
+                                            color: $color-white;
+                                            background: $color-active;
+                                        }
+                                    }
+
+
+                                }
+
+                                .selected-input {
+                                    position: relative;
+
+                                    input {
+                                        background: $color-white;
+                                        margin: 0;
+
+                                        &:focus {
+                                            outline: none;
+                                        }
+                                    }
+
+                                    span {
+                                        position: absolute;
+                                        top: 0.438rem;
+                                        right: 0.313rem;
+
+                                        i {
+                                            font-size: 1.15rem;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .option-container {
+                                position: absolute;
+                                top: 105%;
+                                z-index: 8;
+                                width: 100%;
+                                background: $color-white;
+                                display: flex;
+                                padding: 0.5rem;
+                                border: 0.115rem solid rgba(0, 0, 0, 0.125);
+                                flex-direction: column;
+                                gap: 0.25rem;
+
+                                .options-item {
+                                    cursor: pointer;
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

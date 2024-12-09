@@ -1,19 +1,21 @@
-$menu-btn-color: #522c81;
-$body-background: #f9f9f9;
-$color-white: #fff;
-$menu-color: #f9f8fb;
-$color-active: #65438f;
+@import '/src/components/config.scss';
 
 .setting-form-input{
     .shortcode-table{
         width: 100%;
+        border: $border-light-small;
+        padding: 1rem;
+        border-radius: $border-radius-small;
 
         thead{
             tr{
+                padding: 0.5rem;
                 th{
                     text-align: left;
                     font-weight: 500;
-                    min-width: 180px;
+                    min-width: 11.25rem;
+                    font-size: 0.875rem;
+                    padding: 1rem;
                 }
             }
         }
@@ -21,9 +23,12 @@ $color-active: #65438f;
         tbody{
             tr{
                 td{
-                    padding: 1rem 0;
+                    padding: 1rem;
                 }
-            }
+                &:nth-child(odd){
+                    background: #f8f9fa;
+                }
+            }            
         }
     }
 }

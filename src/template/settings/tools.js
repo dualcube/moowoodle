@@ -5,7 +5,7 @@ export default {
     priority: 50,
     name: __("Tools", "moowoodle"),
     desc: __("Review all system logs and errors", "moowoodle"),
-    icon: 'font-tools',
+    icon: 'adminLib-tools',
     submitUrl: "save-moowoodle-setting",
     modal: [
         {
@@ -18,7 +18,8 @@ export default {
                     key: "moowoodle_adv_log",
                     value: "moowoodle_adv_log"
                 }
-            ]
+            ],
+            look: "toggle"
         },
         {
             key: 'separator_content',

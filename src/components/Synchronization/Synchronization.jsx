@@ -62,7 +62,7 @@ const Synchronization = () => {
                     tabData={ settingsArray }
                     currentTab={ location.get( 'sub-tab' ) }
                     getForm={getForm}
-                    BannerSection = { ! appLocalizer.pro_active && BannerSection}
+                    BannerSection = { ! appLocalizer.khali_dabba && BannerSection}
                     prepareUrl={(subTab) => `?page=moowoodle#&tab=synchronization&sub-tab=${subTab}` }
                 />
             </SettingProvider>

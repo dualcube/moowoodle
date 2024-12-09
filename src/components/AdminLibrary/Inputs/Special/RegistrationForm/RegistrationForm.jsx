@@ -12,86 +12,86 @@ import { useSetting } from "../../../../../contexts/SettingContext";
 // Set deault values for indivisual inputs.
 const DEFAULT_OPTIONS = [
     {
-        label: 'I have a bike',
-        value: 'bike'
+        label: 'Manufacture',
+        value: 'manufacture'
     },
     {
-        label: 'I have a car',
-        value: 'car'
+        label: 'Trader',
+        value: 'trader'
     },
     {
-        label: 'I have a boat',
-        value: 'boat'
+        label: 'Authorized Agent',
+        value: 'authorized_agent'
     }
 ];
-const DEFAULT_PLACEHOLDER = 'I am default place holder';
-const DEFAULT_LABEL_SIMPLE = 'I am default simple label';
-const DEFAULT_LABEL_SELECT = 'I am default select label';
-const DEFAULT_FORM_TITLE = 'I am default form title';
+const DEFAULT_PLACEHOLDER = (type) => `${type}`;
+const DEFAULT_LABEL_SIMPLE = (type) => `Enter your ${type}`;
+const DEFAULT_LABEL_SELECT = 'Nature of Business';
+const DEFAULT_FORM_TITLE = 'Demo Form';
 
 const selectOptions = [
     {
-        icon: 'icon-form-textbox',
+        icon: 'adminLib-t-letter-bold icon-form-textbox',
         value: 'text',
         label: 'Textbox'
     },
     {
-        icon: 'icon-form-email',
+        icon: 'adminLib-unread icon-form-email',
         value: 'email',
         label: 'Email'
     },
     {
-        icon: 'icon-form-textarea',
+        icon: 'adminLib-text icon-form-textarea',
         value: 'textarea',
         label: 'Textarea'
     },
     {
-        icon: 'icon-form-checkboxes',
+        icon: 'adminLib-checkbox icon-form-checkboxes',
         value: 'checkboxes',
         label: 'Checkboxes'
     },
     {
-        icon: 'icon-form-multi-select',
+        icon: 'adminLib-multi-select icon-form-multi-select',
         value: 'multiselect',
         label: 'Multi Select'
     },
     {
-        icon: 'icon-form-radio',
+        icon: 'adminLib-radio icon-form-radio',
         value: 'radio',
         label: 'Radio'
     },
     {
-        icon: 'icon-form-dropdown',
+        icon: 'adminLib-dropdown-checklist icon-form-dropdown',
         value: 'dropdown',
         label: 'Dropdown'
     },
     {
-        icon: 'icon-form-recaptcha',
+        icon: 'adminLib-captcha-automatic-code-svgrepo-com icon-form-recaptcha',
         value: 'recapta',
         label: 'Recapta'
     },
     {
-        icon: 'icon-form-attachment',
+        icon: 'adminLib-submission-message icon-form-attachment',
         value: 'attachment',
         label: 'Attachment'
     },
     {
-        icon: 'icon-form-section',
+        icon: 'adminLib-form-section icon-form-section',
         value: 'section',
         label: 'Section'
     },
     {
-        icon: 'icon-form-store-description',
+        icon: 'adminLib-calendar icon-form-store-description',
         value: 'datepicker',
         label: 'Date Picker'
     },
     {
-        icon: 'icon-form-address01',
+        icon: 'adminLib-alarm icon-form-address01',
         value: 'timepicker',
         label: 'Time Picker'
     },
     {
-        icon: 'icon-form-address01',
+        icon: 'adminLib-divider icon-form-address01',
         value: 'divider',
         label: 'Divider'
     },
@@ -111,7 +111,7 @@ const AddNewBtn = (props) => {
                         className={`addnew`}
                     >
                         <div onClick={(event) => { onAddNew?.() }}>
-                            <i className="admin-font font-move"></i>
+                            <i className="admin-font adminLib-move"></i>
                         </div>
                         <p>Click to add new field</p>
                     </div>
@@ -119,7 +119,7 @@ const AddNewBtn = (props) => {
                     <div className="add-new-sections" onClick={(event) => { onAddNew?.() }} >
                         <div>
                             <span>
-                                <i className="admin-font font-move"></i>
+                                <i className="admin-font adminLib-move"></i>
                             </span>
                         </div>
                     </div>
@@ -141,7 +141,7 @@ const DeleteBtn = (props) => {
                 className={`delete ${hideDelete ? 'disable' : ''}`}
                 onClick={(event) => onDelete?.()}
             >
-                <i className="admin-font font-close"></i>
+                <i className="admin-font adminLib-close"></i>
             </div>
         </>
     )
@@ -185,9 +185,25 @@ const CustomFrom = (props) => {
 
     // State for hold id of opend input section.
     const [opendInput, setOpendInput] = useState(null);
+    
+    const [isInputBoxClick, SetIsInputBoxClick] = useState({click : false});
 
     // State variable for a random maximum id
     const [randMaxId, setRendMaxId] = useState();
+
+    useEffect(() => {
+        const closePopup = (event)  => {
+            if (event.target.closest('.meta-menu, .meta-setting-modal, .react-draggable')) {
+                return;
+            }
+			SetIsInputBoxClick({click : false});
+            setOpendInput(null);
+        } 
+		document.body.addEventListener("click", closePopup)
+        return () => {
+            document.body.removeEventListener("click", closePopup )
+        }
+	}, []);
 
     // Prepare random maximum id
     useEffect(() => {
@@ -209,6 +225,10 @@ const CustomFrom = (props) => {
 
     ////////////// Define functionality here /////////////////
 
+    const getUniqueName = () => {
+        return Date.now().toString(36); // Convert timestamp to base 36
+    }
+    
     /**
      * Function generate a empty form field and return it.
      * By default it set the type to simple text
@@ -219,6 +239,7 @@ const CustomFrom = (props) => {
             type: type,
             label: '',
             required: false,
+            name: `${type}-${getUniqueName()}`
         };
 
         switch (type) {
@@ -230,8 +251,8 @@ const CustomFrom = (props) => {
                 newFormField['options'] = DEFAULT_OPTIONS;
                 break;
             default:
-                newFormField['label'] = DEFAULT_LABEL_SIMPLE;
-                newFormField['placeholder'] = DEFAULT_PLACEHOLDER;
+                newFormField['label'] = DEFAULT_LABEL_SIMPLE(type);
+                newFormField['placeholder'] = DEFAULT_PLACEHOLDER(type);
                 break;
         }
 
@@ -296,6 +317,8 @@ const CustomFrom = (props) => {
         // Update the state variable
         settingHasChanged.current = true;
         setFormFieldList(newFormFieldList);
+
+
     }
 
     /**
@@ -383,7 +406,7 @@ const CustomFrom = (props) => {
                                         {
                                             opendInput?.id == formField.id &&
                                             <div className="bth-move drag-handle">
-                                                <i className="admin-font font-move"></i>
+                                                <i className="admin-font adminLib-move"></i>
                                             </div>
                                         }
 
@@ -401,6 +424,7 @@ const CustomFrom = (props) => {
                                                 </div>
                                                 <SettingMetaBox
                                                     formField={formField}
+                                                    opened={isInputBoxClick}
                                                     onChange={(key, value) => handleFormFieldChange(index, key, value)}
                                                     onTypeChange={(newType) => handleFormFieldTypeChange(index, newType)}
                                                     inputTypeList={selectOptions}
@@ -412,6 +436,10 @@ const CustomFrom = (props) => {
                                         <section
                                             className={`${opendInput?.id != formField.id ? 'hidden-list' : ''} form-field-container-wrapper`}
                                             onClick={(event) => {
+                                                event.stopPropagation()
+                                                SetIsInputBoxClick({
+                                                    click : true
+                                                })
                                                 if (opendInput?.id != formField.id) {
                                                     setOpendInput(formField)
                                                 }
@@ -439,6 +467,7 @@ const CustomFrom = (props) => {
                                                 ) &&
                                                 <Template.MultipleOptions
                                                     formField={formField}
+                                                    type={formField.type}
                                                     selected= {opendInput?.id === formField.id}
                                                     onChange={(key, value) => handleFormFieldChange(index, key, value)}
                                                 />
@@ -508,11 +537,15 @@ const CustomFrom = (props) => {
                     <ButtonCustomizer
                         text='Submit'
                         setting={buttonSetting}
-                        onChange={(key, value) => {
+                        onChange={(key, value, isRestoreDefaults=false) => {
                             if (proSettingChange()) return;
                             settingHasChanged.current = true;
                             const previousSetting = buttonSetting || {};
-                            setButtonSetting({ ...previousSetting, [key]: value });
+                            if (isRestoreDefaults) {
+                                setButtonSetting(value);
+                            } else {
+                                setButtonSetting({ ...previousSetting, [key]: value });
+                            }
                         }}
                     />
                 </section>

@@ -5,12 +5,12 @@ const WpEditor = (props) => {
         <>
             <Editor
                 apiKey={props.apiKey}
-                value={value}
+                value={props.value}
                 init={{
                     height: 200,
                     plugins: 'media',
                 }}
-                onEditorChange={(e) => { props.ontinyChange(e) }}
+                onEditorChange={(e) => { props.onEditorChange(e) }}
             />
         </>
     );

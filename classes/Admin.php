@@ -72,7 +72,7 @@ class Admin {
 		}
 
 		// Register upgrade to pro submenu page.
-		if ( ! Util::is_pro_active() ) {
+		if ( ! Util::is_khali_dabba() ) {
 			add_submenu_page(
 				'moowoodle',
 				__("Upgrade to Pro", 'moowoodle'),
@@ -143,7 +143,7 @@ class Admin {
 					'restUrl'     => 'moowoodle/v1',
 					'nonce'		  => wp_create_nonce('wp_rest'),
 					'preSettings' => $settings_databases_value,
-					'pro_active'  => Util::is_pro_active(),
+					'khali_dabba'  => Util::is_khali_dabba(),
 					'pro_sticker' => MOOWOOLE_PRO_STICKER,
 					'shop_url'    => MOOWOODLE_PRO_SHOP_URL,
 					'accountmenu' => $my_account_menu,
@@ -175,8 +175,7 @@ class Admin {
 	public static function create_settings_page() {
 		
 		$page = filter_input(INPUT_GET, 'page', FILTER_DEFAULT) !== null ? filter_input(INPUT_GET, 'page', FILTER_DEFAULT) : '';?>
-		<div id="admin-moowoodle" class="mw-admin-dashbord <?php echo $page; ?>">
-			<div class="mw-general-wrapper" id ="moowoodle_root">
+		<div id="admin-main-wrapper" class="<?php echo $page; ?>">
 				<?php
 				if (filter_input(INPUT_GET, 'page', FILTER_DEFAULT) == 'moowoodle' && !did_action( 'woocommerce_loaded' ) ) {
 					?>
@@ -195,7 +194,6 @@ class Admin {
 					return;
 				}
 				?>
-        	</div>
       	</div>
       	<?php
 	}

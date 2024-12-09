@@ -2,7 +2,7 @@ import Select from 'react-select';
 
 const SelectInput = (props) => {
     const optionsData = [];
-    let defaulValue = undefined;
+    let defaulValue = '';
 
     props.options.forEach((option, index) => {
         optionsData[index] = {
@@ -21,17 +21,20 @@ const SelectInput = (props) => {
                 {
                     props.selectDeselect &&
                     <>
-                        <div
+                        <button
                             className={props.selectDeselectClass}
-                            onClick={(e) => { props.onMultiSelectDeselectChange?.(e) }}
+                            onClick={(e) => { 
+                                e.preventDefault();
+                                props.onMultiSelectDeselectChange?.(e) 
+                            }}
                         >
                             {props.selectDeselectValue}
-                        </div>
+                        </button>
                     </>
                 }
                 <Select
                     className={props.inputClass}
-                    value={defaulValue}
+                    value={defaulValue || props.value}
                     options={optionsData}
                     onChange={(e) => { props.onChange?.(e) }}
                     onClick= {(e) => { props.onClick?.(e) }}

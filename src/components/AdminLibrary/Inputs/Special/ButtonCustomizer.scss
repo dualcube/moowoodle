@@ -1,11 +1,17 @@
+@import '/src/components/config.scss';
+
 .settings-input-content {
   .btn-wrapper {
     position: relative;
+    display: flex;
+    justify-content: end;
+
     .btn-customizer {
-      width: fit-content;
       position: absolute;
       margin-top: 0.5rem;
       padding-bottom: 3rem;
+      top: 100%;
+      right: 0;
       z-index: 1;
 
       .btn-customizer-menu {
@@ -14,15 +20,13 @@
         justify-content: flex-start;
         position: relative;
         background: rgb(13, 0, 23);
-        width: fit-content;
         border-radius: 0.15rem;
         padding: 0.5rem 0;
 
         .btn-customizer-menu-items {
           padding: 0 0.5rem;
           border-right: 0.063rem solid #cccccc4e;
-          color: #fff;
-          cursor: pointer;
+          color: $color-white;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -34,12 +38,13 @@
           .color-img {
             width: 1.25rem;
             height: 1.25rem;
-            border-radius: 0.25rem;
+            border-radius: $border-radius-small;
             background: #90EE90;
-            background: linear-gradient(to top left, #90EE90 0%, #FFFFFF 50%, #FF47D0 100%),linear-gradient(to bottom left, #FFFF00 0%, #FFFFFF 50%, #0000FF 100%);
+            background: linear-gradient(to top left, #90EE90 0%, #FFFFFF 50%, #FF47D0 100%), linear-gradient(to bottom left, #FFFF00 0%, #FFFFFF 50%, #0000FF 100%);
           }
+
           i {
-            color: #fff;
+            color: $color-white;
             font-size: 1.15rem;
           }
         }
@@ -53,21 +58,24 @@
         padding: 1rem;
         border: 0.125rem solid rgba($color: #000000, $alpha: 0.125);
         box-shadow: 0 0.25rem 0.5rem rgba($color: #000000, $alpha: 0.125);
-        border-radius: 0.25rem;
+        border-radius: $border-radius-small;
+
 
         .wrapper-close {
+          color: $color-active;
+          padding: 0;
           position: absolute;
           right: -0.756rem;
           top: -0.945rem;
-          background: #fff;
+          background: $color-white;
           box-shadow: 0 0.25rem 0.5rem rgba($color: #000000, $alpha: 0.125);
           border-radius: 50%;
-          width: 1.701rem;
-          height: 1.701rem;
+          width: 1.688rem;
+          height: 1.688rem;
+          font-size: 1.25rem;
           display: flex;
           justify-content: center;
           align-items: center;
-          font-size: 1.25rem;
         }
 
         .color,
@@ -83,10 +91,33 @@
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
+
             .section {
               display: flex;
               flex-direction: column;
               gap: 0.5rem;
+
+              &.section-row{
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+
+                .property-section{
+                  width: 30%;
+                  align-items: center;
+                  justify-content: center;
+
+                  input::-webkit-outer-spin-button,
+                  input::-webkit-inner-spin-button {
+                    opacity: 1;
+                    -webkit-appearance: none;
+                  }
+                  
+                  input[type=number] {
+                    -moz-appearance: textfield;
+                  }
+                }
+              }
 
               .lable {
                 color: #000;
@@ -96,6 +127,11 @@
               .property-section {
                 display: flex;
                 gap: 0.5rem;
+                width: 100%;
+
+                input{
+                  width: 100%;
+                }
 
                 input[type="text"] {
                   background: transparent;
@@ -119,7 +155,7 @@
               align-items: center;
               gap: 0.25rem;
               padding: 0.25rem;
-              border-radius: 0.25rem;
+              border-radius: $border-radius-small;
 
               .link-input {
                 border: none;
@@ -129,8 +165,6 @@
 
               button {
                 background: transparent;
-                border: none;
-                outline: none;
               }
             }
           }
@@ -138,10 +172,11 @@
           .hover {
             background-color: #f2eff5;
             padding: 0.5rem;
-            border-radius: 0.25rem;
+            border-radius: $border-radius-small;
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
+
             .section {
               display: flex;
               flex-direction: column;
@@ -187,65 +222,12 @@
       }
     }
 
-    .btn-wrapper-edit-button {
-      cursor: pointer;
-      background: transparent;
-    }
-
     .btn-preview {
-
-      &.active, &:hover {
+      &.active,
+      &:hover {
         box-shadow:
-        0.0rem 0.0rem 0.0rem 0.126rem rgb(255, 255, 255), 0.0rem 0.0rem 0.0rem 0.189rem rgba(33, 33, 33, 0.5) !important; // // To make as a selectable and overwrite for prevent all button
+          0.0rem 0.0rem 0.0rem 0.126rem rgb(255, 255, 255), 0.0rem 0.0rem 0.0rem 0.189rem rgba(33, 33, 33, 0.5) !important; // // To make as a selectable and overwrite for prevent all button
       }
     }
   }
-}
-
-.PB-range-slider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 0.252rem;
-  border-radius: 0.315rem;
-  background: #d5dbe1;
-  outline: none;
-  opacity: 0.7;
-  -webkit-transition: 0.2s;
-  transition: opacity 0.2s;
-}
-
-.PB-range-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 0.945rem;
-  height: 0.945rem;
-  border-radius: 50%;
-  background-color: #000000;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-}
-
-.PB-range-slider::-webkit-slider-thumb:hover {
-  box-shadow: 0rem 0rem 0rem 0.504rem rgba(0, 0, 0, 0.16);
-  transition: 0.3s ease-in-out;
-}
-
-.PB-range-slider::-moz-range-thumb {
-  width: 0.945rem;
-  height: 0.945rem;
-  border-radius: 50%;
-  background-color: #000000;
-  cursor: pointer;
-}
-
-.PB-range-slider-div {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.PB-range-slidervalue {
-  font-weight: 600;
 }

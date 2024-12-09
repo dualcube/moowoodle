@@ -30,7 +30,7 @@ const Enrollment = () => {
 	}, [])
 
 	useEffect(() => {
-		if (appLocalizer.pro_active) {
+		if (appLocalizer.khali_dabba) {
 			axios({
 				method: "post",
 				url: getApiLink('get-enrollments'),
@@ -45,7 +45,7 @@ const Enrollment = () => {
 	}, []);
 
 	useEffect(() => {
-		if (appLocalizer.pro_active) {
+		if (appLocalizer.khali_dabba) {
 			requestData();
 		}
 	}, []);
@@ -61,7 +61,7 @@ const Enrollment = () => {
 	}, []);
 
 	useEffect(() => {
-		if (appLocalizer.pro_active) {
+		if (appLocalizer.khali_dabba) {
 			axios({
 				method: "post",
 				url: getApiLink('get-enrollments'),
@@ -97,7 +97,7 @@ const Enrollment = () => {
 
 	const [selectedRange, setSelectedRange] = useState([
 		{
-			startDate: null,
+			startDate: new Date(),
 			endDate: new Date(),
 			key: 'selection'
 		}
@@ -247,7 +247,7 @@ const Enrollment = () => {
 								onChange={(e) => updateFilter(e.target.name, e.target.value)}
 								value={filterValue || ""}
 							>
-								<option value="" >--Select--</option>
+								<option value="" >Select</option>
 								<option value="name" >Name</option>
 								<option value="email">Email</option>
 							</select>
@@ -338,7 +338,7 @@ const Enrollment = () => {
 
 	return (
 		<>
-			{!appLocalizer.pro_active ? (
+			{!appLocalizer.khali_dabba ? (
 				<>
 					<Dialog
 						className="admin-module-popup"
@@ -349,7 +349,7 @@ const Enrollment = () => {
 						aria-labelledby="form-dialog-title"
 					>
 						<span
-							className="admin-font font-cross stock-manager-popup-cross"
+							className="admin-font adminLib-cross stock-manager-popup-cross"
 							onClick={() => {
 								setOpenDialog(false);
 							}}

@@ -1,0 +1,59 @@
+@import '/src/components/config.scss';
+
+.sso-key-section {
+  display: flex;
+  align-items: center;
+
+  .copy-btn{
+    .tooltip{
+      right:-1.2rem; // For tooltip position
+    }
+  }
+
+  .input-section{
+    width: 100%;
+    position: relative;
+
+    .clear-btn{
+        background: transparent;
+        position: absolute;
+        top: 50%;
+        right: 0.315rem;
+        transform: translateY(-50%);
+        padding-right: 0;
+        
+        &:focus{
+            box-shadow: none;
+        }
+                
+        i{
+            font-size: 1.25rem;
+            color:rgba(255, 0, 0, 0.522);
+        }
+    }
+
+    input {
+      margin: 0;
+      border-top-right-radius: 0!important; // To overwrite common input style
+      border-bottom-right-radius: 0!important; // To overwrite common input style
+
+      @media screen and (max-width: 49.266rem) {
+        min-height: 1.26rem;
+      }
+    }
+  }
+
+  button{
+    position: relative;
+    border-top-left-radius: 0 !important; // To overwrite common button style
+    border-bottom-left-radius: 0 !important; // To overwrite common button style
+  }
+  .generate-btn {
+    gap: 0.3rem;
+    padding: 0.5rem 0.7rem;
+
+    i{
+        width: 0.945rem;
+    }
+  }
+}

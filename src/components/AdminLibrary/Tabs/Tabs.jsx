@@ -20,7 +20,7 @@ const Tabs = (props) => {
 
   const showTabSection = (tab) => {
     return tab.link ? (
-      <a href={tab.link}>
+      <a href={tab.link} >
         <div>{tab.icon && <i className={`admin-font ${tab.icon}`}></i>}</div>
         <div>
           <p className="menu-name">{menuCol ? null : tab.name}</p>
@@ -36,7 +36,7 @@ const Tabs = (props) => {
           {tab.icon && <i className={` admin-font ${tab.icon} `}></i>}
           {menuCol
             ? null
-            : !appLocalizer.pro_active &&
+            : !appLocalizer.khali_dabba &&
               tab.proDependent && <span class="admin-pro-tag">Pro</span>}
         </div>
         <div>
@@ -68,11 +68,11 @@ const Tabs = (props) => {
           </div>
           {menuCol ? null : openedSubtab == tab.id ? (
             <p className="tab-menu-dropdown-icon active">
-              <i className="admin-font font-keyboard_arrow_down"></i>
+              <i className="admin-font adminLib-keyboard_arrow_down"></i>
             </p>
           ) : (
             <p className="tab-menu-dropdown-icon">
-              <i className="admin-font font-keyboard_arrow_down"></i>
+              <i className="admin-font adminLib-keyboard_arrow_down"></i>
             </p>
           )}
         </div>
@@ -111,7 +111,7 @@ const Tabs = (props) => {
 
   return (
     <>
-      <div className={` general-wrapper ${props.queryName} `}>
+      <div className={` general-wrapper `}>
         {HeaderSection && <HeaderSection />}
 
         {BannerSection && <BannerSection />}
@@ -153,12 +153,12 @@ const Tabs = (props) => {
                     </div>
                   );
                 })}
-                <button className="menu-coll-btn" onClick={handleMenuShow}>
+                <div className="main-btn menu-coll-btn" onClick={handleMenuShow}>
                   <span>
-                    <i className="admin-font font-arrow-left"></i>
+                    <i className="admin-font adminLib-arrow-left"></i>
                   </span>
                   {menuCol ? null : "Collapse"}
-                </button>
+                </div>
               </div>
             </div>
             <div className="tab-content">

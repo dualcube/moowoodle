@@ -1,33 +1,43 @@
-import { useState, useEffect } from 'react';
+import HoverInputRender from '../HoverInputRender';
 
-const Textarea = (props) => {
-    const { formField, onChange } = props;
-
+const Textarea = ({ formField, onChange }) => {
     return (
-        <>
-            <div className='main-input-wrapper'>
-                {/* Render label */}
+        <HoverInputRender
+            label={formField.label}
+            placeholder={formField.placeholder}
+            onLabelChange={(newLabel) => onChange('label', newLabel)}
+            renderStaticContent={({ label, placeholder }) => (
+                <div className="edit-form-wrapper">        
+                    <p>{label}</p>
+                    <div className="settings-form-group-radio">
+                        <input
+                            className='input-text-section textArea-text-input'
+                            type="text"
+                            value={placeholder}
+                        />
+                    </div>
+                </div>
+            )}
+            renderEditableContent={({ label, onLabelChange, placeholder }) => (
+                <>
                 <input
                     className='input-label textArea-label'
                     type="text"
-                    value={formField.label}
-                    placeholder={"I am label"}
-                    onChange={(event) => {
-                        onChange('label', event.target.value);
-                    }}
+                    value={label}
+                    onChange={(event) => onLabelChange(event.target.value)}
                 />
 
                 {/* Render placeholder */}
                 <input
                     className='input-text-section textArea-text-input'
                     type="text"
-                    value={formField.placeholder}
-                    placeholder={"I am input placeholder"}
+                    placeholder={placeholder}
                     readOnly={true}
                 />
-            </div>
-        </>
-    )
+                </>
+            )}
+        />
+    );
 }
 
 export default Textarea;

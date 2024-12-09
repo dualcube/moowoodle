@@ -38,27 +38,27 @@ const MultiCheckBox = (props) => {
                                         value={option.value}
                                         checked={checked}
                                         onChange={(e) => {
-                                            if (option.proSetting && !appLocalizer.pro_active) {
+                                            if (option.proSetting && !appLocalizer.khali_dabba) {
                                                 return props.proChanged();
                                             }
                                             props.onChange?.(e)
                                         }}
                                     />
                                     <label htmlFor={`${props.idPrefix}-${option.key}`}></label>
-                                    {
-                                        props.proSetting && <span className="admin-pro-tag">pro</span>
-                                    }
                                 </div>
+                                {
+                                    props.proSetting && <span className="admin-pro-tag">pro</span>
+                                }
                                 {
                                     !props.rightContent &&
                                     <p className={props.rightContentClass} dangerouslySetInnerHTML={{ __html: option.label }} ></p>
                                 }
                                 {
-                                    option.hints &&
-                                    <span className={props.hintOuterClass} dangerouslySetInnerHTML={{__html: option.hints}}></span>
+                                    (option.proSetting && !appLocalizer.khali_dabba) && <span className="admin-pro-tag">pro</span>
                                 }
                                 {
-                                    (option.proSetting && !appLocalizer.pro_active) && <span className="admin-pro-tag">pro</span>
+                                    option.hints &&
+                                    <span className={props.hintOuterClass} dangerouslySetInnerHTML={{__html: option.hints}}></span>
                                 }
                             </div>
                         );

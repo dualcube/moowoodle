@@ -38,7 +38,7 @@ class TestConnection {
 			}
 
 			// Check missing setting on pro active
-			if (MooWoodle()->util->is_pro_active()) {
+			if (MooWoodle()->util->is_khali_dabba()) {
 				if (!in_array('auth_moowoodle_user_sync_get_all_users_data', $missing_functions))
 					MooWoodle()->util->log("It seems that you are using MooWoodle Pro but Moodle external web service functions 'auth_moowoodle_user_sync_get_all_users_data' is not configured correctly.\n\n");
 

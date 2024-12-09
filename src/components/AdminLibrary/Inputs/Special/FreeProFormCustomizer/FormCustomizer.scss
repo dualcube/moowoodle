@@ -1,0 +1,20 @@
+.form_customizer {
+  gap: 0;
+  
+  .settings-input-content {
+    width: 100% !important; // To overwrite dynamic content width
+
+    .fields-header{
+      display: flex;
+
+      .name{
+        width:30%;
+      }
+    }
+    .button-visibility{
+      i{
+        font-size: 1.25rem;
+      }
+    }
+  }
+}

@@ -5,12 +5,12 @@ export default {
     priority: 10,
     name: __("Courses and Products synchronization", 'moowoodle'),
     desc: __("Fetch Moodle courses & generate products on demand.", 'moowoodle'),
-    icon: "font-menu_book",
+    icon: "adminLib-book",
     submitUrl: "save-moowoodle-setting",
     modal: [
         {
             key: "sync-course-options",
-            type: "checkbox-default",
+            type: "checkbox",
             desc: __("", 'moowoodle'),
             label: __("Course information mapping", 'moowoodle'),
             select_deselect: true,
@@ -44,7 +44,7 @@ export default {
         },
         {
             key: "product_sync_option",
-            type: "checkbox-default",
+            type: "checkbox",
             desc: __("", 'moowoodle'),
             label: __("Course & product synchronization", 'moowoodle'),
             select_deselect: true,

@@ -1,3 +1,5 @@
+@import '/src/components/config.scss';
+
 .custom-sync-section {
   display: flex;
   align-items: flex-start;
@@ -13,17 +15,17 @@
     position: relative;
     flex-direction: column;
     padding: 1rem;
-    border-radius: 0.25rem;
-    box-shadow: 0 0 0rem 0.05rem rgba(0, 0, 0, 0.3);
+    border-radius: $border-radius-small;
+    border: $border-light-medium;
 
-    input {
+    input[type="checkbox"]{
       position: absolute;
-      width: 100%;
+      width: 100% !important; // To overwrite dynamic.scss input width
       height: 100%;
       top: 0;
       left: 0;
       outline: none;
-      border: none !important; // To overwrite default css
+      border: none !important; // To overwrite common.css
       box-shadow: none;
 
       &::before{
@@ -32,34 +34,35 @@
         right: 0.315rem;
         width: 1.25rem;
         height: 1.25rem;
-        border-radius: 0.25rem;
+        border-radius: $border-radius-small;
         box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
         background: transparent;
       }
     }
+    
+    &:has(input:checked){
+      box-shadow: 0 0 0.0rem 0.126rem $color-active;
+      background: linear-gradient(45deg, #0000001c, transparent);
+    }
 
-    .sync-meta-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.75rem;
-      margin: auto;
+  .sync-meta-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: auto;
 
-        img {
-          width: 1.89rem;
-        }
+      img {
+        width: 1.89rem;
+      }
 
-        i {
-          font-size: 1rem;
-        }
-
-      .sync-label {
+      i {
+        font-size: 1rem;
       }
     }
   }
-}
 
-.sync-direction-items:has(input:checked){
-  box-shadow: 0 0 0.0rem 0.126rem #65438f;
-  background: linear-gradient(45deg, #0000001c, transparent);
+  .admin-pro-tag{
+    position:relative;
+  }
 }
