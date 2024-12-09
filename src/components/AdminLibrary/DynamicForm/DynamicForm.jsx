@@ -50,6 +50,7 @@ const DynamicForm = (props) => {
   const [modelOpen, setModelOpen] = useState(false);
   const [modelPluginOpen, setModelPluginOpen] = useState(false);
   const [modelModuleOpen, setModelModuleOpen] = useState(false);
+  const [moduleName, setModuleName] = useState("");
   const { modules } = useModules();
 
   const counter = useRef(0);
@@ -114,6 +115,7 @@ const DynamicForm = (props) => {
   const moduleDependChanged = (moduleDepend) => {
     if (moduleDepend && !modules.includes( moduleDepend )) {
       setModelModuleOpen(true);
+      setModuleName(moduleDepend);
       return true;
     }
     return false;
@@ -880,7 +882,10 @@ const DynamicForm = (props) => {
                   updateSetting(key, value);
                 }
               }}
-              moduleChange={() => setModelModuleOpen(true)}
+              moduleChange={(moduleDepend) => {
+                setModelModuleOpen(true);
+                setModuleName(moduleDepend);
+              }}
             />
           );
           break;
@@ -1045,7 +1050,6 @@ const DynamicForm = (props) => {
             />
           );
           break;
-
         }
 
         return inputField.type === "section" || inputField.label === "no_label" ? (
@@ -1118,7 +1122,7 @@ const DynamicForm = (props) => {
             className="admin-font adminLib-cross"
             onClick={handleModulePopupClose}
           ></span>
-          <ModulePopoup />
+          <ModulePopoup name={moduleName}/>
         </Dialog>
         {successMsg && (
           <div className="admin-notice-display-title">

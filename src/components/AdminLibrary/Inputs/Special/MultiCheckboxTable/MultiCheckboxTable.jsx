@@ -348,7 +348,7 @@ const MultiCheckboxTable = (props) => {
                                                         checked={Array.isArray(setting[column.key]) && setting[column.key].includes(row.key)}
                                                         onChange={(e) => {
                                                             if (column.moduleDepend && !modules.includes(column.moduleDepend)) {
-                                                                props.moduleChange();
+                                                                props.moduleChange(column.moduleDepend);
                                                                 return;
                                                             }
 
