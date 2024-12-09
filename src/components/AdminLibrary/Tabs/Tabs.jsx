@@ -36,7 +36,7 @@ const Tabs = (props) => {
           {tab.icon && <i className={` admin-font ${tab.icon} `}></i>}
           {menuCol
             ? null
-            : !appLocalizer.pro_active &&
+            : !appLocalizer.khali_dabba &&
               tab.proDependent && <span class="admin-pro-tag">Pro</span>}
         </div>
         <div>

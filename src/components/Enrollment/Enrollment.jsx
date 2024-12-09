@@ -30,7 +30,7 @@ const Enrollment = () => {
 	}, [])
 
 	useEffect(() => {
-		if (appLocalizer.pro_active) {
+		if (appLocalizer.khali_dabba) {
 			axios({
 				method: "post",
 				url: getApiLink('get-enrollments'),
@@ -45,7 +45,7 @@ const Enrollment = () => {
 	}, []);
 
 	useEffect(() => {
-		if (appLocalizer.pro_active) {
+		if (appLocalizer.khali_dabba) {
 			requestData();
 		}
 	}, []);
@@ -61,7 +61,7 @@ const Enrollment = () => {
 	}, []);
 
 	useEffect(() => {
-		if (appLocalizer.pro_active) {
+		if (appLocalizer.khali_dabba) {
 			axios({
 				method: "post",
 				url: getApiLink('get-enrollments'),
@@ -338,7 +338,7 @@ const Enrollment = () => {
 
 	return (
 		<>
-			{!appLocalizer.pro_active ? (
+			{!appLocalizer.khali_dabba ? (
 				<>
 					<Dialog
 						className="admin-module-popup"

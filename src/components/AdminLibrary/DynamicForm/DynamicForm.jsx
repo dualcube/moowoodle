@@ -100,11 +100,11 @@ const DynamicForm = (props) => {
   }, [setting]);
 
   const isProSetting = (proDependent) => {
-    return proDependent && !appLocalizer.pro_active;
+    return proDependent && !appLocalizer.khali_dabba;
   }
 
   const proSettingChanged = (isProSetting) => {
-    if (isProSetting && !appLocalizer.pro_active) {
+    if (isProSetting && !appLocalizer.khali_dabba) {
       setModelOpen(true);
       return true;
     }
@@ -855,7 +855,7 @@ const DynamicForm = (props) => {
           input = (
             <CatalogCustomizer
               setting={setting}
-              proSetting={appLocalizer.pro_active}
+              proSetting={appLocalizer.khali_dabba}
               onChange={(key, value) => {
                   settingChanged.current = true;
                   updateSetting(key, value);

@@ -79,7 +79,7 @@ export default function banner() {
 
     return (
         <>
-            { ! appLocalizer.pro_active ? 
+            { ! appLocalizer.khali_dabba ? 
                 banner ?
                     <div className="custom-banner">
                         <Dialog

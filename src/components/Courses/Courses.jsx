@@ -103,7 +103,7 @@ export default function Course() {
      * @param {*} rowIndex 
      */
     const handleSingleAction = (actionName, courseId, moodleCourseId) => {
-        if (appLocalizer.pro_active) {
+        if (appLocalizer.khali_dabba) {
             setData(null);
             axios({
                 method: 'post',
@@ -128,7 +128,7 @@ export default function Course() {
     }
 
     const handleBulkAction = (event) => {
-        if (appLocalizer.pro_active) {
+        if (appLocalizer.khali_dabba) {
             if (!selectedRows.length) {
                 return window.alert(__('Select rows', 'moowoodle'));
             }
@@ -267,7 +267,7 @@ export default function Course() {
             sortable: true,
         },
         {
-            name: <div className="table-action-column">{__('Action', 'moowoodle')}{!appLocalizer.pro_active && <span className="admin-pro-tag">pro</span>}</div>,
+            name: <div className="table-action-column">{__('Action', 'moowoodle')}{!appLocalizer.khali_dabba && <span className="admin-pro-tag">pro</span>}</div>,
             cell: (row, rowIndex) => (
                 <div class="moowoodle-course-actions">
                     <button
@@ -330,7 +330,7 @@ export default function Course() {
                             <option value="create_product">{__('Create product')}</option>
                             <option value="update_product">{__('Update product')}</option>
                         </select>
-                        {!appLocalizer.pro_active && <span className="admin-pro-tag">pro</span>}
+                        {!appLocalizer.khali_dabba && <span className="admin-pro-tag">pro</span>}
                         <button
                             name="bulk-action-apply"
                             onClick={handleBulkAction}

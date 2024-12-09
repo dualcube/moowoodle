@@ -72,7 +72,7 @@ class Admin {
 		}
 
 		// Register upgrade to pro submenu page.
-		if ( ! Util::is_pro_active() ) {
+		if ( ! Util::is_khali_dabba() ) {
 			add_submenu_page(
 				'moowoodle',
 				__("Upgrade to Pro", 'moowoodle'),
@@ -143,7 +143,7 @@ class Admin {
 					'restUrl'     => 'moowoodle/v1',
 					'nonce'		  => wp_create_nonce('wp_rest'),
 					'preSettings' => $settings_databases_value,
-					'pro_active'  => Util::is_pro_active(),
+					'khali_dabba'  => Util::is_khali_dabba(),
 					'pro_sticker' => MOOWOOLE_PRO_STICKER,
 					'shop_url'    => MOOWOODLE_PRO_SHOP_URL,
 					'accountmenu' => $my_account_menu,

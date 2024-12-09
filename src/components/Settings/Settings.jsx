@@ -63,7 +63,7 @@ const Settings = () => {
                     tabData={settingsArray}
                     currentTab={location.get('sub-tab')}
                     getForm={getForm}
-                    BannerSection={!appLocalizer.pro_active && BannerSection}
+                    BannerSection={!appLocalizer.khali_dabba && BannerSection}
                     prepareUrl={(subTab) => `?page=moowoodle#&tab=settings&sub-tab=${subTab}`}
                 />
             </SettingProvider>

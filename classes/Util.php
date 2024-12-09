@@ -113,7 +113,7 @@ class Util {
 	 * Check is MooWoodle Pro is active or not.
 	 * @return bool
 	 */
-	public static function is_pro_active() {
+	public static function is_khali_dabba() {
 		if ( defined( 'MOOWOODLE_PRO_PLUGIN_TOKEN' ) ) {
 			return MooWoodlePro()->license->is_active();
 		}
