@@ -189,14 +189,12 @@ class MooWoodle {
 	 * @return void
 	 */
 	private function load_plugin_textdomain() {
-
-        $locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
-        $locale = apply_filters( 'plugin_locale', $locale, MOOWOODLE_PLUGIN_TOKEN );
-
-		load_textdomain( 'moowoodle', WP_LANG_DIR . "/moowoodle/moowoodle-$locale.mo" );
-		load_textdomain( 'moowoodle', MooWoodle()->plugin_path . "/languages/moowoodle-$locale.mo" );
-
-		load_plugin_textdomain( 'moowoodle', false, plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/languages' );
+        if ( version_compare( $GLOBALS['wp_version'], '6.7', '<' ) ) {
+            load_plugin_textdomain( 'moowoodle', false, plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/languages' );
+        } else {
+            load_textdomain( 'moowoodle', WP_LANG_DIR . '/moowoodle/moowoodle-' . determine_locale() . '.mo' );
+		    load_textdomain( 'moowoodle', MooWoodle()->plugin_path . '/languages/moowoodle-' . determine_locale() . '.mo' );
+        }
 	}
 
     /**
