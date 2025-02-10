@@ -186,11 +186,11 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 
 == Changelog ==
 
-= 3.2.8 – 2024-02-11 =
+= 3.2.8 – 2025-02-11 =
 * Added  - Support WooCommerce 9.6.1.
-* Fixed  - Issue with loading text domain.
+* Fixed  - Issue with loading text domain notice.
 
-= 3.2.7 – 2024-01-28 =
+= 3.2.7 – 2025-01-28 =
 * Added  - Support WooCommerce 9.6.0.
 * Fixed  - Error fixed in CSS.
 
