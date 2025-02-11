@@ -4,7 +4,7 @@ import { getApiLink } from "../../../../../services/apiService";
 import "./SyncNow.scss";
 
 const SyncNow = (props) => {
-  const { interval, proSetting, proSettingChanged, value, description, apilink, statusApiLink } = props;
+  const { interval, proSetting,singleTime, proSettingChanged, value, description, apilink, statusApiLink } = props;
 
   // it is true when sync start
   const [syncStarted, setSyncStarted] = useState(false);
@@ -17,7 +17,7 @@ const SyncNow = (props) => {
 
   // fetch data in interval
   useEffect(() => {
-    fetchSyncStatus();
+    fetchSyncStatus(singleTime);
   }, []);
   
   /**
