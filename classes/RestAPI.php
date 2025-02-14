@@ -349,13 +349,11 @@ class RestAPI {
             $count_enrolment = 0;
             $product_image   = '';
 
-            $sync_setting = MooWoodle()->setting->get_setting( 'sync-course-options' );
-
 			foreach ( $products as $product ) {
 				$synced_products[ $product->get_name() ] = add_query_arg( [ 'post' => $product->get_id() , 'action' => 'edit' ], admin_url( 'post.php' ) );
                 $count_enrolment += (int) $product->get_meta( 'total_sales' );
-                $product_image   = in_array( 'sync_image', $sync_setting )? wp_get_attachment_url( $product->get_image_id() ) : '';
-			}
+                $product_image   = wp_get_attachment_url( $product->get_image_id() );
+			} 
             // Prepare date
             $course_startdate = $course_meta[ '_course_startdate' ];
             $course_enddate   = $course_meta[ '_course_enddate' ];

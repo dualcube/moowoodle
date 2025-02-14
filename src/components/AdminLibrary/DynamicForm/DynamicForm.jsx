@@ -947,7 +947,6 @@ const DynamicForm = (props) => {
             description={inputField.desc}
             proSetting={isProSetting(inputField.proSetting)}
             proSettingChanged={() => proSettingChanged(inputField.proSetting)}
-            singleTime={inputField.singleTime}
             interval={inputField.interval}
             statusApiLink={inputField.statusApiLink} // api for each status of synchronization
           />
