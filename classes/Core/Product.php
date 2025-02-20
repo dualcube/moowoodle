@@ -122,7 +122,7 @@ class Product {
         $product->set_slug( $course[ 'shortname'] );
         $product->set_description( $course[ 'summary' ] );
         $product->set_status( 'publish' );
-        $product->set_sold_individually( true );
+        $product->set_sold_individually( false );
         $product->set_category_ids( [ $term->term_id ] );
         $product->set_virtual( true );
         $product->set_catalog_visibility( $course[ 'visible' ] ? 'visible' : 'hidden' );
