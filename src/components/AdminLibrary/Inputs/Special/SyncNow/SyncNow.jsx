@@ -17,23 +17,24 @@ const SyncNow = (props) => {
 
   const fetchStatusRef = useRef(null);
 
-  // fetch data in interval
+
+  //fetch data in interval
   useEffect(() => {
     if (syncStarted) {
-      // Start interval when sync starts
       fetchStatusRef.current = setInterval(fetchSyncStatus, interval);
     } else {
-      // Clear interval if sync stops
       clearInterval(fetchStatusRef.current);
-      fetchSyncStatus(); // Fetch status one last time when sync stops
     }
 
     return () => {
-      // Cleanup on component unmount or if the effect is re-run
       clearInterval(fetchStatusRef.current);
     };
   }, [syncStarted]);
-  
+
+  useEffect(()=>{
+    fetchSyncStatus();
+  },[])
+
   /**
    * Function for fetch sync status.
    */
@@ -77,6 +78,7 @@ const SyncNow = (props) => {
     }).then((response) => {
       if (response.data) {
         setSyncStarted(false);
+        fetchSyncStatus();
       }
     });
   }
