@@ -3,9 +3,9 @@ Contributors: dualcube
 Tags: Moodle Integration, LMS Integration, WordPress LMS, e-Learning, Moodle Connector
 Donate link: https://dualcube.com/
 Requires at least: 6.0.0
-Tested up to: 6.7.1
+Tested up to: 6.7.2
 Requires PHP: 8.0
-Stable tag: 3.2.8
+Stable tag: 3.2.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -185,6 +185,11 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 11. In "External Services," click "Add" to include your external service.
 
 == Changelog ==
+
+= 3.2.9 – 2024-02-26 =
+* Added  - Support WordPress 6.7.2.
+* Added  - Support WooCommerce 9.6.2.
+* Fixed  - Course synchronization code enhanced.
 
 = 3.2.8 – 2025-02-11 =
 * Added  - Support WooCommerce 9.6.1.
