@@ -192,8 +192,7 @@ class MooWoodle {
         if ( version_compare( $GLOBALS['wp_version'], '6.7', '<' ) ) {
             load_plugin_textdomain( 'moowoodle', false, plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/languages' );
         } else {
-            load_textdomain( 'moowoodle', WP_LANG_DIR . '/moowoodle/moowoodle-' . determine_locale() . '.mo' );
-		    load_textdomain( 'moowoodle', MooWoodle()->plugin_path . '/languages/moowoodle-' . determine_locale() . '.mo' );
+            load_textdomain( 'moowoodle', WP_LANG_DIR . '/plugins/moowoodle-' . determine_locale() . '.mo' );
         }
 	}
 
