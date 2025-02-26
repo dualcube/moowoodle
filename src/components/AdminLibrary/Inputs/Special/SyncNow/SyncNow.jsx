@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { getApiLink } from "../../../../../services/apiService";
 import "./SyncNow.scss";
@@ -15,15 +15,28 @@ const SyncNow = (props) => {
   // state variable for check button has clicked or not.
   const [buttonClicked, setButtonClicked] = useState(false);
 
-  // fetch data in interval
+  const fetchStatusRef = useRef(null);
+
+
+  //fetch data in interval
   useEffect(() => {
+    if (syncStarted) {
+      fetchStatusRef.current = setInterval(fetchSyncStatus, interval);
+    }
+
+    return () => {
+      clearInterval(fetchStatusRef.current);
+    };
+  }, [syncStarted]);
+
+  useEffect(()=>{
     fetchSyncStatus();
-  }, []);
-  
+  },[])
+
   /**
    * Function for fetch sync status.
    */
-  const fetchSyncStatus = (singleCall = false) => {
+  const fetchSyncStatus = () => {
     axios({
       method: "post",
       url: getApiLink(statusApiLink),
@@ -37,12 +50,6 @@ const SyncNow = (props) => {
       // Set sync status from response.
       setSyncStatus(syncData.status);
 
-      // Call recursively to fetch sync status.
-      if (!singleCall) {
-        setTimeout(() => {
-          fetchSyncStatus();
-        }, interval);
-      }
     });
   }
 
@@ -69,10 +76,8 @@ const SyncNow = (props) => {
     }).then((response) => {
       if (response.data) {
         setSyncStarted(false);
+        fetchSyncStatus();
       }
-
-      // Fetch sync status for just one time
-      fetchSyncStatus(true);
     });
   }
 
