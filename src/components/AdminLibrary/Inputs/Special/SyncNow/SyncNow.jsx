@@ -22,8 +22,6 @@ const SyncNow = (props) => {
   useEffect(() => {
     if (syncStarted) {
       fetchStatusRef.current = setInterval(fetchSyncStatus, interval);
-    } else {
-      clearInterval(fetchStatusRef.current);
     }
 
     return () => {
