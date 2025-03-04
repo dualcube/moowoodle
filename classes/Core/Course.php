@@ -258,9 +258,10 @@ class Course {
 				<?php
 				foreach ( $courses as $course_id ) {
 					$course_short_name = get_post_meta( $course_id, '_course_short_name', true );
-					$course_path = array_map( function ( $term ) {
+					$terms = get_the_terms( $course_id, 'course_cat' );
+					$course_path = is_array( $terms ) ? array_map( function ( $term ) {
 						return $term->name;
-					}, get_the_terms( $course_id, 'course_cat' ) );
+					}, $terms ) : [];
 					$course_name = implode( ' / ', $course_path );
 					$course_name .= ' - ' . esc_html__( get_the_title( $course_id ) );
 					?>
