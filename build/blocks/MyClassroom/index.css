@@ -1,0 +1,119 @@
+/*!****************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/MyClassroom/MyClassroom.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************************/
+.classroom-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2563eb;
+}
+.header .add-classroom-button {
+  background: #2563eb;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+.header .add-classroom-button:hover {
+  background: #1e40af;
+}
+
+.classroom-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.classroom-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.classroom-card:hover {
+  transform: translateY(-5px);
+}
+.classroom-card h2 {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #2563eb;
+}
+.classroom-card ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-size: 0.9rem;
+  color: #374151;
+}
+.classroom-card ul li {
+  padding: 0.2rem 0;
+}
+.classroom-card .view-button {
+  background: #2563eb;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+.classroom-card .view-button:hover {
+  background: #1e40af;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+.pagination button {
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin: 0 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+.pagination button:hover {
+  background: #1e40af;
+}
+.pagination button:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+}
+.pagination .page-info {
+  background: #f3f4f6;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: bold;
+  color: #374151;
+}
+
+/*# sourceMappingURL=index.css.map*/

@@ -1,0 +1,140 @@
+// Variables
+$primary-color: #2563eb;
+$primary-hover: #1e40af;
+$border-color: #e5e7eb;
+$card-bg: #ffffff;
+$font-color: #374151;
+$button-text: #ffffff;
+
+// Main Container
+.classroom-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+// Header Section with Button
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    h1 {
+        font-size: 2rem;
+        font-weight: bold;
+        color: $primary-color;
+    }
+
+    .add-classroom-button {
+        background: $primary-color;
+        color: $button-text;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease-in-out;
+
+        &:hover {
+            background: $primary-hover;
+        }
+    }
+}
+
+// Grid Layout for Square Cards (Row-wise alignment)
+.classroom-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); // Adjust for responsiveness
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+// Square Card Styling
+.classroom-card {
+    background: $card-bg;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+    width: 200px; // Square shape
+    height: 200px; // Square shape
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    &:hover {
+        transform: translateY(-5px);
+    }
+
+    h2 {
+        font-size: 1rem;
+        font-weight: bold;
+        color: $primary-color;
+    }
+
+    ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        font-size: 0.9rem;
+        color: $font-color;
+
+        li {
+            padding: 0.2rem 0;
+        }
+    }
+
+    .view-button {
+        background: $primary-color;
+        color: $button-text;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.3s ease-in-out;
+
+        &:hover {
+            background: $primary-hover;
+        }
+    }
+}
+
+// Pagination Controls
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+
+    button {
+        background: $primary-color;
+        color: $button-text;
+        border: none;
+        padding: 0.5rem 1rem;
+        margin: 0 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.3s ease-in-out;
+
+        &:hover {
+            background: $primary-hover;
+        }
+
+        &:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+        }
+    }
+
+    .page-info {
+        background: #f3f4f6;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        font-weight: bold;
+        color: $font-color;
+    }
+}
