@@ -174,7 +174,7 @@ class Enrollment {
 	 * @return void
 	 */
 	public function process_enrollment( $enroll_data ) {
-
+		file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:process'. var_export($enroll_data, true) . "\n", FILE_APPEND );
 		if ( empty( $enroll_data ) || !is_array( $enroll_data ) ) {
 			return;
 		}

@@ -7,14 +7,15 @@ const MyCourse = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const perPage = 5;
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchCourses(currentPage);
   }, [currentPage]);
 
   const fetchCourses = async (page) => {
+    setLoading(true);
     try {
-
       const response = await axios.post(getApiLink("get-user-courses"), {
         page: page,
         row: perPage,
@@ -27,6 +28,7 @@ const MyCourse = () => {
     } catch (error) {
       console.error("Error fetching courses:", error);
     }
+    setLoading(false);
   };
 
   return (
@@ -36,20 +38,20 @@ const MyCourse = () => {
       <table className="moowoodle-table shop_table shop_table_responsive my_account_orders">
         <thead>
           <tr>
-            <th>Course ID</th>
             <th>Username</th>
-            <th>Password</th>
             <th>Enrolment Date</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {courses.length > 0 ? (
+          {loading ? (
+            <tr>
+              <td colSpan="3" className="loading-row">Loading...</td>
+            </tr>
+          ) : courses.length > 0 ? (
             courses.map((course, index) => (
               <tr key={index}>
-                <td>{course.course_id}</td> 
                 <td>{course.user_login}</td> 
-                <td>{course.password}</td>
                 <td>{course.enrolment_date}</td> 
                 <td>
                   <a
@@ -65,24 +67,26 @@ const MyCourse = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="5" className="no-data-row">You haven't purchased any courses yet.</td>
+              <td colSpan="3" className="no-data-row">You haven't purchased any courses yet.</td>
             </tr>
           )}
         </tbody>
       </table>
 
       {/* Pagination Controls */}
-      <div className="pagination">
-        <button disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>
-          Previous
-        </button>
-        <span>
-          Page {currentPage} of {totalPages}
-        </span>
-        <button disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => prev + 1)}>
-          Next
-        </button>
-      </div>
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>
+            Previous
+          </button>
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          <button disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => prev + 1)}>
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };

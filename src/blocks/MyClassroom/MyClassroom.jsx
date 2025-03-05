@@ -1,76 +1,161 @@
-import React, { useState } from "react";
-import "./MyClassroom.scss"; // Import SCSS file
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { getApiLink } from "../../services/apiService";
+import ViewEnroll from "./ViewEnroll"; // Import the ViewEnroll component
+import "./MyClassroom.scss";
 
 const MyClassroom = () => {
-    const allGroups = [
-        { id: 1, name: "Web Development", courses: ["HTML & CSS", "JavaScript"] },
-        { id: 2, name: "Data Science", courses: ["Python", "Machine Learning"] },
-        { id: 3, name: "Cyber Security", courses: ["Network Security", "Hacking"] },
-        { id: 4, name: "Cloud Computing", courses: ["AWS Basics", "Azure"] },
-        { id: 5, name: "Mobile Development", courses: ["React Native", "Flutter"] },
-        { id: 6, name: "Game Development", courses: ["Unity 3D", "Unreal Engine"] },
-        { id: 7, name: "AI & ML", courses: ["Neural Networks", "AI Ethics"] },
-        { id: 8, name: "UI/UX Design", courses: ["Figma", "Prototyping"] },
-        { id: 9, name: "Cyber Threats", courses: ["Penetration Testing", "Malware"] },
-        { id: 10, name: "Embedded Systems", courses: ["Microcontrollers", "IoT"] },
-        { id: 11, name: "Blockchain", courses: ["Ethereum", "Solidity"] },
-        { id: 12, name: "Quantum Computing", courses: ["Quantum Algorithms", "Qubits"] }
-    ];
-
-    const itemsPerPage = 10;
+    const [classrooms, setClassrooms] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const totalPages = Math.ceil(allGroups.length / itemsPerPage);
+    const [totalPages, setTotalPages] = useState(1);
+    const [selectedClassroom, setSelectedClassroom] = useState(null);
+    const [editingClassroom, setEditingClassroom] = useState(null); // Track which classroom is being edited
+    const [newName, setNewName] = useState(""); // Store new name input
+    const itemsPerPage = 10;
 
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentGroups = allGroups.slice(indexOfFirstItem, indexOfLastItem);
+    useEffect(() => {
+        const fetchClassrooms = async () => {
+            try {
+                const response = await axios.post(getApiLink("classroom"), {
+                    page: currentPage,
+                    rows: itemsPerPage,  
+                }, {
+                    headers: { "X-WP-Nonce": appLocalizer.nonce },
+                });
+
+                if (response.data.status === "success") {
+                    setClassrooms(response.data.groups || []);
+                    setTotalPages(response.data.pagination.total_pages);
+                } else {
+                    setClassrooms([]);
+                }
+            } catch (error) {
+                console.error("Error fetching classroom data:", error);
+            }
+        };
+
+        fetchClassrooms();
+    }, [currentPage]);
 
     const handlePageChange = (newPage) => {
-        setCurrentPage(newPage);
+        if (newPage >= 1 && newPage <= totalPages) {
+            setCurrentPage(newPage);
+        }
     };
 
-    // Function to handle adding a new classroom
-    const handleAddClassroom = () => {
-        alert("Add Classroom button clicked! Implement form/modal here.");
+    // Function to handle "View" button click
+    const handleViewEnroll = (group) => {
+        setSelectedClassroom(group);
+    };
+
+    // Function to go back to classroom list
+    const handleBackToClassrooms = () => {
+        setSelectedClassroom(null);
+    };
+
+    // Enable edit mode for a classroom
+    const handleEditClick = (group) => {
+        setEditingClassroom(group.group_id);
+        setNewName(group.group_name);
+    };
+
+    // Handle updating the classroom name
+    const handleUpdateClassroom = async (group) => {
+        if (!newName.trim()) return;
+
+        try {
+            const response = await axios.post(
+                getApiLink("rename-classroom"),
+                { id: group.group_id, new_name: newName },
+                { headers: { "X-WP-Nonce": appLocalizer.nonce } }
+            );
+
+            if (response.data.status === "success") {
+                // Update the UI
+                setClassrooms((prevClassrooms) =>
+                    prevClassrooms.map((g) =>
+                        g.group_id === group.group_id ? { ...g, group_name: newName } : g
+                    )
+                );
+                setEditingClassroom(null);
+            } else {
+                alert("Failed to rename classroom.");
+            }
+        } catch (error) {
+            console.error("Error renaming classroom:", error);
+        }
     };
 
     return (
         <div className="classroom-container">
-            {/* Title & Add Button */}
-            <div className="header">
-                <h1>My Classroom</h1>
-                <button className="add-classroom-button" onClick={handleAddClassroom}>
-                    + Add Classroom
-                </button>
-            </div>
-
-            {/* Grid layout for square cards */}
-            <div className="classroom-grid">
-                {currentGroups.map((group) => (
-                    <div key={group.id} className="classroom-card">
-                        <h2>{group.name}</h2>
-                        <ul>
-                            {group.courses.map((course, index) => (
-                                <li key={index}>• {course}</li>
-                            ))}
-                        </ul>
-                        <button className="view-button">View</button>
+            {selectedClassroom ? (
+                <ViewEnroll classroom={selectedClassroom} onBack={handleBackToClassrooms} />
+            ) : (
+                <>
+                    <div className="header">
+                        <h1>My Classroom</h1>
                     </div>
-                ))}
-            </div>
 
-            {/* Pagination Controls */}
-            <div className="pagination">
-                <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-                    Previous
-                </button>
+                    <div className="classroom-grid">
+                        {classrooms.length > 0 ? (
+                            classrooms.map((group) => (
+                                <div key={group.group_id} className="classroom-card">
+                                    {/* Title with Edit Option */}
+                                    <div className="classroom-title">
+                                        {editingClassroom === group.group_id ? (
+                                            <>
+                                                <input
+                                                    type="text"
+                                                    value={newName}
+                                                    onChange={(e) => setNewName(e.target.value)}
+                                                    onKeyDown={(e) => e.key === "Enter" && handleUpdateClassroom(group)}
+                                                    className="edit-input"
+                                                />
+                                                <button className="save-button" onClick={() => handleUpdateClassroom(group)}>Save</button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <h2>{group.group_name}</h2>
+                                                <button className="edit-button" onClick={() => handleEditClick(group)}>✏️</button>
+                                            </>
+                                        )}
+                                    </div>
 
-                <span className="page-info">{currentPage} / {totalPages}</span>
+                                    {/* Course List */}
+                                    <ul>
+                                        {group.items && group.items.length > 0 ? (
+                                            group.items.map((item, index) => (
+                                                <li key={index}>• {item.course_name}</li>
+                                            ))
+                                        ) : (
+                                            <li>No courses available</li>
+                                        )}
+                                    </ul>
 
-                <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-                    Next
-                </button>
-            </div>
+                                    <button className="view-button" onClick={() => handleViewEnroll(group)}>
+                                        View
+                                    </button>
+                                </div>
+                            ))
+                        ) : (
+                            <p>No classrooms found.</p>
+                        )}
+                    </div>
+
+                    {/* Pagination */}
+                    <div className="pagination">
+                        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                            Previous
+                        </button>
+
+                        <span className="page-info">{currentPage} / {totalPages}</span>
+
+                        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+                            Next
+                        </button>
+                    </div>
+                </>
+            )}
         </div>
     );
 };
