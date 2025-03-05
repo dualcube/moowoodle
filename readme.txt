@@ -5,7 +5,7 @@ Donate link: https://dualcube.com/
 Requires at least: 6.0.0
 Tested up to: 6.7.2
 Requires PHP: 8.0
-Stable tag: 3.2.9
+Stable tag: 3.2.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -185,6 +185,10 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 11. In "External Services," click "Add" to include your external service.
 
 == Changelog ==
+
+= 3.2.10 – 2024-03-05 =
+* Added  - Support WooCommerce 9.7.1.
+* Fixed  -  Resolved fatal error occurring during product editing for a smoother user experience.
 
 = 3.2.9 – 2024-02-26 =
 * Added  - Support WordPress 6.7.2.
