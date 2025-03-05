@@ -188,7 +188,7 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 
 = 3.2.10 – 2024-03-05 =
 * Added  - Support WooCommerce 9.7.1.
-* Fixed  -  Resolved fatal error occurring during product editing for a smoother user experience.
+* Fixed  - Resolved fatal error occurring during product editing for a smoother user experience.
 
 = 3.2.9 – 2024-02-26 =
 * Added  - Support WordPress 6.7.2.
