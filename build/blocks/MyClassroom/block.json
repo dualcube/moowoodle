@@ -1,6 +1,18 @@
 {
-  "apiVersion": 1,
-  "name": "moowoodle/my-group",
-  "title": "My Group",
-  "editorScript": "file:./index.js"
+  "apiVersion": 2,
+  "name": "moowoodle/my-classroom",
+  "title": "My Classroom",
+  "category": "moowoodle",
+  "icon": "welcome-learn-more",
+  "description": "Displays the My Classroom section inside WooCommerce My Account.",
+  "supports": {
+    "html": false
+  },
+  "textdomain": "moowoodle",
+  "editorScript": "file:./index.js",
+  "script": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": [
+    "file:./index.css"
+  ]
 }

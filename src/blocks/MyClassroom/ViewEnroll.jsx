@@ -3,6 +3,7 @@ import axios from "axios";
 import Select from "react-select";
 import { getApiLink } from "../../services/apiService";
 import "./MyClassroom.scss";
+import CourseCard from "./CourseCard";
 
 const ViewEnroll = ({ classroom, onBack }) => {
     const [enrolledStudents, setEnrolledStudents] = useState([]);
@@ -65,10 +66,10 @@ const ViewEnroll = ({ classroom, onBack }) => {
     const handleCourseChange = (selectedOptions) => {
         const courses = selectedOptions
             ? selectedOptions.map((option) => ({
-                  course_id: option.value,
-                  group_item_id: option.group_item_id,
-                  course_name: option.label,
-              }))
+                course_id: option.value,
+                group_item_id: option.group_item_id,
+                course_name: option.label,
+            }))
             : [];
         setNewStudent({ ...newStudent, courses });
     };
@@ -127,6 +128,13 @@ const ViewEnroll = ({ classroom, onBack }) => {
     return (
         <div className="enrollment-container">
             <button className="back-button" onClick={onBack}>← Back to Classrooms</button>
+            <button className="back-button" >Add Course</button>
+            {/* Course Boxes (Always Visible at the Top) */}
+            <div className="course-grid">
+                {classroom.items.map((course) => (
+                    <CourseCard key={course.course_id} course={course} />
+                ))}
+            </div>
             <h1>Enrolled Students for {classroom.group_name}</h1>
 
             <button className="enroll-button" onClick={() => setShowForm(!showForm)}>
@@ -188,13 +196,21 @@ const ViewEnroll = ({ classroom, onBack }) => {
                         <div key={index} className="student-card">
                             <h2>{student.name}</h2>
                             <p><strong>Email:</strong> {student.email}</p>
-                            <p><strong>Enrolled:</strong> {student.date}</p>
+                            <p><strong>Enrolled Courses:</strong></p>
+                            <ul>
+                                {student.courses.map((course, idx) => (
+                                    <li key={idx}>
+                                        {course.course_name} - <i>{course.date}</i>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
                     ))
                 ) : (
                     <p>No students enrolled yet.</p>
                 )}
             </div>
+
 
             {/* Pagination Controls */}
             {totalPages > 1 && (

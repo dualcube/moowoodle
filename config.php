@@ -19,3 +19,7 @@ define( 'MOOWOODLE_PRO_ADV', ! defined( 'MOOWOODLE_PRO_PLUGIN_TOKEN' ) );
 define( 'MOOWOOLE_PRO_STICKER', MOOWOODLE_PRO_ADV ? '<span class="mw-pro-tag" style="font-size: 0.5rem; background: #e35047; padding: 0.125rem 0.5rem; color: #F9F8FB; font-weight: 700; line-height: 1.1; position: absolute; border-radius: 2rem 0; right: -0.75rem; top: 50%; transform: translateY(-50%)">Pro</span>' : '' );
 
 define( 'MOOWOODLE_SCRIPT_DEBUG', true );
+
+if ( ! defined( 'MOOWOODLE_PLUGIN_PATH' ) ) {
+    define( 'MOOWOODLE_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+}
