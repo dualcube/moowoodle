@@ -7801,16 +7801,16 @@ const ViewEnroll = ({
   const [totalPages, setTotalPages] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1);
   const studentsPerPage = 5; // Matches backend default
 
-  // Generate course options dynamically from classroom.items
-  const courseOptions = classroom.items.map(item => ({
+  // Prevent errors if classroom or classroom.items is undefined
+  const courseOptions = Array.isArray(classroom?.items) ? classroom.items.map(item => ({
     value: item.course_id,
     label: item.course_name,
     group_item_id: item.id
-  }));
+  })) : [];
 
   // Fetch enrolled students dynamically with pagination
   const fetchEnrolledStudents = async (page = 1) => {
-    if (!classroom.items.length) {
+    if (!classroom || !Array.isArray(classroom.items) || classroom.items.length === 0) {
       setEnrolledStudents([]);
       setTotalPages(1);
       return;
@@ -7820,17 +7820,16 @@ const ViewEnroll = ({
       const response = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].get((0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)("get-classroom-enrollments"), {
         params: {
           group_item_ids: groupItemIds,
-          page: page,
+          page,
           per_page: studentsPerPage
         },
         headers: {
-          "X-WP-Nonce": appLocalizer.nonce
+          "X-WP-Nonce": appLocalizer?.nonce
         }
       });
-      const data = response.data;
-      setEnrolledStudents(data.enrollments || []);
-      setTotalPages(data.total_pages || 1);
-      setCurrentPage(data.current_page || page);
+      setEnrolledStudents(response.data.enrollments || []);
+      setTotalPages(response.data.total_pages || 1);
+      setCurrentPage(response.data.current_page || page);
     } catch (error) {
       console.error("Error fetching enrolled students:", error);
       setEnrolledStudents([]);
@@ -7838,10 +7837,12 @@ const ViewEnroll = ({
     }
   };
 
-  // Fetch data on mount or when classroom.items changes
+  // Fetch data only when classroom.items is defined
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    fetchEnrolledStudents(currentPage);
-  }, [classroom.items]);
+    if (classroom && Array.isArray(classroom.items) && classroom.items.length > 0) {
+      fetchEnrolledStudents(currentPage);
+    }
+  }, [classroom?.items, currentPage]);
 
   // Handle input changes
   const handleInputChange = e => {
@@ -7853,11 +7854,11 @@ const ViewEnroll = ({
 
   // Handle course selection
   const handleCourseChange = selectedOptions => {
-    const courses = selectedOptions ? selectedOptions.map(option => ({
+    const courses = selectedOptions?.map(option => ({
       course_id: option.value,
       group_item_id: option.group_item_id,
       course_name: option.label
-    })) : [];
+    })) || [];
     setNewStudent({
       ...newStudent,
       courses
@@ -7875,7 +7876,7 @@ const ViewEnroll = ({
     const payload = {
       email: newStudent.email,
       name: newStudent.name,
-      order_id: classroom.order_id || 0,
+      order_id: classroom?.order_id || 0,
       course_selections: newStudent.courses.map(course => ({
         course_id: course.course_id,
         group_item_id: course.group_item_id
@@ -7884,7 +7885,7 @@ const ViewEnroll = ({
     try {
       const response = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].post((0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)("enroll-user"), payload, {
         headers: {
-          "X-WP-Nonce": appLocalizer.nonce
+          "X-WP-Nonce": appLocalizer?.nonce
         }
       });
       if (response.data.success) {
@@ -7895,8 +7896,8 @@ const ViewEnroll = ({
           email: "",
           courses: []
         });
-        setCurrentPage(1); // Reset to first page after enrollment
-        await fetchEnrolledStudents(1); // Fetch first page
+        setCurrentPage(1);
+        await fetchEnrolledStudents(1);
       } else {
         alert("Enrollment failed: " + (response.data.message || "Unknown error"));
       }
@@ -7914,6 +7915,13 @@ const ViewEnroll = ({
       fetchEnrolledStudents(page);
     }
   };
+
+  // Prevent rendering if classroom is not ready
+  if (!classroom || !Array.isArray(classroom.items)) {
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+      children: "Loading classroom data..."
+    });
+  }
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     className: "enrollment-container",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
@@ -7962,16 +7970,6 @@ const ViewEnroll = ({
         className: "save-button",
         disabled: isLoading,
         children: isLoading ? "Enrolling..." : "Enroll"
-      })]
-    }), enrollmentMessages.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-      className: "enrollment-messages",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h3", {
-        children: "Enrollment Status:"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("ul", {
-        children: enrollmentMessages.map((course, index) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("li", {
-          className: course.message.includes("failed") ? "error" : "success",
-          children: [course.course_id, ": ", course.message]
-        }, index))
       })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       className: "student-list",

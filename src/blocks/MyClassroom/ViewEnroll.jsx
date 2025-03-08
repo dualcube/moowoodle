@@ -15,16 +15,18 @@ const ViewEnroll = ({ classroom, onBack }) => {
     const [totalPages, setTotalPages] = useState(1);
     const studentsPerPage = 5; // Matches backend default
 
-    // Generate course options dynamically from classroom.items
-    const courseOptions = classroom.items.map((item) => ({
-        value: item.course_id,
-        label: item.course_name,
-        group_item_id: item.id,
-    }));
+    // Prevent errors if classroom or classroom.items is undefined
+    const courseOptions = Array.isArray(classroom?.items) 
+        ? classroom.items.map((item) => ({
+            value: item.course_id,
+            label: item.course_name,
+            group_item_id: item.id,
+        })) 
+        : [];
 
     // Fetch enrolled students dynamically with pagination
     const fetchEnrolledStudents = async (page = 1) => {
-        if (!classroom.items.length) {
+        if (!classroom || !Array.isArray(classroom.items) || classroom.items.length === 0) {
             setEnrolledStudents([]);
             setTotalPages(1);
             return;
@@ -33,18 +35,13 @@ const ViewEnroll = ({ classroom, onBack }) => {
         try {
             const groupItemIds = classroom.items.map((item) => item.id);
             const response = await axios.get(getApiLink("get-classroom-enrollments"), {
-                params: {
-                    group_item_ids: groupItemIds,
-                    page: page,
-                    per_page: studentsPerPage,
-                },
-                headers: { "X-WP-Nonce": appLocalizer.nonce },
+                params: { group_item_ids: groupItemIds, page, per_page: studentsPerPage },
+                headers: { "X-WP-Nonce": appLocalizer?.nonce },
             });
 
-            const data = response.data;
-            setEnrolledStudents(data.enrollments || []);
-            setTotalPages(data.total_pages || 1);
-            setCurrentPage(data.current_page || page);
+            setEnrolledStudents(response.data.enrollments || []);
+            setTotalPages(response.data.total_pages || 1);
+            setCurrentPage(response.data.current_page || page);
         } catch (error) {
             console.error("Error fetching enrolled students:", error);
             setEnrolledStudents([]);
@@ -52,10 +49,12 @@ const ViewEnroll = ({ classroom, onBack }) => {
         }
     };
 
-    // Fetch data on mount or when classroom.items changes
+    // Fetch data only when classroom.items is defined
     useEffect(() => {
-        fetchEnrolledStudents(currentPage);
-    }, [classroom.items]);
+        if (classroom && Array.isArray(classroom.items) && classroom.items.length > 0) {
+            fetchEnrolledStudents(currentPage);
+        }
+    }, [classroom?.items, currentPage]); 
 
     // Handle input changes
     const handleInputChange = (e) => {
@@ -64,13 +63,11 @@ const ViewEnroll = ({ classroom, onBack }) => {
 
     // Handle course selection
     const handleCourseChange = (selectedOptions) => {
-        const courses = selectedOptions
-            ? selectedOptions.map((option) => ({
-                course_id: option.value,
-                group_item_id: option.group_item_id,
-                course_name: option.label,
-            }))
-            : [];
+        const courses = selectedOptions?.map((option) => ({
+            course_id: option.value,
+            group_item_id: option.group_item_id,
+            course_name: option.label,
+        })) || [];
         setNewStudent({ ...newStudent, courses });
     };
 
@@ -88,7 +85,7 @@ const ViewEnroll = ({ classroom, onBack }) => {
         const payload = {
             email: newStudent.email,
             name: newStudent.name,
-            order_id: classroom.order_id || 0,
+            order_id: classroom?.order_id || 0,
             course_selections: newStudent.courses.map((course) => ({
                 course_id: course.course_id,
                 group_item_id: course.group_item_id,
@@ -97,15 +94,15 @@ const ViewEnroll = ({ classroom, onBack }) => {
 
         try {
             const response = await axios.post(getApiLink("enroll-user"), payload, {
-                headers: { "X-WP-Nonce": appLocalizer.nonce },
+                headers: { "X-WP-Nonce": appLocalizer?.nonce },
             });
 
             if (response.data.success) {
                 setEnrollmentMessages(response.data.enrolled_courses || []);
                 setShowForm(false);
                 setNewStudent({ name: "", email: "", courses: [] });
-                setCurrentPage(1); // Reset to first page after enrollment
-                await fetchEnrolledStudents(1); // Fetch first page
+                setCurrentPage(1);
+                await fetchEnrolledStudents(1);
             } else {
                 alert("Enrollment failed: " + (response.data.message || "Unknown error"));
             }
@@ -125,16 +122,23 @@ const ViewEnroll = ({ classroom, onBack }) => {
         }
     };
 
+    // Prevent rendering if classroom is not ready
+    if (!classroom || !Array.isArray(classroom.items)) {
+        return <p>Loading classroom data...</p>;
+    }
+
     return (
         <div className="enrollment-container">
             <button className="back-button" onClick={onBack}>← Back to Classrooms</button>
-            <button className="back-button" >Add Course</button>
-            {/* Course Boxes (Always Visible at the Top) */}
+            <button className="back-button">Add Course</button>
+
+            {/* Course Boxes */}
             <div className="course-grid">
                 {classroom.items.map((course) => (
                     <CourseCard key={course.course_id} course={course} />
                 ))}
             </div>
+
             <h1>Enrolled Students for {classroom.group_name}</h1>
 
             <button className="enroll-button" onClick={() => setShowForm(!showForm)}>
@@ -174,22 +178,6 @@ const ViewEnroll = ({ classroom, onBack }) => {
                 </form>
             )}
 
-            {enrollmentMessages.length > 0 && (
-                <div className="enrollment-messages">
-                    <h3>Enrollment Status:</h3>
-                    <ul>
-                        {enrollmentMessages.map((course, index) => (
-                            <li
-                                key={index}
-                                className={course.message.includes("failed") ? "error" : "success"}
-                            >
-                                {course.course_id}: {course.message}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-
             <div className="student-list">
                 {enrolledStudents.length > 0 ? (
                     enrolledStudents.map((student, index) => (
@@ -199,9 +187,7 @@ const ViewEnroll = ({ classroom, onBack }) => {
                             <p><strong>Enrolled Courses:</strong></p>
                             <ul>
                                 {student.courses.map((course, idx) => (
-                                    <li key={idx}>
-                                        {course.course_name} - <i>{course.date}</i>
-                                    </li>
+                                    <li key={idx}>{course.course_name} - <i>{course.date}</i></li>
                                 ))}
                             </ul>
                         </div>
@@ -211,23 +197,14 @@ const ViewEnroll = ({ classroom, onBack }) => {
                 )}
             </div>
 
-
             {/* Pagination Controls */}
             {totalPages > 1 && (
                 <div className="pagination">
-                    <button
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1}
-                    >
+                    <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
                         Previous
                     </button>
-                    <span>
-                        Page {currentPage} of {totalPages}
-                    </span>
-                    <button
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                    >
+                    <span>Page {currentPage} of {totalPages}</span>
+                    <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
                         Next
                     </button>
                 </div>
