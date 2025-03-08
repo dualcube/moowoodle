@@ -5,33 +5,24 @@ import { getApiLink } from "../../services/apiService";
 import "./MyClassroom.scss";
 import CourseCard from "./CourseCard";
 
-const ViewEnroll = ({ classroom, onBack }) => {
+const ViewEnroll = ({ classroom, onBack, refreshClassrooms }) => {
     const [enrolledStudents, setEnrolledStudents] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [enrollmentMessages, setEnrollmentMessages] = useState([]);
     const [newStudent, setNewStudent] = useState({ name: "", email: "", courses: [] });
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const studentsPerPage = 5; // Matches backend default
+    const studentsPerPage = 5;
 
-    // Prevent errors if classroom or classroom.items is undefined
-    const courseOptions = Array.isArray(classroom?.items) 
+    const courseOptions = Array.isArray(classroom?.items)
         ? classroom.items.map((item) => ({
             value: item.course_id,
             label: item.course_name,
             group_item_id: item.id,
-        })) 
+        }))
         : [];
 
-    // Fetch enrolled students dynamically with pagination
     const fetchEnrolledStudents = async (page = 1) => {
-        if (!classroom || !Array.isArray(classroom.items) || classroom.items.length === 0) {
-            setEnrolledStudents([]);
-            setTotalPages(1);
-            return;
-        }
-
         try {
             const groupItemIds = classroom.items.map((item) => item.id);
             const response = await axios.get(getApiLink("get-classroom-enrollments"), {
@@ -44,24 +35,17 @@ const ViewEnroll = ({ classroom, onBack }) => {
             setCurrentPage(response.data.current_page || page);
         } catch (error) {
             console.error("Error fetching enrolled students:", error);
-            setEnrolledStudents([]);
-            setTotalPages(1);
         }
     };
 
-    // Fetch data only when classroom.items is defined
     useEffect(() => {
-        if (classroom && Array.isArray(classroom.items) && classroom.items.length > 0) {
-            fetchEnrolledStudents(currentPage);
-        }
-    }, [classroom?.items, currentPage]); 
+        fetchEnrolledStudents(currentPage);
+    }, [currentPage]);
 
-    // Handle input changes
     const handleInputChange = (e) => {
         setNewStudent({ ...newStudent, [e.target.name]: e.target.value });
     };
 
-    // Handle course selection
     const handleCourseChange = (selectedOptions) => {
         const courses = selectedOptions?.map((option) => ({
             course_id: option.value,
@@ -71,7 +55,6 @@ const ViewEnroll = ({ classroom, onBack }) => {
         setNewStudent({ ...newStudent, courses });
     };
 
-    // Handle student enrollment
     const handleEnrollStudent = async (e) => {
         e.preventDefault();
 
@@ -98,13 +81,15 @@ const ViewEnroll = ({ classroom, onBack }) => {
             });
 
             if (response.data.success) {
-                setEnrollmentMessages(response.data.enrolled_courses || []);
                 setShowForm(false);
                 setNewStudent({ name: "", email: "", courses: [] });
-                setCurrentPage(1);
+
                 await fetchEnrolledStudents(1);
+                await refreshClassrooms();
+
+                alert("Enrollment successful! The classroom data has been updated.");
             } else {
-                alert("Enrollment failed: " + (response.data.message || "Unknown error"));
+               alert("Enrollment failed: " + (response.data.message || "Unknown error"));
             }
         } catch (error) {
             console.error("Error enrolling student:", error);
@@ -114,7 +99,6 @@ const ViewEnroll = ({ classroom, onBack }) => {
         setIsLoading(false);
     };
 
-    // Handle page change
     const handlePageChange = (page) => {
         if (page >= 1 && page <= totalPages) {
             setCurrentPage(page);
@@ -122,17 +106,11 @@ const ViewEnroll = ({ classroom, onBack }) => {
         }
     };
 
-    // Prevent rendering if classroom is not ready
-    if (!classroom || !Array.isArray(classroom.items)) {
-        return <p>Loading classroom data...</p>;
-    }
-
     return (
         <div className="enrollment-container">
             <button className="back-button" onClick={onBack}>← Back to Classrooms</button>
             <button className="back-button">Add Course</button>
 
-            {/* Course Boxes */}
             <div className="course-grid">
                 {classroom.items.map((course) => (
                     <CourseCard key={course.course_id} course={course} />
@@ -197,7 +175,6 @@ const ViewEnroll = ({ classroom, onBack }) => {
                 )}
             </div>
 
-            {/* Pagination Controls */}
             {totalPages > 1 && (
                 <div className="pagination">
                     <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>

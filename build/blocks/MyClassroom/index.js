@@ -7602,7 +7602,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
- // Import the ViewEnroll component
+
 
 
 const MyClassroom = () => {
@@ -7610,30 +7610,30 @@ const MyClassroom = () => {
   const [currentPage, setCurrentPage] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1);
   const [totalPages, setTotalPages] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1);
   const [selectedClassroom, setSelectedClassroom] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
-  const [editingClassroom, setEditingClassroom] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null); // Track which classroom is being edited
-  const [newName, setNewName] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""); // Store new name input
+  const [editingClassroom, setEditingClassroom] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const [newName, setNewName] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("");
   const itemsPerPage = 10;
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    const fetchClassrooms = async () => {
-      try {
-        const response = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].post((0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)("classroom"), {
-          page: currentPage,
-          rows: itemsPerPage
-        }, {
-          headers: {
-            "X-WP-Nonce": appLocalizer.nonce
-          }
-        });
-        if (response.data.status === "success") {
-          setClassrooms(response.data.groups || []);
-          setTotalPages(response.data.pagination.total_pages);
-        } else {
-          setClassrooms([]);
+  const fetchClassrooms = async () => {
+    try {
+      const response = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].post((0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)("classroom"), {
+        page: currentPage,
+        rows: itemsPerPage
+      }, {
+        headers: {
+          "X-WP-Nonce": appLocalizer.nonce
         }
-      } catch (error) {
-        console.error("Error fetching classroom data:", error);
+      });
+      if (response.data.status === "success") {
+        setClassrooms(response.data.groups || []);
+        setTotalPages(response.data.pagination.total_pages);
+      } else {
+        setClassrooms([]);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching classroom data:", error);
+    }
+  };
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     fetchClassrooms();
   }, [currentPage]);
   const handlePageChange = newPage => {
@@ -7641,24 +7641,17 @@ const MyClassroom = () => {
       setCurrentPage(newPage);
     }
   };
-
-  // Function to handle "View" button click
   const handleViewEnroll = group => {
     setSelectedClassroom(group);
   };
-
-  // Function to go back to classroom list
   const handleBackToClassrooms = () => {
     setSelectedClassroom(null);
+    fetchClassrooms();
   };
-
-  // Enable edit mode for a classroom
   const handleEditClick = group => {
     setEditingClassroom(group.group_id);
     setNewName(group.group_name);
   };
-
-  // Handle updating the classroom name
   const handleUpdateClassroom = async group => {
     if (!newName.trim()) return;
     try {
@@ -7671,7 +7664,6 @@ const MyClassroom = () => {
         }
       });
       if (response.data.status === "success") {
-        // Update the UI
         setClassrooms(prevClassrooms => prevClassrooms.map(g => g.group_id === group.group_id ? {
           ...g,
           group_name: newName
@@ -7688,7 +7680,8 @@ const MyClassroom = () => {
     className: "classroom-container",
     children: selectedClassroom ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_ViewEnroll__WEBPACK_IMPORTED_MODULE_2__["default"], {
       classroom: selectedClassroom,
-      onBack: handleBackToClassrooms
+      onBack: handleBackToClassrooms,
+      refreshClassrooms: fetchClassrooms
     }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "header",
@@ -7786,12 +7779,12 @@ __webpack_require__.r(__webpack_exports__);
 
 const ViewEnroll = ({
   classroom,
-  onBack
+  onBack,
+  refreshClassrooms
 }) => {
   const [enrolledStudents, setEnrolledStudents] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [showForm, setShowForm] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [isLoading, setIsLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
-  const [enrollmentMessages, setEnrollmentMessages] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [newStudent, setNewStudent] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
     name: "",
     email: "",
@@ -7799,22 +7792,13 @@ const ViewEnroll = ({
   });
   const [currentPage, setCurrentPage] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1);
   const [totalPages, setTotalPages] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1);
-  const studentsPerPage = 5; // Matches backend default
-
-  // Prevent errors if classroom or classroom.items is undefined
+  const studentsPerPage = 5;
   const courseOptions = Array.isArray(classroom?.items) ? classroom.items.map(item => ({
     value: item.course_id,
     label: item.course_name,
     group_item_id: item.id
   })) : [];
-
-  // Fetch enrolled students dynamically with pagination
   const fetchEnrolledStudents = async (page = 1) => {
-    if (!classroom || !Array.isArray(classroom.items) || classroom.items.length === 0) {
-      setEnrolledStudents([]);
-      setTotalPages(1);
-      return;
-    }
     try {
       const groupItemIds = classroom.items.map(item => item.id);
       const response = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].get((0,_services_apiService__WEBPACK_IMPORTED_MODULE_1__.getApiLink)("get-classroom-enrollments"), {
@@ -7832,27 +7816,17 @@ const ViewEnroll = ({
       setCurrentPage(response.data.current_page || page);
     } catch (error) {
       console.error("Error fetching enrolled students:", error);
-      setEnrolledStudents([]);
-      setTotalPages(1);
     }
   };
-
-  // Fetch data only when classroom.items is defined
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    if (classroom && Array.isArray(classroom.items) && classroom.items.length > 0) {
-      fetchEnrolledStudents(currentPage);
-    }
-  }, [classroom?.items, currentPage]);
-
-  // Handle input changes
+    fetchEnrolledStudents(currentPage);
+  }, [currentPage]);
   const handleInputChange = e => {
     setNewStudent({
       ...newStudent,
       [e.target.name]: e.target.value
     });
   };
-
-  // Handle course selection
   const handleCourseChange = selectedOptions => {
     const courses = selectedOptions?.map(option => ({
       course_id: option.value,
@@ -7864,8 +7838,6 @@ const ViewEnroll = ({
       courses
     });
   };
-
-  // Handle student enrollment
   const handleEnrollStudent = async e => {
     e.preventDefault();
     if (!newStudent.name || !newStudent.email || !newStudent.courses.length) {
@@ -7889,15 +7861,15 @@ const ViewEnroll = ({
         }
       });
       if (response.data.success) {
-        setEnrollmentMessages(response.data.enrolled_courses || []);
         setShowForm(false);
         setNewStudent({
           name: "",
           email: "",
           courses: []
         });
-        setCurrentPage(1);
         await fetchEnrolledStudents(1);
+        await refreshClassrooms();
+        alert("Enrollment successful! The classroom data has been updated.");
       } else {
         alert("Enrollment failed: " + (response.data.message || "Unknown error"));
       }
@@ -7907,21 +7879,12 @@ const ViewEnroll = ({
     }
     setIsLoading(false);
   };
-
-  // Handle page change
   const handlePageChange = page => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
       fetchEnrolledStudents(page);
     }
   };
-
-  // Prevent rendering if classroom is not ready
-  if (!classroom || !Array.isArray(classroom.items)) {
-    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
-      children: "Loading classroom data..."
-    });
-  }
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     className: "enrollment-container",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {

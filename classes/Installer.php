@@ -15,18 +15,86 @@ class Installer {
      */
     public function __construct() {
         if ( get_option( 'moowoodle_version' ) != MOOWOODLE_PLUGIN_VERSION ) {
+
             $this->set_default_settings();
-            $this->migration();
+
+            $this->create_databases();
+
+            $this->migrate_databases();
+
+            update_option( 'moowoodle_version', MOOWOODLE_PLUGIN_VERSION );
+            
             do_action( 'moowoodle_updated' );
         }
     }
+
     /**
-     * Plugin migration.
+     * Database creation functions
      * @return void
      */
-    public static function migration() {
-        update_option( 'moowoodle_version', MOOWOODLE_PLUGIN_VERSION );
+    public static function create_databases() {
+        global $wpdb;
+
+        $collate = '';
+
+        if ($wpdb->has_cap('collation')) {
+            $collate = $wpdb->get_charset_collate();
+        }
+
+        $wpdb->query(
+            "CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "moowoodle_enrollment` (
+                `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                `user_id` bigint(20) NOT NULL DEFAULT 0,
+                `user_email` varchar(100) NOT NULL,
+                `course_id` bigint(20) NOT NULL,
+                `order_id` bigint(20) NOT NULL,
+                `item_id` bigint(20) NOT NULL,
+                `status` varchar(20) NOT NULL,
+                `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                `group_item_id` bigint(20) NOT NULL,
+                PRIMARY KEY (`id`)
+            ) $collate;"
+        );
+
+        $wpdb->query(
+            "CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "moowoodle_group` (
+                `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                `name` varchar(100) NOT NULL,
+                `user_id` bigint(20) NOT NULL,
+                `order_id` bigint(20) NOT NULL,
+                `user_name` varchar(100) NOT NULL,
+                `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (`id`)
+                ) $collate;"
+            );
+            
+        $wpdb->query(
+            "CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "moowoodle_group_items` (
+                `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                `group_id` bigint(20) NOT NULL,
+                `course_id` bigint(20) NOT NULL,
+                `product_id` bigint(20) NOT NULL,
+                `user_id` bigint(20) NOT NULL,
+                `total_quantity` bigint(20) NOT NULL,
+                `available_quantity` bigint(20) NOT NULL,
+                `status` varchar(100) NOT NULL,
+                PRIMARY KEY (`id`)
+            ) $collate;"
+        );
     }
+
+    /**
+     * Migrate database
+     * @return void
+     */
+    public static function migrate_databases() {
+        $previous_version = get_option( 'moowoodle_version', '' );
+
+        if ( version_compare( $previous_version, '3.2.8', '<' ) ) {
+            Enrollment::migrate_enrollments();
+        }
+    }
+
     /**
      * Set default moowoodle admin settings.
      * @return void
@@ -45,7 +113,7 @@ class Installer {
         $display_settings = [
             'start_end_date'                    => ['start_end_date'],
             'my_courses_priority'               => 0,
-            'my_classroom_priority'             => 1,
+            'my_groups_priority'               => 1,
             'moowoodle_create_user_custom_mail' => [],
         ];
         // Default value for log setting

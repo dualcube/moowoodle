@@ -80,7 +80,7 @@ class RestAPI {
         register_rest_route( MooWoodle()->rest_namespace, '/get-user-courses', [
             'methods'             => \WP_REST_Server::ALLMETHODS,
             'callback'            =>[ $this, 'get_user_courses' ],
-            'permission_callback' => '__return_true',
+            'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
 
     }
@@ -533,54 +533,59 @@ class RestAPI {
         }
     }
 
-        /**
-     * Fetch all course
-     * @param mixed $request
-     * @return \WP_Error|\WP_REST_Response
+    /**
+     * Fetch all enrolled courses for the current user.
+     *
+     * @param WP_REST_Request $request The REST API request.
+     * 
+     * @return WP_REST_Response|\WP_Error JSON response containing enrolled courses and pagination details.
      */
     public function get_user_courses( $request ) {
         global $wpdb;
+
         $customer = wp_get_current_user();
 
-        if ( !$customer->ID ) {
+        if ( ! $customer->ID ) {
             return new \WP_Error( 'no_user', __( 'User not found', 'moowoodle' ), [ 'status' => 403 ] );
         }
 
-        // Get pagination parameters
-        $per_page = $request->get_param( 'row' ) ?: 10;
-        $page     = $request->get_param( 'page' ) ?: 1;
+        $per_page = max( 1, intval( $request->get_param( 'row' ) ?: 10 ) );
+        $page     = max( 1, intval( $request->get_param( 'page' ) ?: 1 ) );
         $offset   = ( $page - 1 ) * $per_page;
+        $user_id  = $customer->ID;
+        $table    = $wpdb->prefix . 'moowoodle_enrollment';
 
-        // Define the table name
-        $table_name = $wpdb->prefix . 'moowoodle_enrollment';
+        // Get total courses count
+        $total_courses = (int) $wpdb->get_var( $wpdb->prepare(
+            "SELECT COUNT(*) FROM {$table} WHERE user_id = %d AND status = 'enrolled'", 
+            $user_id
+        ) );
 
-        // Query total courses
-        $total_courses = $wpdb->get_var( $wpdb->prepare(
-            "SELECT COUNT(*) FROM {$table_name} WHERE user_id = %d AND status = 'enrolled'", 
-            $customer->ID
-        ));
-
-        // Fetch paginated courses
+        // Fetch enrolled courses
         $courses = $wpdb->get_results( $wpdb->prepare(
-            "SELECT course_id, order_id, item_id, date FROM {$table_name} 
+            "SELECT course_id, order_id, item_id, date 
+            FROM {$table} 
             WHERE user_id = %d AND status = 'enrolled' 
             ORDER BY date DESC 
             LIMIT %d OFFSET %d", 
-            $customer->ID, $per_page, $offset
-        ));
+            $user_id, $per_page, $offset
+        ) );
 
-        // Format courses
         $formatted_courses = [];
+
         foreach ( $courses as $course ) {
-            $moodle_course_id = $course->course_id;
-            $moodle_url       = trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . 'course/view.php?id=' . $moodle_course_id;
+            $linked_product_id = get_post_meta( $course->course_id, 'linked_product_id', true );
+            $moodle_course_id  = $linked_product_id ? get_post_meta( $linked_product_id, 'moodle_course_id', true ) : null;
+            $moodle_url        = $moodle_course_id 
+                ? trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "course/view.php?id={$moodle_course_id}"
+                : null;
 
             $formatted_courses[] = [
                 'course_id'      => $course->course_id,
                 'order_id'       => $course->order_id,
                 'item_id'        => $course->item_id,
                 'user_login'     => $customer->user_login,
-                'password'       => get_user_meta( $customer->ID, 'moowoodle_moodle_user_pwd', true ),
+                'password'       => get_user_meta( $user_id, 'moowoodle_moodle_user_pwd', true ),
                 'enrolment_date' => date( 'M j, Y - H:i', strtotime( $course->date ) ),
                 'moodle_url'     => $moodle_url,
             ];
@@ -594,6 +599,7 @@ class RestAPI {
             'courses'       => $formatted_courses,
         ] );
     }
+
 
 
 }
