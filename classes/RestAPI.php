@@ -80,7 +80,7 @@ class RestAPI {
         register_rest_route( MooWoodle()->rest_namespace, '/get-user-courses', [
             'methods'             => \WP_REST_Server::ALLMETHODS,
             'callback'            =>[ $this, 'get_user_courses' ],
-            'permission_callback' =>[ $this, 'moowoodle_permission' ],
+            'permission_callback' =>[ $this, 'user_has_core_role' ],
         ]);
 
     }
@@ -90,7 +90,19 @@ class RestAPI {
      * @return bool
      */
     public function moowoodle_permission() {
-        return current_user_can( 'manage_options' ) || true;
+        return current_user_can( 'manage_options' ) ||true;
+    }
+
+    /**
+     * Check if the current user has one of the default WordPress roles.
+     *
+     * @return bool True if the user has one of the core roles, otherwise false.
+     */
+    public function user_has_core_role() {
+        $core_roles = [ 'administrator', 'editor', 'author', 'contributor', 'subscriber', 'customer', 'shop_manager' ];
+        $user = wp_get_current_user();
+        
+        return array_intersect( $core_roles, (array) $user->roles ) ? true : false;
     }
 
     /**
@@ -540,66 +552,125 @@ class RestAPI {
      * 
      * @return WP_REST_Response|\WP_Error JSON response containing enrolled courses and pagination details.
      */
+    // public function get_user_courses( $request ) {
+    //     global $wpdb;
+
+    //     $customer = wp_get_current_user();
+
+    //     if ( ! $customer->ID ) {
+    //         return new \WP_Error( 'no_user', __( 'User not found', 'moowoodle' ), [ 'status' => 403 ] );
+    //     }
+
+    //     $per_page = max( 1, intval( $request->get_param( 'row' ) ?: 10 ) );
+    //     $page     = max( 1, intval( $request->get_param( 'page' ) ?: 1 ) );
+    //     $offset   = ( $page - 1 ) * $per_page;
+    //     $user_id  = $customer->ID;
+    //     $table    = $wpdb->prefix . 'moowoodle_enrollment';
+
+    //     // Get total courses count
+    //     $total_courses = (int) $wpdb->get_var( $wpdb->prepare(
+    //         "SELECT COUNT(*) FROM {$table} WHERE user_id = %d AND status = 'enrolled'", 
+    //         $user_id
+    //     ) );
+
+    //     // Fetch enrolled courses
+    //     $courses = $wpdb->get_results( $wpdb->prepare(
+    //         "SELECT course_id, order_id, item_id, date 
+    //         FROM {$table} 
+    //         WHERE user_id = %d AND status = 'enrolled' 
+    //         ORDER BY date DESC 
+    //         LIMIT %d OFFSET %d", 
+    //         $user_id, $per_page, $offset
+    //     ) );
+
+    //     $formatted_courses = [];
+
+    //     foreach ( $courses as $course ) {
+    //         $linked_product_id = get_post_meta( $course->course_id, 'linked_product_id', true );
+    //         $moodle_course_id  = $linked_product_id ? get_post_meta( $linked_product_id, 'moodle_course_id', true ) : null;
+    //         $moodle_url        = $moodle_course_id 
+    //             ? trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "course/view.php?id={$moodle_course_id}"
+    //             : null;
+
+    //         $formatted_courses[] = [
+    //             'course_id'      => $course->course_id,
+    //             'order_id'       => $course->order_id,
+    //             'item_id'        => $course->item_id,
+    //             'user_login'     => $customer->user_login,
+    //             'password'       => get_user_meta( $user_id, 'moowoodle_moodle_user_pwd', true ),
+    //             'enrolment_date' => date( 'M j, Y - H:i', strtotime( $course->date ) ),
+    //             'moodle_url'     => $moodle_url,
+    //         ];
+    //     }
+
+    //     return rest_ensure_response( [
+    //         'total_courses' => $total_courses,
+    //         'page'          => $page,
+    //         'per_page'      => $per_page,
+    //         'total_pages'   => ceil( $total_courses / $per_page ),
+    //         'courses'       => $formatted_courses,
+    //     ] );
+    // }
+
     public function get_user_courses( $request ) {
         global $wpdb;
-
+    
         $customer = wp_get_current_user();
-
         if ( ! $customer->ID ) {
             return new \WP_Error( 'no_user', __( 'User not found', 'moowoodle' ), [ 'status' => 403 ] );
         }
-
+    
         $per_page = max( 1, intval( $request->get_param( 'row' ) ?: 10 ) );
         $page     = max( 1, intval( $request->get_param( 'page' ) ?: 1 ) );
         $offset   = ( $page - 1 ) * $per_page;
-        $user_id  = $customer->ID;
         $table    = $wpdb->prefix . 'moowoodle_enrollment';
-
+    
         // Get total courses count
         $total_courses = (int) $wpdb->get_var( $wpdb->prepare(
-            "SELECT COUNT(*) FROM {$table} WHERE user_id = %d AND status = 'enrolled'", 
-            $user_id
+            "SELECT COUNT(*) FROM {$table} WHERE user_id = %d AND status = 'enrolled'",
+            $customer->ID
         ) );
-
+    
         // Fetch enrolled courses
         $courses = $wpdb->get_results( $wpdb->prepare(
             "SELECT course_id, order_id, item_id, date 
             FROM {$table} 
             WHERE user_id = %d AND status = 'enrolled' 
             ORDER BY date DESC 
-            LIMIT %d OFFSET %d", 
-            $user_id, $per_page, $offset
+            LIMIT %d OFFSET %d",
+            $customer->ID, $per_page, $offset
         ) );
-
+    
         $formatted_courses = [];
-
-        foreach ( $courses as $course ) {
-            $linked_product_id = get_post_meta( $course->course_id, 'linked_product_id', true );
-            $moodle_course_id  = $linked_product_id ? get_post_meta( $linked_product_id, 'moodle_course_id', true ) : null;
-            $moodle_url        = $moodle_course_id 
-                ? trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "course/view.php?id={$moodle_course_id}"
-                : null;
-
-            $formatted_courses[] = [
-                'course_id'      => $course->course_id,
-                'order_id'       => $course->order_id,
-                'item_id'        => $course->item_id,
-                'user_login'     => $customer->user_login,
-                'password'       => get_user_meta( $user_id, 'moowoodle_moodle_user_pwd', true ),
-                'enrolment_date' => date( 'M j, Y - H:i', strtotime( $course->date ) ),
-                'moodle_url'     => $moodle_url,
-            ];
+    
+        if ( ! empty( $courses ) ) {
+            foreach ( $courses as $course ) {
+                $linked_product_id = get_post_meta( $course->course_id, 'linked_product_id', true );
+                $course_name       = $linked_product_id ? get_the_title( $linked_product_id ) : __( 'Unknown Course', 'moowoodle' );
+                $moodle_course_id  = $linked_product_id ? get_post_meta( $linked_product_id, 'moodle_course_id', true ) : null;
+                $moodle_url        = $moodle_course_id 
+                    ? trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "course/view.php?id={$moodle_course_id}"
+                    : null;
+    
+                $formatted_courses[] = [
+                    'course_id'      => $course->course_id,
+                    'order_id'       => $course->order_id,
+                    'item_id'        => $course->item_id,
+                    'user_login'     => $customer->user_login,
+                    'password'       => get_user_meta( $customer->ID, 'moowoodle_moodle_user_pwd', true ),
+                    'enrolment_date' => date( 'M j, Y - H:i', strtotime( $course->date ) ),
+                    'moodle_url'     => $moodle_url,
+                    'course_name'    => $course_name,
+                ];
+            }
         }
-
+    
         return rest_ensure_response( [
             'total_courses' => $total_courses,
             'page'          => $page,
             'per_page'      => $per_page,
-            'total_pages'   => ceil( $total_courses / $per_page ),
+            'total_pages'   => max( 1, ceil( $total_courses / $per_page ) ),
             'courses'       => $formatted_courses,
         ] );
     }
-
-
-
 }
