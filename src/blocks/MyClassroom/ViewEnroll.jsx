@@ -5,8 +5,9 @@ import { getApiLink } from "../../services/apiService";
 import "./MyClassroom.scss";
 import CourseCard from "./CourseCard";
 
-const ViewEnroll = ({ classroom, onBack, refreshClassrooms }) => {
+const ViewEnroll = ({ classroom, onBack }) => {
     const [enrolledStudents, setEnrolledStudents] = useState([]);
+    const [availableCourses, setAvailableCourses] = useState([]); // Store courses from API
     const [showForm, setShowForm] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [newStudent, setNewStudent] = useState({ name: "", email: "", courses: [] });
@@ -14,33 +15,33 @@ const ViewEnroll = ({ classroom, onBack, refreshClassrooms }) => {
     const [totalPages, setTotalPages] = useState(1);
     const studentsPerPage = 5;
 
-    const courseOptions = Array.isArray(classroom?.items)
-        ? classroom.items.map((item) => ({
-            value: item.course_id,
-            label: item.course_name,
-            group_item_id: item.id,
-        }))
-        : [];
-
-    const fetchEnrolledStudents = async (page = 1) => {
+    // Fetch data from API (both students and available courses)
+    const fetchClassroomData = async (page = 1) => {
         try {
-            const groupItemIds = classroom.items.map((item) => item.id);
-            const response = await axios.get(getApiLink("get-classroom-enrollments"), {
-                params: { group_item_ids: groupItemIds, page, per_page: studentsPerPage },
+            const response = await axios.get(getApiLink("view-enroll"), {
+                params: { group_id: classroom.group_id, page, per_page: studentsPerPage },
                 headers: { "X-WP-Nonce": appLocalizer?.nonce },
             });
 
+            setAvailableCourses(response.data.items || []);
             setEnrolledStudents(response.data.enrollments || []);
             setTotalPages(response.data.total_pages || 1);
             setCurrentPage(response.data.current_page || page);
         } catch (error) {
-            console.error("Error fetching enrolled students:", error);
+            console.error("Error fetching classroom data:", error);
         }
     };
 
     useEffect(() => {
-        fetchEnrolledStudents(currentPage);
+        fetchClassroomData(currentPage);
     }, [currentPage]);
+
+    // Convert fetched courses into options for Select
+    const courseOptions = availableCourses.map((item) => ({
+        value: item.course_id,
+        label: item.course_name,
+        group_item_id: item.id,
+    }));
 
     const handleInputChange = (e) => {
         setNewStudent({ ...newStudent, [e.target.name]: e.target.value });
@@ -84,12 +85,11 @@ const ViewEnroll = ({ classroom, onBack, refreshClassrooms }) => {
                 setShowForm(false);
                 setNewStudent({ name: "", email: "", courses: [] });
 
-                await fetchEnrolledStudents(1);
-                await refreshClassrooms();
+                await fetchClassroomData(1);
 
                 alert("Enrollment successful! The classroom data has been updated.");
             } else {
-               alert("Enrollment failed: " + (response.data.message || "Unknown error"));
+                alert("Enrollment failed: " + (response.data.message || "Unknown error"));
             }
         } catch (error) {
             console.error("Error enrolling student:", error);
@@ -102,7 +102,7 @@ const ViewEnroll = ({ classroom, onBack, refreshClassrooms }) => {
     const handlePageChange = (page) => {
         if (page >= 1 && page <= totalPages) {
             setCurrentPage(page);
-            fetchEnrolledStudents(page);
+            fetchClassroomData(page);
         }
     };
 
@@ -112,7 +112,7 @@ const ViewEnroll = ({ classroom, onBack, refreshClassrooms }) => {
             <button className="back-button">Add Course</button>
 
             <div className="course-grid">
-                {classroom.items.map((course) => (
+                {availableCourses.map((course) => (
                     <CourseCard key={course.course_id} course={course} />
                 ))}
             </div>
@@ -160,7 +160,7 @@ const ViewEnroll = ({ classroom, onBack, refreshClassrooms }) => {
                 {enrolledStudents.length > 0 ? (
                     enrolledStudents.map((student, index) => (
                         <div key={index} className="student-card">
-                            <h2>{student.name}</h2>
+                            <h2>{student.email}</h2>
                             <p><strong>Email:</strong> {student.email}</p>
                             <p><strong>Enrolled Courses:</strong></p>
                             <ul>

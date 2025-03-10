@@ -5,7 +5,7 @@ const CourseCard = ({ course }) => {
         <div className="course-card">
             <h3>{course.course_name}</h3>
             <p><strong>Available Quantity:</strong> {course.available_quantity}</p>
-            <p><strong>Enrolled Students:</strong> {course.total_quantity - course.available_quantity}</p>
+            <p><strong>Enrolled Students:</strong> {course.enrolled_students}</p>
         </div>
     );
 };

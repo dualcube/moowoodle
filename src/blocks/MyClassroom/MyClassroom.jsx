@@ -11,26 +11,39 @@ const MyClassroom = () => {
     const [selectedClassroom, setSelectedClassroom] = useState(null);
     const [editingClassroom, setEditingClassroom] = useState(null);
     const [newName, setNewName] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const itemsPerPage = 10;
 
     const fetchClassrooms = async () => {
+        setLoading(true);
+        setError(null);
+    
         try {
-            const response = await axios.post(getApiLink("classroom"), {
-                page: currentPage,
-                rows: itemsPerPage,
-            }, {
-                headers: { "X-WP-Nonce": appLocalizer.nonce },
-            });
-
-            if (response.data.status === "success") {
+            const response = await axios.get(
+                getApiLink("classroom"),
+                {
+                    params: { page: currentPage, rows: itemsPerPage }, // Query parameters
+                    headers: { "X-WP-Nonce": appLocalizer.nonce }
+                }
+            );
+    
+            console.log("API Response:", response.data); // Debugging
+    
+            if (response.data.success) {
                 setClassrooms(response.data.groups || []);
-                setTotalPages(response.data.pagination.total_pages);
+                setTotalPages(parseInt(response.data.total_pages) || 1);
             } else {
                 setClassrooms([]);
+                setTotalPages(1);
+                setError("No classrooms found.");
             }
-        } catch (error) {
-            console.error("Error fetching classroom data:", error);
+        } catch (err) {
+            console.error("Error fetching classroom data:", err);
+            setError("Failed to load classrooms.");
         }
+    
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -62,23 +75,27 @@ const MyClassroom = () => {
 
         try {
             const response = await axios.post(
-                getApiLink("rename-classroom"),
-                { id: group.group_id, new_name: newName },
+                getApiLink("classroom"), // Using same API endpoint for update
+                { id: group.group_id, new_name: newName }, // Sending update data
                 { headers: { "X-WP-Nonce": appLocalizer.nonce } }
             );
 
-            if (response.data.status === "success") {
+            console.log("Update Response:", response.data); // Debugging response
+
+            if (response.data.status === "success") { // Validate API response
                 setClassrooms((prevClassrooms) =>
                     prevClassrooms.map((g) =>
                         g.group_id === group.group_id ? { ...g, group_name: newName } : g
                     )
                 );
-                setEditingClassroom(null);
+                setEditingClassroom(null); // Close input field
+                setNewName(""); // Clear input
             } else {
-                alert("Failed to rename classroom.");
+                alert(response.data.message || "Failed to rename classroom.");
             }
         } catch (error) {
             console.error("Error renaming classroom:", error);
+            alert("An error occurred while updating the classroom.");
         }
     };
 
@@ -88,7 +105,6 @@ const MyClassroom = () => {
                 <ViewEnroll 
                     classroom={selectedClassroom} 
                     onBack={handleBackToClassrooms} 
-                    refreshClassrooms={fetchClassrooms} 
                 />
             ) : (
                 <>
@@ -96,61 +112,87 @@ const MyClassroom = () => {
                         <h1>My Classroom</h1>
                     </div>
 
-                    <div className="classroom-grid">
-                        {classrooms.length > 0 ? (
-                            classrooms.map((group) => (
-                                <div key={group.group_id} className="classroom-card">
-                                    <div className="classroom-title">
-                                        {editingClassroom === group.group_id ? (
-                                            <>
-                                                <input
-                                                    type="text"
-                                                    value={newName}
-                                                    onChange={(e) => setNewName(e.target.value)}
-                                                    onKeyDown={(e) => e.key === "Enter" && handleUpdateClassroom(group)}
-                                                    className="edit-input"
-                                                />
-                                                <button className="save-button" onClick={() => handleUpdateClassroom(group)}>Save</button>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <h2>{group.group_name}</h2>
-                                                <button className="edit-button" onClick={() => handleEditClick(group)}>✏️</button>
-                                            </>
-                                        )}
-                                    </div>
+                    {loading ? (
+                        <p>Loading classrooms...</p>
+                    ) : error ? (
+                        <p className="error-message">{error}</p>
+                    ) : (
+                        <>
+                            <div className="classroom-grid">
+                                {classrooms.length > 0 ? (
+                                    classrooms.map((group) => (
+                                        <div key={group.group_id} className="classroom-card">
+                                            <div className="classroom-title">
+                                                {editingClassroom === group.group_id ? (
+                                                    <>
+                                                        <input
+                                                            type="text"
+                                                            value={newName}
+                                                            onChange={(e) => setNewName(e.target.value)}
+                                                            onKeyDown={(e) => e.key === "Enter" && handleUpdateClassroom(group)}
+                                                            className="edit-input"
+                                                        />
+                                                        <button className="save-button" onClick={() => handleUpdateClassroom(group)}>
+                                                            Save
+                                                        </button>
+                                                        <button className="cancel-button" onClick={() => setEditingClassroom(null)}>
+                                                            Cancel
+                                                        </button>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <h2>{group.group_name}</h2>
+                                                        <button className="edit-button" onClick={() => handleEditClick(group)}>
+                                                            ✏️
+                                                        </button>
+                                                    </>
+                                                )}
+                                            </div>
 
-                                    <ul>
-                                        {group.items && group.items.length > 0 ? (
-                                            group.items.map((item, index) => (
-                                                <li key={index}>• {item.course_name}</li>
-                                            ))
-                                        ) : (
-                                            <li>No courses available</li>
-                                        )}
-                                    </ul>
+                                            <ul>
+                                                {group.items && group.items.length > 0 ? (
+                                                    group.items.map((item, index) => (
+                                                        <li key={index}>• {item.course_name}</li>
+                                                    ))
+                                                ) : (
+                                                    <li>No courses available</li>
+                                                )}
+                                            </ul>
 
-                                    <button className="view-button" onClick={() => handleViewEnroll(group)}>
-                                        View
+                                            <button className="view-button" onClick={() => handleViewEnroll(group)}>
+                                                View
+                                            </button>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p>No classrooms found.</p>
+                                )}
+                            </div>
+
+                            {/* Pagination Controls */}
+                            {totalPages > 1 && (
+                                <div className="pagination">
+                                    <button 
+                                        onClick={() => handlePageChange(currentPage - 1)} 
+                                        disabled={currentPage === 1}
+                                    >
+                                        Previous
+                                    </button>
+
+                                    <span className="page-info">
+                                        Page {currentPage} of {totalPages}
+                                    </span>
+
+                                    <button 
+                                        onClick={() => handlePageChange(currentPage + 1)} 
+                                        disabled={currentPage >= totalPages}
+                                    >
+                                        Next
                                     </button>
                                 </div>
-                            ))
-                        ) : (
-                            <p>No classrooms found.</p>
-                        )}
-                    </div>
-
-                    <div className="pagination">
-                        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-                            Previous
-                        </button>
-
-                        <span className="page-info">{currentPage} / {totalPages}</span>
-
-                        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-                            Next
-                        </button>
-                    </div>
+                            )}
+                        </>
+                    )}
                 </>
             )}
         </div>

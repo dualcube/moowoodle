@@ -80,7 +80,7 @@ class RestAPI {
         register_rest_route( MooWoodle()->rest_namespace, '/get-user-courses', [
             'methods'             => \WP_REST_Server::ALLMETHODS,
             'callback'            =>[ $this, 'get_user_courses' ],
-            'permission_callback' =>[ $this, 'user_has_core_role' ],
+            'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
 
     }
