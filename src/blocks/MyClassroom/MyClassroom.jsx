@@ -20,17 +20,15 @@ const MyClassroom = () => {
         setError(null);
     
         try {
-            const response = await axios.get(
+            let response = await axios.get(
                 getApiLink("classroom"),
                 {
-                    params: { page: currentPage, rows: itemsPerPage }, // Query parameters
+                    params: { page: currentPage, rows: itemsPerPage },
                     headers: { "X-WP-Nonce": appLocalizer.nonce }
                 }
             );
-    
-            console.log("API Response:", response.data); // Debugging
-    
             if (response.data.success) {
+                response = response.data;
                 setClassrooms(response.data.groups || []);
                 setTotalPages(parseInt(response.data.total_pages) || 1);
             } else {
@@ -75,14 +73,12 @@ const MyClassroom = () => {
 
         try {
             const response = await axios.post(
-                getApiLink("classroom"), // Using same API endpoint for update
-                { id: group.group_id, new_name: newName }, // Sending update data
+                getApiLink("classroom"), 
+                { group_id: group.group_id, name: newName },
                 { headers: { "X-WP-Nonce": appLocalizer.nonce } }
             );
 
-            console.log("Update Response:", response.data); // Debugging response
-
-            if (response.data.status === "success") { // Validate API response
+            if (response.data.success) {
                 setClassrooms((prevClassrooms) =>
                     prevClassrooms.map((g) =>
                         g.group_id === group.group_id ? { ...g, group_name: newName } : g

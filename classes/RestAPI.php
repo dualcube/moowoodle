@@ -80,7 +80,7 @@ class RestAPI {
         register_rest_route( MooWoodle()->rest_namespace, '/get-user-courses', [
             'methods'             => \WP_REST_Server::ALLMETHODS,
             'callback'            =>[ $this, 'get_user_courses' ],
-            'permission_callback' =>[ $this, 'moowoodle_permission' ],
+            'permission_callback' =>[ $this, 'user_has_api_permission' ],
         ]);
 
     }
@@ -90,21 +90,19 @@ class RestAPI {
      * @return bool
      */
     public function moowoodle_permission() {
-        return current_user_can( 'manage_options' ) ||true;
+        return current_user_can( 'manage_options' );
     }
 
     /**
-     * Check if the current user has one of the default WordPress roles.
+     * Check if the current user has API access based on allowed roles.
      *
-     * @return bool True if the user has one of the core roles, otherwise false.
+     * @return bool True if the user is an administrator or customer, otherwise false.
      */
-    public function user_has_core_role() {
-        $core_roles = [ 'administrator', 'editor', 'author', 'contributor', 'subscriber', 'customer', 'shop_manager' ];
+    public function user_has_api_permission() {
         $user = wp_get_current_user();
-        
-        return array_intersect( $core_roles, (array) $user->roles ) ? true : false;
+        return $user->ID && array_intersect( ['administrator', 'customer'], (array) $user->roles );
     }
-
+    
     /**
      * Seve the setting set in react's admin setting page.
      * @param mixed $request rest api request object

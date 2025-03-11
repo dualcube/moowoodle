@@ -18,11 +18,11 @@ const ViewEnroll = ({ classroom, onBack }) => {
     // Fetch data from API (both students and available courses)
     const fetchClassroomData = async (page = 1) => {
         try {
-            const response = await axios.get(getApiLink("view-enroll"), {
+            let response = await axios.get(getApiLink("view"), {
                 params: { group_id: classroom.group_id, page, per_page: studentsPerPage },
                 headers: { "X-WP-Nonce": appLocalizer?.nonce },
             });
-
+            response = response.data;
             setAvailableCourses(response.data.items || []);
             setEnrolledStudents(response.data.enrollments || []);
             setTotalPages(response.data.total_pages || 1);
@@ -67,6 +67,7 @@ const ViewEnroll = ({ classroom, onBack }) => {
         setIsLoading(true);
 
         const payload = {
+            group_id:classroom.group_id,
             email: newStudent.email,
             name: newStudent.name,
             order_id: classroom?.order_id || 0,
@@ -77,7 +78,7 @@ const ViewEnroll = ({ classroom, onBack }) => {
         };
 
         try {
-            const response = await axios.post(getApiLink("enroll-user"), payload, {
+            const response = await axios.post(getApiLink("enroll"), payload, {
                 headers: { "X-WP-Nonce": appLocalizer?.nonce },
             });
 
