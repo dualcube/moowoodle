@@ -1,18 +1,9 @@
 {
-  "apiVersion": 2,
   "name": "moowoodle/my-classroom",
   "title": "My Classroom",
-  "category": "moowoodle",
-  "icon": "welcome-learn-more",
-  "description": "Displays the My Classroom section inside WooCommerce My Account.",
-  "supports": {
-    "html": false
-  },
-  "textdomain": "moowoodle",
+  "category": "widgets",
+  "apiVersion": 2,
   "editorScript": "file:./index.js",
   "script": "file:./index.js",
-  "editorStyle": "file:./index.css",
-  "style": [
-    "file:./index.css"
-  ]
+  "style": "file:./index.css"
 }
