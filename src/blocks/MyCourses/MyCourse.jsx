@@ -15,18 +15,17 @@ const MyCourse = () => {
   }, [currentPage]);
 
   const fetchCourses = async (page) => {
-    if (!page || page < 1) return; // Prevent invalid API calls
-
+    if (!page || page < 1) return;
+  
     setLoading(true);
     setError(null);
-
+  
     try {
-      const response = await axios.post(
-        getApiLink("get-user-courses"),
-        { page, row: perPage },
-        { headers: { "X-WP-Nonce": appLocalizer.nonce } }
-      );
-
+      const response = await axios.get(getApiLink("courses"), {
+        params: { page, row: perPage }, // Correct way to pass query params
+        headers: { "X-WP-Nonce": appLocalizer.nonce },
+      });
+  
       if (response?.data?.courses) {
         setCourses(response.data.courses);
         setTotalPages(response.data.total_pages || 1);
@@ -39,9 +38,10 @@ const MyCourse = () => {
       setError("Failed to load courses. Please try again.");
       setCourses([]);
     }
-
+  
     setLoading(false);
   };
+  
 
   return (
     <div className="auto">
