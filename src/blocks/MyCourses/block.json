@@ -1,7 +1,7 @@
 {
 	"name": "moowoodle/my-courses",
 	"title": "My Course",
-	"category": "widgets",
+	"category": "moowoodle",
 	"apiVersion": 1,
 	"editorScript": "file:./index.js",
 	"script": "file:./index.js"
