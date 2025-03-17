@@ -16,157 +16,147 @@ class Enrollment {
 		add_action( 'woocommerce_product_meta_start', [ &$this, 'add_dates_with_product' ] );
 	}
 
+	public function get_course_quantity( $order ) {
+		$count = 0;
+
+		foreach( $order->get_items() as $item_id => $item ) {
+			$product = $item->get_product();
+			if ( $product->get_meta( 'moodle_course_id', true ) ) {
+				$count+= $item->get_quantity();
+			}
+			if( $count > 1 ) return $count;
+		}
+
+		return $count;
+	}
+
 	/**
-	 * Process the oreder when order status is complete.
+	 * Process the order when order status is complete.
 	 * @param int $order_id
 	 * @return void
 	 */
 	public function process_order( $order_id ) {
-		$order = new \WC_Order( $order_id );
-		$this->order	= $order;
+		$order           = new \WC_Order( $order_id );
+		$this->order     = $order;
 
-		foreach( $order->get_items() as $item_id => $item ) {
-			// Enroll moodle user
-			if ($order->get_meta('_wc_billing/MooWoodle/gift_someone', true)) {
-				
+		$quantity        = $this->get_course_quantity( $order );
+		$gifted          = $order->get_meta( "_wc_billing/MooWoodle/gift_someone", true );
+		$user_id         = $order->get_customer_id();
+		$user_name       = $order->get_billing_first_name() . " " . $order->get_billing_last_name();
 
-				$name  = $order->get_meta('_wc_billing/MooWoodle/full_name', true);
-				$email = $order->get_meta('_wc_billing/MooWoodle/email_address', true);
+		// Handle gifted orders
+		if ( $gifted ) {
+			$full_name   = $order->get_meta( "_wc_billing/MooWoodle/full_name", true );
+			$email       = $order->get_meta( "_wc_billing/MooWoodle/email_address", true );
+			$user_id     = $this->get_or_create_wp_user( $full_name, $email );
+			$user_name   = $full_name;
+		}
 
-				if ( empty( $name ) || empty( $email )) {
-					return rest_ensure_response( [
-						'success' => false,
-						'message' => __('Name and Email are required.', 'moowoodle'),
-					] );
-				}
+		if ( $quantity == 1 ) {
+			$item       = reset( $order->get_items() );
+			
+			if ( $item ) {
+				$product   = $item->get_product();
 
-				if ( ! is_email( $email ) ) {
-					return rest_ensure_response( [
-						'success' => false,
-						'message' => __('Invalid email format.', 'moowoodle'),
-					] );
-				}
-
-				$user = get_user_by( 'email', $email );
-				if ( ! $user ) {
-					$password = wp_generate_password(12, false);
-					$user_id = wp_create_user( $name, $password, $email );
-
-					if ( is_wp_error( $user_id ) ) {
-						return rest_ensure_response([
-							'success' => false,
-							'message' => __('Failed to create user: ', 'moowoodle') . $user_id->get_error_message(),
-						]);
-					}
-
-					wp_update_user(['ID' => $user_id, 'role' => 'customer']);
-				} else {
-					$user_id = $user->ID;
-				}
-
-				
-				$product_id = $item->get_product_id();  
-				$quantity   = $item->get_quantity();    
-				$course_id  = get_post_meta( $product_id, 'moodle_course_id', true );
-
-				
 				$enroll_data = [
-					'order_id'  => $order->get_id(),
-					'user_id'   => $user_id,
-					'user_name' => $name,
-					'product_id'=> $product_id,
-					'quantity'  => $quantity,
-					'course_id' => $course_id,
-				];
-
-				$this->create_customer_default_group_on_order( $enroll_data );
-
-			}else if ( $item->get_quantity() == 1 ) {
-				$enroll_data = [
-					'purchaser_id'         => $order->get_customer_id(),           
-					'course_id'            => $item->get_product() ? $item->get_product()->get_meta('linked_course_id', true) : '',   
-					'moodle_course_id'     => $item->get_product() ? $item->get_product()->get_meta('moodle_course_id', true) : '',                   
-					'order_id'             => $order_id,           
-					'item_id'              => $item_id,           
-					'group_item_id'        => 0,                        
-					'suspend'              => 0            
+					"purchaser_id"      => $user_id,
+					"course_id"         => $product ? $product->get_meta( "linked_course_id", true ) : "",
+					"moodle_course_id"  => $product ? $product->get_meta( "moodle_course_id", true ) : "",
+					"order_id"          => $order_id,
+					"item_id"           => key( $order->get_items() ),
+					"group_item_id"     => 0,
+					"suspend"           => 0
 				];
 
 				$this->process_enrollment( $enroll_data );
-
-			} else if ( $item->get_quantity() > 1 ) {
-				$product_id = $item->get_product_id(); 
-				$quantity   = $item->get_quantity();   
-				$course_id  = get_post_meta($product_id, 'linked_course_id', true); 
-
-				$enroll_data = [
-					'order_id'  => $order->get_id(),
-					'user_id'   => $order->get_customer_id(),
-					'user_name' => $order->get_billing_first_name() . ' ' . $order->get_billing_last_name(),
-					'product_id'=> $product_id,
-					'quantity'  => $quantity,
-					'course_id' => $course_id,
-				];
-				$this->create_customer_default_group_on_order( $enroll_data );
 			}
+		} else {
+			// Handle multiple course purchases (Classroom purchase)
+			$this->handle_classroom_purchase( $user_id, $user_name );
 		}
-			
+	}
+
+	
+	public function get_or_create_wp_user( $full_name, $email ) {
+		// Check if the user already exists
+		$user = get_user_by('email', $email);
+	
+		if ( ! $user ) {
+			// Generate a password
+			$password = wp_generate_password(12, false);
+	
+			// Create the user
+			$user_id = wp_create_user($full_name, $password, $email);
+	
+			if ( ! is_wp_error( $user_id ) ) {
+				// Assign 'customer' role
+				wp_update_user(['ID' => $user_id, 'role' => 'customer']);
+			}
+		} else {
+			$user_id = $user->ID;
+		}
+	
+		return $user_id;
 	}
 	
-	function create_customer_default_group_on_order( $enroll_data ) {
+
+	function handle_classroom_purchase( $user_id, $user_name ) {
+
+		$order = $this->order;
+
+		$enroll_data = [
+			'user_id'   => $user_id,
+			'order_id'  => $order->get_id(),
+			'user_name' => $user_name,
+		];
+
+		// Create a default classroom for the order and store the group ID
+		$enroll_data['group_id'] = $this->create_customer_default_classroom_on_order($enroll_data);
+
+		// Loop through order items
+		foreach ($order->get_items() as $item_id => $item) {
+			$product_id = $item->get_product_id();
+
+			// Update enroll_data for the current item
+			$enroll_data['product_id'] = $product_id;
+			$enroll_data['quantity'] = $item->get_quantity();
+			$enroll_data['course_id'] = get_post_meta($product_id, 'linked_course_id', true);
+
+			// Process course enrollment
+			$this->add_courses_each_class($enroll_data);
+		}
+	}
+
+	
+	function create_customer_default_classroom_on_order( $enroll_data ) {
 		global $wpdb;
 	
-		$order_id   = $enroll_data['order_id'];
-		$user_id    = $enroll_data['user_id'];
-		$user_name  = $enroll_data['user_name'];
-		$product_id = $enroll_data['product_id'];
-		$quantity   = $enroll_data['quantity'];
-		$course_id  = $enroll_data['course_id'];
+		$wpdb->insert("{$wpdb->prefix}moowoodle_group", [
+			'name'      => 'Classroom',
+			'user_id'   => $enroll_data['user_id'],
+			'order_id'  => $enroll_data['order_id'],
+			'user_name' => $enroll_data['user_name'],
+		], ['%s', '%d', '%d', '%s']);
 	
-		$default_group_name = 'Classroom';
-	
-		$customer_group = $wpdb->get_row(
-			$wpdb->prepare(
-				"SELECT id FROM " . $wpdb->prefix . "moowoodle_group WHERE user_id = %d AND name = %s", 
-				$user_id, 
-				$default_group_name
-			)
-		);
-
-		if ( is_null( $customer_group ) ) {
-			$wpdb->insert(
-				$wpdb->prefix . 'moowoodle_group',
-				array(
-					'name'      => $default_group_name,
-					'user_id'   => $user_id,
-					'order_id'  => $order_id,
-					'user_name' => $user_name,
-				),
-				array('%s', '%d', '%d', '%s')
-			);
-
-			$group_id = $wpdb->insert_id;
-		} else {
-			$group_id = $customer_group->id;
-		}
-	
-		$wpdb->insert(
-			$wpdb->prefix . 'moowoodle_group_items',
-			array(
-				'group_id'          => $group_id,
-				'course_id'         => $course_id,
-				'product_id'        => $product_id,
-				'user_id'           => $user_id,
-				'total_quantity'    => $quantity,
-				'available_quantity'=> $quantity,
-				'status'            => 'unenroll',
-			),
-			array('%d', '%d', '%d', '%d', '%d', '%d', '%s')
-		);
+		return $wpdb->insert_id ?: false;
 	}
 	
 
-
+	function add_courses_each_class($enroll_data) {
+		global $wpdb;
+	
+		$wpdb->insert("{$wpdb->prefix}moowoodle_group_items", [
+			'group_id'          => $enroll_data['group_id'],
+			'course_id'         => $enroll_data['course_id'],
+			'product_id'        => $enroll_data['product_id'],
+			'user_id'           => $enroll_data['user_id'],
+			'total_quantity'    => $enroll_data['quantity'],
+			'available_quantity'=> $enroll_data['quantity'],
+			'status'            => 'unenroll',
+		], ['%d', '%d', '%d', '%d', '%d', '%d', '%s']);
+	}
+	
+	
 	/**
 	 * Process the enrollment when the order status is complete and when adding any user to any group
 	 *
@@ -179,7 +169,7 @@ class Enrollment {
 		}
 		try {
 			$moodle_user_id = $this->get_moodle_user_id( $enroll_data[ 'purchaser_id' ] );
-			
+
 			if ( !$moodle_user_id ) {
 				return;
 			}
@@ -272,6 +262,7 @@ class Enrollment {
 				$password = $this->generate_password();
 				add_user_meta( $purchaser_details->get('ID'), 'moowoodle_moodle_user_pwd', $password );
 			}
+
 			$response = MooWoodle()->external_service->do_request( 'create_users', [ 'users' =>  [ [
 				'email' 	=> $purchaser_details->user_email,
 				'username'  => $purchaser_details->user_login,
@@ -286,6 +277,7 @@ class Enrollment {
 					]
 				]
 			] ] ] );
+	
 			// Not a valid response.
 			if ( ! $response[ 'data' ] ) return 0;
 
