@@ -25,7 +25,7 @@ class EndPoint {
      */
     private function register_block() {
         register_block_type(MOOWOODLE_PLUGIN_PATH . 'build/blocks/MyCourses/', [
-            'render_callback' => [$this, 'render_block'],
+            'render_callback' => [$this, 'render_my_block'],
         ]);
     }
 
@@ -52,7 +52,7 @@ class EndPoint {
     /**
      * Callback function to render the block.
      */
-    public function render_block() {
+    public function render_my_block() {
         return is_account_page() ? '<div id="moowoodle-my-course"></div>' : '';
     }
 
