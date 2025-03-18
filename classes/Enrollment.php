@@ -16,7 +16,7 @@ class Enrollment {
 		add_action( 'woocommerce_product_meta_start', [ &$this, 'add_dates_with_product' ] );
 	}
 
-	public function get_course_quantity( $order ) {
+	public function fetch_course_quantity( $order ) {
 		$count = 0;
 
 		foreach( $order->get_items() as $item_id => $item ) {
@@ -39,7 +39,7 @@ class Enrollment {
 		$order           = new \WC_Order( $order_id );
 		$this->order     = $order;
 
-		$quantity        = $this->get_course_quantity( $order );
+		$quantity        = $this->fetch_course_quantity( $order );
 		$gifted          = $order->get_meta( "_wc_billing/MooWoodle/gift_someone", true );
 		$user_id         = $order->get_customer_id();
 		$user_name       = $order->get_billing_first_name() . " " . $order->get_billing_last_name();
@@ -72,7 +72,7 @@ class Enrollment {
 			}
 		} else {
 			// Handle multiple course purchases (Classroom purchase)
-			$this->handle_classroom_purchase( $user_id, $user_name );
+			$this->process_classroom_purchase( $user_id, $user_name );
 		}
 	}
 
@@ -100,7 +100,7 @@ class Enrollment {
 	}
 	
 
-	function handle_classroom_purchase( $user_id, $user_name ) {
+	function process_classroom_purchase( $user_id, $user_name ) {
 
 		$order = $this->order;
 
@@ -111,7 +111,7 @@ class Enrollment {
 		];
 
 		// Create a default classroom for the order and store the group ID
-		$enroll_data['group_id'] = $this->create_customer_default_classroom_on_order($enroll_data);
+		$enroll_data['group_id'] = $this->assign_default_classroom_to_customer($enroll_data);
 
 		// Loop through order items
 		foreach ($order->get_items() as $item_id => $item) {
@@ -123,12 +123,12 @@ class Enrollment {
 			$enroll_data['course_id'] = get_post_meta($product_id, 'linked_course_id', true);
 
 			// Process course enrollment
-			$this->add_courses_each_class($enroll_data);
+			$this->add_courses_to_classroom( $enroll_data );
 		}
 	}
 
 	
-	function create_customer_default_classroom_on_order( $enroll_data ) {
+	function assign_default_classroom_to_customer( $enroll_data ) {
 		global $wpdb;
 	
 		$wpdb->insert("{$wpdb->prefix}moowoodle_group", [
@@ -142,7 +142,7 @@ class Enrollment {
 	}
 	
 
-	function add_courses_each_class($enroll_data) {
+	function add_courses_to_classroom( $enroll_data ) {
 		global $wpdb;
 	
 		$wpdb->insert("{$wpdb->prefix}moowoodle_group_items", [
@@ -407,9 +407,9 @@ class Enrollment {
 
 		try {
 			if ( $enroll_data[ 'group_item_id' ] == 0 ) {
-				return self::handle_individual_enrollment( $enroll_data, $previous_enrolled_courses );
+				return self::enroll_individual_user( $enroll_data, $previous_enrolled_courses );
 			} else {
-				return self::handle_group_enrollment( $enroll_data, $previous_enrolled_courses, $wpdb );
+				return self::enroll_user_from_group( $enroll_data, $previous_enrolled_courses, $wpdb );
 			}
 		} catch (Exception $e) {
 			return self::send_response(false, __('Enrollment processing failed: ', 'moowoodle') . $e->getMessage());
@@ -427,7 +427,7 @@ class Enrollment {
 	/**
 	 * Handle individual enrollment
 	 */
-	private static function handle_individual_enrollment( $enroll_data, $previous_enrolled_courses) {
+	private static function enroll_individual_user( $enroll_data, $previous_enrolled_courses) {
 		$enrolments = [[
 			'roleid'  => $enroll_data['role_id'],
 			'suspend' => $enroll_data['suspend'],
@@ -449,7 +449,7 @@ class Enrollment {
 	/**
 	 * Handle group enrollment
 	 */
-	private static function handle_group_enrollment( $enroll_data, $previous_enrolled_courses, $wpdb ) {
+	private static function enroll_user_from_group( $enroll_data, $previous_enrolled_courses, $wpdb ) {
 
 		// Fetch and validate group item
 		$group_item_data = $wpdb->get_row(

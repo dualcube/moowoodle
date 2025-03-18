@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { __ } from "@wordpress/i18n";
 import axios from "axios";
 import { getApiLink } from "../../services/apiService";
 import ViewEnroll from "./ViewEnroll";
@@ -34,11 +35,11 @@ const MyClassroom = () => {
             } else {
                 setClassrooms([]);
                 setTotalPages(1);
-                setError("No classrooms found.");
+                setError(__("No classrooms found.", "moowoodle-pro"));
             }
         } catch (err) {
             console.error("Error fetching classroom data:", err);
-            setError("Failed to load classrooms.");
+            setError(__("Failed to load classrooms.", "moowoodle-pro"));
         }
     
         setLoading(false);
@@ -87,11 +88,11 @@ const MyClassroom = () => {
                 setEditingClassroom(null); // Close input field
                 setNewName(""); // Clear input
             } else {
-                alert(response.data.message || "Failed to rename classroom.");
+                alert(response.data.message || __("Failed to rename classroom.", "moowoodle-pro"));
             }
         } catch (error) {
             console.error("Error renaming classroom:", error);
-            alert("An error occurred while updating the classroom.");
+            alert(__("An error occurred while updating the classroom.", "moowoodle-pro"));
         }
     };
 
@@ -105,11 +106,11 @@ const MyClassroom = () => {
             ) : (
                 <>
                     <div className="header">
-                        <h1>My Classroom</h1>
+                        <h1>{__("My Classroom", "moowoodle-pro")}</h1>
                     </div>
 
                     {loading ? (
-                        <p>Loading classrooms...</p>
+                        <p>{__("Loading classrooms...", "moowoodle-pro")}</p>
                     ) : error ? (
                         <p className="error-message">{error}</p>
                     ) : (
@@ -129,10 +130,10 @@ const MyClassroom = () => {
                                                             className="edit-input"
                                                         />
                                                         <button className="save-button" onClick={() => handleUpdateClassroom(group)}>
-                                                            Save
+                                                            {__("Save", "moowoodle-pro")}
                                                         </button>
                                                         <button className="cancel-button" onClick={() => setEditingClassroom(null)}>
-                                                            Cancel
+                                                            {__("Cancel", "moowoodle-pro")}
                                                         </button>
                                                     </>
                                                 ) : (
@@ -151,17 +152,17 @@ const MyClassroom = () => {
                                                         <li key={index}>• {item.course_name}</li>
                                                     ))
                                                 ) : (
-                                                    <li>No courses available</li>
+                                                    <li>{__("No courses available", "moowoodle-pro")}</li>
                                                 )}
                                             </ul>
 
                                             <button className="view-button" onClick={() => handleViewEnroll(group)}>
-                                                View
+                                                {__("View", "moowoodle-pro")}
                                             </button>
                                         </div>
                                     ))
                                 ) : (
-                                    <p>No classrooms found.</p>
+                                    <p>{__("No classrooms found.", "moowoodle-pro")}</p>
                                 )}
                             </div>
 
@@ -172,18 +173,18 @@ const MyClassroom = () => {
                                         onClick={() => handlePageChange(currentPage - 1)} 
                                         disabled={currentPage === 1}
                                     >
-                                        Previous
+                                        {__("Previous", "moowoodle-pro")}
                                     </button>
 
                                     <span className="page-info">
-                                        Page {currentPage} of {totalPages}
+                                        {__("Page", "moowoodle-pro")} {currentPage} {__("of", "moowoodle-pro")} {totalPages}
                                     </span>
 
                                     <button 
                                         onClick={() => handlePageChange(currentPage + 1)} 
                                         disabled={currentPage >= totalPages}
                                     >
-                                        Next
+                                        {__("Next", "moowoodle-pro")}
                                     </button>
                                 </div>
                             )}

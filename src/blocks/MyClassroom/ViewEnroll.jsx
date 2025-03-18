@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { __ } from "@wordpress/i18n";
 import axios from "axios";
 import Select from "react-select";
 import { getApiLink } from "../../services/apiService";
@@ -7,7 +8,7 @@ import CourseCard from "./CourseCard";
 
 const ViewEnroll = ({ classroom, onBack }) => {
     const [enrolledStudents, setEnrolledStudents] = useState([]);
-    const [availableCourses, setAvailableCourses] = useState([]); // Store courses from API
+    const [availableCourses, setAvailableCourses] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [newStudent, setNewStudent] = useState({ name: "", email: "", courses: [] });
@@ -15,7 +16,6 @@ const ViewEnroll = ({ classroom, onBack }) => {
     const [totalPages, setTotalPages] = useState(1);
     const studentsPerPage = 5;
 
-    // Fetch data from API (both students and available courses)
     const fetchClassroomData = async (page = 1) => {
         try {
             let response = await axios.get(getApiLink("view"), {
@@ -28,7 +28,7 @@ const ViewEnroll = ({ classroom, onBack }) => {
             setTotalPages(response.data.total_pages || 1);
             setCurrentPage(response.data.current_page || page);
         } catch (error) {
-            console.error("Error fetching classroom data:", error);
+            console.error(__("Error fetching classroom data:", "moowoodle-pro"), error);
         }
     };
 
@@ -36,7 +36,6 @@ const ViewEnroll = ({ classroom, onBack }) => {
         fetchClassroomData(currentPage);
     }, [currentPage]);
 
-    // Convert fetched courses into options for Select
     const courseOptions = availableCourses.map((item) => ({
         value: item.course_id,
         label: item.course_name,
@@ -60,14 +59,14 @@ const ViewEnroll = ({ classroom, onBack }) => {
         e.preventDefault();
 
         if (!newStudent.name || !newStudent.email || !newStudent.courses.length) {
-            alert("Please fill in all fields.");
+            alert(__("Please fill in all fields.", "moowoodle-pro"));
             return;
         }
 
         setIsLoading(true);
 
         const payload = {
-            group_id:classroom.group_id,
+            group_id: classroom.group_id,
             email: newStudent.email,
             name: newStudent.name,
             order_id: classroom?.order_id || 0,
@@ -88,13 +87,13 @@ const ViewEnroll = ({ classroom, onBack }) => {
 
                 await fetchClassroomData(1);
 
-                alert("Enrollment successful! The classroom data has been updated.");
+                alert(__("Enrollment successful! The classroom data has been updated.", "moowoodle-pro"));
             } else {
-                alert("Enrollment failed: " + (response.data.message || "Unknown error"));
+                alert(__("Enrollment failed: ", "moowoodle-pro") + (response.data.message || __("Unknown error", "moowoodle-pro")));
             }
         } catch (error) {
-            console.error("Error enrolling student:", error);
-            alert("Error enrolling student. Please try again.");
+            console.error(__("Error enrolling student:", "moowoodle-pro"), error);
+            alert(__("Error enrolling student. Please try again.", "moowoodle-pro"));
         }
 
         setIsLoading(false);
@@ -109,8 +108,8 @@ const ViewEnroll = ({ classroom, onBack }) => {
 
     return (
         <div className="enrollment-container">
-            <button className="back-button" onClick={onBack}>← Back to Classrooms</button>
-            <button className="back-button">Add Course</button>
+            <button className="back-button" onClick={onBack}>← {__("Back to Classrooms", "moowoodle-pro")}</button>
+            <button className="back-button">{__("Add Course", "moowoodle-pro")}</button>
 
             <div className="course-grid">
                 {availableCourses.map((course) => (
@@ -118,10 +117,10 @@ const ViewEnroll = ({ classroom, onBack }) => {
                 ))}
             </div>
 
-            <h1>Enrolled Students for {classroom.group_name}</h1>
+            <h1>{__("Enrolled Students for", "moowoodle-pro")} {classroom.group_name}</h1>
 
             <button className="enroll-button" onClick={() => setShowForm(!showForm)}>
-                {showForm ? "Cancel" : "+ Enroll Student"}
+                {showForm ? __("Cancel", "moowoodle-pro") : "+ " + __("Enroll Student", "moowoodle-pro")}
             </button>
 
             {showForm && (
@@ -129,7 +128,7 @@ const ViewEnroll = ({ classroom, onBack }) => {
                     <input
                         type="text"
                         name="name"
-                        placeholder="Student Name"
+                        placeholder={__("Student Name", "moowoodle-pro")}
                         value={newStudent.name}
                         onChange={handleInputChange}
                         required
@@ -137,7 +136,7 @@ const ViewEnroll = ({ classroom, onBack }) => {
                     <input
                         type="email"
                         name="email"
-                        placeholder="Student Email"
+                        placeholder={__("Student Email", "moowoodle-pro")}
                         value={newStudent.email}
                         onChange={handleInputChange}
                         required
@@ -145,14 +144,14 @@ const ViewEnroll = ({ classroom, onBack }) => {
                     <Select
                         isMulti
                         options={courseOptions}
-                        placeholder="Select Courses"
+                        placeholder={__("Select Courses", "moowoodle-pro")}
                         value={courseOptions.filter((option) =>
                             newStudent.courses.some((course) => course.course_id === option.value)
                         )}
                         onChange={handleCourseChange}
                     />
                     <button type="submit" className="save-button" disabled={isLoading}>
-                        {isLoading ? "Enrolling..." : "Enroll"}
+                        {isLoading ? __("Enrolling...", "moowoodle-pro") : __("Enroll", "moowoodle-pro")}
                     </button>
                 </form>
             )}
@@ -162,8 +161,8 @@ const ViewEnroll = ({ classroom, onBack }) => {
                     enrolledStudents.map((student, index) => (
                         <div key={index} className="student-card">
                             <h2>{student.email}</h2>
-                            <p><strong>Email:</strong> {student.email}</p>
-                            <p><strong>Enrolled Courses:</strong></p>
+                            <p><strong>{__("Email:", "moowoodle-pro")}</strong> {student.email}</p>
+                            <p><strong>{__("Enrolled Courses:", "moowoodle-pro")}</strong></p>
                             <ul>
                                 {student.courses.map((course, idx) => (
                                     <li key={idx}>{course.course_name} - <i>{course.date}</i></li>
@@ -172,18 +171,18 @@ const ViewEnroll = ({ classroom, onBack }) => {
                         </div>
                     ))
                 ) : (
-                    <p>No students enrolled yet.</p>
+                    <p>{__("No students enrolled yet.", "moowoodle-pro")}</p>
                 )}
             </div>
 
             {totalPages > 1 && (
                 <div className="pagination">
                     <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-                        Previous
+                        {__("Previous", "moowoodle-pro")}
                     </button>
-                    <span>Page {currentPage} of {totalPages}</span>
+                    <span>{__("Page", "moowoodle-pro")} {currentPage} {__("of", "moowoodle-pro")} {totalPages}</span>
                     <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-                        Next
+                        {__("Next", "moowoodle-pro")}
                     </button>
                 </div>
             )}
