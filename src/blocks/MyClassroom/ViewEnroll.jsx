@@ -27,8 +27,8 @@ const ViewEnroll = ({ classroom, onBack }) => {
             response = response.data;
             setAvailableCourses(response.data.items || []);
             setEnrolledStudents(response.data.enrollments || []);
-            setTotalPages(response.data.total_pages || 1);
-            setCurrentPage(response.data.current_page || page);
+            setTotalPages(response.total_pages || 1);
+            setCurrentPage(response.current_page || page);
         } catch (error) {
             console.error(__("Error fetching classroom data:", "moowoodle-pro"), error);
         }
@@ -133,11 +133,9 @@ const ViewEnroll = ({ classroom, onBack }) => {
         setIsLoading(false);
     };
     
-
     const handlePageChange = (page) => {
         if (page >= 1 && page <= totalPages) {
-            setCurrentPage(page);
-            fetchClassroomData(page);
+            setCurrentPage(page); // Rely on useEffect to fetch data
         }
     };
 
@@ -156,6 +154,7 @@ const ViewEnroll = ({ classroom, onBack }) => {
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
     };
+
     return (
         <div className="enrollment-container">
             <button className="back-button" onClick={onBack}>← {__("Back to Classrooms", "moowoodle-pro")}</button>
