@@ -14,6 +14,8 @@ const ViewEnroll = ({ classroom, onBack }) => {
     const [newStudent, setNewStudent] = useState({ name: "", email: "", courses: [] });
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [csvFile, setCsvFile] = useState(null);
+    const [showBulkModal, setShowBulkModal] = useState(false);
     const studentsPerPage = 5;
 
     const fetchClassroomData = async (page = 1) => {
@@ -57,14 +59,12 @@ const ViewEnroll = ({ classroom, onBack }) => {
 
     const handleEnrollStudent = async (e) => {
         e.preventDefault();
-
         if (!newStudent.name || !newStudent.email || !newStudent.courses.length) {
             alert(__("Please fill in all fields.", "moowoodle-pro"));
             return;
         }
 
         setIsLoading(true);
-
         const payload = {
             group_id: classroom.group_id,
             email: newStudent.email,
@@ -84,9 +84,7 @@ const ViewEnroll = ({ classroom, onBack }) => {
             if (response.data.success) {
                 setShowForm(false);
                 setNewStudent({ name: "", email: "", courses: [] });
-
                 await fetchClassroomData(1);
-
                 alert(__("Enrollment successful! The classroom data has been updated.", "moowoodle-pro"));
             } else {
                 alert(__("Enrollment failed: ", "moowoodle-pro") + (response.data.message || __("Unknown error", "moowoodle-pro")));
@@ -95,9 +93,46 @@ const ViewEnroll = ({ classroom, onBack }) => {
             console.error(__("Error enrolling student:", "moowoodle-pro"), error);
             alert(__("Error enrolling student. Please try again.", "moowoodle-pro"));
         }
-
         setIsLoading(false);
     };
+
+    const handleCsvUpload = async (e) => {
+        e.preventDefault();
+        if (!csvFile) {
+            alert(__("Please select a CSV file.", "moowoodle-pro"));
+            return;
+        }
+    
+        setIsLoading(true);
+        const formData = new FormData();
+        formData.append("file", csvFile);
+        formData.append("group_id", classroom.group_id);
+        formData.append("order_id", classroom?.order_id || 0);
+    
+        try {
+            const response = await axios.post(getApiLink("bulk-enroll"), formData, {
+                headers: {
+                    "X-WP-Nonce": appLocalizer?.nonce,
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+    
+            if (response.data.success) {
+                setCsvFile(null);
+                setShowBulkModal(false);
+                await fetchClassroomData(1);
+                alert(__("Bulk enrollment successful!", "moowoodle-pro"));
+            } else {
+                alert(__("Bulk enrollment failed: ", "moowoodle-pro") + (response.data.message || __("Unknown error", "moowoodle-pro")));
+            }
+        } catch (error) {
+            console.error(__("Error during bulk enrollment:", "moowoodle-pro"), error);
+            alert(__("Error during bulk enrollment. Please try again.", "moowoodle-pro"));
+        }
+        
+        setIsLoading(false);
+    };
+    
 
     const handlePageChange = (page) => {
         if (page >= 1 && page <= totalPages) {
@@ -106,10 +141,24 @@ const ViewEnroll = ({ classroom, onBack }) => {
         }
     };
 
+    const downloadSampleCsv = () => {
+        const sampleCsvContent = `name,email
+    John Doe,john@example.com
+    Jane Smith,jane@example.com`;
+        
+        const blob = new Blob([sampleCsvContent], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'sample-enrollment.csv';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+    };
     return (
         <div className="enrollment-container">
             <button className="back-button" onClick={onBack}>← {__("Back to Classrooms", "moowoodle-pro")}</button>
-            <button className="back-button">{__("Add Course", "moowoodle-pro")}</button>
 
             <div className="course-grid">
                 {availableCourses.map((course) => (
@@ -119,9 +168,17 @@ const ViewEnroll = ({ classroom, onBack }) => {
 
             <h1>{__("Enrolled Students for", "moowoodle-pro")} {classroom.group_name}</h1>
 
-            <button className="enroll-button" onClick={() => setShowForm(!showForm)}>
-                {showForm ? __("Cancel", "moowoodle-pro") : "+ " + __("Enroll Student", "moowoodle-pro")}
-            </button>
+            <div className="button-group">
+                <button className="enroll-button" onClick={() => setShowForm(!showForm)}>
+                    {showForm ? __("Cancel", "moowoodle-pro") : "+ " + __("Enroll Student", "moowoodle-pro")}
+                </button>
+                <button 
+                    className="enroll-button bulk-enroll-button" 
+                    onClick={() => setShowBulkModal(!showBulkModal)}
+                >
+                    {showBulkModal ? __("Cancel", "moowoodle-pro") : __("Bulk Enroll (CSV)", "moowoodle-pro")}
+                </button>
+            </div>
 
             {showForm && (
                 <form className="enroll-form" onSubmit={handleEnrollStudent}>
@@ -152,6 +209,31 @@ const ViewEnroll = ({ classroom, onBack }) => {
                     />
                     <button type="submit" className="save-button" disabled={isLoading}>
                         {isLoading ? __("Enrolling...", "moowoodle-pro") : __("Enroll", "moowoodle-pro")}
+                    </button>
+                </form>
+            )}
+
+            {showBulkModal && (
+                <form className="enroll-form" onSubmit={handleCsvUpload}>
+                    <button 
+                        type="button" 
+                        className="save-button download-sample-button"
+                        onClick={downloadSampleCsv}
+                    >
+                        {__("Download Sample CSV", "moowoodle-pro")}
+                    </button>
+                    <input
+                        type="file"
+                        accept=".csv"
+                        onChange={(e) => setCsvFile(e.target.files[0])}
+                        required
+                    />
+                    <button 
+                        type="submit" 
+                        className="save-button"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? __("Uploading...", "moowoodle-pro") : __("Upload CSV", "moowoodle-pro")}
                     </button>
                 </form>
             )}

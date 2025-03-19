@@ -31,7 +31,7 @@ $new_user_created = get_user_meta( $user_id, 'moowoodle_moodle_new_user_created'
 <?php
 
 foreach ( $enrollments[ 'enrolments' ] as $enrollment ) {
-	$course_url = MooWoodle()->course->get_course_url( $enrollment[ 'courseid' ], $enrollment[ 'course_name' ] );
+	$course_url = MooWoodle()->course->get_course_url( $enrollment[ 'courseid' ] );
 	?>
 		<p>
 		<?php echo( 'You are enrolled in ' . $course_url ); ?>
