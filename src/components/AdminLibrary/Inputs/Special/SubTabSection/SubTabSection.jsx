@@ -16,7 +16,7 @@ const SubTabSection = (props) => {
                 {menuitem.map((menu, index) => (
                     <div
                         key={index}
-                        className={`tab-section-menu ${ menu.id === currentTab.id ? 'active' : '' }`}
+                        className={`tab-section-menu ${ menu.id === currentTab.id ? 'active' : '' }  ${menu.id}-tab`}
                         onClick={(e) => {
                             setCurrentTab(menu)
                         }}

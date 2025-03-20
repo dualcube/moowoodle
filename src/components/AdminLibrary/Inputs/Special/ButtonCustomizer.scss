@@ -1,4 +1,6 @@
-@import '/src/components/config.scss';
+// @import '/src/components/config.scss';
+@import '../../../config.scss';
+
 
 .settings-input-content {
   .btn-wrapper {
@@ -13,6 +15,7 @@
       top: 100%;
       right: 0;
       z-index: 1;
+      cursor: auto;
 
       .btn-customizer-menu {
         display: flex;
@@ -30,14 +33,15 @@
           display: flex;
           justify-content: center;
           align-items: center;
+          cursor: pointer;
 
           &:last-child {
             border: none;
           }
 
           .color-img {
-            width: 1.25rem;
-            height: 1.25rem;
+            width: 1.2rem;
+            height: 1.2rem;
             border-radius: $border-radius-small;
             background: #90EE90;
             background: linear-gradient(to top left, #90EE90 0%, #FFFFFF 50%, #FF47D0 100%), linear-gradient(to bottom left, #FFFF00 0%, #FFFFFF 50%, #0000FF 100%);
@@ -45,7 +49,10 @@
 
           i {
             color: $color-white;
-            font-size: 1.15rem;
+            font-size: 1.2rem;
+          }
+          .adminLib-link{
+            font-size: 1.7rem;
           }
         }
       }
@@ -77,12 +84,11 @@
           justify-content: center;
           align-items: center;
         }
-
-        .color,
-        .border,
-        .font,
-        .size,
-        .link {
+        input[type=color] {
+          cursor: pointer;
+        }
+        
+        .section-wrapper {
           display: flex;
           flex-direction: column;
           gap: 0.75rem;
@@ -115,7 +121,7 @@
                   
                   input[type=number] {
                     -moz-appearance: textfield;
-                  }
+                  }   
                 }
               }
 

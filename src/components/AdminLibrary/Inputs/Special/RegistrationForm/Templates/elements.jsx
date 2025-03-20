@@ -1,3 +1,5 @@
+import { __ } from "@wordpress/i18n";
+
 const Elements = ( props ) => {
     const { selectOptions, onClick } = props;
 
@@ -5,7 +7,7 @@ const Elements = ( props ) => {
         <>
             <aside className='elements-section'>
                 <div className='section-meta'>
-                    <h2>Form fields</h2>
+                    <h2>{__("Form fields", "catalogx")}</h2>
                 </div>
                 <main className='section-container'>
                     {

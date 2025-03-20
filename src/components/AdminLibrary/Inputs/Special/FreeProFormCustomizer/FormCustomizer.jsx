@@ -3,9 +3,10 @@ import './FormCustomizer.scss'
 import '../RegistrationForm/RegistrationForm.scss'
 import SubTabSection from '../SubTabSection/SubTabSection';
 import ProForm from '../RegistrationForm/RegistrationForm';
+import { __ } from "@wordpress/i18n";
 
 const FormCustomizer = (props) => {
-    const {setting, proSetting, proSettingChange, onChange} = props;
+    const {setting, proSetting, proSettingChange, moduleEnabledChange, onChange} = props;
     const settingChange = useRef(false);
     const [formFieldsData, setFromFieldsData] = useState(setting['freefromsetting'] || []);
     
@@ -21,6 +22,7 @@ const FormCustomizer = (props) => {
     }
     
     const activeDeactiveFields = (fieldKey, activeStatus) => {
+        if (moduleEnabledChange()) return;
         settingChange.current = true;
         if (getFields(fieldKey)) {
             setFromFieldsData((prevData) => {
@@ -39,6 +41,7 @@ const FormCustomizer = (props) => {
     }
     
     const updateFieldLabel = (fieldKey, labelValue) => {
+        if (moduleEnabledChange()) return;
         settingChange.current = true;
         if (getFields(fieldKey)) {
             setFromFieldsData((prevData) => {
@@ -96,8 +99,8 @@ const FormCustomizer = (props) => {
     ]
 
     const [menu, setMenu] = useState([
-        { name: "Pro", link: "hi", id: 1, icon: 'adminLib-cart' },
         { name: "Free", link: "hi", id: 2, icon: 'adminLib-info' },
+        { name: "Pro", link: "hi", id: 1, icon: 'adminLib-cart' },
     ]);
 
     // Set default current tab
@@ -117,8 +120,8 @@ const FormCustomizer = (props) => {
                     :
                     <div>
                         <div className='fields-header'>
-                            <h3 class="name">Field Name</h3>
-                            <h3 class="set-name">Set new field name</h3>
+                        <h3 className="name">{ __('Field Name', 'catalogx') }</h3>
+                        <h3 className="set-name">{ __('Set new field name', 'catalogx') }</h3>
                         </div>
                         <div className='registrationFrom-main-wrapper-section'>
                             <div className='form-field'>
@@ -148,7 +151,7 @@ const FormCustomizer = (props) => {
                                                         activeDeactiveFields(fields.key, readonlyFields[index]);
                                                     }}
                                                 >
-                                                    <i class={`admin-font ${readonlyFields[index] ? 'adminLib-eye-blocked' : 'adminLib-eye'}`}></i>
+                                                    <i class={`admin-font ${readonlyFields[index] ? 'adminLib-eye-blocked enable-visibility' : 'adminLib-eye'}`}></i>
                                                 </div>
                                             </div>
                                         );

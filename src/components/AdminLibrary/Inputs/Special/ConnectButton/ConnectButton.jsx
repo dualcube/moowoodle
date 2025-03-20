@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { sendApiResponse, getApiLink } from "../../../../../services/apiService";
 import './ConnectButton.scss';
 import { Link } from "react-router-dom";
+import { __ } from "@wordpress/i18n";
 
 const ConnectButton = (props) => {
     const { __ } = wp.i18n;
@@ -152,13 +153,16 @@ const ConnectButton = (props) => {
             {
                 testStatus &&
                 <div className={`fetch-display-output ${testStatus === 'Failed' ? 'failed' : 'success'}`}>
-                    {testStatus === 'Failed'
-                        ? (
-                            <p>
-                                Test connection failed. Check further details in <Link className="errorlog-link" to={'?page=moowoodle#&tab=settings&subtab=log'}>error log</Link>.
-                            </p>
-                        )
-                        : 'Test connection successful'}
+                    {testStatus === 'Failed' ? (
+                        <p>
+                        {__('Test connection failed. Check further details in', 'catalogx')}{' '}
+                        <Link className="errorlog-link" to={'?page=moowoodle#&tab=settings&subtab=log'}>
+                            {__('error log', 'catalogx')}
+                        </Link>.
+                        </p>
+                    ) : (
+                        __('Test connection successful', 'catalogx')
+                    )}
                 </div>
             }
         </div>

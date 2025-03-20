@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { __ } from "@wordpress/i18n";
 
 const Attachment = (props) => {
     const { formField, onChange } = props;
@@ -26,7 +26,7 @@ const Attachment = (props) => {
                         <div className="wrapper">
                         <i class="adminLib-cloud-upload"></i>
                         <p className="heading">
-                            <span>Click to upload</span> or drag and drop
+                            <span>{ __('Click to upload', 'catalogx') }</span> { __('or drag and drop', 'catalogx') }
                         </p>
                         </div>
                     </label>
