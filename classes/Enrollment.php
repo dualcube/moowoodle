@@ -77,11 +77,10 @@ class Enrollment {
 				"suspend"          => 0
 			] );
 		} else {
-			$this->process_classroom_purchase( $user_id, $user_name );
+			do_action( 'moowoodle_after_classroom_purchase', $user_id, $user_name, $order );
 		}
 	}
 
-	
 	public function get_or_create_wp_user( $user_name, $email ) {
 
 		// Check if the user already exists
@@ -108,66 +107,6 @@ class Enrollment {
 	
 		return $user_id;
 	}
-	
-	
-	
-
-	function process_classroom_purchase( $user_id, $user_name ) {
-
-		$order = $this->order;
-
-		$enroll_data = [
-			'user_id'   => $user_id,
-			'order_id'  => $order->get_id(),
-			'user_name' => $user_name,
-		];
-
-		// Create a default classroom for the order and store the group ID
-		$enroll_data['group_id'] = $this->assign_default_classroom_to_customer($enroll_data);
-
-		// Loop through order items
-		foreach ($order->get_items() as $item_id => $item) {
-			$product_id = $item->get_product_id();
-
-			// Update enroll_data for the current item
-			$enroll_data['product_id'] = $product_id;
-			$enroll_data['quantity'] = $item->get_quantity();
-			$enroll_data['course_id'] = get_post_meta($product_id, 'linked_course_id', true);
-
-			// Process course enrollment
-			$this->add_courses_to_classroom( $enroll_data );
-		}
-	}
-
-	
-	function assign_default_classroom_to_customer( $enroll_data ) {
-		global $wpdb;
-	
-		$wpdb->insert("{$wpdb->prefix}moowoodle_group", [
-			'name'      => 'Classroom',
-			'user_id'   => $enroll_data['user_id'],
-			'order_id'  => $enroll_data['order_id'],
-			'user_name' => $enroll_data['user_name'],
-		], ['%s', '%d', '%d', '%s']);
-	
-		return $wpdb->insert_id ?: false;
-	}
-	
-
-	function add_courses_to_classroom( $enroll_data ) {
-		global $wpdb;
-	
-		$wpdb->insert("{$wpdb->prefix}moowoodle_group_items", [
-			'group_id'          => $enroll_data['group_id'],
-			'course_id'         => $enroll_data['course_id'],
-			'product_id'        => $enroll_data['product_id'],
-			'user_id'           => $enroll_data['user_id'],
-			'total_quantity'    => $enroll_data['quantity'],
-			'available_quantity'=> $enroll_data['quantity'],
-			'status'            => 'unenroll',
-		], ['%d', '%d', '%d', '%d', '%d', '%d', '%s']);
-	}
-	
 	
 	/**
 	 * Process the enrollment when the order status is complete and when adding any user to any group
