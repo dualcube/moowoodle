@@ -7,6 +7,7 @@ import Synchronization from "./components/Synchronization/Synchronization";
 import Courses from "./components/Courses/Courses";
 import Enrollment from "./components/Enrollment/Enrollment";
 
+//hello
 const Route = () => {
     const currentTab = new URLSearchParams(useLocation().hash);
     return (
