@@ -1,7 +1,7 @@
 <?php
 
 define( 'MOOWOODLE_PLUGIN_TOKEN', 'moowoodle' );
-define( 'MOOWOODLE_PLUGIN_VERSION', '3.2.10' );
+define( 'MOOWOODLE_PLUGIN_VERSION', '3.2.11' );
 define( 'MOOWOODLE_PLUGIN_SERVER_URL', 'http://plugins.dualcube.com' );
 define( 'MOOWOODLE_MOODLE_PLUGIN_URL', '/auth/moowoodle/login.php?data=' );
 define( 'MOOWOODLE_REST_NAMESPACE', 'moowoodle/v1' );
