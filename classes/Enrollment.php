@@ -269,6 +269,8 @@ class Enrollment {
 		foreach ( $enrolments as $key => $value ) {
 			unset( $enrolments[ $key ][ 'linked_course_id' ] );
 			unset( $enrolments[ $key ][ 'course_name' ] );
+			unset( $enrolments[ $key ][ 'start_date' ] );
+			unset( $enrolments[ $key ][ 'student_name' ] );
 		}
 
 		// enroll user to moodle course by core external function.
@@ -278,12 +280,22 @@ class Enrollment {
 		$this->order->update_meta_data( 'moodle_user_enrolment_date', time() );
 		$this->order->save();
 
+		$check_sso=MooWoodle()->setting->get_setting('moowoodle_sso_enable');
+
+		if ( in_array( 'moowoodle_sso_enable', $check_sso ) ) {
+
+			do_action( 'moowoodle_after_enrol_moodle_user_with_sso', $enrolment_data, $this->order->get_user_id() );
+		} else {
+
 		/**
 		 * Action hook after a user enroll in moodle.
 		 * @var array $enrollment_data
 		 * @var int $userid
 		 */
 		do_action( 'moowoodle_after_enrol_moodle_user', $enrolment_data, $this->order->get_user_id() );
+		
+	    }
+
 	}
 
 	/**
@@ -304,7 +316,7 @@ class Enrollment {
 		foreach ( $this->order->get_items() as $item ) {
 			// Get moowoodle course id
 			$course_id = get_post_meta( $item->get_product_id(), 'moodle_course_id', true );
-			
+			$start_date = get_post_meta( $item->get_product_id(), '_course_startdate', true );
 			// If product is not associate with moodle course.
 			if ( empty( $course_id ) ) continue;
 
@@ -315,6 +327,8 @@ class Enrollment {
 				'suspend'		   => $suspend,
 				'linked_course_id' => get_post_meta( $item->get_product_id(), 'linked_course_id', true ),
 				'course_name'	   => get_the_title( $item->get_product_id() ),
+				'student_name'     => $this->order->get_billing_first_name() . ' ' . $this->order->get_billing_last_name(),
+				'start_date'       => $start_date ? intval($start_date) : '',
 			];
 		}
 
