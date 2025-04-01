@@ -6,6 +6,7 @@ import './RegistrationForm.scss'
 import Elements from "./Templates/elements";
 import SettingMetaBox from "./Templates/MetaBox";
 import ButtonCustomizer from "../ButtonCustomizer";
+import { __ } from "@wordpress/i18n";
 
 import { useSetting } from "../../../../../contexts/SettingContext"; 
 
@@ -21,7 +22,7 @@ const DEFAULT_OPTIONS = [
     },
     {
         label: 'Authorized Agent',
-        value: 'authorized_agent'
+        value: 'authorized agent'
     }
 ];
 const DEFAULT_PLACEHOLDER = (type) => `${type}`;
@@ -66,9 +67,9 @@ const selectOptions = [
         label: 'Dropdown'
     },
     {
-        icon: 'adminLib-captcha-automatic-code-svgrepo-com icon-form-recaptcha',
-        value: 'recapta',
-        label: 'Recapta'
+        icon: 'adminLib-captcha-automatic-code icon-form-recaptcha',
+        value: 'recaptcha',
+        label: 'reCaptcha v3'
     },
     {
         icon: 'adminLib-submission-message icon-form-attachment',
@@ -113,7 +114,7 @@ const AddNewBtn = (props) => {
                         <div onClick={(event) => { onAddNew?.() }}>
                             <i className="admin-font adminLib-move"></i>
                         </div>
-                        <p>Click to add new field</p>
+                        <p>{ __('Click to add next text field', 'catalogx') }</p>
                     </div>
                     :
                     <div className="add-new-sections" onClick={(event) => { onAddNew?.() }} >
@@ -487,7 +488,7 @@ const CustomFrom = (props) => {
                                                 />
                                             }
                                             {
-                                                formField.type == 'recapta' &&
+                                                formField.type == 'recaptcha' &&
                                                 <Template.Recaptach
                                                     formField={formField}
                                                     onChange={(key, value) => handleFormFieldChange(index, key, value)}
@@ -535,7 +536,7 @@ const CustomFrom = (props) => {
 
                 <section className="settings-input-content">
                     <ButtonCustomizer
-                        text='Submit'
+                        text={buttonSetting.button_text && buttonSetting.button_text || 'Submit'}
                         setting={buttonSetting}
                         onChange={(key, value, isRestoreDefaults=false) => {
                             if (proSettingChange()) return;

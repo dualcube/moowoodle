@@ -1,5 +1,4 @@
-@import '/src/components/config.scss';
-
+@import './../../config.scss';
 
 .load-table {
   border-collapse: collapse;
@@ -15,7 +14,7 @@
     word-break: normal;
     border-color: rgba(0, 0, 0, 0.2);
     color: #333;
-    background-color: $color-white;
+    background-color: #fff;
     flex-grow: 1;
 
     &:first-child {
@@ -87,7 +86,7 @@
     &>div {
       flex: 1 0 9.45rem;
       width: 100%;
-      max-width: 10rem;
+      max-width: 12rem;
 
       div {
         background-color: transparent;
@@ -101,7 +100,11 @@
         background: $color-white;
         z-index: 5;
         padding: 1rem;
+        border: $border-light-small;
 
+          input{
+            width: 100%;
+          }
         .rdrDateRangePickerWrapper {
 
           .rdrDefinedRangesWrapper {
@@ -140,9 +143,9 @@
       input,
       select {
         background-color: $color-white;
-        width: 100%;
         outline: none;
         border: $border-light-medium;
+        width: 100%;
 
         &:focus {
           box-shadow: none;
@@ -225,6 +228,7 @@
     .rdt_TableRow {
       position: relative;
       padding: 0 0.313rem;
+      align-items: start;
 
       &:nth-child(odd) {
         background: $background-color;
@@ -261,13 +265,15 @@
             }
           }
         }
-
         .table-row-custom {
           display: flex;
-          align-items: center;
           justify-content: flex-start;
           gap: 0.5rem;
+          padding: 0;
 
+          .hide-title{
+            display: none;
+          }
           img {
             width: 3.15rem;
             height: 3.15rem;
@@ -284,12 +290,6 @@
               flex-direction: column;
               align-items: flex-start;
               gap: 0.25rem;
-
-              &:hover {
-                .action-btn {
-                  visibility: visible;
-                }
-              }
 
               .action-btn {
                 display: flex;
@@ -317,26 +317,25 @@
   }
 }
 
-
 .rdt_Pagination {
   display: grid !important; // For overwrite defauld grid system
   grid-template-columns: 7rem 1fr 6rem 10rem;
   place-content: center;
-
-  .bpcekY{
-    svg{
-      display: none; // For hide svg icon
-    }
+  
+  span{
+    margin: 0;
   }
-  .sc-lmoLKH.lcunyj {
-    select {
-      &:focus {
-        border: none;
-        color: $color-active;
-        box-shadow: none;
+  select{
+    background: none; // For hide defauld pagination icon
+  }
+    div{
+      width: fit-content;
+
+      svg{
+        right: 0.125rem;
+        top: 0.063rem;
       }
     }
-  }
 }
 
 @media only screen and (max-width: 85.365rem) {
@@ -346,13 +345,13 @@
         display: flex;
 
         .rdt_TableCol {
-
+          display:none;
           &:nth-child(1),
           &:nth-child(2),
           &:nth-child(3) {
             display: inline-flex;
             max-width: 33% !important; // To overwrite default table width for only responsive device
-            min-width: 5% !important; // To overwrite default table width for only responsive device
+            min-width: 5% !important; // To overwrite default table width for only responsive device            
           }
         }
       }
@@ -384,9 +383,12 @@
             display: inline-flex !important; // force to set display type for laptop screen
             max-width: 33% !important; // To overwrite default table cell size only responsive device
             min-width: 5% !important; // To overwrite default table cell size only responsive device
+            display: inline;
 
-            .table-row-custom {
-              padding: 0;
+            .order-status{
+              .hide-title{
+                display: none; // Hide 1st 3 columns title only responsive device
+              }
             }
           }
 
@@ -406,8 +408,9 @@
             overflow: hidden;
             padding: 0.313rem 0.625rem;
 
-            h4 {
+            .hide-title{
               display: block;
+              margin: 0;
             }
           }
         }
@@ -416,6 +419,12 @@
   }
 }
 
+// block editor icon style
+.block-editor-block-icon{
+  .adminLib-icon{
+    font-size: 1.4rem;
+  }
+}
 
 @media screen and (max-width:37.737rem) {
   .rdt_Pagination {

@@ -11,7 +11,12 @@ const OPtionMetaBox = (props) => {
     }, [hasOpen]);
 
     return (
-        <div onClick={() => setHasOpend(true)}>
+        <div 
+            onClick={(event) => {
+                setHasOpend(true)
+                event.stopPropagation();
+            }}
+        >
             <i className="admin-font adminLib-menu"></i>
             {
                 hasOpened &&

@@ -28,7 +28,7 @@ const MultiCheckBox = (props) => {
                                     props.rightContent &&
                                     <p className={props.rightContentClass} dangerouslySetInnerHTML={{ __html: option.label }} ></p>
                                 }
-                                <div className={props.inputInnerWrapperClass}>
+                                <div className={props.inputInnerWrapperClass} data={props.tour}>
                                     <input
                                         className={props.inputClass}
                                         id={`${props.idPrefix}-${option.key}`}

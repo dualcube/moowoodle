@@ -1,0 +1,38 @@
+.icon-list-wrapper{
+    label{
+        display: none; // For hide label in icon list page
+    }
+    
+    .settings-input-content{
+        width: 100% !important; // To overwrite dynamic.scss
+
+        .icon-list{
+            .icon-wrapper{
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+
+                .icon-box{
+                    width:32%;
+                    font-size: 0.875rem;
+                    padding: 0.5rem;
+                    border: 0.063rem solid #e0e4e9;
+                    border-radius: 0.25rem;
+                    display: flex;
+
+                    span{
+                        &:first-child{
+                            font-size: 1.5rem;;
+                        }
+                    }
+
+                    .mls{
+                        padding-left: 0.5rem;
+                        padding-right: 0.313rem;
+
+                    }
+                }
+            }
+        }
+    }
+}

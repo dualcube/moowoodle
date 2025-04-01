@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { getApiLink } from "../../../../../services/apiService";
 import "./SyncNow.scss";
@@ -15,10 +15,9 @@ const SyncNow = (props) => {
   // state variable for check button has clicked or not.
   const [buttonClicked, setButtonClicked] = useState(false);
 
+  // fetch data in interval
   const fetchStatusRef = useRef(null);
 
-
-  //fetch data in interval
   useEffect(() => {
     if (syncStarted) {
       fetchStatusRef.current = setInterval(fetchSyncStatus, interval);
@@ -31,8 +30,8 @@ const SyncNow = (props) => {
 
   useEffect(()=>{
     fetchSyncStatus();
-  },[])
-
+  }, []);
+  
   /**
    * Function for fetch sync status.
    */
@@ -49,7 +48,6 @@ const SyncNow = (props) => {
 
       // Set sync status from response.
       setSyncStatus(syncData.status);
-
     });
   }
 
@@ -74,10 +72,10 @@ const SyncNow = (props) => {
       url: getApiLink(apilink),
       headers: { "X-WP-Nonce": appLocalizer.nonce },
     }).then((response) => {
-      if (response.data) {
-        setSyncStarted(false);
-        fetchSyncStatus();
-      }
+        if (response.data) {
+          setSyncStarted(false);
+          fetchSyncStatus();
+        }
     });
   }
 

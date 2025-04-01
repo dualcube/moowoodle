@@ -1,0 +1,166 @@
+.popup_enable{
+    .catalogx-enquiry-pro-form{
+        background: transparent;
+        padding: 0rem;
+        border-radius: 0;
+        margin-top: 1rem;
+    }
+    .popup-footer-section .catalogx-close-enquiry-popup{
+        display: none;
+    }
+}
+.catalogx-enquiry-pro-form {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    flex-direction: column;
+    background: #fbfbfb;
+    padding: 2rem;
+    border-radius: 0.25rem;
+    margin-top: 1rem;
+
+    .popup-footer-section{
+        display: flex;
+        justify-content: end;
+        width:100%;
+        gap: 0.75rem;
+    }
+
+    .form-title {
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
+        text-align: center;
+        width: 100%;
+    }
+
+    .form-pro-sections {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 0.25rem;
+        margin-bottom: 0.25rem;
+        flex-wrap: wrap;
+        width: 100%;
+
+        label {
+            min-width: 9.375rem;
+            max-width: 35%;
+            font-size: 0.875rem;
+        }
+
+        label,
+        input[type='number'],
+        input[type='text'],
+        input[type='email'],
+        textarea,
+        .multiselect-container, .date-picker-wrapper {
+            flex: 1 0 12.5rem;
+            width: 100%;
+            padding: 0.5rem;
+        }
+
+        .items-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+
+            .select-items {
+                width: 48%;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 0.25rem;
+
+                input[type='checkbox'], input[type='radio'] {
+                    cursor: pointer;
+
+                    &:focus,
+                    &:active {
+                        outline: none;
+                    }
+                }
+
+                label {
+                    user-select: none;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .attachment-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+
+            .attachment-label {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                border-radius: 0.5rem;
+                border-width: 0.125rem;
+                border-color: #D1D5DB;
+                border-style: dashed;
+                width: 100%;
+                height: 7rem;
+                background-color: #F9FAFB;
+                cursor: pointer;
+                max-width: 100%;
+
+                &:hover {
+                    background-color: #F3F4F6;
+                }
+
+                .hidden{
+                    visibility: hidden;
+                    opacity: 0;
+                }
+
+                .wrapper {
+                    display: flex;
+                    padding-top: 1.25rem;
+                    padding-bottom: 1.5rem;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+
+                    i{
+                        font-size: 1.875rem;
+                    }
+
+                    .heading {
+                        margin-bottom: 0.5rem;
+                        font-size: 0.875rem;
+                        line-height: 1.25rem;
+                        color: #6B7280;
+                        text-align: center;
+
+                        span {
+                            font-weight: 600;
+                        }
+                    }
+                }
+            }
+        }
+
+        .date-picker-wrapper{
+            input[type='date']{
+                outline: none;
+                border: 0.125rem solid rgba(0, 0, 0, 0.125);
+                padding: 0.25rem 0.5rem;
+                border-radius: 0.25rem;
+                width: 100%;
+            }
+        }
+    }
+
+    .section-divider-container{
+        border-bottom: 0.125rem solid rgba($color: #000000, $alpha: 0.125);
+        margin: 1.5rem 0;
+        width: 100%;
+    }
+}

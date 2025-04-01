@@ -8,7 +8,7 @@ const Customizer = (props) => {
   const [buttonLink, setButtonLink] = useState(setting.button_link);
 
   useEffect(() => { setButtonLink(setting.button_link) }, [setting.button_link]);
-  
+
   return (
     <>
       {/* Heading section */}
@@ -53,7 +53,7 @@ const Customizer = (props) => {
           className="btn-customizer-menu-items"
           onClick={(e) => setSelect("setting")}
         >
-          <i className="admin-font adminLib-settings"></i>
+          <i className="admin-font adminLib-setting"></i>
         </div>
       </div>
       {(select === "color" ||
@@ -61,7 +61,7 @@ const Customizer = (props) => {
         select === "font" ||
         select === "size" ||
         select === "link" ||
-        select ===  "setting") && (
+        select === "setting") && (
           <div className="customizer-setting-wrapper">
             {/* Wrapper close btn */}
             <button onClick={(e) => setSelect("")} className="wrapper-close">
@@ -70,11 +70,11 @@ const Customizer = (props) => {
 
             {/* Render selcted setting */}
             {select === "color" && (
-              <div className="color">
+              <div className="section-wrapper color">
                 <div className="simple">
                   <div className="section">
                     <span className="lable">
-                      {__("Background Color", "woocommerce-stock-manager")}
+                      {__("Background Color", "catalogx")}
                     </span>
                     <div className="property-section">
                       <input
@@ -91,7 +91,7 @@ const Customizer = (props) => {
                   </div>
                   <div className="section">
                     <span className="lable">
-                      {__("Font Color", "woocommerce-stock-manager")}
+                      {__("Font Color", "catalogx")}
                     </span>
                     <div className="property-section">
                       <input
@@ -118,10 +118,7 @@ const Customizer = (props) => {
                 >
                   <div className="section">
                     <span className="lable">
-                      {__(
-                        "Background Color On Hover",
-                        "woocommerce-stock-manager"
-                      )}
+                      {__("Background Color On Hover", "catalogx")}
                     </span>
                     <div className="property-section">
                       <input
@@ -138,7 +135,7 @@ const Customizer = (props) => {
                   </div>
                   <div className="section">
                     <span className="lable">
-                      {__("Font Color On Hover", "woocommerce-stock-manager")}
+                      {__("Font Color On Hover", "catalogx")}
                     </span>
                     <div className="property-section">
                       <input
@@ -157,11 +154,11 @@ const Customizer = (props) => {
               </div>
             )}
             {select === "border" && (
-              <div className="border">
+              <div className="section-wrapper border">
                 <div className="simple">
                   <div className="section">
                     <span className="lable">
-                      {__("Border Color", "woocommerce-stock-manager")}
+                      {__("Border Color", "catalogx")}
                     </span>
                     <div className="property-section">
                       <input
@@ -178,7 +175,7 @@ const Customizer = (props) => {
                   </div>
                   <div className="section section-row">
                     <span className="lable">
-                      {__("Border Size", "woocommerce-stock-manager")}
+                    {__("Border Size", "catalogx")}
                     </span>
                     <div className="property-section">
                       {/* <div class="PB-range-slider-div"> */}
@@ -195,7 +192,7 @@ const Customizer = (props) => {
                   </div>
                   <div className="section section-row">
                     <span className="lable">
-                      {__("Border Radious", "woocommerce-stock-manager")}
+                    {__("Border Radious", "catalogx")}
                     </span>
                     <div className="property-section">
                       {/* <div class="PB-range-slider-div"> */}
@@ -211,10 +208,10 @@ const Customizer = (props) => {
                     </div>
                   </div>
                 </div>
-                <div className="hover">
+                <div className="section-wrapper hover">
                   <div className="section">
                     <span className="lable">
-                      {__("Border Color On Hover", "woocommerce-stock-manager")}
+                    {__("Border Color On Hover", "catalogx")}
                     </span>
                     <div className="property-section">
                       <input
@@ -233,11 +230,11 @@ const Customizer = (props) => {
               </div>
             )}
             {select === "font" && (
-              <div className="font">
+              <div className="section-wrapper font">
                 <div className="simple">
                   <div className="section">
                     <span className="lable">
-                      {__("Button text", "woocommerce-stock-manager")}
+                    {__("Button text", "catalogx")}
                     </span>
                     <div className="property-section">
                       <div class="PB-range-slider-div">
@@ -252,7 +249,7 @@ const Customizer = (props) => {
                   </div>
                   <div className="section section-row">
                     <span className="lable">
-                      {__("Font Size", "woocommerce-stock-manager")}
+                    {__("Font Size", "catalogx")}
                     </span>
                     <div className="property-section">
                       {/* <div class="PB-range-slider-div"> */}
@@ -269,7 +266,7 @@ const Customizer = (props) => {
                   </div>
                   <div className="section section-row">
                     <span className="lable">
-                      {__("Font Width", "woocommerce-stock-manager")}
+                    {__("Font Width", "catalogx")}
                     </span>
                     <div className="property-section">
                       {/* <div class="PB-range-slider-div"> */}
@@ -291,11 +288,11 @@ const Customizer = (props) => {
               </div>
             )}
             {select === "size" && (
-              <div className="size">
+              <div className="section-wrapper size">
                 <div className="simple">
                   <div className="section section-row">
                     <span className="lable">
-                      {__("Padding", "woocommerce-stock-manager")}
+                    {__("Padding", "catalogx")}
                     </span>
                     <div className="property-section">
                       {/* <div class="PB-range-slider-div"> */}
@@ -312,18 +309,18 @@ const Customizer = (props) => {
                   </div>
                   <div className="section section-row">
                     <span className="lable">
-                      {__("Margin", "woocommerce-stock-manager")}
+                    {__("Margin", "catalogx")}
                     </span>
                     <div className="property-section">
                       {/* <div class="PB-range-slider-div"> */}
-                        <input
-                          className="PB-range-slider"
-                          type="number"
-                          value={setting.button_margin ? setting.button_margin : 0}
-                          onChange={(e) => props.onChange("button_margin", e.target.value)}
-                        />
-                        <p>px</p>
-                        {/* <p class="PB-range-slidervalue">{setting.button_margin ? setting.button_margin : 0}px</p>
+                      <input
+                        className="PB-range-slider"
+                        type="number"
+                        value={setting.button_margin ? setting.button_margin : 0}
+                        onChange={(e) => props.onChange("button_margin", e.target.value)}
+                      />
+                      <p>px</p>
+                      {/* <p class="PB-range-slidervalue">{setting.button_margin ? setting.button_margin : 0}px</p>
                       </div> */}
                     </div>
                   </div>
@@ -331,7 +328,7 @@ const Customizer = (props) => {
               </div>
             )}
             {select === "link" && (
-              <div className="link">
+              <div className="section-wrapper link">
                 <div className="simple">
                   <div className="link-box">
                     <input
@@ -355,19 +352,21 @@ const Customizer = (props) => {
                 <p><span>*</span>Keep it blank for default button behavior</p>
               </div>
             )}
-            {select ===  "setting" && (
-              <div>
-                <span className="lable">
-                  {__("System settings", "woocommerce-stock-manager")}
-                </span>
-                <div className="property-section">
-                  <button onClick={(e) => {
+            {select === "setting" && (
+              <div className="section-wrapper settings">
+                <div className="section">
+                  <span className="lable">
+                  {__("System settings", "catalogx")}
+                  </span>
+                  <div className="property-section">
+                    <button onClick={(e) => {
                       e.preventDefault();
                       onChange('', {}, true);
                     }}>
-                    Restore default
-                  </button>
+                      Restore default
+                    </button>
                   </div>
+                </div>
               </div>
             )}
           </div>
@@ -401,7 +400,7 @@ const ButtonCustomizer = (props) => {
       : setting.button_border_color,
     borderRadius: setting.button_border_radious ? `${setting.button_border_radious}px` : '0px',
     borderWidth: setting.button_border_size ? `${setting.button_border_size}px` : '0px',
-    fontSize: setting.button_font_size ,
+    fontSize: setting.button_font_size,
     fontWeight: setting.button_font_width,
     padding: setting.button_padding ? `${setting.button_padding}px` : '0px',
     margin: setting.button_margin ? `${setting.button_margin}px` : '0px',
