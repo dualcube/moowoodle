@@ -125,8 +125,16 @@ class Category {
 	 */
 	private static function remove_exclude_ids( $exclude_ids, $taxonomy ) {
 
-		$terms = get_terms( [ 'taxonomy' => $taxonomy, 'hide_empty' => false ] );
-
+		$terms = get_terms( [ 
+			'taxonomy' => $taxonomy, 
+			'hide_empty' => false,
+			'meta_query' => [
+				[
+					'key'     => '_category_id',
+					'compare' => 'EXISTS',
+				],
+			] ] );
+		
 		if ( is_wp_error( $terms ) ) return;
 
 		// Link with parent or delete term
