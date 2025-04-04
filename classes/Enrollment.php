@@ -40,18 +40,20 @@ class Enrollment {
 		$this->order = $order;
 		$user_id    = $order->get_customer_id();
 		$user_email = $order->get_billing_email();
-		$user_name  = trim($order->get_billing_first_name() . " " . $order->get_billing_last_name());
-		$quantity   = $this->fetch_course_quantity( $order ); // Using your qty function
+		$first_name = $order->get_billing_first_name();
+		$last_name  = $order->get_billing_last_name();
+		$quantity   = $this->fetch_course_quantity( $order ); 
 		$gifted     = $order->get_meta( "_wc_billing/MooWoodle/gift_someone", true );
 	
 		if ( $gifted ) {
-			$user_name  = trim($order->get_meta( "_wc_billing/MooWoodle/full_name", true ));
+			$first_name  = trim($order->get_meta( "_wc_billing/MooWoodle/first_name", true ));
+			$last_name  = trim($order->get_meta( "_wc_billing/MooWoodle/last_name", true ));
 			$user_email = $order->get_meta( "_wc_billing/MooWoodle/email_address", true );
-			$user_id    = $this->get_or_create_wp_user( $user_name, $user_email );
+			$user_id    = $this->get_or_create_wp_user( $first_name, $last_name, $user_email );
 		}
 	
 		if ( empty( $user_id ) ) {
-			error_log("MooWoodle: Failed to process order #$order_id - User ID is missing.");
+			Util::_log( "[MooWoodle] Order processing failed for Order #$order_id – Moodle User ID is missing." );
 			return;
 		}
 	
@@ -61,12 +63,15 @@ class Enrollment {
 
 			$product = $item ? $item->get_product() : null;
 	
-			if ( !$product ) {
-				error_log("MooWoodle: Failed to process order #$order_id - No valid product found.");
+			if ( ! $product ) {
+				Util::_log( "[MooWoodle] Order processing failed for Order #$order_id – No valid product found." );
 				return;
 			}
+			
 	
 			$this->process_enrollment( [
+				"first_name"       => $first_name,
+				"last_name"        => $last_name,
 				"purchaser_id"     => $user_id,
 				"user_email"       => $user_email,
 				"course_id"        => $product->get_meta( "linked_course_id", true ),
@@ -77,36 +82,49 @@ class Enrollment {
 				"suspend"          => 0
 			] );
 		} else {
-			do_action( 'moowoodle_after_classroom_purchase', $user_id, $user_name, $order );
+			do_action( 'moowoodle_after_classroom_purchase', $user_id, $first_name, $last_name, $order );
 		}
 	}
 
-	public function get_or_create_wp_user( $user_name, $email ) {
+	public function get_or_create_wp_user( $first_name, $last_name, $user_email ) {
 
-		// Check if the user already exists
-		$user = get_user_by('email', $email);
-	
+		// Check if the user already exists by email
+		$user = get_user_by( 'email', $user_email );
+
 		if ( ! $user ) {
-			// Generate a password
-			$password = wp_generate_password(12, false);
-			
-			// Convert username to lowercase, remove spaces, and sanitize
-			$sanitized_username = sanitize_user( strtolower( str_replace(' ', '_', $user_name) ) );
-			$unique_username    = $sanitized_username . '_' . time();
+			// Generate a secure password
+			$password = wp_generate_password( 12, false );
+	
+			// Use the part before @ as username
+			$username = sanitize_user( strtolower( strstr( $user_email, '@', true ) ) );
 	
 			// Create the user
-			$user_id = wp_create_user( $unique_username, $password, $email );
+			$user_id = wp_create_user( $username, $password, $user_email );
 	
-			if ( ! is_wp_error( $user_id ) ) {
-				// Assign 'customer' role
-				wp_update_user(['ID' => $user_id, 'role' => 'customer']);
+			if ( is_wp_error( $user_id ) ) {
+				Util::_log( "[MooWoodle] WP user creation failed for {$user_email}: " . $user_id->get_error_message() );
+				return false;
 			}
+	
+			// Assign role and update user meta
+			wp_update_user( [
+				'ID'         => $user_id,
+				'first_name' => $first_name,
+				'last_name'  => $last_name,
+				'role'       => 'customer',
+			] );
+
+			Util::_log( "[MooWoodle] New WP user created: ID {$user_id}, Username: {$username}, Email: {$user_email}" );
 		} else {
+
 			$user_id = $user->ID;
+			Util::_log( "[MooWoodle] Existing WP user found: ID {$user_id}, Email: {$user_email}" );
 		}
 	
 		return $user_id;
 	}
+	
+	
 	
 	/**
 	 * Process the enrollment when the order status is complete and when adding any user to any group
@@ -116,19 +134,21 @@ class Enrollment {
 	 */
 	public function process_enrollment( $enroll_data ) {
 		if ( empty( $enroll_data ) || ! is_array( $enroll_data ) ) {
-			error_log("MooWoodle: Invalid or missing enrollment data.");
+			Util::_log( "[MooWoodle] Invalid or missing enrollment data." );
 			return;
 		}
-	
+			
 		$purchaser_id = $enroll_data['purchaser_id'];
 		$course_id    = $enroll_data['course_id'];
 	
 		// Retrieve Moodle User ID
-		$moodle_user_id = $this->get_moodle_user_id( $purchaser_id );
+		$moodle_user_id = $this->get_moodle_user_id( $enroll_data );
+
 		if ( ! $moodle_user_id ) {
-			error_log("MooWoodle: No Moodle user ID found for User #{$purchaser_id}.");
+			Util::_log( "[MooWoodle] No Moodle user ID found for User #{$purchaser_id}." );
 			return;
 		}
+		
 	
 		// Prepare enrollment data
 		$enroll_data['moodle_user_id'] = $moodle_user_id;
@@ -137,10 +157,10 @@ class Enrollment {
 		// Check if the user is already enrolled
 		$previous_enrolled_courses = self::get_previous_enrollments( $purchaser_id );
 		if ( in_array( $course_id, $previous_enrolled_courses ) ) {
-			error_log("MooWoodle: User #{$purchaser_id} is already enrolled in Course #{$course_id}.");
+			Util::_log( "[MooWoodle] User #{$purchaser_id} is already enrolled in Course #{$course_id}." );
 			return;
 		}
-	
+		
 		// Moodle enrollment request
 		$enrolments = [[
 			'roleid'   => $enroll_data['role_id'],
@@ -150,13 +170,12 @@ class Enrollment {
 		]];
 	
 		$response = MooWoodle()->external_service->do_request( 'enrol_users', [ 'enrolments' => $enrolments ] );
-	
-		//file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:enroll' . var_export( $response, true ) . "\n", FILE_APPEND );
-	
+		
 		if ( ! $response || isset( $response['error'] ) ) {
-			error_log("MooWoodle: Enrollment failed for User #{$purchaser_id} in Course #{$course_id}. Error: " . json_encode($response));
+			Util::_log( "[MooWoodle] Enrollment failed for User #{$purchaser_id} in Course #{$course_id}. Error: " . json_encode( $response ) );
 			return;
 		}
+		
 	
 		// Store enrollment record
 		self::add_enrollment([
@@ -178,43 +197,35 @@ class Enrollment {
 	
 
 
-	public function get_moodle_user_id( $purchaser_id ) {
-		if ( ! $purchaser_id ) {
-			return $purchaser_id; // Return if guest user
+	public function get_moodle_user_id( $enroll_data ) {
+
+		if ( ! $enroll_data[ 'purchaser_id' ] ) {
+			return 0;
 		}
 	
-		// Check if Moodle user ID is already stored
-		$moodle_user_id = get_user_meta( $purchaser_id, 'moowoodle_moodle_user_id', true );
-	
-		// Allow filtering before Moodle user creation/update
-		$moodle_user_id = apply_filters( 'moowoodle_get_moodle_user_id_before_enrollment', $moodle_user_id, $purchaser_id );
+		$moodle_user_id = get_user_meta( $enroll_data[ 'purchaser_id' ], 'moowoodle_moodle_user_id', true );
+		$moodle_user_id = apply_filters( 'moowoodle_get_moodle_user_id_before_enrollment', $moodle_user_id, $enroll_data[ 'purchaser_id' ] );
 	
 		if ( $moodle_user_id ) {
-			return $moodle_user_id; // Return if already exists
+			return $moodle_user_id;
 		}
-	
-		$purchaser_details = get_userdata( $purchaser_id );
-	
-		if ( ! $purchaser_details ) {
-			return 0; // Return 0 if user data is not found
-		}
-	
-		// Search for Moodle user by email
-		$moodle_user_id = $this->search_for_moodle_user( 'email', $purchaser_details->user_email );
-	
+
+		$moodle_user_id = $this->search_for_moodle_user( 'email', $enroll_data[ 'user_email' ] );
+
 		if ( ! $moodle_user_id ) {
-			// Create Moodle user if not found
-			$moodle_user_id = $this->create_user( $purchaser_details );
+			$moodle_user_id = $this->create_user( $enroll_data );
+
 		} else {
-			// Check if Moodle user should be updated
-			$should_update = MooWoodle()->setting->get_setting( 'update_moodle_user', [] );
-			if ( is_array( $should_update ) && in_array( 'update_moodle_user', $should_update, true ) ) {
-				$this->update_moodle_user( $moodle_user_id, $purchaser_id );
+			$settings = MooWoodle()->setting->get_setting( 'update_moodle_user', [] );
+			if ( is_array( $settings ) && in_array( 'update_moodle_user', $settings, true ) ) {
+				$this->update_moodle_user( $moodle_user_id, $enroll_data[ 'purchaser_id' ] );
 			}
+
 		}
 	
 		if ( $moodle_user_id ) {
-			update_user_meta( $purchaser_id, 'moowoodle_moodle_user_id', $moodle_user_id );
+
+			update_user_meta( $enroll_data[ 'purchaser_id' ], 'moowoodle_moodle_user_id', $moodle_user_id );
 		}
 	
 		return $moodle_user_id;
@@ -229,27 +240,32 @@ class Enrollment {
 		return ! empty( $response['data']['users'] ) ? reset( $response['data']['users'] )['id'] : 0;
 	}
 	
-	public function create_user( $purchaser_details ) {
-		if ( ! $purchaser_details ) {
-			return 0;
-		}
+	public function create_user( $enroll_data ) {
+		$user_id = absint( $enroll_data['purchaser_id'] ?? 0 );
+		if ( ! $user_id ) return 0;
 	
 		try {
-			$user_id = $purchaser_details->ID;
 			$password = get_user_meta( $user_id, 'moowoodle_moodle_user_pwd', true );
-	
 			if ( ! $password ) {
 				$password = $this->generate_password();
 				add_user_meta( $user_id, 'moowoodle_moodle_user_pwd', $password );
 			}
+			$email      = sanitize_email( $enroll_data['user_email'] ?? '' );
+			$first_name = sanitize_text_field( $enroll_data['first_name'] ?? 'User' );
+			$last_name  = sanitize_text_field( $enroll_data['last_name'] ?? 'User' );
+	
+			if ( ! $email ) return 0;
+	
+			// Generate username from email
+			$username = sanitize_user( explode( '@', $email )[0] );
 	
 			$user_data = [
-				'email'     => $purchaser_details->user_email,
-				'username'  => $purchaser_details->user_login,
+				'email'     => $email,
+				'username'  => $username,
 				'password'  => $password,
 				'auth'      => 'manual',
-				'firstname' => $purchaser_details->display_name,
-				'lastname'  => ! empty( $purchaser_details->last_name ) ? $purchaser_details->last_name : 'User',
+				'firstname' => $first_name,
+				'lastname'  => $last_name,
 				'preferences' => [
 					[ 'type' => 'auth_forcepasswordchange', 'value' => 1 ]
 				]
@@ -261,16 +277,16 @@ class Enrollment {
 				throw new \Exception( "Invalid response from Moodle while creating user." );
 			}
 	
-			$moodle_users = reset( $response['data'] );
-	
-			if ( isset( $moodle_users['id'] ) ) {
+			$moodle_user = reset( $response['data'] );
+			if ( isset( $moodle_user['id'] ) ) {
 				update_user_meta( $user_id, 'moowoodle_moodle_new_user_created', 'created' );
-				return $moodle_users['id'];
+				return $moodle_user['id'];
 			}
 	
 			throw new \Exception( "Unable to create user in Moodle." );
+	
 		} catch ( \Exception $e ) {
-			Util::log( "Moodle user creation error: " . $e->getMessage() );
+			Util::_log( "[MooWoodle] Moodle user creation error for user ID {$user_id}: " . $e->getMessage() );
 		}
 	
 		return 0;
@@ -509,7 +525,6 @@ class Enrollment {
 	 * @return bool|int|null
 	 */
 	public static function add_enrollment( $args ) {
-		file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'responsefdg' . var_export( $args, true ) . "\n", FILE_APPEND );
 
 		global $wpdb;
 

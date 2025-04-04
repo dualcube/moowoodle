@@ -132,7 +132,6 @@ class MooWoodle {
 		$this->container[ 'product' ]          = new Core\Product();
         $this->container[ 'external_service' ] = new ExternalService();
 		$this->container[ 'enrollment' ]       = new Enrollment();
-        $this->container[ 'frontend' ]         = new FrontEnd();
 		
         new EndPoint();
 
