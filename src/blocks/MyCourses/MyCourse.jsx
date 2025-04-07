@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { __ } from "@wordpress/i18n";
+import { __, sprintf } from "@wordpress/i18n";
 import axios from "axios";
 import { getApiLink } from "../../services/apiService";
 
@@ -11,22 +11,23 @@ const MyCourse = () => {
   const [error, setError] = useState(null);
   const perPage = 5;
 
-  // Memoize fetchCourses to prevent unnecessary re-renders
   const fetchCourses = useCallback(async (page) => {
     if (!page || page < 1) return;
-    
+
     setLoading(true);
     setError(null);
-    
+
     try {
       const response = await axios.get(getApiLink("courses"), {
         params: { page, row: perPage },
         headers: { "X-WP-Nonce": appLocalizer.nonce },
       });
-      
-      const newCourses = response?.data?.courses || [];
-      setCourses(newCourses);
-      setTotalPages(response.data.total_pages || 1);
+
+      const data = response?.data?.data || [];
+      const pagination = response?.data?.pagination || {};
+
+      setCourses(data);
+      setTotalPages(pagination.total_pages || 1);
     } catch (err) {
       console.error("Error fetching courses:", err);
       setError(__("Failed to load courses. Please try again.", "moowoodle"));
@@ -34,7 +35,7 @@ const MyCourse = () => {
     } finally {
       setLoading(false);
     }
-  }, []); 
+  }, []);
 
   useEffect(() => {
     fetchCourses(currentPage);
@@ -44,19 +45,23 @@ const MyCourse = () => {
     if (loading) {
       return (
         <tr>
-          <td colSpan="4" className="loading-row">{__("Loading...", "moowoodle")}</td>
+          <td colSpan="4" className="loading-row">
+            {__("Loading...", "moowoodle")}
+          </td>
         </tr>
       );
     }
-    
+
     if (error) {
       return (
         <tr>
-          <td colSpan="4" className="error-row">{error}</td>
+          <td colSpan="4" className="error-row">
+            {error}
+          </td>
         </tr>
       );
     }
-    
+
     if (courses.length === 0) {
       return (
         <tr>
@@ -66,12 +71,18 @@ const MyCourse = () => {
         </tr>
       );
     }
-    
+
     return courses.map((course, index) => (
-      <tr key={course.id || index}> 
-        <td data-label={__("Username", "moowoodle")}>{course.user_login || __("N/A", "moowoodle")}</td>
-        <td data-label={__("Course Name", "moowoodle")}>{course.course_name || __("Unknown Course", "moowoodle")}</td>
-        <td data-label={__("Enrolment Date", "moowoodle")}>{course.enrolment_date || __("No Date Available", "moowoodle")}</td>
+      <tr key={index}>
+        <td data-label={__("Username", "moowoodle")}>
+          {course.user_name || __("N/A", "moowoodle")}
+        </td>
+        <td data-label={__("Course Name", "moowoodle")}>
+          {course.course_name || __("Unknown Course", "moowoodle")}
+        </td>
+        <td data-label={__("Enrolment Date", "moowoodle")}>
+          {course.enrolment_date || __("No Date Available", "moowoodle")}
+        </td>
         <td data-label={__("Action", "moowoodle")}>
           {course.moodle_url ? (
             <a
@@ -92,7 +103,7 @@ const MyCourse = () => {
 
   const renderPagination = () => {
     if (totalPages <= 1) return null;
-    
+
     return (
       <div className="pagination">
         <button

@@ -11,97 +11,254 @@ $button-text: #ffffff;
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
-}
 
-// Header Section with Button
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
+    .classroom-grid{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
 
-    h1 {
-        font-size: 2rem;
-        font-weight: bold;
-        color: $primary-color;
+        .classroom-card{
+            width: 31%;
+            padding: 1.5rem 0.5rem;
+            border: 0.063rem solid #c4c4c4;
+            border-radius: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap:0.75rem;
+
+            .classroom-title{
+                text-align: center;
+
+                .heading-text{
+                    display: flex;
+                    justify-content: center;
+                    gap: 0.313rem;
+
+                    .edit-button{
+                        cursor: pointer;
+                    }
+                }
+                .button-group{
+                    display: flex;
+                    justify-content: end;
+                    gap: 0.5rem;
+                    padding-top: 0.5rem;
+
+                    a{
+                        padding: 2px 5px;
+                        color: white;
+                        text-decoration: none;
+                        font-weight: 600;
+                        border-radius: 5px;
+                        cursor: pointer;
+
+                        &.save-btn{
+                            background-color: #015301b8;
+                        }
+                        &.cancel-btn{
+                            background: #ae0303eb;
+                        }
+                    }
+                }
+                
+                h2{
+                    font-size: 1.2rem;
+                }
+
+                .edit-input{
+                    width: 100%;
+                }
+            }
+            .view-btn-container{
+                text-align: center;
+            }
+            ul{
+                margin: 0;
+            }
+        }
     }
 
-    .add-classroom-button {
-        background: $primary-color;
-        color: $button-text;
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: 5px;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background 0.3s ease-in-out;
 
-        &:hover {
-            background: $primary-hover;
+    .enrollment-container{
+
+        .heading{
+            font-size: 1.8rem;
+            font-weight: 500;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #c4c4c4;
+        }
+
+        .class-details{
+            display: flex;
+            gap: 1rem;
+
+            .details-box{
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 1.5rem;
+                border: 0.063rem solid #c4c4c4;
+                border-radius: 0.5rem;
+
+                .number{
+                    font-size: 2rem;
+                    font-weight: 600;
+                }
+                .text{
+                    font-size: 1.2rem;
+                }
+            }            
+        }
+        .course-title{
+            font-size: 1.4rem;
+            margin-top: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+
+            .button-group{
+                display: flex;
+                gap: 1rem;
+            }
+        }
+        .courses{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.875rem;
+
+            .course{
+                width: 23%;
+                border: 0.063rem solid #c4c4c4;
+                border-radius: 0.5rem;
+                padding: 1rem;
+                .course-name{
+                    text-align: center;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    margin-top: 0.5rem;
+                }
+            }
+        }
+
+        .enroll-form{
+            border: 0.063rem solid #c4c4c4;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+
+            input,select{
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            .file-input{
+                border: 0.063rem solid #c4c4c4;
+                border-radius: 0.5rem;
+                padding: 1rem;
+                margin-bottom: 1rem;
+                width: 100%;
+            }
+            .btn-group{
+                display: flex;
+                justify-content: end;
+                gap: 0.5rem;
+                margin-top: 0.5rem;
+            }
         }
     }
 }
+
+// // Header Section with Button
+// .header {
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+//     margin-bottom: 1.5rem;
+
+//     h1 {
+//         font-size: 2rem;
+//         font-weight: bold;
+//         color: $primary-color;
+//     }
+
+//     .add-classroom-button {
+//         background: $primary-color;
+//         color: $button-text;
+//         padding: 0.5rem 1rem;
+//         border: none;
+//         border-radius: 5px;
+//         font-size: 1rem;
+//         cursor: pointer;
+//         transition: background 0.3s ease-in-out;
+
+//         &:hover {
+//             background: $primary-hover;
+//         }
+//     }
+// }
 
 // Grid Layout for Square Cards (Row-wise alignment)
-.classroom-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); // Adjust for responsiveness
-    gap: 1.5rem;
-    justify-content: center;
-}
+// .classroom-grid {
+//     display: grid;
+//     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); // Adjust for responsiveness
+//     gap: 1.5rem;
+//     justify-content: center;
+// }
 
 // Square Card Styling
-.classroom-card {
-    background: $card-bg;
-    border: 1px solid $border-color;
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: transform 0.2s ease-in-out;
-    width: 200px; // Square shape
-    height: 200px; // Square shape
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+// .classroom-card {
+//     background: $card-bg;
+//     border: 1px solid $border-color;
+//     border-radius: 8px;
+//     padding: 1rem;
+//     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+//     text-align: center;
+//     transition: transform 0.2s ease-in-out;
+//     width: 200px; // Square shape
+//     height: 200px; // Square shape
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: space-between;
+//     align-items: center;
 
-    &:hover {
-        transform: translateY(-5px);
-    }
+//     &:hover {
+//         transform: translateY(-5px);
+//     }
 
-    h2 {
-        font-size: 1rem;
-        font-weight: bold;
-        color: $primary-color;
-    }
+//     h2 {
+//         font-size: 1rem;
+//         font-weight: bold;
+//         color: $primary-color;
+//     }
 
-    ul {
-        padding: 0;
-        margin: 0;
-        list-style: none;
-        font-size: 0.9rem;
-        color: $font-color;
+//     ul {
+//         padding: 0;
+//         margin: 0;
+//         list-style: none;
+//         font-size: 0.9rem;
+//         color: $font-color;
 
-        li {
-            padding: 0.2rem 0;
-        }
-    }
+//         li {
+//             padding: 0.2rem 0;
+//         }
+//     }
 
-    .view-button {
-        background: $primary-color;
-        color: $button-text;
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background 0.3s ease-in-out;
+//     .view-button {
+//         background: $primary-color;
+//         color: $button-text;
+//         padding: 0.5rem 1rem;
+//         border: none;
+//         border-radius: 4px;
+//         cursor: pointer;
+//         transition: background 0.3s ease-in-out;
 
-        &:hover {
-            background: $primary-hover;
-        }
-    }
-}
+//         &:hover {
+//             background: $primary-hover;
+//         }
+//     }
+// }
 
 // Pagination Controls
 .pagination {
@@ -138,27 +295,6 @@ $button-text: #ffffff;
         color: $font-color;
     }
 }
-.enrollment-container {
-    max-width: 800px;
-    margin: auto;
-    text-align: center;
-}
-
-/* Back Button */
-.back-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 14px;
-    margin-bottom: 15px;
-}
-
-.back-button:hover {
-    background-color: #0056b3;
-}
 
 /* Enroll Student Button */
 .enroll-button {
@@ -175,259 +311,13 @@ $button-text: #ffffff;
 .enroll-button:hover {
     background-color: #218838;
 }
-
-/* Enrollment Form */
-.enroll-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 20px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-.enroll-form input {
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.save-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-.save-button:hover {
-    background-color: #0056b3;
-}
-
 /* Student List */
 .student-list {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-}
-
-.student-card {
-    background: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    text-align: left;
-}
-.course-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.course-card {
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    text-align: center;
-    background-color: #f9f9f9;
-}
-
-.enrollment-container {
-    padding: 20px;
-}
-
-.enroll-button {
-    padding: 8px 12px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-}
-// Variables (keeping your original variables)
-$primary-color: #2563eb;
-$primary-hover: #1e40af;
-$border-color: #e5e7eb;
-$card-bg: #ffffff;
-$font-color: #374151;
-$button-text: #ffffff;
-
-.enrollment-container {
-    max-width: 800px;
-    margin: auto;
-    text-align: center;
-    padding: 20px;
-}
-
-.button-group {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-    justify-content: center;
-}
-
-/* Back Button */
-.back-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 14px;
-    margin-bottom: 15px;
-    transition: background-color 0.3s ease-in-out;
-
-    &:hover {
-        background-color: #0056b3;
-    }
-}
-
-/* Enroll Buttons (both single and bulk) */
-.enroll-button {
-    background-color: #28a745;
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s ease-in-out;
-
-    &:hover {
-        background-color: #218838;
-    }
-}
-
-/* Enrollment Form (used for both single and bulk) */
-.enroll-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 20px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    margin-bottom: 20px;
-
-    input {
-        padding: 10px;
-        font-size: 14px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-
-    input[type="file"] {
-        padding: 8px; // Slight adjustment for file input
-    }
-}
-
-.save-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s ease-in-out;
-
-    &:hover {
-        background-color: #0056b3;
-    }
-
-    &:disabled {
-        background-color: #cccccc;
-        cursor: not-allowed;
-    }
-}
-
-.download-sample-button {
-    background-color: #007bff; // Matches save-button
-    color: white;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s ease-in-out;
-
-    &:hover {
-        background-color: #0056b3;
-    }
-}
-
-/* Student List */
-.student-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.student-card {
-    background: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    text-align: left;
-}
-
-.course-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.course-card {
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    text-align: center;
-    background-color: #f9f9f9;
-}
-
-.pagination {
-    display: flex;
-    justify-content: center;
     align-items: center;
-    margin-top: 2rem;
-
-    button {
-        background: $primary-color;
-        color: $button-text;
-        border: none;
-        padding: 0.5rem 1rem;
-        margin: 0 0.5rem;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background 0.3s ease-in-out;
-
-        &:hover {
-            background: $primary-hover;
-        }
-
-        &:disabled {
-            background: #d1d5db;
-            cursor: not-allowed;
-        }
-    }
-
-    span {
-        background: #f3f4f6;
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        font-weight: bold;
-        color: $font-color;
-    }
+    justify-content: center;
+    gap: 15px;
+    min-height: 15rem;
+    background-color: #f7f7f7;
 }

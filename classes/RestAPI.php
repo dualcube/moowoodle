@@ -554,54 +554,74 @@ class RestAPI {
         global $wpdb;
     
         $user = wp_get_current_user();
+    
         if ( empty( $user->ID ) ) {
-            return new \WP_Error( 'no_user', __( 'User not found', 'moowoodle' ), [ 'status' => 403 ] );
+            Util::_log( "[MooWoodle] get_user_courses(): No logged-in user found." );
+    
+            return rest_ensure_response([
+                'data' => [],
+                'pagination' => null,
+                'status' => 'error',
+                'message' => __( 'User not found', 'moowoodle' )
+            ]);
         }
     
-        // Get pagination details
         $per_page = max( 1, (int) $request->get_param( 'row' ) ?: 10 );
         $page     = max( 1, (int) $request->get_param( 'page' ) ?: 1 );
         $offset   = ( $page - 1 ) * $per_page;
     
-        // Get total enrolled courses count
         $total_courses = (int) $wpdb->get_var( $wpdb->prepare(
             "SELECT COUNT(*) FROM {$wpdb->prefix}moowoodle_enrollment WHERE user_id = %d AND status = 'enrolled'",
             $user->ID
         ) );
     
-        // Fetch enrolled courses
         $courses = $wpdb->get_results( $wpdb->prepare(
-            "SELECT course_id, order_id, item_id, date 
-            FROM {$wpdb->prefix}moowoodle_enrollment 
-            WHERE user_id = %d AND status = 'enrolled' 
-            ORDER BY date DESC 
-            LIMIT %d OFFSET %d",
+            "SELECT course_id, date 
+             FROM {$wpdb->prefix}moowoodle_enrollment 
+             WHERE user_id = %d AND status = 'enrolled' 
+             ORDER BY date DESC 
+             LIMIT %d OFFSET %d",
             $user->ID, $per_page, $offset
         ) );
     
-        return rest_ensure_response( [
-            'total_courses' => $total_courses,
-            'page'          => $page,
-            'per_page'      => $per_page,
-            'total_pages'   => max( 1, ceil( $total_courses / $per_page ) ),
-            'courses'       => array_map( function( $course ) use ( $user ) {
-                $linked_product_id = get_post_meta( $course->course_id, 'linked_product_id', true );
-                $moodle_course_id  = get_post_meta( $linked_product_id, 'moodle_course_id', true );
-                return [
-                    'course_id'      => $course->course_id,
-                    'order_id'       => $course->order_id,
-                    'item_id'        => $course->item_id,
-                    'user_login'     => $user->user_login,
-                    'password'       => get_user_meta( $user->ID, 'moowoodle_moodle_user_pwd', true ),
-                    'enrolment_date' => date( 'M j, Y - H:i', strtotime( $course->date ) ),
-                    'moodle_url'     => $moodle_course_id 
-                        ? trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "course/view.php?id={$moodle_course_id}"
-                        : null,
-                    'course_name'    => get_the_title( $linked_product_id ) ?: __( 'Unknown Course', 'moowoodle' ),
-                ];
-            }, $courses ),
-        ] );
+        if ( ! $courses ) {
+            Util::_log( "[MooWoodle] No enrolled courses found for user #{$user->ID}." );
+        }
+    
+        $data = array_map( function( $course ) use ( $user ) {
+            $linked_product_id = get_post_meta( $course->course_id, 'linked_product_id', true );
+            $moodle_course_id  = get_post_meta( $linked_product_id, 'moodle_course_id', true );
+    
+            if ( ! $linked_product_id || ! $moodle_course_id ) {
+                Util::_log( "[MooWoodle] Course #{$course->course_id} has missing metadata (linked_product_id or moodle_course_id)." );
+            }
+    
+            return [
+                'user_name'      => $user->user_login,
+                'course_name'    => get_the_title( $linked_product_id ) ?: __( 'Unknown Course', 'moowoodle' ),
+                'enrolment_date' => date( 'M j, Y - H:i', strtotime( $course->date ) ),
+                'moodle_url'     => $moodle_course_id 
+                    ? trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "course/view.php?id={$moodle_course_id}"
+                    : null,
+            ];
+        }, $courses );
+    
+        return rest_ensure_response([
+            'data' => $data,
+            'pagination' => [
+                'current_page' => $page,
+                'per_page'     => $per_page,
+                'total_items'  => $total_courses,
+                'total_pages'  => max( 1, ceil( $total_courses / $per_page ) ),
+                'next_page'    => $page < ceil( $total_courses / $per_page ) ? $page + 1 : null,
+                'prev_page'    => $page > 1 ? $page - 1 : null
+            ],
+            'status' => 'success',
+            'message' => __( 'Courses fetched successfully', 'moowoodle' )
+        ]);
     }
+    
+    
     
 
 }
