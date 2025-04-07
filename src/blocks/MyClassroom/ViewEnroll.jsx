@@ -20,6 +20,8 @@ const ViewEnroll = ({ classroom, onBack }) => {
     const [totalAvailable, setTotalAvailable] = useState(0);
     const studentsPerPage = 5;
 
+    const defaultImageUrl = "https://cus.dualcube.com/mvx2/wp-content/uploads/2025/04/beanie-2-3-416x416.jpg";
+
     const fetchClassroomData = async (page = 1) => {
         try {
             let response = await axios.get(getApiLink("view"), {
@@ -207,7 +209,7 @@ const ViewEnroll = ({ classroom, onBack }) => {
                 {availableCourses.map((course, index) => (
                     <div className="course" key={index}>
                         <img
-                            src="https://cus.dualcube.com/mvx2/wp-content/uploads/2025/04/beanie-2-3-416x416.jpg"
+                            src={course.image_url || defaultImageUrl} // Use image_url if exists, else default
                             alt={course.name}
                         />
                         <div className="course-name">
