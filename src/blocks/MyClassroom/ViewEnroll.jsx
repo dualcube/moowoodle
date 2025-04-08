@@ -5,7 +5,7 @@ import Select from "react-select";
 import { getApiLink } from "../../services/apiService";
 import "./MyClassroom.scss";
 
-const ViewEnroll = ({ classroom, onBack }) => {
+const ViewEnroll = ({ classroom }) => {
     const [enrolledStudents, setEnrolledStudents] = useState([]);
     const [availableCourses, setAvailableCourses] = useState([]);
     const [showForm, setShowForm] = useState(false);
@@ -18,6 +18,10 @@ const ViewEnroll = ({ classroom, onBack }) => {
     const [totalCourses, setTotalCourses] = useState(0);
     const [totalEnrolled, setTotalEnrolled] = useState(0);
     const [totalAvailable, setTotalAvailable] = useState(0);
+    const [showUnenrollModal, setShowUnenrollModal] = useState(false);
+    const [selectedStudentForUnenroll, setSelectedStudentForUnenroll] = useState(null);
+    const [unenrollCourses, setUnenrollCourses] = useState([]);
+
     const studentsPerPage = 5;
 
     const defaultImageUrl = "https://cus.dualcube.com/mvx2/wp-content/uploads/2025/04/beanie-2-3-416x416.jpg";
@@ -116,7 +120,7 @@ const ViewEnroll = ({ classroom, onBack }) => {
             } else {
                 alert(
                     __("Enrollment failed: ", "moowoodle-pro") +
-                        (response.data.message || __("Unknown error", "moowoodle-pro"))
+                    (response.data.message || __("Unknown error", "moowoodle-pro"))
                 );
             }
         } catch (error) {
@@ -155,7 +159,7 @@ const ViewEnroll = ({ classroom, onBack }) => {
             } else {
                 alert(
                     __("Bulk enrollment failed: ", "moowoodle-pro") +
-                        (response.data.message || __("Unknown error", "moowoodle-pro"))
+                    (response.data.message || __("Unknown error", "moowoodle-pro"))
                 );
             }
         } catch (error) {
@@ -164,6 +168,39 @@ const ViewEnroll = ({ classroom, onBack }) => {
         }
 
         setIsLoading(false);
+    };
+
+    const handleUnenrollStudent = async () => {
+        if (!unenrollCourses.length) {
+            alert(__("Please select at least one course to unenroll.", "moowoodle-pro"));
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+            const response = await axios.post(getApiLink("unenroll"), {
+                user_id: selectedStudentForUnenroll.id,
+                group_id: classroom.group_id,
+                email: selectedStudentForUnenroll.email,
+                course_selections: unenrollCourses,
+            }, {
+                headers: { "X-WP-Nonce": appLocalizer?.nonce },
+            });
+
+            if (response.data.success) {
+                alert(__("Unenrollment successful.", "moowoodle-pro"));
+                await fetchClassroomData(currentPage);
+                setShowUnenrollModal(false);
+                setUnenrollCourses([]);
+            } else {
+                alert(__("Unenrollment failed: ", "moowoodle-pro") + response.data.message);
+            }
+        } catch (error) {
+            console.error("Error during unenroll:", error);
+            alert(__("Something went wrong. Please try again.", "moowoodle-pro"));
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handlePageChange = (page) => {
@@ -320,6 +357,7 @@ const ViewEnroll = ({ classroom, onBack }) => {
                         <th>Name</th>
                         <th>Email</th>
                         <th>Courses</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -332,6 +370,17 @@ const ViewEnroll = ({ classroom, onBack }) => {
                                     {student.courses?.map((course) => course.course_name).join(", ") ||
                                         "No courses assigned"}
                                 </td>
+                                <td>
+                                    <button
+                                        className="unenroll-button"
+                                        onClick={() => {
+                                            setSelectedStudentForUnenroll(student);
+                                            setShowUnenrollModal(true);
+                                        }}
+                                    >
+                                        {__("Unenroll", "moowoodle-pro")}
+                                    </button>
+                                </td>
                             </tr>
                         ))
                     ) : (
@@ -341,6 +390,46 @@ const ViewEnroll = ({ classroom, onBack }) => {
                     )}
                 </tbody>
             </table>
+
+            {showUnenrollModal && selectedStudentForUnenroll && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h4>{__("Unenroll Student", "moowoodle-pro")}</h4>
+                        <p>
+                            {__("Select courses to unenroll", "moowoodle-pro")} -{" "}
+                            <strong>{selectedStudentForUnenroll.name}</strong>
+                        </p>
+                        <Select
+                            isMulti
+                            options={selectedStudentForUnenroll.courses.map((course) => ({
+                                value: course.course_id,
+                                label: course.course_name,
+                                group_item_id: course.group_item_id,
+                            }))}
+                            placeholder={__("Select Courses", "moowoodle-pro")}
+                            onChange={(selectedOptions) => {
+                                const courses = selectedOptions?.map((option) => ({
+                                    course_id: option.value,
+                                    group_item_id: option.group_item_id,
+                                })) || [];
+                                setUnenrollCourses(courses);
+                            }}
+                        />
+                        <div className="btn-group">
+                            <button
+                                className="save-button"
+                                onClick={handleUnenrollStudent}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? __("Processing...", "moowoodle-pro") : __("Confirm Unenroll", "moowoodle-pro")}
+                            </button>
+                            <button className="cancel-button" onClick={() => setShowUnenrollModal(false)}>
+                                {__("Cancel", "moowoodle-pro")}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {totalPages > 1 && (
                 <div className="pagination">
