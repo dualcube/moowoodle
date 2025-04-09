@@ -35,56 +35,71 @@ class Enrollment {
 	 * @param int $order_id
 	 * @return void
 	 */
-	public function process_order( $order_id ) {
-		$order      = new \WC_Order( $order_id );
-		$this->order = $order;
-		$user_id    = $order->get_customer_id();
-		$user_email = $order->get_billing_email();
-		$first_name = $order->get_billing_first_name();
-		$last_name  = $order->get_billing_last_name();
-		$quantity   = $this->fetch_course_quantity( $order ); 
-		$gifted     = $order->get_meta( "_wc_billing/MooWoodle/gift_someone", true );
+	public function process_order($order_id) {
+		$order           = new \WC_Order($order_id);
+		$this->order     = $order;
+		$user_id         = $order->get_customer_id();
+		$user_email      = $order->get_billing_email();
+		$first_name      = $order->get_billing_first_name();
+		$last_name       = $order->get_billing_last_name();
+		$gifted          = $order->get_meta("_wc_billing/MooWoodle/gift_someone", true);
+		$is_khali_dabba  = MooWoodle()->util->is_khali_dabba();
 	
-		if ( $gifted ) {
-			$first_name  = trim($order->get_meta( "_wc_billing/MooWoodle/first_name", true ));
-			$last_name  = trim($order->get_meta( "_wc_billing/MooWoodle/last_name", true ));
-			$user_email = $order->get_meta( "_wc_billing/MooWoodle/email_address", true );
-			$user_id    = $this->get_or_create_wp_user( $first_name, $last_name, $user_email );
+		if ($gifted) {
+			$first_name  = trim($order->get_meta("_wc_billing/MooWoodle/first_name", true));
+			$last_name   = trim($order->get_meta("_wc_billing/MooWoodle/last_name", true));
+			$user_email  = $order->get_meta("_wc_billing/MooWoodle/email_address", true);
+			$user_id     = $this->get_or_create_wp_user($first_name, $last_name, $user_email);
 		}
 	
-		if ( empty( $user_id ) ) {
-			Util::_log( "[MooWoodle] Order processing failed for Order #$order_id – Moodle User ID is missing." );
+		if (empty($user_id)) {
+			Util::_log("[MooWoodle] Order processing failed for Order #$order_id – Moodle User ID is missing.");
 			return;
 		}
 	
-		if ( $quantity == 1 ) {
-			$items = $order->get_items();
-			$item  = reset($items);
-
-			$product = $item ? $item->get_product() : null;
-	
-			if ( ! $product ) {
-				Util::_log( "[MooWoodle] Order processing failed for Order #$order_id – No valid product found." );
-				return;
+		// Check if any item has quantity > 1
+		$has_quantity_gt_1 = false;
+		foreach ($order->get_items() as $item) {
+			if ($item->get_quantity() > 1) {
+				$has_quantity_gt_1 = true;
+				break;
 			}
-			
+		}
 	
-			$this->process_enrollment( [
-				"first_name"       => $first_name,
-				"last_name"        => $last_name,
-				"purchaser_id"     => $user_id,
-				"user_email"       => $user_email,
-				"course_id"        => $product->get_meta( "linked_course_id", true ),
-				"moodle_course_id" => $product->get_meta( "moodle_course_id", true ),
-				"order_id"         => $order_id,
-				"item_id"          => key( $order->get_items() ),
-				"group_item_id"    => 0,
-				"suspend"          => 0
-			] );
+		if (! $has_quantity_gt_1 ) {
+			foreach ($order->get_items() as $item_id => $item) {
+				$product = $item->get_product();
+				if (! $product) {
+					Util::_log("[MooWoodle] Skipping item #$item_id – Invalid product.");
+					continue;
+				}
+	
+				$this->process_enrollment([
+					"first_name"       => $first_name,
+					"last_name"        => $last_name,
+					"purchaser_id"     => $user_id,
+					"user_email"       => $user_email,
+					"course_id"        => $product->get_meta("linked_course_id", true),
+					"moodle_course_id" => $product->get_meta("moodle_course_id", true),
+					"order_id"         => $order_id,
+					"item_id"          => $item_id,
+					"group_item_id"    => 0,
+					"suspend"          => 0
+				]);
+			}
 		} else {
-			do_action( 'moowoodle_after_classroom_purchase', $user_id, $first_name, $last_name, $order );
+			$group_purchase_enabled = MooWoodle()->setting->get_setting('group_purchase_enable');
+	
+			if (
+				is_array($group_purchase_enabled) &&
+				in_array('group_purchase_enable', $group_purchase_enabled) &&
+				$is_khali_dabba
+			) {
+				do_action('moowoodle_after_classroom_purchase', $user_id, $first_name, $last_name, $order);
+			}
 		}
 	}
+	
 
 	public function get_or_create_wp_user( $first_name, $last_name, $user_email ) {
 
@@ -525,16 +540,46 @@ class Enrollment {
 	 * @return bool|int|null
 	 */
 	public static function add_enrollment( $args ) {
-
 		global $wpdb;
-
+	
+		$table = "{$wpdb->prefix}moowoodle_enrollment";
+	
 		try {
-			// insert data 
-			return $wpdb->insert( "{$wpdb->prefix}moowoodle_enrollment", $args );
+			// Check if same user/course/group_item exists with 'unenrolled' status
+			$existing_id = $wpdb->get_var( $wpdb->prepare(
+				"SELECT id FROM $table 
+				 WHERE user_email = %s 
+				   AND course_id = %d 
+				   AND group_item_id = %d 
+				   AND status = 'unenrolled'
+				 LIMIT 1",
+				$args['user_email'],
+				$args['course_id'],
+				isset( $args['group_item_id'] ) ? $args['group_item_id'] : 0
+			) );
+	
+			if ( $existing_id ) {
+				// Update existing record with new enrollment data
+				return $wpdb->update(
+					$table,
+					[
+						'status'     => 'enrolled',
+						'order_id'   => $args['order_id'],
+						'item_id'    => $args['item_id'],
+						'date'       => isset( $args['date'] ) ? $args['date'] : current_time( 'mysql' ),
+					],
+					[ 'id' => $existing_id ]
+				);
+			}
+
+			// Otherwise insert fresh record (original logic)
+			return $wpdb->insert( $table, $args );
+	
 		} catch ( \Exception $error ) {
 			return null;
 		}
 	}
+	
 
 	/**
 	 * Get a particular enrollment

@@ -123,7 +123,8 @@ class Admin {
 				'log',
 				'notification',
 				'synchronize-course',
-				'synchronize-user'
+				'synchronize-user',
+				'classroom',
 			];
 
 			foreach( $tabs_names as $tab_name ) {

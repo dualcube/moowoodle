@@ -76,6 +76,7 @@ class Setting {
             'moowoodle_log_settings',
             'moowoodle_synchronize_course_settings',
             'moowoodle_synchronize_user_settings',
+            'moowoodle_classroom_settings'
         ]);
 
         return $this->settings_keys;
