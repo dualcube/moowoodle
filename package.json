@@ -31,7 +31,7 @@
         "@mui/material": "^5.16.7",
         "@tinymce/tinymce-react": "^5.1.1",
         "@wordpress/react-i18n": "^3.56.0",
-        "axios": "^1.7.7",
+        "axios": "^1.8.4",
         "cookie": "^1.0.2",
         "google-map-react": "^2.2.1",
         "mapbox-gl": "^3.8.0",
