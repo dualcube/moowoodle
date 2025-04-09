@@ -246,7 +246,7 @@ const ViewEnroll = ({ classroom }) => {
                 {availableCourses.map((course, index) => (
                     <div className="course" key={index}>
                         <img
-                            src={course.image_url || defaultImageUrl} // Use image_url if exists, else default
+                            src={course.image_url || defaultImageUrl}
                             alt={course.name}
                         />
                         <div className="course-name">
@@ -351,45 +351,47 @@ const ViewEnroll = ({ classroom }) => {
                 </form>
             )}
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Courses</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {enrolledStudents.length > 0 ? (
-                        enrolledStudents.map((student, index) => (
-                            <tr key={index}>
-                                <td>{student.name}</td>
-                                <td>{student.email}</td>
-                                <td>
-                                    {student.courses?.map((course) => course.course_name).join(", ") ||
-                                        "No courses assigned"}
-                                </td>
-                                <td>
-                                    <button
-                                        className="unenroll-button"
-                                        onClick={() => {
-                                            setSelectedStudentForUnenroll(student);
-                                            setShowUnenrollModal(true);
-                                        }}
-                                    >
-                                        {__("Unenroll", "moowoodle-pro")}
-                                    </button>
-                                </td>
-                            </tr>
-                        ))
-                    ) : (
+            {!isLoading && (
+                <table>
+                    <thead>
                         <tr>
-                            <td colSpan="3">{__("No students enrolled yet.", "moowoodle-pro")}</td>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Courses</th>
+                            <th>Action</th>
                         </tr>
-                    )}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {enrolledStudents.length > 0 ? (
+                            enrolledStudents.map((student, index) => (
+                                <tr key={index}>
+                                    <td>{student.name}</td>
+                                    <td>{student.email}</td>
+                                    <td>
+                                        {student.courses?.map((course) => course.course_name).join(", ") ||
+                                            "No courses assigned"}
+                                    </td>
+                                    <td>
+                                        <button
+                                            className="unenroll-button"
+                                            onClick={() => {
+                                                setSelectedStudentForUnenroll(student);
+                                                setShowUnenrollModal(true);
+                                            }}
+                                        >
+                                            {__("Unenroll", "moowoodle-pro")}
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="4">{__("No students enrolled yet.", "moowoodle-pro")}</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            )}
 
             {showUnenrollModal && selectedStudentForUnenroll && (
                 <div className="modal-overlay">
@@ -431,7 +433,7 @@ const ViewEnroll = ({ classroom }) => {
                 </div>
             )}
 
-            {totalPages > 1 && (
+            {totalPages > 1 && !isLoading && (
                 <div className="pagination">
                     <button
                         onClick={() => handlePageChange(currentPage - 1)}
