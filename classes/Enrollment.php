@@ -206,8 +206,22 @@ class Enrollment {
 		// Update user's enrolled courses
 		update_user_meta( $purchaser_id, 'moowoodle_moodle_course_enroll', array_merge( $previous_enrolled_courses, [ $course_id ] ) );
 	
-		// Trigger custom action after enrollment
+
+		$check_sso=MooWoodle()->setting->get_setting('moowoodle_sso_enable');
+
+		if ( in_array( 'moowoodle_sso_enable', $check_sso ) ) {
+
+			do_action( 'moowoodle_after_enrol_moodle_user_with_sso', $enrolments, $purchaser_id );
+		} else {
+
+		/**
+		 * Action hook after a user enroll in moodle.
+		 * @var array $enrollment_data
+		 * @var int $userid
+		 */
 		do_action( 'moowoodle_after_enrol_moodle_user', $enrolments, $purchaser_id );
+		
+	    }
 	}
 	
 
@@ -408,17 +422,6 @@ class Enrollment {
 		return is_array($courses) ? $courses : [];
 	}
 	
-	
-	/**
-	 * Standardized response handler
-	 */
-	private static function send_response( $success, $message ) {
-		return [
-			'success' => $success,
-			'message' => $message
-		];
-	}
-
     /**
 	 * Display WC order thankyou page containt.
 	 * @param int $order_id

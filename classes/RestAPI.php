@@ -600,10 +600,15 @@ class RestAPI {
                 'user_name'      => $user->user_login,
                 'course_name'    => get_the_title( $linked_product_id ) ?: __( 'Unknown Course', 'moowoodle' ),
                 'enrolment_date' => date( 'M j, Y - H:i', strtotime( $course->date ) ),
-                'moodle_url'     => $moodle_course_id 
-                    ? trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "course/view.php?id={$moodle_course_id}"
+                'moodle_url'     => $moodle_course_id
+                    ? apply_filters(
+                        'moodle_course_view_url',
+                        trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "course/view.php?id={$moodle_course_id}",
+                        $moodle_course_id
+                    )
                     : null,
             ];
+            
         }, $courses );
     
         return rest_ensure_response([
