@@ -520,7 +520,7 @@ class RestAPI {
         // Get the file parameter from the request
         $file = $request->get_param('file');
         $file = basename($file);
-        $filePath = MOOWOODLE_LOGS_DIR . '/' . $file;
+        $filePath = MooWoodle()->moowoodle_logs_dir . '/' . $file;
 
         // Check if the file exists and has the right extension
         if (file_exists($filePath) && preg_match('/\.(txt|log)$/', $file)) {

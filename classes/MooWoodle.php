@@ -50,10 +50,11 @@ class MooWoodle {
 
         // store plugin info
         $this->file = $file;
-        $this->container[ 'plugin_url' ]     = trailingslashit( plugins_url( '', $file ) );
-        $this->container[ 'plugin_path' ]    = trailingslashit( dirname( $file ) );
-        $this->container[ 'version' ]        = MOOWOODLE_PLUGIN_VERSION;
-        $this->container[ 'rest_namespace' ] = MOOWOODLE_REST_NAMESPACE;
+        $this->container[ 'plugin_url' ]             = trailingslashit( plugins_url( '', $file ) );
+        $this->container[ 'plugin_path' ]            = trailingslashit( dirname( $file ) );
+        $this->container[ 'version' ]                = MOOWOODLE_PLUGIN_VERSION;
+        $this->container[ 'rest_namespace' ]         = 'moowoodle/v1';
+        $this->container[ 'moowoodle_logs_dir' ]     = ( trailingslashit( wp_upload_dir(null, false)['basedir'] ) . 'mw-logs' );
 
         // activation and deactivation hook
         register_activation_hook( $file, [ $this, 'activate' ] );
@@ -209,7 +210,7 @@ class MooWoodle {
             update_option( 'moowoodle_log_file', $log_file_name );
         }
 
-        $this->container[ 'log_file' ] = MOOWOODLE_LOGS_DIR . '/' . $log_file_name;
+        $this->container[ 'log_file' ] = MooWoodle()->moowoodle_logs_dir . '/' . $log_file_name;
     }
 
 	/**

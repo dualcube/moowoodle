@@ -22,7 +22,7 @@ class Admin {
                 'manage_options',
                 'moowoodle',
                 [ Admin::class, 'create_settings_page' ],
-                esc_url(MOOWOODLE_PLUGIN_URL) . 'src/assets/images/moowoodle.png',
+                esc_url(MooWoodle()->plugin_url) . 'src/assets/images/moowoodle.png',
                 50
 		    );
         }
@@ -32,6 +32,10 @@ class Admin {
 	 * Add Option page
 	 */
 	public function add_submenu() {
+		$pro_sticker = apply_filters( 'is_moowoodle_pro_inactive', true ) ? 
+
+		'<span class="mw-pro-tag" style="font-size: 0.5rem; background: #e35047; padding: 0.125rem 0.5rem; color: #F9F8FB; font-weight: 700; line-height: 1.1; position: absolute; border-radius: 2rem 0; right: -0.75rem; top: 50%; transform: translateY(-50%)">Pro</span>' : '';
+
 		// Array contain moowoodle submenu
 		$submenus = [
 			"courses" => [
@@ -39,7 +43,7 @@ class Admin {
 				'subtab' => ''
 			],
 			"enrolments" => [
-				'name'   => __("Enrolments", 'moowoodle') . MOOWOOLE_PRO_STICKER,
+				'name'   => __("Enrolments", 'moowoodle') . $pro_sticker,
 				'subtab' => ''
 			],
 			"settings" => [
@@ -97,16 +101,20 @@ class Admin {
      * @return void
      */
 	public function enqueue_admin_script() {
+		$pro_sticker = apply_filters( 'is_moowoodle_pro_inactive', true ) ? 
+
+		'<span class="mw-pro-tag" style="font-size: 0.5rem; background: #e35047; padding: 0.125rem 0.5rem; color: #F9F8FB; font-weight: 700; line-height: 1.1; position: absolute; border-radius: 2rem 0; right: -0.75rem; top: 50%; transform: translateY(-50%)">Pro</span>' : '';
+
 		if ( get_current_screen()->id == 'toplevel_page_moowoodle' ) {
 			wp_enqueue_style(
 				'moowoodle_admin_css',
-				MOOWOODLE_PLUGIN_URL . 'build/index.css', array(),
+				MooWoodle()->plugin_url . 'build/index.css', array(),
 				MOOWOODLE_PLUGIN_VERSION
 			);
 
 			wp_enqueue_script(
 				'moowoodle-admin-script',
-				MOOWOODLE_PLUGIN_URL . 'build/index.js',
+				MooWoodle()->plugin_url . 'build/index.js',
 				['wp-element', 'wp-i18n', 'react-jsx-runtime'],
 				time(),
 				true
@@ -145,15 +153,15 @@ class Admin {
 					'nonce'		  => wp_create_nonce('wp_rest'),
 					'preSettings' => $settings_databases_value,
 					'khali_dabba'  => Util::is_khali_dabba(),
-					'pro_sticker' => MOOWOOLE_PRO_STICKER,
+					'pro_sticker' => $pro_sticker,
 					'shop_url'    => MOOWOODLE_PRO_SHOP_URL,
 					'accountmenu' => $my_account_menu,
 					'tab_name'    => __("MooWoodle", "moowoodle"),
 					'log_url'     => get_site_url( null, str_replace( ABSPATH, '', MooWoodle()->log_file ) ),
 					'wc_email_url' => admin_url( '/admin.php?page=wc-settings&tab=email&section=enrollmentemail' ),
 					'moodle_site_url' =>  MooWoodle()->setting->get_setting( 'moodle_url' ),
-					'wordpress_logo' => MOOWOODLE_PLUGIN_URL . 'src/assets/images/WordPress.png',
-					'moodle_logo'	=> MOOWOODLE_PLUGIN_URL . 'src/assets/images/Moodle.png',
+					'wordpress_logo' => MooWoodle()->plugin_url . 'src/assets/images/WordPress.png',
+					'moodle_logo'	=> MooWoodle()->plugin_url . 'src/assets/images/Moodle.png',
 					'wp_user_roles' => wp_roles()->get_names(),
 					'md_user_roles' => [
 						1 => __( 'Manager', 'moowoodle' ),

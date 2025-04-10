@@ -24,7 +24,7 @@ class EndPoint {
      * Registers the Gutenberg block.
      */
     private function register_block() {
-        register_block_type(MOOWOODLE_PLUGIN_PATH . 'build/blocks/MyCourses/', [
+        register_block_type(MooWoodle()->plugin_path . 'build/blocks/MyCourses/', [
             'render_callback' => [$this, 'render_my_block'],
         ]);
     }

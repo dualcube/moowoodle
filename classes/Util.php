@@ -29,13 +29,13 @@ class Util {
 		}
 
 		// log folder create
-		if ( ! file_exists(MOOWOODLE_LOGS_DIR . '/.htaccess') ) {
-			$result = wp_mkdir_p( MOOWOODLE_LOGS_DIR );	
+		if ( ! file_exists(MooWoodle()->moowoodle_logs_dir . '/.htaccess') ) {
+			$result = wp_mkdir_p( MooWoodle()->moowoodle_logs_dir );	
 			if ( true === $result ) {
 				// Create infrastructure to prevent listing contents of the logs directory.
 				try {
-					$wp_filesystem->put_contents( MOOWOODLE_LOGS_DIR . '/.htaccess', 'deny from all' );
-					$wp_filesystem->put_contents( MOOWOODLE_LOGS_DIR . '/index.html', '' );
+					$wp_filesystem->put_contents( MooWoodle()->moowoodle_logs_dir . '/.htaccess', 'deny from all' );
+					$wp_filesystem->put_contents( MooWoodle()->moowoodle_logs_dir . '/index.html', '' );
 				} catch ( Exception $exception ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 					// Creation failed.
 				}
