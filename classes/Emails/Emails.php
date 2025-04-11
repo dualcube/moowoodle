@@ -4,7 +4,7 @@ namespace MooWoodle\Emails;
 
 class Emails {
 	public function __construct() {
-		add_action( 'moowoodle_after_enrol_moodle_user', [ &$this, 'send_enrollment_confirmation' ], 10, 2 );
+		add_action( 'moowoodle_after_successful_enrollments', [ &$this, 'send_enrollment_confirmation' ], 10, 2 );
 		add_filter( 'woocommerce_email_classes', [ &$this, 'moowoodle_emails' ] );
 	}
 
@@ -35,16 +35,38 @@ class Emails {
 	}
 
 	/**
-	 * Send confirmation for enrollment in moodle course
-	 * @param array $enrolments
+	 * Send confirmation for enrollment in Moodle courses.
+	 *
+	 * @param array $enrolments List of enrolled course IDs or structured data.
+	 * @param int   $user_id    WordPress user ID.
 	 * @return void
 	 */
 	public function send_enrollment_confirmation( $enrolments, $user_id ) {
-		$enrollment_datas 				= [];
-		$user 							= get_userdata($user_id);
-		$user_email 					= ($user == false) ? '' : $user->user_email;
-		$enrollment_datas['enrolments'] = $enrolments;
+
+		$user = get_userdata( $user_id );
+		if ( ! $user || empty( $user->user_email ) ) {
+			return;
+		}
+
+		$email_data = [
+			'group_name' => '',
+			'enrolments' => [],
+		];
 		
-		$this->send_email( 'EnrollmentEmail', $user_email, $enrollment_datas );
+		foreach ( $enrolments as $course ) {
+			$course_id      = is_array( $course ) ? $course['course_id'] : $course;
+			$classroom_name = is_array( $course ) && isset( $course['classroom_name'] ) ? $course['classroom_name'] : '';
+		
+			if ( empty( $email_data['group_name'] ) && ! empty( $classroom_name ) ) {
+				$email_data['group_name'] = $classroom_name;
+			}
+		
+			$email_data['enrolments'][] = [
+				'courseid' => $course_id,
+			];
+		}
+		
+
+		$this->send_email( 'EnrollmentEmail', $user->user_email, $email_data );
 	}
 }

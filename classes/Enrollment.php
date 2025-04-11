@@ -46,10 +46,10 @@ class Enrollment {
 		$is_khali_dabba  = MooWoodle()->util->is_khali_dabba();
 	
 		if ($gifted) {
-			$first_name  = trim($order->get_meta("_wc_billing/MooWoodle/first_name", true));
-			$last_name   = trim($order->get_meta("_wc_billing/MooWoodle/last_name", true));
-			$user_email  = $order->get_meta("_wc_billing/MooWoodle/email_address", true);
-			$user_id     = $this->get_or_create_wp_user($first_name, $last_name, $user_email);
+			$first_name = trim($order->get_meta("_wc_billing/MooWoodle/first_name", true));
+			$last_name  = trim($order->get_meta("_wc_billing/MooWoodle/last_name", true));
+			$user_email = $order->get_meta("_wc_billing/MooWoodle/email_address", true);
+			$user_id    = $this->get_or_create_wp_user($first_name, $last_name, $user_email);
 		}
 	
 		if (empty($user_id)) {
@@ -66,7 +66,9 @@ class Enrollment {
 			}
 		}
 	
-		if (! $has_quantity_gt_1 ) {
+		if (! $has_quantity_gt_1) {
+			$successful_enrollments = [];
+	
 			foreach ($order->get_items() as $item_id => $item) {
 				$product = $item->get_product();
 				if (! $product) {
@@ -74,7 +76,7 @@ class Enrollment {
 					continue;
 				}
 	
-				$this->process_enrollment([
+				$enroll_data = [
 					"first_name"       => $first_name,
 					"last_name"        => $last_name,
 					"purchaser_id"     => $user_id,
@@ -85,7 +87,16 @@ class Enrollment {
 					"item_id"          => $item_id,
 					"group_item_id"    => 0,
 					"suspend"          => 0
-				]);
+				];
+	
+				if ($this->process_enrollment($enroll_data)) {
+					$successful_enrollments[] = $enroll_data['course_id']; 
+				}
+			}
+
+			if (! empty($successful_enrollments)) {
+
+				do_action('moowoodle_after_successful_enrollments', $successful_enrollments, $user_id);
 			}
 		} else {
 			$group_purchase_enabled = MooWoodle()->setting->get_setting('group_purchase_enable');
@@ -100,6 +111,7 @@ class Enrollment {
 		}
 	}
 	
+	
 
 	public function get_or_create_wp_user( $first_name, $last_name, $user_email ) {
 
@@ -108,7 +120,7 @@ class Enrollment {
 
 		if ( ! $user ) {
 			// Generate a secure password
-			$password = wp_generate_password( 12, false );
+			$password = $this->generate_password();
 	
 			// Use the part before @ as username
 			$username = sanitize_user( strtolower( strstr( $user_email, '@', true ) ) );
@@ -128,6 +140,10 @@ class Enrollment {
 				'last_name'  => $last_name,
 				'role'       => 'customer',
 			] );
+
+			update_user_meta( $user_id, 'moowoodle_wordpress_user_pwd', $password );
+			update_user_meta( $user_id, 'moowoodle_wordpress_new_user_created', 'created' );
+			
 
 			Util::_log( "[MooWoodle] New WP user created: ID {$user_id}, Username: {$username}, Email: {$user_email}" );
 		} else {
@@ -202,26 +218,8 @@ class Enrollment {
 			'status'        => 'enrolled',
 			'group_item_id' => $enroll_data['group_item_id'],
 		]);
-	
-		// Update user's enrolled courses
-		update_user_meta( $purchaser_id, 'moowoodle_moodle_course_enroll', array_merge( $previous_enrolled_courses, [ $course_id ] ) );
-	
 
-		$check_sso=MooWoodle()->setting->get_setting('moowoodle_sso_enable');
-
-		if ( in_array( 'moowoodle_sso_enable', $check_sso ) ) {
-
-			do_action( 'moowoodle_after_enrol_moodle_user_with_sso', $enrolments, $purchaser_id );
-		} else {
-
-		/**
-		 * Action hook after a user enroll in moodle.
-		 * @var array $enrollment_data
-		 * @var int $userid
-		 */
-		do_action( 'moowoodle_after_enrol_moodle_user', $enrolments, $purchaser_id );
-		
-	    }
+		return true;
 	}
 	
 
@@ -274,11 +272,23 @@ class Enrollment {
 		if ( ! $user_id ) return 0;
 	
 		try {
-			$password = get_user_meta( $user_id, 'moowoodle_moodle_user_pwd', true );
-			if ( ! $password ) {
-				$password = $this->generate_password();
+
+			$new_wordpress_user = get_user_meta( $user_id, 'moowoodle_wordpress_new_user_created', true );
+
+			if( $new_wordpress_user ) {
+				$password = get_user_meta( $user_id, 'moowoodle_wordpress_user_pwd', true );
+
 				add_user_meta( $user_id, 'moowoodle_moodle_user_pwd', $password );
+			}else{
+				$password = get_user_meta( $user_id, 'moowoodle_moodle_user_pwd', true );
+
+				if ( ! $password ) {
+					$password = $this->generate_password();
+					add_user_meta( $user_id, 'moowoodle_moodle_user_pwd', $password );
+
+				}
 			}
+
 			$email      = sanitize_email( $enroll_data['user_email'] ?? '' );
 			$first_name = sanitize_text_field( $enroll_data['first_name'] ?? 'User' );
 			$last_name  = sanitize_text_field( $enroll_data['last_name'] ?? 'User' );
@@ -299,9 +309,7 @@ class Enrollment {
 					[ 'type' => 'auth_forcepasswordchange', 'value' => 1 ]
 				]
 			];
-	
 			$response = MooWoodle()->external_service->do_request( 'create_users', [ 'users' => [ $user_data ] ] );
-	
 			if ( empty( $response['data'] ) ) {
 				throw new \Exception( "Invalid response from Moodle while creating user." );
 			}
