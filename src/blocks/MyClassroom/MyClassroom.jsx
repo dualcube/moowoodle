@@ -35,11 +35,11 @@ const MyClassroom = () => {
             } else {
                 setClassrooms([]);
                 setTotalPages(1);
-                setError(__("No classrooms found.", "moowoodle-pro"));
+                setError(__("No classrooms found.", "moowoodle"));
             }
         } catch (err) {
             console.error("Error fetching classroom data:", err);
-            setError(__("Failed to load classrooms.", "moowoodle-pro"));
+            setError(__("Failed to load classrooms.", "moowoodle"));
         }
     
         setLoading(false);
@@ -92,11 +92,11 @@ const MyClassroom = () => {
                 setEditingClassroom(null); // Close input field
                 setNewName(""); // Clear input
             } else {
-                alert(message || __("Failed to rename classroom.", "moowoodle-pro"));
+                alert(message || __("Failed to rename classroom.", "moowoodle"));
             }
         } catch (error) {
             console.error("Error renaming classroom:", error);
-            alert(__("An error occurred while updating the classroom.", "moowoodle-pro"));
+            alert(__("An error occurred while updating the classroom.", "moowoodle"));
         }
     };
     
@@ -111,11 +111,11 @@ const MyClassroom = () => {
             ) : (
                 <>
                     <div className="header">
-                        <h1>{__("My Classroom", "moowoodle-pro")}</h1>
+                        <h1>{__("My Classroom", "moowoodle")}</h1>
                     </div>
 
                     {loading ? (
-                        <p>{__("Loading classrooms...", "moowoodle-pro")}</p>
+                        <p>{__("Loading classrooms...", "moowoodle")}</p>
                     ) : error ? (
                         <p className="error-message">{error}</p>
                     ) : (
@@ -136,10 +136,10 @@ const MyClassroom = () => {
                                                         />
                                                         <div className="button-group">
                                                             <a className="cancel-btn" onClick={() => setEditingClassroom(null)}>
-                                                                {__("Cancel", "moowoodle-pro")}
+                                                                {__("Cancel", "moowoodle")}
                                                             </a>
                                                             <a className="save-btn" onClick={() => handleUpdateClassroom(group)}>
-                                                                {__("Save", "moowoodle-pro")}
+                                                                {__("Save", "moowoodle")}
                                                             </a>
                                                         </div>
                                                     </>
@@ -163,18 +163,18 @@ const MyClassroom = () => {
                                                         <li key={index}>{item.course_name}</li>
                                                     ))
                                                 ) : (
-                                                    <li>{__("No courses available", "moowoodle-pro")}</li>
+                                                    <li>{__("No courses available", "moowoodle")}</li>
                                                 )}
                                             </ul>
                                             <div className="view-btn-container">
                                                 <button className="view-button" onClick={() => handleViewEnroll(group)}>
-                                                    {__("View", "moowoodle-pro")}
+                                                    {__("View", "moowoodle")}
                                                 </button>
                                             </div>
                                         </div>
                                     ))
                                 ) : (
-                                    <p>{__("No classrooms found.", "moowoodle-pro")}</p>
+                                    <p>{__("No classrooms found.", "moowoodle")}</p>
                                 )}
                             </div>
 
@@ -185,18 +185,18 @@ const MyClassroom = () => {
                                         onClick={() => handlePageChange(currentPage - 1)} 
                                         disabled={currentPage === 1}
                                     >
-                                        {__("Previous", "moowoodle-pro")}
+                                        {__("Previous", "moowoodle")}
                                     </button>
 
                                     <span className="page-info">
-                                        {__("Page", "moowoodle-pro")} {currentPage} {__("of", "moowoodle-pro")} {totalPages}
+                                        {__("Page", "moowoodle")} {currentPage} {__("of", "moowoodle")} {totalPages}
                                     </span>
 
                                     <button 
                                         onClick={() => handlePageChange(currentPage + 1)} 
                                         disabled={currentPage >= totalPages}
                                     >
-                                        {__("Next", "moowoodle-pro")}
+                                        {__("Next", "moowoodle")}
                                     </button>
                                 </div>
                             )}

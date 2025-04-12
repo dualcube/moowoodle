@@ -21,7 +21,7 @@ const ViewEnroll = ({ classroom }) => {
     const [showUnenrollModal, setShowUnenrollModal] = useState(false);
     const [selectedStudentForUnenroll, setSelectedStudentForUnenroll] = useState(null);
     const [unenrollCourses, setUnenrollCourses] = useState([]);
-
+    
     const studentsPerPage = 5;
 
     const defaultImageUrl = "https://cus.dualcube.com/mvx2/wp-content/uploads/2025/04/beanie-2-3-416x416.jpg";
@@ -55,7 +55,7 @@ const ViewEnroll = ({ classroom }) => {
                 console.error("Failed to load classroom data:", response.message);
             }
         } catch (error) {
-            console.error(__("Error fetching classroom data:", "moowoodle-pro"), error);
+            console.error(__("Error fetching classroom data:", "moowoodle"), error);
         }
     };
 
@@ -91,7 +91,7 @@ const ViewEnroll = ({ classroom }) => {
             !Array.isArray(newStudent.courses) ||
             !newStudent.courses.length
         ) {
-            alert(__("Please fill in all fields.", "moowoodle-pro"));
+            alert(__("Please fill in all fields.", "moowoodle"));
             return;
         }
 
@@ -116,16 +116,16 @@ const ViewEnroll = ({ classroom }) => {
                 setShowForm(false);
                 setNewStudent({ first_name: "", last_name: "", email: "", courses: [] });
                 await fetchClassroomData(1); // Reset to page 1 after enrollment
-                alert(__("Enrollment successful! The classroom data has been updated.", "moowoodle-pro"));
+                alert(__("Enrollment successful! The classroom data has been updated.", "moowoodle"));
             } else {
                 alert(
-                    __("Enrollment failed: ", "moowoodle-pro") +
-                    (response.data.message || __("Unknown error", "moowoodle-pro"))
+                    __("Enrollment failed: ", "moowoodle") +
+                    (response.data.message || __("Unknown error", "moowoodle"))
                 );
             }
         } catch (error) {
-            console.error(__("Error enrolling student:", "moowoodle-pro"), error);
-            alert(__("Error enrolling student. Please try again.", "moowoodle-pro"));
+            console.error(__("Error enrolling student:", "moowoodle"), error);
+            alert(__("Error enrolling student. Please try again.", "moowoodle"));
         }
         setIsLoading(false);
     };
@@ -133,7 +133,7 @@ const ViewEnroll = ({ classroom }) => {
     const handleCsvUpload = async (e) => {
         e.preventDefault();
         if (!csvFile) {
-            alert(__("Please select a CSV file.", "moowoodle-pro"));
+            alert(__("Please select a CSV file.", "moowoodle"));
             return;
         }
 
@@ -155,16 +155,16 @@ const ViewEnroll = ({ classroom }) => {
                 setCsvFile(null);
                 setShowBulkModal(false);
                 await fetchClassroomData(1); // Reset to page 1 after bulk enrollment
-                alert(__("Bulk enrollment successful!", "moowoodle-pro"));
+                alert(__("Bulk enrollment successful!", "moowoodle"));
             } else {
                 alert(
-                    __("Bulk enrollment failed: ", "moowoodle-pro") +
-                    (response.data.message || __("Unknown error", "moowoodle-pro"))
+                    __("Bulk enrollment failed: ", "moowoodle") +
+                    (response.data.message || __("Unknown error", "moowoodle"))
                 );
             }
         } catch (error) {
-            console.error(__("Error during bulk enrollment:", "moowoodle-pro"), error);
-            alert(__("Error during bulk enrollment. Please try again.", "moowoodle-pro"));
+            console.error(__("Error during bulk enrollment:", "moowoodle"), error);
+            alert(__("Error during bulk enrollment. Please try again.", "moowoodle"));
         }
 
         setIsLoading(false);
@@ -172,7 +172,7 @@ const ViewEnroll = ({ classroom }) => {
 
     const handleUnenrollStudent = async () => {
         if (!unenrollCourses.length) {
-            alert(__("Please select at least one course to unenroll.", "moowoodle-pro"));
+            alert(__("Please select at least one course to unenroll.", "moowoodle"));
             return;
         }
 
@@ -188,16 +188,16 @@ const ViewEnroll = ({ classroom }) => {
             });
 
             if (response.data.success) {
-                alert(__("Unenrollment successful.", "moowoodle-pro"));
+                alert(__("Unenrollment successful.", "moowoodle"));
                 await fetchClassroomData(currentPage);
                 setShowUnenrollModal(false);
                 setUnenrollCourses([]);
             } else {
-                alert(__("Unenrollment failed: ", "moowoodle-pro") + response.data.message);
+                alert(__("Unenrollment failed: ", "moowoodle") + response.data.message);
             }
         } catch (error) {
             console.error("Error during unenroll:", error);
-            alert(__("Something went wrong. Please try again.", "moowoodle-pro"));
+            alert(__("Something went wrong. Please try again.", "moowoodle"));
         } finally {
             setIsLoading(false);
         }
@@ -224,7 +224,7 @@ const ViewEnroll = ({ classroom }) => {
 
     return (
         <div className="enrollment-container">
-            <h4 className="heading">You are viewing {classroom?.name || "Classroom"}</h4>
+            <h4 className="heading">You are viewing {classroom?.group_name || "Classroom"}</h4>
 
             <div className="class-details">
                 <div className="details-box">
@@ -241,7 +241,7 @@ const ViewEnroll = ({ classroom }) => {
                 </div>
             </div>
 
-            <div className="course-title">Course Details</div>
+            <div className="course-title title">Course Details</div>
             <div className="courses">
                 {availableCourses.map((course, index) => (
                     <div className="course" key={index}>
@@ -256,26 +256,26 @@ const ViewEnroll = ({ classroom }) => {
                 ))}
             </div>
 
-            <div className="course-title">
+            <div className="course-title title">
                 Enrolled Student
                 <div className="button-group">
                     <button
-                        className="enroll-button"
+                        className={`enroll-button bulk-enroll-button ${showForm ? "btn-red" : "btn-green"}`}
                         onClick={() => {
                             setShowForm((prev) => !prev);
                             setShowBulkModal(false);
                         }}
                     >
-                        {showForm ? __("Cancel", "moowoodle-pro") : "+ " + __("Enroll Student", "moowoodle-pro")}
+                        {showForm ? __("Cancel", "moowoodle") : "+ " + __("Enroll Student", "moowoodle")}
                     </button>
                     <button
-                        className="enroll-button bulk-enroll-button"
+                        className={`enroll-button bulk-enroll-button ${showBulkModal ? "btn-red" : "btn-green"}`}
                         onClick={() => {
                             setShowBulkModal((prev) => !prev);
                             setShowForm(false);
                         }}
                     >
-                        {showBulkModal ? __("Cancel", "moowoodle-pro") : __("Bulk Enroll (CSV)", "moowoodle-pro")}
+                        {showBulkModal ? __("Cancel", "moowoodle") : __("Bulk Enroll (CSV)", "moowoodle")}
                     </button>
                 </div>
             </div>
@@ -285,7 +285,7 @@ const ViewEnroll = ({ classroom }) => {
                     <input
                         type="text"
                         name="first_name"
-                        placeholder={__("First Name", "moowoodle-pro")}
+                        placeholder={__("First Name", "moowoodle")}
                         value={newStudent.first_name}
                         onChange={handleInputChange}
                         required
@@ -293,7 +293,7 @@ const ViewEnroll = ({ classroom }) => {
                     <input
                         type="text"
                         name="last_name"
-                        placeholder={__("Last Name", "moowoodle-pro")}
+                        placeholder={__("Last Name", "moowoodle")}
                         value={newStudent.last_name}
                         onChange={handleInputChange}
                         required
@@ -301,7 +301,7 @@ const ViewEnroll = ({ classroom }) => {
                     <input
                         type="email"
                         name="email"
-                        placeholder={__("Student Email", "moowoodle-pro")}
+                        placeholder={__("Student Email", "moowoodle")}
                         value={newStudent.email}
                         onChange={handleInputChange}
                         required
@@ -309,15 +309,15 @@ const ViewEnroll = ({ classroom }) => {
                     <Select
                         isMulti
                         options={courseOptions}
-                        placeholder={__("Select Courses", "moowoodle-pro")}
+                        placeholder={__("Select Courses", "moowoodle")}
                         value={courseOptions.filter((option) =>
                             newStudent.courses.some((course) => course.course_id === option.value)
                         )}
                         onChange={handleCourseChange}
                     />
                     <div className="btn-group">
-                        <button type="submit" className="save-button" disabled={isLoading}>
-                            {isLoading ? __("Enrolling...", "moowoodle-pro") : __("Enroll", "moowoodle-pro")}
+                        <button type="submit" className="save-button btn-green" disabled={isLoading}>
+                            {isLoading ? __("Enrolling...", "moowoodle") : __("Enroll", "moowoodle")}
                         </button>
                     </div>
                 </form>
@@ -335,58 +335,58 @@ const ViewEnroll = ({ classroom }) => {
                     <div className="btn-group">
                         <button
                             type="button"
-                            className="save-button download-sample-button"
+                            className="btn-green save-button download-sample-button"
                             onClick={downloadSampleCsv}
                         >
-                            {__("Download Sample CSV", "moowoodle-pro")}
+                            {__("Download Sample CSV", "moowoodle")}
                         </button>
                         <button
                             type="submit"
-                            className="save-button"
+                            className="btn-green save-button"
                             disabled={isLoading}
                         >
-                            {isLoading ? __("Uploading...", "moowoodle-pro") : __("Upload CSV", "moowoodle-pro")}
+                            {isLoading ? __("Uploading...", "moowoodle") : __("Upload CSV", "moowoodle")}
                         </button>
                     </div>
                 </form>
             )}
 
             {!isLoading && (
-                <table>
+                <table className="woocommerce-orders-table woocommerce-MyAccount-orders shop_table">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Courses</th>
-                            <th>Action</th>
+                            <th className="woocommerce-orders-table__header">Name</th>
+                            <th className="woocommerce-orders-table__header">Email</th>
+                            <th className="woocommerce-orders-table__header">Courses</th>
+                            <th className="woocommerce-orders-table__header">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         {enrolledStudents.length > 0 ? (
                             enrolledStudents.map((student, index) => (
-                                <tr key={index}>
-                                    <td>{student.name}</td>
-                                    <td>{student.email}</td>
-                                    <td>
+                                <tr key={index} className="woocommerce-orders-table__row">
+                                    <td className="woocommerce-orders-table__cell">{student.name}</td>
+                                    <td className="woocommerce-orders-table__cell">{student.email}</td>
+                                    <td className="woocommerce-orders-table__cell">
                                         {student.courses?.map((course) => course.course_name).join(", ") ||
                                             "No courses assigned"}
                                     </td>
-                                    <td>
+                                    <td className="woocommerce-orders-table__cell">
                                         <button
-                                            className="unenroll-button"
+                                            className="unenroll-button btn-red"
                                             onClick={() => {
                                                 setSelectedStudentForUnenroll(student);
                                                 setShowUnenrollModal(true);
                                             }}
                                         >
-                                            {__("Unenroll", "moowoodle-pro")}
+                                            {__("Unenroll", "moowoodle")}
                                         </button>
                                     </td>
                                 </tr>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="4">{__("No students enrolled yet.", "moowoodle-pro")}</td>
+                                <td colSpan="4">{__("No students enrolled yet.", "moowoodle")}</td>
                             </tr>
                         )}
                     </tbody>
@@ -396,9 +396,9 @@ const ViewEnroll = ({ classroom }) => {
             {showUnenrollModal && selectedStudentForUnenroll && (
                 <div className="modal-overlay">
                     <div className="modal-content">
-                        <h4>{__("Unenroll Student", "moowoodle-pro")}</h4>
+                        <h4 className="title">{__("Unenroll Student", "moowoodle")}</h4>
                         <p>
-                            {__("Select courses to unenroll", "moowoodle-pro")} -{" "}
+                            {__("Select courses to unenroll", "moowoodle")} -{" "}
                             <strong>{selectedStudentForUnenroll.name}</strong>
                         </p>
                         <Select
@@ -408,7 +408,7 @@ const ViewEnroll = ({ classroom }) => {
                                 label: course.course_name,
                                 group_item_id: course.group_item_id,
                             }))}
-                            placeholder={__("Select Courses", "moowoodle-pro")}
+                            placeholder={__("Select Courses", "moowoodle")}
                             onChange={(selectedOptions) => {
                                 const courses = selectedOptions?.map((option) => ({
                                     course_id: option.value,
@@ -418,16 +418,17 @@ const ViewEnroll = ({ classroom }) => {
                             }}
                         />
                         <div className="btn-group">
+                            <button className="cancel-button btn-red" onClick={() => setShowUnenrollModal(false)}>
+                                {__("Cancel", "moowoodle")}
+                            </button>
                             <button
-                                className="save-button"
+                                className="save-button btn-green"
                                 onClick={handleUnenrollStudent}
                                 disabled={isLoading}
                             >
-                                {isLoading ? __("Processing...", "moowoodle-pro") : __("Confirm Unenroll", "moowoodle-pro")}
+                                {isLoading ? __("Processing...", "moowoodle") : __("Confirm Unenroll", "moowoodle")}
                             </button>
-                            <button className="cancel-button" onClick={() => setShowUnenrollModal(false)}>
-                                {__("Cancel", "moowoodle-pro")}
-                            </button>
+                            
                         </div>
                     </div>
                 </div>
@@ -440,17 +441,17 @@ const ViewEnroll = ({ classroom }) => {
                         disabled={currentPage === 1}
                         className="pagination-button"
                     >
-                        {__("Previous", "moowoodle-pro")}
+                        {__("Previous", "moowoodle")}
                     </button>
                     <span className="pagination-info">
-                        {__("Page", "moowoodle-pro")} {currentPage} {__("of", "moowoodle-pro")} {totalPages}
+                        {__("Page", "moowoodle")} {currentPage} {__("of", "moowoodle")} {totalPages}
                     </span>
                     <button
                         onClick={() => handlePageChange(currentPage + 1)}
                         disabled={currentPage === totalPages}
                         className="pagination-button"
                     >
-                        {__("Next", "moowoodle-pro")}
+                        {__("Next", "moowoodle")}
                     </button>
                 </div>
             )}
