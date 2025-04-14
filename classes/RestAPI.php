@@ -99,8 +99,7 @@ class RestAPI {
      * @return bool True if the user is an administrator or customer, otherwise false.
      */
     public function user_has_api_permission() {
-        $user = wp_get_current_user();
-        return $user->ID && array_intersect( ['administrator', 'customer'], (array) $user->roles );
+        return current_user_can( 'customer' ) || current_user_can( 'manage_options' );
     }
     
     /**
