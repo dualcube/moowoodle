@@ -134,25 +134,22 @@ class Product {
 		}
 
 		// get the course id linked with moodle.
-        $wp_course = MooWoodle()->course->get_courses([
-            'meta_key' 		=> 'moodle_course_id',
-            'meta_value' 	=> $course[ 'id' ],
-            'meta_compare' 	=> '=',
-		])[0];
+        $wp_course = self::get_course_from_moowoodle_courses( $course['id'] );
 
         // Set product meta data.
         $product->update_meta_data( '_course_startdate', $course[ 'startdate' ] );
         $product->update_meta_data( '_course_enddate', $course[ 'enddate' ] );
         $product->update_meta_data( 'moodle_course_id', $course[ 'id' ] );
-        $product->update_meta_data( 'linked_course_id', $wp_course->ID );
+        $product->update_meta_data( 'linked_course_id', $wp_course->id );
 		$product->set_status( 'publish' );
 		$product->save();
 
 		// Linked product to course.
-		update_post_meta( $wp_course->ID, 'linked_product_id', $product->get_id() );
+		update_post_meta( $wp_course->id, 'linked_product_id', $product->get_id() );
 
 		return $product->get_id();
 	}
+	
     
 	/**
 	 * Delete all the product which id is not prasent in $exclude_ids array.
@@ -214,20 +211,54 @@ class Product {
 	 * @return int | void
 	 */
 	public function save_product_meta_data( $post_id ) {
+		file_put_contents( WP_CONTENT_DIR . '/mo_save_log.txt', 'Save Product Meta Data: ' . var_export( "in", true ) . "\n", FILE_APPEND );
+
 		// Security check
 		if (
 			! filter_input( INPUT_POST, 'product_meta_nonce', FILTER_DEFAULT ) === null
 			|| ! wp_verify_nonce( filter_input( INPUT_POST, 'product_meta_nonce', FILTER_DEFAULT ) )
-			|| ! current_user_can( 'edit_product', $post_id ) ) {
+			|| ! current_user_can( 'edit_product', $post_id )
+		) {
 			return $post_id;
 		}
-
-		$course_id = filter_input( INPUT_POST, 'course_id', FILTER_DEFAULT );
-
-		if ( $course_id ) {
-			update_post_meta( $post_id, 'linked_course_id', wp_kses_post( $course_id ) );
-			update_post_meta( $post_id, '_sku', 'course-' . get_post_meta( $course_id, '_sku', true ) );
-			update_post_meta( $post_id, 'moodle_course_id', get_post_meta( $course_id, 'moodle_course_id', true ) );
-		}
+	
+		$course_id        = filter_input( INPUT_POST, 'course_id', FILTER_DEFAULT );
+		$course_sku       = get_post_meta( $course_id, '_sku', true );
+		$moodle_course_id = get_post_meta( $course_id, 'moodle_course_id', true );
+	
+		// Log values
+		$log_data = [
+			'post_id'           => $post_id,
+			'course_id'         => $course_id,
+			'course_sku'        => $course_sku,
+			'moodle_course_id'  => $moodle_course_id,
+		];
+		file_put_contents( WP_CONTENT_DIR . '/mo_save_log.txt', 'Save Product Meta Data: ' . var_export( $log_data, true ) . "\n", FILE_APPEND );
+	
+		// if ( $course_id ) {
+		// 	update_post_meta( $post_id, 'linked_course_id', wp_kses_post( $course_id ) );
+		// 	update_post_meta( $post_id, '_sku', 'course-' . $course_sku );
+		// 	update_post_meta( $post_id, 'moodle_course_id', $moodle_course_id );
+		// }
 	}
+	
+
+	// Function to fetch course from wp_moowoodle_courses table based on Moodle course ID
+	public static function get_course_from_moowoodle_courses( $moodle_course_id ) {
+		global $wpdb;
+
+		$table = $wpdb->prefix . 'moowoodle_courses';
+
+		// Fetch course data linked to Moodle course ID
+		$course = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM $table WHERE moodle_course_id = %d",
+				$moodle_course_id
+			)
+		);
+
+		// Return course data if found, otherwise return null
+		return $course ? $course : null;
+	}
+
 }

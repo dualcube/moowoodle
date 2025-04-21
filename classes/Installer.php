@@ -81,6 +81,34 @@ class Installer {
                 PRIMARY KEY (`id`)
             ) $collate;"
         );
+
+        $wpdb->query(
+            "CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "moowoodle_categories` (
+                `moodle_category_id` bigint(20) NOT NULL,
+                `name` varchar(255) NOT NULL,
+                `parent_id` bigint(20) NOT NULL DEFAULT 0,
+                PRIMARY KEY (`moodle_category_id`)
+            ) $collate;"
+        );
+        
+
+        $wpdb->query(
+            "CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "moowoodle_courses` (
+                `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                `moodle_course_id` bigint(20) NOT NULL,
+                `shortname` varchar(255) NOT NULL,
+                `category_id` bigint(20) NOT NULL,
+                `fullname` text NOT NULL,
+                `startdate` bigint(20) DEFAULT NULL,
+                `enddate` bigint(20) DEFAULT NULL,
+                `created` bigint(20) DEFAULT NULL,
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `moodle_course_id` (`moodle_course_id`)
+            ) $collate;"
+        );
+        
+        
+        
     }
 
     /**
@@ -90,8 +118,9 @@ class Installer {
     public static function migrate_databases() {
         $previous_version = get_option( 'moowoodle_version', '' );
 
-        if ( version_compare( $previous_version, '3.2.8', '<' ) ) {
+        if ( version_compare( $previous_version, '3.2.12', '<' ) ) {
             Enrollment::migrate_enrollments();
+            \MooWoodle\Core\Course::migrate_courses();
         }
     }
 

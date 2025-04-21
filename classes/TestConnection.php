@@ -95,6 +95,26 @@ class TestConnection {
 	 * @return string[]
 	 */
 	public static function create_user() {
+		// find user on moodle with moodle externel function.
+		$response = MooWoodle()->external_service->do_request(
+			'get_moodle_users',
+			[ 
+				'criteria' => [
+					[
+						'key' 	=> 'username',
+						'value' => 'moowoodletestuser'
+					]
+				]
+			]
+		);
+
+
+		if ( ! empty( $response[ 'data' ][ 'users' ]) ) {
+
+			$user = reset( $response[ 'data' ][ 'users' ] );
+		    self::delete_users( $user[ 'id' ] );
+		}
+		
 		$response = MooWoodle()->external_service->do_request( 'create_users', [ 'users' =>  [ [
 			'email' 	=> 'moowoodletestuser@gmail.com',
 			'username'  => 'moowoodletestuser',

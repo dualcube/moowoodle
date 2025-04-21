@@ -65,6 +65,7 @@ class MooWoodle {
         add_action( 'before_woocommerce_init', [ $this, 'declare_compatibility' ] );
         add_action( 'woocommerce_loaded', [ $this, 'load_plugin' ] );
         add_action( 'plugins_loaded', [ $this , 'is_woocommerce_loaded'] );
+        add_action( 'init', [ $this , 'migrate_from_previous_version' ] );
 	}
 
     /**
@@ -146,6 +147,14 @@ class MooWoodle {
     public function is_woocommerce_loaded() {
         if ( ! did_action( 'woocommerce_loaded' ) && is_admin() ) {
         	add_action( 'admin_notices', [ $this , 'woocommerce_admin_notice' ] );
+        }
+    }
+
+    public function migrate_from_previous_version() {
+        $previous_version = get_option( 'moowoodle_version', '' );
+
+        if ( version_compare( $previous_version, '3.2.12', '<' ) ) {
+            new Installer();
         }
     }
 

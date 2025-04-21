@@ -205,13 +205,21 @@ class RestAPI {
         $sync_setting = MooWoodle()->setting->get_setting( 'sync-course-options' );
         $sync_setting = is_array( $sync_setting ) ? $sync_setting : [];
         
+        // get all category from moodle.
+        $response   = MooWoodle()->external_service->do_request( 'get_categories' );
+        $categories = $response[ 'data' ];
+
         // update course and product categories.
         if ( in_array( 'sync_courses_category', $sync_setting ) ) {
 
-            // get all category from moodle.
-            $response   = MooWoodle()->external_service->do_request( 'get_categories' );
-            $categories = $response[ 'data' ];
+            Util::set_sync_status( [
+                'action'    => __( 'Store Moodle Course Category', 'moowoodle' ),
+                'total'     => count( $categories ),
+                'current'   => 0
+            ], 'course' );
 
+            MooWoodle()->category->store_moodle_categories( $categories );
+            
             Util::set_sync_status( [
                 'action'    => __( 'Update Course Category', 'moowoodle' ),
                 'total'     => count( $categories ),
@@ -227,6 +235,16 @@ class RestAPI {
             ], 'course' );
 
             MooWoodle()->category->update_categories( $categories, 'product_cat' );
+
+        } else {
+
+            Util::set_sync_status( [
+                'action'    => __( 'Store Moodle Course Category', 'moowoodle' ),
+                'total'     => count( $categories ),
+                'current'   => 0
+            ], 'course' );
+
+            MooWoodle()->category->store_moodle_categories( $categories );
         }
 
 		// get all caurses from moodle.
@@ -240,7 +258,7 @@ class RestAPI {
             'current'   => 0
         ], 'course' );
 
-        MooWoodle()->course->update_courses( $courses );
+        MooWoodle()->course->moowoodle_sync_courses_to_db( $courses );
         
         // Update all product
         Util::set_sync_status( [
@@ -410,6 +428,7 @@ class RestAPI {
 				'enroled_user'      => $count_enrolment,
                 'view_users_url'    => $view_user_url,
 				'date'              => $date,
+                "test"              => true,
 			]);
 		}
         return rest_ensure_response( $formatted_courses );

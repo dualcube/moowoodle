@@ -150,4 +150,65 @@ class Category {
 			}
 		}
 	}
+
+	/**
+	 * Store Moodle categories in the database if not already present.
+	 * 
+	 * @param array $categories_data An array of categories with 'id', 'name', and 'parent' fields.
+	 * @return void
+	 */
+	public static function store_moodle_categories( $categories_data ) {
+		global $wpdb;
+
+		$table_name = $wpdb->prefix . 'moowoodle_categories';
+
+		foreach ( $categories_data as $category ) {
+			// Validate required fields
+			if ( empty( $category['id'] ) || empty( $category['name'] ) || ! isset( $category['parent'] ) ) {
+				continue;
+			}
+
+			// Prepare data
+			$moodle_category_id = intval( $category['id'] );
+			$name               = sanitize_text_field( $category['name'] );
+			$parent_id          = intval( $category['parent'] );
+
+			// Check if the category already exists
+			$existing = $wpdb->get_row(
+				$wpdb->prepare(
+					"SELECT name, parent_id FROM `$table_name` WHERE `moodle_category_id` = %d",
+					$moodle_category_id
+				)
+			);
+
+			if ( $existing === null ) {
+				// Insert new category
+				$wpdb->insert(
+					$table_name,
+					[
+						'moodle_category_id' => $moodle_category_id,
+						'name'               => $name,
+						'parent_id'          => $parent_id,
+					]
+				);
+			} elseif ( $existing->name !== $name || intval( $existing->parent_id ) !== $parent_id ) {
+				// Update if data has changed
+				$wpdb->update(
+					$table_name,
+					[
+						'name'      => $name,
+						'parent_id' => $parent_id,
+					],
+					[ 'moodle_category_id' => $moodle_category_id ]
+				);
+			}
+
+			// Increment sync count
+			\MooWoodle\Util::increment_sync_count( 'course' );
+		}
+	}
+
+	
+	
+	
 }
