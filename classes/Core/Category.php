@@ -207,8 +207,95 @@ class Category {
 			\MooWoodle\Util::increment_sync_count( 'course' );
 		}
 	}
-
+	public static function migrate_terms_to_moodle_categories_table() {
+		global $wpdb;
 	
+		$table_name = $wpdb->prefix . 'moowoodle_categories';
 	
+		// Optimized SQL query
+		$query = $wpdb->prepare("
+			SELECT 
+				t.term_id,
+				t.name,
+				CAST(tm.meta_value AS UNSIGNED) AS moodle_category_id,
+				COALESCE(CAST(pm.meta_value AS UNSIGNED), 0) AS parent_id
+			FROM {$wpdb->terms} t
+			INNER JOIN {$wpdb->term_taxonomy} tt ON t.term_id = tt.term_id
+			INNER JOIN {$wpdb->termmeta} tm ON t.term_id = tm.term_id AND tm.meta_key = '_category_id' AND tm.meta_value > 0
+			LEFT JOIN {$wpdb->termmeta} pm ON t.term_id = pm.term_id AND pm.meta_key = '_parent'
+			WHERE tt.taxonomy = %s
+		", 'course_cat');
 	
+		$terms = $wpdb->get_results($query, ARRAY_A);
+	
+		if ($terms === null) {
+			MooWoodle()->util->log("SQL query error: " . $wpdb->last_error . "\n");
+			return;
+		}
+	
+		if (empty($terms)) {
+			MooWoodle()->util->log("No terms found in taxonomy 'course_cat' with valid _category_id.\n");
+			return;
+		}
+	
+		$processed = 0;
+		foreach ($terms as $term) {
+			$moodle_category_id = (int) $term['moodle_category_id'];
+			if ($moodle_category_id <= 0) {
+				MooWoodle()->util->log("Skipping term ID {$term['term_id']} (Name: {$term['name']}): Invalid moodle_category_id ($moodle_category_id)\n");
+				continue;
+			}
+	
+			$name = sanitize_text_field($term['name']);
+			$parent_id = (int) $term['parent_id'];
+	
+			// Check if entry exists
+			$existing = $wpdb->get_row(
+				$wpdb->prepare(
+					"SELECT name, parent_id FROM `$table_name` WHERE `moodle_category_id` = %d",
+					$moodle_category_id
+				),
+				ARRAY_A
+			);
+	
+			if (!$existing) {
+				// Insert new record
+				$inserted = $wpdb->insert(
+					$table_name,
+					[
+						'moodle_category_id' => $moodle_category_id,
+						'name'               => $name,
+						'parent_id'          => $parent_id,
+					],
+					['%d', '%s', '%d']
+				);
+	
+				if (false === $inserted) {
+					MooWoodle()->util->log("Failed to insert category ID $moodle_category_id: " . $wpdb->last_error . "\n");
+				} else {
+					$processed++;
+				}
+			} elseif ($existing['name'] !== $name || (int) $existing['parent_id'] !== $parent_id) {
+				// Update only if name or parent differs
+				$updated = $wpdb->update(
+					$table_name,
+					[
+						'name'      => $name,
+						'parent_id' => $parent_id,
+					],
+					['moodle_category_id' => $moodle_category_id],
+					['%s', '%d'],
+					['%d']
+				);
+	
+				if (false === $updated) {
+					MooWoodle()->util->log("Failed to update category ID $moodle_category_id: " . $wpdb->last_error . "\n");
+				} else {
+					$processed++;
+				}
+			}
+		}
+	
+		MooWoodle()->util->log("Course category migration completed. Processed $processed categories.\n");
+	}
 }

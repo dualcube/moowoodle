@@ -119,6 +119,7 @@ class Installer {
         $previous_version = get_option( 'moowoodle_version', '' );
 
         if ( version_compare( $previous_version, '3.2.12', '<' ) ) {
+            \MooWoodle\Core\Category::migrate_terms_to_moodle_categories_table();
             \MooWoodle\Core\Course::migrate_courses();
             Enrollment::migrate_enrollments();
         }
