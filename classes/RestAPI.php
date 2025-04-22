@@ -221,14 +221,6 @@ class RestAPI {
             MooWoodle()->category->store_moodle_categories( $categories );
             
             Util::set_sync_status( [
-                'action'    => __( 'Update Course Category', 'moowoodle' ),
-                'total'     => count( $categories ),
-                'current'   => 0
-            ], 'course' );
-
-            MooWoodle()->category->update_categories( $categories, 'course_cat' );
-
-            Util::set_sync_status( [
                 'action'    => __( 'Update Product Category', 'moowoodle' ),
                 'total'     => count( $categories ),
                 'current'   => 0
@@ -258,16 +250,27 @@ class RestAPI {
             'current'   => 0
         ], 'course' );
 
-        MooWoodle()->course->moowoodle_sync_courses_to_db( $courses );
+        MooWoodle()->course->update_courses( $courses );
         
-        // Update all product
-        Util::set_sync_status( [
-            'action'    => __( 'Update Product', 'moowoodle' ),
-            'total'     => count( $courses ) - 1,
-            'current'   => 0
-        ], 'course' );
 
-        MooWoodle()->product->update_products( $courses );
+		// Manage setting of product sync option.
+		$product_sync_setting = MooWoodle()->setting->get_setting( 'product_sync_option' );
+		$product_sync_setting = is_array( $product_sync_setting ) ? $product_sync_setting : [];
+
+		$create_product = in_array( 'create', $product_sync_setting );
+		$update_product = in_array( 'update', $product_sync_setting );
+
+		// None of the option is choosen.
+		if ( $create_product || $update_product ) {
+            // Update all product
+            Util::set_sync_status( [
+                'action'    => __( 'Update Product', 'moowoodle' ),
+                'total'     => count( $courses ) - 1,
+                'current'   => 0
+            ], 'course' );
+
+            MooWoodle()->product->update_products( $courses );
+        }
         
         delete_transient( 'course_sync_running' );
 
@@ -301,187 +304,219 @@ class RestAPI {
      * @return \WP_Error|\WP_REST_Response
      */
     public function get_courses( $request ) {
-        $count_courses  = $request->get_param( 'count' );
-        $par_page       = $request->get_param( 'row' );
-        $page           = $request->get_param( 'page' );
-        $product_field  = $request->get_param( 'product' );
-        $catagory_field = $request->get_param( 'catagory' );
-        $search_action  = $request->get_param( 'searchaction' );
-        $search_field   = $request->get_param( 'search');
-        $nonce          = $request->get_header( 'X-WP-Nonce' );
-
+        global $wpdb;
+    
+        $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __( 'Invalid nonce', 'moowoodle' ), [ 'status' => 403 ] );
         }
-
-        // Prepare argument for database query
-        $args = [
-            'fields'         => 'ids',
-            'numberposts'    => -1,
-            'posts_per_page' => $par_page,
-            'paged'          => $page
-        ];
-
-        // Filter by course
-        if ( $search_action == 'course' ) {
-            $args[ 's' ] = $search_field;
+    
+        $count_courses  = $request->get_param( 'count' );
+        $limit          = max( intval( $request->get_param( 'row' ) ), 10 );
+        $page           = max( intval( $request->get_param( 'page' ) ), 1 );
+        $offset         = ( $page - 1 ) * $limit;
+        $category_field = $request->get_param( 'catagory' );
+        $search_action  = $request->get_param( 'searchaction' );
+        $search_field   = $request->get_param( 'search' );
+    
+        $course_table   = $wpdb->prefix . 'moowoodle_courses';
+        $category_table = $wpdb->prefix . 'moowoodle_categories';
+    
+        $where_clauses = [ "1=1" ];
+        $query_params  = [];
+    
+        if ( $search_action === 'course' && $search_field ) {
+            $where_clauses[] = "fullname LIKE %s";
+            $query_params[]  = '%' . $wpdb->esc_like( $search_field ) . '%';
+        } elseif ( $search_action === 'shortname' && $search_field ) {
+            $where_clauses[] = "shortname LIKE %s";
+            $query_params[]  = '%' . $wpdb->esc_like( $search_field ) . '%';
         }
-
-        // Filter by category
-        if ( ! empty( $catagory_field ) ) {
-            $args[ 'meta_query' ] = [
-                [
-                    'key'   => '_category_id',
-                    'value' => intval( $catagory_field ),
-                ]
-            ];
+    
+        if ( $category_field ) {
+            $where_clauses[] = "category_id = %d";
+            $query_params[]  = intval( $category_field );
         }
-
-        // Filter by product
-        if ( ! empty( $product_field ) ) {
-            $args[ 'meta_query' ] = [
-                [
-                    'key'   => 'linked_product_id',
-                    'value' => intval( $product_field ),
-                ]
-            ];
-        }
-
-        // Filter by shortname.
-        if ( $search_action == 'shortname' ) {
-            $args[ 'meta_query' ] = [
-                [
-                    'key'     => '_course_short_name',
-                    'value'   => $search_field,
-                    'compare' => 'LIKE'
-                ]
-            ];
-        }
-
-        // Get the courses
-        $course_ids = MooWoodle()->course->get_courses( $args );
-        
-        // Set response as number of courses if count request is set.
+    
+        $where_sql = implode( ' AND ', $where_clauses );
+    
         if ( $count_courses ) {
-            return rest_ensure_response( count( $course_ids ) );
+            $sql = "SELECT COUNT(*) FROM $course_table WHERE $where_sql";
+            return rest_ensure_response( (int) $wpdb->get_var( $wpdb->prepare( $sql, $query_params ) ) );
         }
-
+    
+        $sql = "SELECT c.*, cat.name as category_name FROM $course_table c
+                LEFT JOIN $category_table cat ON c.category_id = cat.moodle_category_id
+                WHERE $where_sql ORDER BY c.id DESC LIMIT %d OFFSET %d";
+        $query_params[] = $limit;
+        $query_params[] = $offset;
+    
+        $courses = $wpdb->get_results( $wpdb->prepare( $sql, $query_params ) );
+    
+        if ( empty( $courses ) ) {
+            return rest_ensure_response( [] );
+        }
+    
+        $course_ids = array_map( fn( $c ) => $c->id, $courses );
+    
+        // Product map by course
+        $product_map = [];
+        $product_query = new \WC_Product_Query([
+            'limit'      => -1,
+            'status'     => 'publish',
+            'meta_query' => [
+                [
+                    'key'     => 'linked_course_id',
+                    'value'   => $course_ids,
+                    'compare' => 'IN',
+                ],
+            ],
+        ]);
+        $products = $product_query->get_products();
+    
+        foreach ( $products as $product ) {
+            $linked_id = (int) get_post_meta( $product->get_id(), 'linked_course_id', true );
+            $product_map[ $linked_id ][] = $product;
+        }
+    
+        // Enrolled count
+        $placeholders = implode( ',', array_fill( 0, count( $course_ids ), '%d' ) );
+        $enrollment_sql = "
+            SELECT course_id, COUNT(*) as enrolled_count
+            FROM {$wpdb->prefix}moowoodle_enrollment
+            WHERE status = 'enrolled' AND course_id IN ($placeholders)
+            GROUP BY course_id
+        ";
+        $enrollment_counts = $wpdb->get_results( $wpdb->prepare( $enrollment_sql, $course_ids ) );
+    
+        $enrollment_map = [];
+        foreach ( $enrollment_counts as $row ) {
+            $enrollment_map[ (int) $row->course_id ] = (int) $row->enrolled_count;
+        }
+    
         $formatted_courses = [];
-
-		foreach ( $course_ids as $course_id ) {
-			// get course all post meta.
-			$course_meta = array_map( 'current', get_post_meta( $course_id, '', true ) );
-
-			//get term object by course category id.
-			$term = MooWoodle()->category->get_category( $course_meta[ '_category_id' ], 'course_cat' );
-
-            $products = wc_get_products([
-                'meta_query' => [
-                    [
-                        'key'   => 'linked_course_id',
-                        'value' => $course_id,
-                    ]
-                ]
-            ]);
-
+    
+        foreach ( $courses as $course ) {
+            $course_id = (int) $course->id;
+    
             $synced_products = [];
-            $count_enrolment = 0;
             $product_image   = '';
-
-			foreach ( $products as $product ) {
-				$synced_products[ $product->get_name() ] = add_query_arg( [ 'post' => $product->get_id() , 'action' => 'edit' ], admin_url( 'post.php' ) );
-                $count_enrolment += (int) $product->get_meta( 'total_sales' );
-                $product_image   = wp_get_attachment_url( $product->get_image_id() );
-			} 
-            // Prepare date
-            $course_startdate = $course_meta[ '_course_startdate' ];
-            $course_enddate   = $course_meta[ '_course_enddate' ];
-
-			if (!$course_startdate && !$course_enddate) {
-                $date = 'NA';
-            } else {
-                $date = $course_startdate ? wp_date( 'M j, Y', $course_startdate ) :  __('Not Set', 'moowoodle');
-                $date .= $course_enddate ? ' - ' . wp_date( 'M j, Y  ', $course_enddate ) :  __(' - Not Set', 'moowoodle');
+    
+            if ( isset( $product_map[ $course_id ] ) ) {
+                foreach ( $product_map[ $course_id ] as $product ) {
+                    $synced_products[ $product->get_name() ] = add_query_arg( [ 'post' => $product->get_id(), 'action' => 'edit' ], admin_url( 'post.php' ) );
+                    if ( ! $product_image ) {
+                        $product_image = wp_get_attachment_url( $product->get_image_id() );
+                    }
+                }
             }
-
-            // Get moowoodle course id
-            $moodle_course_id = $course_meta[ 'moodle_course_id' ];
-
-            // Prepare url
-            $moodle_url    = trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . 'course/edit.php?id=' . $moodle_course_id;
-            $view_user_url = trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . 'user/index.php?id=' . $moodle_course_id;
-            $category_url  = add_query_arg( [ 'course_cat' => $term->slug, 'post_type' => 'course' ], admin_url( 'edit.php' ) );
-            /**
-             * Filter for add additional data.
-             * @var array formatted course data.
-             */
-			$formatted_courses[] = apply_filters( 'moowoodle_formatted_course', [
-				'id'                => $course_id,
-				'moodle_url'        => $moodle_url,
-				'moodle_course_id'  => $moodle_course_id,
-				'course_short_name' => $course_meta[ '_course_short_name' ],
-				'course_name'       => get_the_title( $course_id ),
-				'products'          => $synced_products,
+    
+            $start = $course->startdate ? wp_date( 'M j, Y', $course->startdate ) : __( 'Not Set', 'moowoodle' );
+            $end   = $course->enddate ? wp_date( 'M j, Y', $course->enddate ) : __( 'Not Set', 'moowoodle' );
+            $date  = ( $course->startdate || $course->enddate ) ? "$start - $end" : 'NA';
+    
+            $moodle_url    = trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "course/edit.php?id={$course->moodle_course_id}";
+            $view_user_url = trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "user/index.php?id={$course->moodle_course_id}";
+    
+            $formatted_courses[] = apply_filters( 'moowoodle_formatted_course', [
+                'id'                => $course_id,
+                'moodle_url'        => $moodle_url,
+                'moodle_course_id'  => $course->moodle_course_id,
+                'course_short_name' => $course->shortname,
+                'course_name'       => $course->fullname,
+                'products'          => $synced_products,
                 'productimage'      => $product_image,
-				'category_name'     => $term->name,
-				'category_url'      => $category_url,
-				'enroled_user'      => $count_enrolment,
+                'category_name'     => $course->category_name ?: __( 'Uncategorized', 'moowoodle' ),
+                'enroled_user'      => $enrollment_map[ $course_id ] ?? 0,
                 'view_users_url'    => $view_user_url,
-				'date'              => $date,
-                "test"              => true,
-			]);
-		}
+                'date'              => $date,
+            ] );
+        }
+    
         return rest_ensure_response( $formatted_courses );
     }
 
     /**
-     * get all courses
+     * Get all courses
      * @param mixed $request
      * @return \WP_Error|\WP_REST_Response
      */
-	public function get_all_courses($request) {
-        $nonce = $request->get_header( 'X-WP-Nonce' );
+    public function get_all_courses( $request ) {
+        global $wpdb;
+    
+        // Verify nonce
+        $nonce = $request->get_header('X-WP-Nonce');
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __( 'Invalid nonce', 'moowoodle' ), [ 'status' => 403 ] );
         }
-		$course_ids = MooWoodle()->course->get_courses([
-            'fields'      => 'ids',
-            'numberposts' => -1,
-        ]);
-
-		$all_courses = $all_products = $all_category = $all_short_name = [];
-		foreach ( $course_ids as $course_id ) {
-			$all_courses[$course_id] = get_the_title( $course_id );
-            $products = wc_get_products([
-                'meta_query' => [
-                    [
-                        'key'   => 'linked_course_id',
-                        'value' => $course_id,
-                    ]
-                ]
+    
+        // Fetch all courses
+        $courses = $wpdb->get_results("
+            SELECT id, moodle_course_id, shortname, category_id, fullname
+            FROM {$wpdb->prefix}moowoodle_courses
+        ");
+    
+        if ( empty( $courses ) ) {
+            return rest_ensure_response([
+                'courses'   => [],
+                'products'  => [],
+                'category'  => [],
+                'shortname' => []
             ]);
-            foreach ( $products as $product ) {
-				$all_products[$product->get_id()] = $product->get_name();
-			}
-
-            $course_meta = get_post_meta( $course_id, '_category_id', true );
-            $term = MooWoodle()->category->get_category( $course_meta, 'course_cat' );
-			$all_category[$course_meta] = $term->name;
-
-            $course_meta = get_post_meta( $course_id, '_course_short_name', true );
-			$all_short_name[] = $course_meta;
-		}
-
-        $all_data = [
+        }
+    
+        // Extract course and category IDs
+        $course_ids   = wp_list_pluck( $courses, 'id' );
+        $category_ids = array_unique( wp_list_pluck( $courses, 'category_id' ) );
+    
+        // Fetch products linked to courses
+        $linked_products = wc_get_products([
+            'limit'      => -1,
+            'meta_query' => [[
+                'key'     => 'linked_course_id',
+                'value'   => $course_ids,
+                'compare' => 'IN',
+            ]]
+        ]);
+    
+        $all_products = [];
+        foreach ( $linked_products as $product ) {
+            $all_products[ $product->get_id() ] = $product->get_name();
+        }
+    
+        // Securely fetch all relevant categories
+        $all_category = [];
+        if ( ! empty( $category_ids ) ) {
+            $placeholders = implode( ',', array_fill( 0, count( $category_ids ), '%d' ) );
+            $sql = $wpdb->prepare("
+                SELECT moodle_category_id, name FROM {$wpdb->prefix}moowoodle_categories
+                WHERE moodle_category_id IN ($placeholders)
+            ", ...$category_ids );
+    
+            $category_rows = $wpdb->get_results( $sql );
+    
+            foreach ( $category_rows as $cat ) {
+                $all_category[ $cat->moodle_category_id ] = $cat->name;
+            }
+        }
+    
+        // Collect course titles and shortnames
+        $all_courses = [];
+        $all_short_name = [];
+    
+        foreach ( $courses as $course ) {
+            $all_courses[ $course->id ] = $course->fullname ?: "Course {$course->id}";
+            $all_short_name[] = $course->shortname;
+        }
+    
+        return rest_ensure_response([
             'courses'   => $all_courses,
-            'products'   => $all_products,
-            'category'   => $all_category,
-            'shortname'   => $all_short_name
-        ];
-		
-        return rest_ensure_response( $all_data );
-	}
-
+            'products'  => $all_products,
+            'category'  => $all_category,
+            'shortname' => $all_short_name
+        ]);
+    }
+       
     /**
      * Save the setting set in react's admin setting page.
      * @param mixed $request
