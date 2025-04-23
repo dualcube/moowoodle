@@ -64,6 +64,32 @@ export default {
             ],
         },
         {
+            key: 'separator_content',
+            type: 'section',
+            label: "",
+        },
+        {
+            key: "cohort_sync_option",
+            type: "checkbox",
+            desc: __("", 'moowoodle'),
+            label: __("Cohort & product synchronization", 'moowoodle'),
+            select_deselect: true,
+            options: [
+                {
+                    key: "create",
+                    label: __('Create new products along with', 'moowoodle'),
+                    hints: __('This will additionally create new products based on Moodle cohortfetched, if they do not already exist in WordPress.', 'moowoodle'),
+                    value: "create",
+                },
+                {
+                    key: "update",
+                    label: __('Update existing products along with', 'moowoodle'),
+                    hints: __('Update product information based on Moodle cohort data. <br><span class="highlighted-part">Caution: This will overwrite all existing product details with those from Moodle course details.</span>', 'moowoodle'),
+                    value: "update",
+                }
+            ],
+        },
+        {
             key: "sync_course_btn",
             type: "syncbutton",
             interval: 2500,

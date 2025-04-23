@@ -57,32 +57,6 @@ class Installer {
         );
 
         $wpdb->query(
-            "CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "moowoodle_group` (
-                `id` bigint(20) NOT NULL AUTO_INCREMENT,
-                `name` varchar(100) NOT NULL,
-                `user_id` bigint(20) NOT NULL,
-                `order_id` bigint(20) NOT NULL,
-                `user_name` varchar(100) NOT NULL,
-                `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                PRIMARY KEY (`id`)
-                ) $collate;"
-            );
-            
-        $wpdb->query(
-            "CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "moowoodle_group_items` (
-                `id` bigint(20) NOT NULL AUTO_INCREMENT,
-                `group_id` bigint(20) NOT NULL,
-                `course_id` bigint(20) NOT NULL,
-                `product_id` bigint(20) NOT NULL,
-                `user_id` bigint(20) NOT NULL,
-                `total_quantity` bigint(20) NOT NULL,
-                `available_quantity` bigint(20) NOT NULL,
-                `status` varchar(100) NOT NULL,
-                PRIMARY KEY (`id`)
-            ) $collate;"
-        );
-
-        $wpdb->query(
             "CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "moowoodle_categories` (
                 `moodle_category_id` bigint(20) NOT NULL,
                 `name` varchar(255) NOT NULL,
@@ -105,10 +79,7 @@ class Installer {
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `moodle_course_id` (`moodle_course_id`)
             ) $collate;"
-        );
-        
-        
-        
+        ); 
     }
 
     /**

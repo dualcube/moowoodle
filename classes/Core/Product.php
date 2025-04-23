@@ -211,7 +211,6 @@ class Product {
 	 * @return int | void
 	 */
 	public function save_product_meta_data( $post_id ) {
-		file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:pro'. var_export($post_id, true) . "\n", FILE_APPEND );
 
 		// Security check
 		if (
@@ -221,11 +220,12 @@ class Product {
 		) {
 			return $post_id;
 		}
-	
+		file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:'. var_export("prodcut", true) . "\n", FILE_APPEND );
+
 		$course_id        = filter_input( INPUT_POST, 'course_id', FILTER_DEFAULT );
 		$course_sku       = get_post_meta( $course_id, '_sku', true );
-		$moodle_course_id = get_post_meta( $course_id, 'moodle_course_id', true );
-	
+		$moodle_course_id = MooWoodle()->course->moowoodle_get_moodle_course_id( $course_id );
+
 		// if ( $course_id ) {
 		// 	update_post_meta( $post_id, 'linked_course_id', wp_kses_post( $course_id ) );
 		// 	update_post_meta( $post_id, '_sku', 'course-' . $course_sku );

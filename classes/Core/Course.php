@@ -9,22 +9,6 @@ class Course {
 		add_action( 'woocommerce_product_data_panels', [ &$this, 'moowoodle_linked_course_panals' ] );
 		add_action( 'woocommerce_process_product_meta', [ &$this, 'save_product_meta_data' ] );
 	}
-	
-	// public function get_courses( $course_id ) {
-	// 	global $wpdb;
-	
-	// 	// Query the courses using linked_course_id (primary key) for the current product
-	// 	$courses = $wpdb->get_results(
-	// 		$wpdb->prepare(
-	// 			"SELECT * FROM {$wpdb->prefix}moowoodle_courses 
-	// 			 WHERE id = %d",
-	// 			$course_id
-	// 		)
-	// 	);
-	
-	// 	return $courses;
-	// }
-	
 	/**
 	 * Get the course url
 	 * @param mixed $moodle_course_id
@@ -54,59 +38,76 @@ class Course {
 	 * @return void
 	 */
 	public function moowoodle_linked_course_panals() {
-		global $post, $wpdb;
-		$linked_course_id = get_post_meta( $post->ID, 'linked_course_id', true );
+
+		if ( MooWoodle()->util->is_khali_dabba() ) {
+			do_action( 'moowoodle_render_linked_course_cohort_panel' );
+		}else {
+			global $post, $wpdb;
 	
-		$courses_table    = $wpdb->prefix . 'moowoodle_courses';
-		$categories_table = $wpdb->prefix . 'moowoodle_categories';
-	
-		// Fetch only the linked course
-		$courses = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT c.id, c.fullname, c.shortname, cat.name AS category_name
-				 FROM $courses_table c
-				 LEFT JOIN $categories_table cat ON c.category_id = cat.moodle_category_id
-				 WHERE c.id = %d",
-				$linked_course_id
-			)
-		);
-		?>
-		<div id="moowoodle_course_link_tab" class="panel woocommerce_options_panel">
-			<p>
-				<label for="courses"><?php esc_html_e( 'Linked Course', 'moowoodle' ); ?></label>
-				<select id="courses-select" name="course_id">
-					<option value="0"><?php esc_html_e( 'Select course...', 'moowoodle' ); ?></option>
-					<?php
-					foreach ( $courses as $course ) {
-						$course_name = '';
-	
-						if ( ! empty( $course->category_name ) ) {
-							$course_name .= esc_html( $course->category_name ) . ' - ';
-						}
-	
-						$course_name .= esc_html( $course->fullname );
-	
-						if ( ! empty( $course->shortname ) ) {
-							$course_name .= ' ( ' . esc_html( $course->shortname ) . ' )';
-						}
-						?>
-						<option value="<?php echo esc_attr( $course->id ); ?>" <?php selected( $course->id, $linked_course_id ); ?>>
-							<?php echo $course_name; ?>
-						</option>
-						<?php
-					}
-					?>
-				</select>
-			</p>
-			<p>
-				<?php esc_html_e( "Cannot find your course in this list?", "moowoodle" ); ?><br/>
-				<a href="<?php echo esc_url( admin_url( 'admin.php?page=moowoodle-synchronization' ) ); ?>" target="_blank">
-					<?php esc_html_e( 'Synchronize Moodle Courses from here.', 'moowoodle' ); ?>
-				</a>
-			</p>
-			<input type="hidden" name="product_meta_nonce" value="<?php echo esc_attr( wp_create_nonce() ); ?>">
-		</div>
-		<?php
+			$linked_course_id = get_post_meta($post->ID, 'linked_course_id', true);
+			$courses = [];
+		
+			if ($linked_course_id) {
+				// Show only the linked course
+				$courses[] = $wpdb->get_row($wpdb->prepare(
+					"SELECT * FROM {$wpdb->prefix}moowoodle_courses WHERE id = %d", $linked_course_id
+				));
+			} else {
+				// Show courses that are not linked to any product
+				$courses = $wpdb->get_results("
+					SELECT * FROM {$wpdb->prefix}moowoodle_courses 
+					WHERE id NOT IN (
+						SELECT meta_value FROM {$wpdb->postmeta} 
+						WHERE meta_key = 'linked_course_id'
+					)
+				");
+			}
+		
+			// Helper: get full category path recursively
+			function get_course_category_path($category_id, $wpdb) {
+				$path = [];
+				while ($category_id) {
+					$cat = $wpdb->get_row($wpdb->prepare(
+						"SELECT name, parent_id FROM {$wpdb->prefix}moowoodle_categories WHERE moodle_category_id = %d",
+						$category_id
+					));
+					if (!$cat) break;
+					array_unshift($path, $cat->name);
+					$category_id = $cat->parent_id;
+				}
+				return implode(' / ', $path);
+			}
+		
+			?>
+			<div id="moowoodle_course_link_tab" class="panel woocommerce_options_panel">
+				<p>
+					<label for="courses"><?php esc_html_e('Linked Course', 'moowoodle'); ?></label>
+					<select id="courses-select" name="course_id">
+						<option value="0"><?php esc_html_e('Select course...', 'moowoodle'); ?></option>
+						<?php foreach ($courses as $course): ?>
+							<?php
+							$category_path = get_course_category_path($course->category_id, $wpdb);
+							$course_name = $category_path ? "$category_path - " : "";
+							$course_name .= esc_html($course->fullname);
+							?>
+							<option value="<?php echo esc_attr($course->id); ?>" <?php selected($course->id, $linked_course_id); ?>>
+								<?php echo esc_html($course_name); ?>
+								<?php echo $course->shortname ? ' ( ' . esc_html($course->shortname) . ' )' : ''; ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+				</p>
+				<p>
+					<?php esc_html_e("Cannot find your course in this list?", "moowoodle"); ?>
+					<a href="<?php echo esc_url(get_site_url()); ?>/wp-admin/admin.php?page=moowoodle-synchronization" target="_blank">
+						<?php esc_html_e('Synchronize Moodle Courses from here.', 'moowoodle'); ?>
+					</a>
+				</p>
+				<input type="hidden" name="product_meta_nonce" value="<?php echo wp_create_nonce(); ?>">
+			</div>
+			<?php
+		}
+
 	}
 
 	/**
@@ -115,7 +116,6 @@ class Course {
 	 * @return mixed
 	 */
 	public function save_product_meta_data( $product_id ) {
-		file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:cou'. var_export($product_id, true) . "\n", FILE_APPEND );
 
 		// Security check
 		if ( !filter_input( INPUT_POST, 'product_meta_nonce', FILTER_DEFAULT ) === null 
@@ -127,14 +127,20 @@ class Course {
 
 		// Get the selected course id
 		$course_id = intval( filter_input( INPUT_POST, 'course_id', FILTER_DEFAULT ) );
-		// file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:ci'. var_export($course_id, true) . "\n", FILE_APPEND );
-		// file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:ci'. var_export($product_id, true) . "\n", FILE_APPEND );
+		$link_type = filter_input(INPUT_POST, 'link_type', FILTER_SANITIZE_STRING);
+		$link_item = intval( filter_input( INPUT_POST, 'linked_item', FILTER_DEFAULT ) );
+
+		file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:lt'. var_export($link_type, true) . "\n", FILE_APPEND );
+		file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:li'. var_export($link_item, true) . "\n", FILE_APPEND );
 
 		// // Linked product to course.
 		// if ( $course_id ) {
 		// 	update_post_meta( $course_id, 'linked_product_id', $product_id );
 		// 	update_post_meta( $product_id, 'linked_course_id', wp_kses_post( $course_id ) );
-		// 	update_post_meta( $product_id, 'moodle_course_id', get_post_meta( $course_id, 'moodle_course_id', true ) );
+		// 	$moodle_course_id = $this->moowoodle_get_moodle_course_id( $course_id );
+		// 	if ( $moodle_course_id ) {
+		// 		update_post_meta( $product_id, 'moodle_course_id', $moodle_course_id );
+		// 	}
 		// } else {
 		// 	// Deattach previously set linked
 		// 	$linked_course_id = intval( get_post_meta( $product_id, 'linked_course_id', true ) );
@@ -278,5 +284,28 @@ class Course {
 			wp_delete_post( $course->ID, true );
 		}
 	}
+	/**
+	 * Get the Moodle course ID from the course table by course ID.
+	 *
+	 * @param int $course_id The internal course ID (primary key of wp_moowoodle_courses).
+	 * @return int|null Returns Moodle course ID if found, null otherwise.
+	 */
+	public function moowoodle_get_moodle_course_id( $course_id ) {
+		global $wpdb;
+
+		if ( ! $course_id || ! is_numeric( $course_id ) ) {
+			return null;
+		}
+
+		$table_name = "{$wpdb->prefix}moowoodle_courses";
+
+		$moodle_course_id = $wpdb->get_var( $wpdb->prepare(
+			"SELECT moodle_course_id FROM $table_name WHERE id = %d",
+			$course_id
+		) );
+
+		return $moodle_course_id ? intval( $moodle_course_id ) : null;
+	}
+
 	
 }

@@ -199,85 +199,88 @@ class RestAPI {
         }
         // Flusk course sync status before sync start.
         Util::flush_sync_status( 'course' );
+        $response = MooWoodle()->external_service->do_request( 'get_cohort' );
+        do_action( 'moowoodle_save_cohorts',$response[ 'data' ] );
 
-        set_transient( 'course_sync_running', true );
+        // file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:'. var_export($response, true) . "\n", FILE_APPEND );
+        // set_transient( 'course_sync_running', true );
 
-        $sync_setting = MooWoodle()->setting->get_setting( 'sync-course-options' );
-        $sync_setting = is_array( $sync_setting ) ? $sync_setting : [];
+        // $sync_setting = MooWoodle()->setting->get_setting( 'sync-course-options' );
+        // $sync_setting = is_array( $sync_setting ) ? $sync_setting : [];
         
-        // get all category from moodle.
-        $response   = MooWoodle()->external_service->do_request( 'get_categories' );
-        $categories = $response[ 'data' ];
+        // // get all category from moodle.
+        // $response   = MooWoodle()->external_service->do_request( 'get_categories' );
+        // $categories = $response[ 'data' ];
 
-        // update course and product categories.
-        if ( in_array( 'sync_courses_category', $sync_setting ) ) {
+        // // update course and product categories.
+        // if ( in_array( 'sync_courses_category', $sync_setting ) ) {
 
-            Util::set_sync_status( [
-                'action'    => __( 'Store Moodle Course Category', 'moowoodle' ),
-                'total'     => count( $categories ),
-                'current'   => 0
-            ], 'course' );
+        //     Util::set_sync_status( [
+        //         'action'    => __( 'Store Moodle Course Category', 'moowoodle' ),
+        //         'total'     => count( $categories ),
+        //         'current'   => 0
+        //     ], 'course' );
 
-            MooWoodle()->category->store_moodle_categories( $categories );
+        //     MooWoodle()->category->store_moodle_categories( $categories );
             
-            Util::set_sync_status( [
-                'action'    => __( 'Update Product Category', 'moowoodle' ),
-                'total'     => count( $categories ),
-                'current'   => 0
-            ], 'course' );
+        //     Util::set_sync_status( [
+        //         'action'    => __( 'Update Product Category', 'moowoodle' ),
+        //         'total'     => count( $categories ),
+        //         'current'   => 0
+        //     ], 'course' );
 
-            MooWoodle()->category->update_categories( $categories, 'product_cat' );
+        //     MooWoodle()->category->update_categories( $categories, 'product_cat' );
 
-        } else {
+        // } else {
 
-            Util::set_sync_status( [
-                'action'    => __( 'Store Moodle Course Category', 'moowoodle' ),
-                'total'     => count( $categories ),
-                'current'   => 0
-            ], 'course' );
+        //     Util::set_sync_status( [
+        //         'action'    => __( 'Store Moodle Course Category', 'moowoodle' ),
+        //         'total'     => count( $categories ),
+        //         'current'   => 0
+        //     ], 'course' );
 
-            MooWoodle()->category->store_moodle_categories( $categories );
-        }
+        //     MooWoodle()->category->store_moodle_categories( $categories );
+        // }
 
-		// get all caurses from moodle.
-		$response = MooWoodle()->external_service->do_request( 'get_courses' );
-        $courses  = $response[ 'data' ];
+		// // get all caurses from moodle.
+		// $response = MooWoodle()->external_service->do_request( 'get_courses' );
+        // $courses  = $response[ 'data' ];
 
-        // Update all course
-        Util::set_sync_status( [
-            'action'    => __( 'Update Course', 'moowoodle' ),
-            'total'     => count( $courses ) - 1,
-            'current'   => 0
-        ], 'course' );
+        // // Update all course
+        // Util::set_sync_status( [
+        //     'action'    => __( 'Update Course', 'moowoodle' ),
+        //     'total'     => count( $courses ) - 1,
+        //     'current'   => 0
+        // ], 'course' );
 
-        MooWoodle()->course->update_courses( $courses );
+        // MooWoodle()->course->update_courses( $courses );
         
 
-		// Manage setting of product sync option.
-		$product_sync_setting = MooWoodle()->setting->get_setting( 'product_sync_option' );
-		$product_sync_setting = is_array( $product_sync_setting ) ? $product_sync_setting : [];
+		// // Manage setting of product sync option.
+		// $product_sync_setting = MooWoodle()->setting->get_setting( 'product_sync_option' );
+		// $product_sync_setting = is_array( $product_sync_setting ) ? $product_sync_setting : [];
 
-		$create_product = in_array( 'create', $product_sync_setting );
-		$update_product = in_array( 'update', $product_sync_setting );
+		// $create_product = in_array( 'create', $product_sync_setting );
+		// $update_product = in_array( 'update', $product_sync_setting );
 
-		// None of the option is choosen.
-		if ( $create_product || $update_product ) {
-            // Update all product
-            Util::set_sync_status( [
-                'action'    => __( 'Update Product', 'moowoodle' ),
-                'total'     => count( $courses ) - 1,
-                'current'   => 0
-            ], 'course' );
+		// // None of the option is choosen.
+		// if ( $create_product || $update_product ) {
+        //     // Update all product
+        //     Util::set_sync_status( [
+        //         'action'    => __( 'Update Product', 'moowoodle' ),
+        //         'total'     => count( $courses ) - 1,
+        //         'current'   => 0
+        //     ], 'course' );
 
-            MooWoodle()->product->update_products( $courses );
-        }
+        //     MooWoodle()->product->update_products( $courses );
+        // }
         
-        delete_transient( 'course_sync_running' );
+        // delete_transient( 'course_sync_running' );
 
-        /**
-         * Action hook after moowoodle course sync.
-         */
-        do_action( 'moowoodle_after_sync_course' );
+        // /**
+        //  * Action hook after moowoodle course sync.
+        //  */
+        // do_action( 'moowoodle_after_sync_course' );
 
         return rest_ensure_response( true );
     }
