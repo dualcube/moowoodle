@@ -31,6 +31,8 @@ class ExternalService {
 			'get_cohort'        => 'core_cohort_get_cohorts',
 			'add_member'        => 'core_cohort_add_cohort_members',
 			'delete_member'     => 'core_cohort_delete_cohort_members',
+			'get_groups'        => 'core_group_get_course_groups',
+			'get_groups_s'      => 'core_group_get_groups_for_selector',//need check
         ]);
 	}
 

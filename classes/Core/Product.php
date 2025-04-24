@@ -71,7 +71,13 @@ class Product {
 		$update_product = in_array( 'update', $product_sync_setting );
 
 		// None of the option is choosen.
-		if ( ! $create_product && ! $update_product ) return;
+		if ( ! $create_product && ! $update_product ) return true;
+        // Update all product
+         \MooWoodle\Util::set_sync_status( [
+            'action'    => __( 'Update Product', 'moowoodle' ),
+            'total'     => count( $courses ) - 1,
+            'current'   => 0
+        ], 'course' );
 
         foreach ( $courses as $course ) {
 
@@ -220,22 +226,21 @@ class Product {
 		) {
 			return $post_id;
 		}
-		file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:'. var_export("prodcut", true) . "\n", FILE_APPEND );
 
 		$course_id        = filter_input( INPUT_POST, 'course_id', FILTER_DEFAULT );
 		$course_sku       = get_post_meta( $course_id, '_sku', true );
 		$moodle_course_id = MooWoodle()->course->moowoodle_get_moodle_course_id( $course_id );
 
-		// if ( $course_id ) {
-		// 	update_post_meta( $post_id, 'linked_course_id', wp_kses_post( $course_id ) );
-		// 	update_post_meta( $post_id, '_sku', 'course-' . $course_sku );
-		// 	update_post_meta( $post_id, 'moodle_course_id', $moodle_course_id );
-		// }
+		if ( $course_id ) {
+			update_post_meta( $post_id, 'linked_course_id', wp_kses_post( $course_id ) );
+			update_post_meta( $post_id, '_sku', 'course-' . $course_sku );
+			update_post_meta( $post_id, 'moodle_course_id', $moodle_course_id );
+		}
 	}
 	
 
 	// Function to fetch course from wp_moowoodle_courses table based on Moodle course ID
-	public static function get_course_from_moowoodle_courses( $moodle_course_id ) {
+	public static function get_course_from_moowoodle_courses( $course_id ) {
 		global $wpdb;
 
 		$table = $wpdb->prefix . 'moowoodle_courses';
@@ -244,7 +249,7 @@ class Product {
 		$course = $wpdb->get_row(
 			$wpdb->prepare(
 				"SELECT * FROM $table WHERE moodle_course_id = %d",
-				$moodle_course_id
+				$course_id
 			)
 		);
 

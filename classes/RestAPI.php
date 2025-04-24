@@ -199,11 +199,15 @@ class RestAPI {
         }
         // Flusk course sync status before sync start.
         Util::flush_sync_status( 'course' );
-        $response = MooWoodle()->external_service->do_request( 'get_cohort' );
-        do_action( 'moowoodle_save_cohorts',$response[ 'data' ] );
 
-        // file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:'. var_export($response, true) . "\n", FILE_APPEND );
         // set_transient( 'course_sync_running', true );
+        // $course_id = 13;
+  
+        // $response = MooWoodle()->external_service->do_request( 'get_groups',[
+        //     'courseid' => $course_id,
+        // ] );
+        
+        // file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:'. var_export($response, true) . "\n", FILE_APPEND );
 
         // $sync_setting = MooWoodle()->setting->get_setting( 'sync-course-options' );
         // $sync_setting = is_array( $sync_setting ) ? $sync_setting : [];
@@ -245,6 +249,7 @@ class RestAPI {
 		// // get all caurses from moodle.
 		// $response = MooWoodle()->external_service->do_request( 'get_courses' );
         // $courses  = $response[ 'data' ];
+        // file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:'. var_export($response, true) . "\n", FILE_APPEND );
 
         // // Update all course
         // Util::set_sync_status( [
@@ -255,32 +260,16 @@ class RestAPI {
 
         // MooWoodle()->course->update_courses( $courses );
         
+        // MooWoodle()->product->update_products( $courses );
 
-		// // Manage setting of product sync option.
-		// $product_sync_setting = MooWoodle()->setting->get_setting( 'product_sync_option' );
-		// $product_sync_setting = is_array( $product_sync_setting ) ? $product_sync_setting : [];
-
-		// $create_product = in_array( 'create', $product_sync_setting );
-		// $update_product = in_array( 'update', $product_sync_setting );
-
-		// // None of the option is choosen.
-		// if ( $create_product || $update_product ) {
-        //     // Update all product
-        //     Util::set_sync_status( [
-        //         'action'    => __( 'Update Product', 'moowoodle' ),
-        //         'total'     => count( $courses ) - 1,
-        //         'current'   => 0
-        //     ], 'course' );
-
-        //     MooWoodle()->product->update_products( $courses );
-        // }
-        
+        // do_action( 'moowoodle_save_cohorts' );
+        do_action( 'moowoodle_sync_all_course_cohorts' );
         // delete_transient( 'course_sync_running' );
 
-        // /**
-        //  * Action hook after moowoodle course sync.
-        //  */
-        // do_action( 'moowoodle_after_sync_course' );
+        /**
+         * Action hook after moowoodle course sync.
+         */
+        do_action( 'moowoodle_after_sync_course' );
 
         return rest_ensure_response( true );
     }
