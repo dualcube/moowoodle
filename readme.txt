@@ -1,4 +1,4 @@
-=== MooWoodle - WordPress & Moodle LMS Integration Bridge ===
+=== MooWoodle - Moodle WordPress Integration & WordPress LMS Bridge ===
 Contributors: dualcube
 Tags: Moodle Integration, LMS Integration, WordPress LMS, e-Learning, Moodle Connector
 Donate link: https://dualcube.com/
@@ -9,7 +9,7 @@ Stable tag: 3.2.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Unlock the power of seamless course import and sales with MooWoodle's WordPress Moodle Intigration Bridge
+Most Recommended Moodle & WordPress Integration Bridge for eLearning, Instructors, and WordPress LMS Platforms.
 
 == Description ==
 
