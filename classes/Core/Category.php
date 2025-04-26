@@ -111,7 +111,7 @@ class Category {
 
 			return $category[ 'id' ];
 		} else {
-			MooWoodle()->util->log( "moowoodle url:" . $term->get_error_message() . "\n");
+			//g( "moowoodle url:" . $term->get_error_message() . "\n");
 		}
 
 		return null;
@@ -229,12 +229,10 @@ class Category {
 		$terms = $wpdb->get_results($query, ARRAY_A);
 	
 		if ($terms === null) {
-			MooWoodle()->util->log("SQL query error: " . $wpdb->last_error . "\n");
 			return;
 		}
 	
 		if (empty($terms)) {
-			MooWoodle()->util->log("No terms found in taxonomy 'course_cat' with valid _category_id.\n");
 			return;
 		}
 	
@@ -242,7 +240,6 @@ class Category {
 		foreach ($terms as $term) {
 			$moodle_category_id = (int) $term['moodle_category_id'];
 			if ($moodle_category_id <= 0) {
-				MooWoodle()->util->log("Skipping term ID {$term['term_id']} (Name: {$term['name']}): Invalid moodle_category_id ($moodle_category_id)\n");
 				continue;
 			}
 	
@@ -271,7 +268,7 @@ class Category {
 				);
 	
 				if (false === $inserted) {
-					MooWoodle()->util->log("Failed to insert category ID $moodle_category_id: " . $wpdb->last_error . "\n");
+					//MooWoodle()->util->log("Failed to insert category ID $moodle_category_id: " . $wpdb->last_error . "\n");
 				} else {
 					$processed++;
 				}
@@ -289,13 +286,12 @@ class Category {
 				);
 	
 				if (false === $updated) {
-					MooWoodle()->util->log("Failed to update category ID $moodle_category_id: " . $wpdb->last_error . "\n");
+					//MooWoodle()->util->log("Failed to update category ID $moodle_category_id: " . $wpdb->last_error . "\n");
 				} else {
 					$processed++;
 				}
 			}
 		}
 	
-		MooWoodle()->util->log("Course category migration completed. Processed $processed categories.\n");
 	}
 }

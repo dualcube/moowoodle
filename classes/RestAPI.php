@@ -200,71 +200,63 @@ class RestAPI {
         // Flusk course sync status before sync start.
         Util::flush_sync_status( 'course' );
 
-        // set_transient( 'course_sync_running', true );
-        // $course_id = 13;
-  
-        // $response = MooWoodle()->external_service->do_request( 'get_groups',[
-        //     'courseid' => $course_id,
-        // ] );
+        set_transient( 'course_sync_running', true );
+ 
+        $sync_setting = MooWoodle()->setting->get_setting( 'sync-course-options' );
+        $sync_setting = is_array( $sync_setting ) ? $sync_setting : [];
         
-        // file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:'. var_export($response, true) . "\n", FILE_APPEND );
+        // get all category from moodle.
+        $response   = MooWoodle()->external_service->do_request( 'get_categories' );
+        $categories = $response[ 'data' ];
 
-        // $sync_setting = MooWoodle()->setting->get_setting( 'sync-course-options' );
-        // $sync_setting = is_array( $sync_setting ) ? $sync_setting : [];
-        
-        // // get all category from moodle.
-        // $response   = MooWoodle()->external_service->do_request( 'get_categories' );
-        // $categories = $response[ 'data' ];
+        // update course and product categories.
+        if ( in_array( 'sync_courses_category', $sync_setting ) ) {
 
-        // // update course and product categories.
-        // if ( in_array( 'sync_courses_category', $sync_setting ) ) {
+            Util::set_sync_status( [
+                'action'    => __( 'Store Moodle Course Category', 'moowoodle' ),
+                'total'     => count( $categories ),
+                'current'   => 0
+            ], 'course' );
 
-        //     Util::set_sync_status( [
-        //         'action'    => __( 'Store Moodle Course Category', 'moowoodle' ),
-        //         'total'     => count( $categories ),
-        //         'current'   => 0
-        //     ], 'course' );
-
-        //     MooWoodle()->category->store_moodle_categories( $categories );
+            MooWoodle()->category->store_moodle_categories( $categories );
             
-        //     Util::set_sync_status( [
-        //         'action'    => __( 'Update Product Category', 'moowoodle' ),
-        //         'total'     => count( $categories ),
-        //         'current'   => 0
-        //     ], 'course' );
+            Util::set_sync_status( [
+                'action'    => __( 'Update Product Category', 'moowoodle' ),
+                'total'     => count( $categories ),
+                'current'   => 0
+            ], 'course' );
 
-        //     MooWoodle()->category->update_categories( $categories, 'product_cat' );
+            MooWoodle()->category->update_categories( $categories, 'product_cat' );
 
-        // } else {
+        } else {
 
-        //     Util::set_sync_status( [
-        //         'action'    => __( 'Store Moodle Course Category', 'moowoodle' ),
-        //         'total'     => count( $categories ),
-        //         'current'   => 0
-        //     ], 'course' );
+            Util::set_sync_status( [
+                'action'    => __( 'Store Moodle Course Category', 'moowoodle' ),
+                'total'     => count( $categories ),
+                'current'   => 0
+            ], 'course' );
 
-        //     MooWoodle()->category->store_moodle_categories( $categories );
-        // }
+            MooWoodle()->category->store_moodle_categories( $categories );
+        }
 
-		// // get all caurses from moodle.
-		// $response = MooWoodle()->external_service->do_request( 'get_courses' );
-        // $courses  = $response[ 'data' ];
-        // file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:'. var_export($response, true) . "\n", FILE_APPEND );
+		// get all caurses from moodle.
+		$response = MooWoodle()->external_service->do_request( 'get_courses' );
+        $courses  = $response[ 'data' ];
 
-        // // Update all course
-        // Util::set_sync_status( [
-        //     'action'    => __( 'Update Course', 'moowoodle' ),
-        //     'total'     => count( $courses ) - 1,
-        //     'current'   => 0
-        // ], 'course' );
+        // Update all course
+        Util::set_sync_status( [
+            'action'    => __( 'Update Course', 'moowoodle' ),
+            'total'     => count( $courses ) - 1,
+            'current'   => 0
+        ], 'course' );
 
-        // MooWoodle()->course->update_courses( $courses );
+        MooWoodle()->course->update_courses( $courses );
         
-        // MooWoodle()->product->update_products( $courses );
+        MooWoodle()->product->update_products( $courses );
 
-        // do_action( 'moowoodle_save_cohorts' );
-        do_action( 'moowoodle_sync_all_course_cohorts' );
-        // delete_transient( 'course_sync_running' );
+        do_action( 'moowoodle_save_cohorts' );
+        do_action( 'moowoodle_sync_all_course_groups' );
+        delete_transient( 'course_sync_running' );
 
         /**
          * Action hook after moowoodle course sync.
@@ -636,6 +628,7 @@ class RestAPI {
         $data = array_map( function( $course ) use ( $user ) {
             $linked_product_id = get_post_meta( $course->course_id, 'linked_product_id', true );
             $moodle_course_id  = get_post_meta( $linked_product_id, 'moodle_course_id', true );
+            $passwordMoowoodle = get_user_meta( $user->ID, 'moowoodle_moodle_user_pwd', true );
     
             if ( ! $linked_product_id || ! $moodle_course_id ) {
                 Util::_log( "[MooWoodle] Course #{$course->course_id} has missing metadata (linked_product_id or moodle_course_id)." );
@@ -645,6 +638,7 @@ class RestAPI {
                 'user_name'      => $user->user_login,
                 'course_name'    => get_the_title( $linked_product_id ) ?: __( 'Unknown Course', 'moowoodle' ),
                 'enrolment_date' => date( 'M j, Y - H:i', strtotime( $course->date ) ),
+                'password'       => $passwordMoowoodle,
                 'moodle_url'     => $moodle_course_id
                     ? apply_filters(
                         'moodle_course_view_url',

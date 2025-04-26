@@ -83,6 +83,9 @@ const MyCourse = () => {
         <td data-label={__("Enrolment Date", "moowoodle")}>
           {course.enrolment_date || __("No Date Available", "moowoodle")}
         </td>
+        <td data-label={__("Password (First Time Login only)", "moowoodle")}>
+          {course.password || __("Password not Available", "moowoodle")}
+        </td>
         <td data-label={__("Action", "moowoodle")}>
           {course.moodle_url ? (
             <a
@@ -133,6 +136,7 @@ const MyCourse = () => {
             <th>{__("Username", "moowoodle")}</th>
             <th>{__("Course Name", "moowoodle")}</th>
             <th>{__("Enrolment Date", "moowoodle")}</th>
+            <th>{__("Password (First Time Login only)", "moowoodle")}</th>
             <th>{__("Action", "moowoodle")}</th>
           </tr>
         </thead>

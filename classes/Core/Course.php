@@ -130,8 +130,8 @@ class Course {
 		$link_type = filter_input(INPUT_POST, 'link_type', FILTER_SANITIZE_STRING);
 		$link_item = intval( filter_input( INPUT_POST, 'linked_item', FILTER_DEFAULT ) );
 
-		file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:lt'. var_export($link_type, true) . "\n", FILE_APPEND );
-		file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:li'. var_export($link_item, true) . "\n", FILE_APPEND );
+		// file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:lt'. var_export($link_type, true) . "\n", FILE_APPEND );
+		// file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:li'. var_export($link_item, true) . "\n", FILE_APPEND );
 
 		// // Linked product to course.
 		// if ( $course_id ) {
