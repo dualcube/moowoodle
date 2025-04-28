@@ -53,8 +53,6 @@ class Installer {
                 `item_id` bigint(20) NOT NULL,
                 `status` varchar(20) NOT NULL,
                 `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                `classroom_item_id` bigint(20) NOT NULL,
-                `cohort_item_id` bigint(20) NOT NULL,
                 `group_item_id` bigint(20) NOT NULL,
                 PRIMARY KEY (`id`)
             ) $collate;"

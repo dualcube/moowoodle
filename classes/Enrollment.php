@@ -76,12 +76,19 @@ class Enrollment {
 					'group_item_id' => 0,
 					'suspend'       => 0,
 				];
-			
-				if ( $product->is_type( 'variable' ) ) {
-					// Handle variable products
-					do_action( 'moowoodle_after_variable_product_enrollment', $product, $user_id, $item_id, $order_id );
+
+				if ( $product->is_type( 'variation' ) ) {
+
+					$enroll_data['group_id']        = $product->get_meta( 'linked_group_id', true );
+					$enroll_data['moodle_group_id'] = $product->get_meta( 'moodle_group_id', true );
+					$enroll_data['moodle_course_id'] = $product->get_meta( 'moodle_course_id', true );
+
+					do_action( 'moowoodle_after_group_product_enrollment', $enroll_data );
+				
 					continue;
 				}
+				
+				
 			
 				$moodle_cohort_id = $product->get_meta( 'moodle_cohort_id', true );
 				if ( ! empty( $moodle_cohort_id ) ) {
@@ -193,13 +200,6 @@ class Enrollment {
 		// Prepare enrollment data
 		$enroll_data['moodle_user_id'] = $moodle_user_id;
 		$enroll_data['role_id']        = apply_filters( 'moowoodle_enrolled_user_role_id', 5 );
-	
-		// Check if the user is already enrolled
-		$previous_enrolled_courses = self::get_previous_enrollments( $purchaser_id );
-		if ( in_array( $course_id, $previous_enrolled_courses ) ) {
-			Util::log( "[MooWoodle] User #{$purchaser_id} is already enrolled in Course #{$course_id}." );
-			return;
-		}
 		
 		// Moodle enrollment request
 		$enrolments = [[
@@ -210,23 +210,24 @@ class Enrollment {
 		]];
 	
 		$response = MooWoodle()->external_service->do_request( 'enrol_users', [ 'enrolments' => $enrolments ] );
-		
 		if ( ! $response || isset( $response['error'] ) ) {
 			Util::log( "[MooWoodle] Enrollment failed for User #{$purchaser_id} in Course #{$course_id}. Error: " . json_encode( $response ) );
 			return;
 		}
 		
 	
-		// Store enrollment record
-		self::add_enrollment([
-			'user_id'       => $purchaser_id,
-			'user_email'    => $enroll_data['user_email'],
-			'course_id'     => $course_id,
-			'order_id'      => $enroll_data['order_id'],
-			'item_id'       => $enroll_data['item_id'],
-			'status'        => 'enrolled',
-			'group_item_id' => $enroll_data['group_item_id'],
-		]);
+		if ( !empty($response[ 'success' ] ) && empty( $response[ 'error' ] ) ) {
+			// Store enrollment record
+			self::add_enrollment([
+				'user_id'       => $purchaser_id,
+				'user_email'    => $enroll_data['user_email'],
+				'course_id'     => $course_id,
+				'order_id'      => $enroll_data['order_id'],
+				'item_id'       => $enroll_data['item_id'],
+				'status'        => 'enrolled',
+				'group_item_id' => $enroll_data['group_item_id'],
+			]);
+		}
 
 		return true;
 	}
@@ -430,14 +431,6 @@ class Enrollment {
 		return apply_filters( 'moowoodle_moodle_users_data', $user_data, $this->order );
 	}
 
-
-	/**
-	 * Get previous enrollments for a user
-	 */
-	public static function get_previous_enrollments( $purchaser_id ) {
-		$courses = get_user_meta($purchaser_id, 'moowoodle_moodle_course_enroll', true);
-		return is_array($courses) ? $courses : [];
-	}
 	
     /**
 	 * Display WC order thankyou page containt.

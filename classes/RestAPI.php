@@ -213,7 +213,7 @@ class RestAPI {
         if ( in_array( 'sync_courses_category', $sync_setting ) ) {
 
             Util::set_sync_status( [
-                'action'    => __( 'Store Moodle Course Category', 'moowoodle' ),
+                'action'    => __( 'Update Course Category', 'moowoodle' ),
                 'total'     => count( $categories ),
                 'current'   => 0
             ], 'course' );

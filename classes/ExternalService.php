@@ -29,11 +29,12 @@ class ExternalService {
 			'get_course_id'     => 'core_course_get_courses_by_field',
 			'unenrol_users'     => 'enrol_manual_unenrol_users',
 			'get_cohort'        => 'core_cohort_get_cohorts',
-			'add_cohort_member'        => 'core_cohort_add_cohort_members',
+			'add_cohort_member' => 'core_cohort_add_cohort_members',
 			'delete_member'     => 'core_cohort_delete_cohort_members',
 			'get_groups'        => 'core_group_get_course_groups',
 			'get_groups_s'      => 'core_group_get_groups_for_selector',//need check
 			'create_group'      => 'core_group_create_groups',
+			'add_group_member'  => 'core_group_add_group_members',
         ]);
 	}
 
