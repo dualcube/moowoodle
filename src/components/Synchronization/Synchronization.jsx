@@ -15,13 +15,13 @@ import { getApiLink, sendApiResponse } from "../../services/apiService";
 import { getTemplateData } from "../../services/templateService";
 
 // import utility function
-import { getAvialableSettings, getSettingById } from "../../utiles/settingUtil";
+import { getAvailableSettings, getSettingById } from "../../utiles/settingUtil";
 import { useState, useEffect } from "react";
 
 const Synchronization = () => {
 
     // get all setting
-    const settingsArray = getAvialableSettings(getTemplateData( 'synchronizations' ), []);
+    const settingsArray = getAvailableSettings(getTemplateData( 'synchronizations' ), []);
 
     // get current browser location
     const location = new URLSearchParams( useLocation().hash );

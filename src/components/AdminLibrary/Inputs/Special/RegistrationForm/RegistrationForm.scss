@@ -156,6 +156,11 @@
               }
             }
           }
+          .highlight{
+            border: 0.063rem solid red;
+            background: transparent;
+            padding: 0.213rem;
+          }
         }
       }
     }
@@ -362,6 +367,10 @@
               margin: 0 0.5rem;
             }
           }
+
+          &.recaptcha{
+            border:0.063rem solid red;
+          }
         }
       }
 
@@ -477,7 +486,7 @@
     .elements-section {
       background-color: $color-light-black;
       padding: 1rem 0.75rem;
-      max-width: 16.625rem;
+      max-width: 15.625rem;
       width: 100%;
       position: sticky;
       top: 1.875rem;
@@ -490,6 +499,7 @@
           color: $color-white;
           font-size: 1.25rem;
           margin-bottom: 0.5rem;
+          margin-top:0;
           opacity: 0.6;
           font-weight: 500;
         }
@@ -500,7 +510,6 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 0.75rem;
-        padding: 1rem;
         border-radius: $border-radius-small;
 
         .elements-items {
@@ -672,11 +681,11 @@
   margin: 0;
 }
 
-.visibility-control-container input[id="radio-1"]:checked~.glider {
+.visibility-control-container input[id="visible"]:checked~.glider {
   transform: translateX(0);
 }
 
-.visibility-control-container input[id="radio-2"]:checked~.glider {
+.visibility-control-container input[id="hidden"]:checked~.glider {
   transform: translateX(100%);
 }
 

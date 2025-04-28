@@ -19,7 +19,6 @@ const getTemplateData = ( tamplate = 'settings' ) => {
             context = require.context('../template/synchronizations', true, /\.js$/);
             break;
     }
-
     // Prepare the structure here...
     function importAll(context) {
         const folderStructure = [];
@@ -55,4 +54,8 @@ const getTemplateData = ( tamplate = 'settings' ) => {
     return settings;
 };
 
-export { getTemplateData };
+const getModuleData = () => {
+   const moduleData = require('../template/modules/index').default;
+   return moduleData;
+}
+export { getTemplateData, getModuleData };

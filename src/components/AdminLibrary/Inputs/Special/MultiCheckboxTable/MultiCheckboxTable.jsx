@@ -97,7 +97,7 @@ const SearchOptionDisplay = (props) => {
                 />
 
                 <span>
-                    <i className='admin-font adminLib-keyboard_arrow_down'></i>
+                    <i className='admin-font adminLib-keyboard-arrow-down'></i>
                 </span>
             </div>
 
@@ -347,8 +347,8 @@ const MultiCheckboxTable = (props) => {
                                                         type="checkbox"
                                                         checked={Array.isArray(setting[column.key]) && setting[column.key].includes(row.key)}
                                                         onChange={(e) => {
-                                                            if (column.moduleDepend && !modules.includes(column.moduleDepend)) {
-                                                                props.moduleChange(column.moduleDepend);
+                                                            if (column.moduleEnabled && !modules.includes(column.moduleEnabled)) {
+                                                                props.moduleChange(column.moduleEnabled);
                                                                 return;
                                                             }
 

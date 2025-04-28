@@ -3,11 +3,10 @@
 .support-card {
     display: flex;
     gap: 1%;
-    margin-top: 1.5rem;
-    margin-left: 16rem;
+    margin: 1.5rem 0 0 16rem;
   
     .card-item {
-      padding: 1.5rem;
+      padding: 2.5rem;
       flex: 1 0 12.5rem;
       border: $border-light-small;
       border-radius: $border-radius-small;
@@ -16,7 +15,6 @@
       justify-content: start;
       align-items: center;
       flex-direction: column;
-      padding: 2.5rem;
   
       &:hover {
         background: linear-gradient(-145deg, $color-white, #e6e6e6);
@@ -31,13 +29,11 @@
       a {
         font-size: 1.25rem;
         margin-bottom: 0.5rem;
-        text-align: center;
         display: block;
         color: $theme-color;
       }
   
       p {
-        text-align: center;
         color: $color-black
       }
     }

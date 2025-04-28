@@ -68,11 +68,11 @@ const Tabs = (props) => {
           </div>
           {menuCol ? null : openedSubtab == tab.id ? (
             <p className="tab-menu-dropdown-icon active">
-              <i className="admin-font adminLib-keyboard_arrow_down"></i>
+              <i className="admin-font adminLib-keyboard-arrow-down"></i>
             </p>
           ) : (
             <p className="tab-menu-dropdown-icon">
-              <i className="admin-font adminLib-keyboard_arrow_down"></i>
+              <i className="admin-font adminLib-keyboard-arrow-down"></i>
             </p>
           )}
         </div>
@@ -127,7 +127,6 @@ const Tabs = (props) => {
               <div className="brand">
                 <img className="logo" src={menuCol ? BrandSmall : Brand} alt="Logo" />
                 <img className="logo-small" src={BrandSmall} alt="Logo" />
-                {menuCol ? null : <p>{appLocalizer.tab_name}</p>}
               </div>
               <div className="current-tab-lists-container">
                 {tabData.map(({ type, content }) => {

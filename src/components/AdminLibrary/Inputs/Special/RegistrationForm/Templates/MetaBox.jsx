@@ -22,8 +22,8 @@ const FormFieldSelect = ({ inputTypeList, formField, onTypeChange }) => (
 /**
  * Reusable wrapper for a label and input field.
  */
-const FieldWrapper = ({ label, children }) => (
-  <article className="modal-content-section-field" onClick={(e) => e.stopPropagation()}>
+const FieldWrapper = ({ label, children , className}) => (
+  <article className={`modal-content-section-field ${className || ''}`}  onClick={(e) => e.stopPropagation()}>
     <p>{label}</p>
     {children}
   </article>
@@ -32,8 +32,8 @@ const FieldWrapper = ({ label, children }) => (
 /**
  * Component for rendering input fields with labels.
  */
-const InputField = ({ label, type = "text", value, onChange }) => (
-  <FieldWrapper label={label}>
+const InputField = ({ label, type = "text", value, onChange, className}) => (
+  <FieldWrapper label={label} className={className}>
     <input
       type={type}
       value={value || ""}
@@ -48,6 +48,18 @@ const InputField = ({ label, type = "text", value, onChange }) => (
 const SettingMetaBox = (props) => {
 	const { formField, inputTypeList, onChange, onTypeChange, opened } = props;
 	const [hasOpened, setHasOpened] = useState(opened.click);
+	// Check if the site key is valid for reCAPTCHA v3
+	const isValidSiteKey = (key) => /^6[0-9A-Za-z_-]{39}$/.test(key);
+
+	const [isSiteKeyEmpty, setIsSiteKeyEmpty] = useState(
+		formField.type === 'recaptcha' && !isValidSiteKey(formField.sitekey)
+	);
+
+	useEffect(() => {
+		if (formField.type === 'recaptcha') {
+			onChange("disabled", isSiteKeyEmpty);
+		}
+	}, [isSiteKeyEmpty]); 
 
 	useEffect(() => {
 		setHasOpened(opened.click);
@@ -97,19 +109,30 @@ const SettingMetaBox = (props) => {
 				)}
 			</>
 			);
-		case "recapta":
+		case "recaptcha":
 			return (
 			<>
-				<InputField
+				{/* <InputField
 				label="API Key"
 				value={formField.apikey}
 				onChange={(value) => onChange("apikey", value)}
-				/>
+				/> */}
 				<InputField
 				label="Site Key"
 				value={formField.sitekey}
-				onChange={(value) => onChange("sitekey", value)}
+				className={isSiteKeyEmpty ? "highlight" : ""}
+				onChange={(value) => {
+					onChange("sitekey", value);
+					setIsSiteKeyEmpty(!isValidSiteKey(value));
+				}}
 				/>
+				<p>
+					Register your site with your Google account to obtain the{' '}
+					<a href="https://www.google.com/recaptcha" target="_blank" rel="noopener noreferrer">
+						reCAPTCHA script
+					</a>.
+				</p>
+
 			</>
 			);
 		case "attachment":
@@ -160,14 +183,24 @@ const SettingMetaBox = (props) => {
 					<FieldWrapper label="Visibility">                  
 					<div className="visibility-control-container">
 						<div className="tabs">
-							<input checked={!formField.disabled} onChange={(e)=> onChange( 'disabled', !e.target.checked ) } type="radio" id="radio-1" name="tabs" />
-							<label className="tab" htmlFor="radio-1">
-							Visible
-							</label>
-							<input checked={formField.disabled} onChange={(e)=> onChange( 'disabled', e.target.checked ) } type="radio" id="radio-2" name="tabs" />
-							<label className="tab" htmlFor="radio-2">
-							Hidden
-							</label>
+							<input
+								checked={formField.type === 'recaptcha' ? !isSiteKeyEmpty : !formField.disabled}
+								onChange={(e) => onChange('disabled', !e.target.checked)}
+								type="radio"
+								id="visible"
+								name="tabs"
+							/>
+							<label className="tab" htmlFor="visible">Visible</label>
+
+							<input
+								checked={formField.type === 'recaptcha' ? isSiteKeyEmpty : formField.disabled}
+								onChange={(e) => onChange('disabled', e.target.checked)}
+								type="radio"
+								id="hidden"
+								name="tabs"
+							/>
+							<label className="tab" htmlFor="hidden">Hidden</label>
+
 							<span className="glider" />
 						</div>
 					</div>

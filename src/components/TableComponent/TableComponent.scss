@@ -1,0 +1,112 @@
+@import '/src/components/config.scss';
+
+div.subscriber-img {
+  background-image: url("../../assets/images/subscriber-list.jpg") !important; // force to set image for ungrade with pro for desktop-screen
+  background-repeat: no-repeat;
+  background-position: top left;
+  background-size: contain;
+  height: 100vh;
+}
+
+@media only screen and (max-width: 69.3rem) {
+  div.subscriber-img {
+    background-image: url("../../assets/images/subcriber-list-tab.png") !important; // force to set image for ungrade with pro for laptop-screen
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: contain;
+  }
+}
+
+@media only screen and (max-width: 40.95rem) {
+  div.subscriber-img {
+    background-image: url("../../assets/images/subcriber-list-phone.png") !important; // force to set image for ungrade with pro for mobile-screen
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: contain;
+  }
+}
+
+.sc-evZas.dFsTSm {
+  overflow: visible;
+}
+
+.free-reports-download-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-direction: column;
+
+  .section-heading {
+    font-size: 1.5rem;
+    line-height: 1.5;
+    font-weight: 400;
+    text-align: center;
+  }
+}
+
+
+.admin-subscriber-list {
+  .admin-page-title {
+    .download-btn-subscriber-list {
+      .admin-btn {
+        &.btn-purple {
+        gap: 0.5rem;
+
+        .dashicons-before {
+          &::before {
+            padding: 0;
+          }
+        }
+        }
+      }
+    }
+  }
+  .search-section {
+    margin-left: auto;
+    max-width: 12.6rem;
+
+    @media screen and (max-width: 31rem) {
+      margin-left: 0 !important; // For responsive design
+    }
+  }
+
+  .subscriber-bulk-action {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    position: relative;
+    max-width: 15rem !important; // To overwrite common table style
+
+    label {
+      font-size: 0.875rem;
+      width: 8.19rem;
+    }
+
+    button {
+      background-color: $color-active;
+      padding: 0.5rem 1.5rem;
+      color: $color-white;
+    }
+  }
+}
+
+.sent {
+  color: green;
+}
+
+.subscribed {
+  color: $color-active;
+}
+
+.unsubscribed {
+  color: red;
+}
+
+
+@media screen and (max-width: 46.0625rem) {
+  .filter-wrapper .wrap-bulk-all-date > div{
+    max-width: 100% !important; // To overwrite default css
+  }
+}

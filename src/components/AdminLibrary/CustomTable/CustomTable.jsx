@@ -33,7 +33,8 @@ const LoadingTable = () => {
 export const TableCell = (props) => {
   return (
     <>
-      <div title={props.value} className="table-row-custom">
+      <div title={props.value} className="order-status table-row-custom">
+        <h4 className="hide-title">{props.title}</h4> 
         {props.children}
       </div>
     </>
@@ -195,17 +196,19 @@ const CustomTable = (props) => {
   return (
     <div className={`table-container ${loading ? "table-loading" : ""} ${selectable ? "selectable-table" : ""}`}>
       <div className="admin-table-wrapper-filter">
-        {
-          typeCounts &&
-          typeCounts.map((countInfo) => (
+        {typeCounts &&
+          typeCounts.map((countInfo, index) => (
             <div
-              onClick={(e) => { setFilterData({ typeCount: countInfo.key }) }}
-              className={countInfo.key == typeCountActive ? 'type-count-active' : ''}
+              key={index} // Add a key for better React performance
+              onClick={(e) => {
+                setFilterData({ typeCount: countInfo.key });
+              }}
+              className={countInfo.key === typeCountActive ? 'type-count-active' : ''}
             >
-              {`${countInfo.name} (${countInfo.count})`}
+              {`${countInfo.name} (${countInfo.count})`} 
+              {index !== typeCounts.length - 1 && ' |'} {/* Add '|' except for the last item */}
             </div>
-          ))
-        }
+          ))}
       </div>
 
       <div className="filter-wrapper">
