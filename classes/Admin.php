@@ -42,6 +42,10 @@ class Admin {
 				'name' 	 => __("Courses", 'moowoodle'),
 				'subtab' => ''
 			],
+			"cohorts" => [
+				'name'   => __("Cohorts", 'moowoodle') . $pro_sticker,
+				'subtab' => ''
+			],
 			"enrolments" => [
 				'name'   => __("Enrolments", 'moowoodle') . $pro_sticker,
 				'subtab' => ''
