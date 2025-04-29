@@ -13,6 +13,8 @@ import defaultImage from '../../assets/images/moowoodle-product-default.png';
 
 const Enrollment = () => {
 	const [courses, setCourses] = useState([]);
+	const [groups, setGroups] = useState([]);
+	const [cohorts, setCohorts] = useState([]);
 	const [data, setData] = useState(null);
 	const [selectedRows, setSelectedRows] = useState([]);
 	const [enrollemntStatus, setEnrollemntStatus] = useState(null);
@@ -57,6 +59,16 @@ const Enrollment = () => {
 			headers: { "X-WP-Nonce": appLocalizer.nonce },
 		}).then((response) => {
 			setCourses(response.data.courses)
+		});
+	}, []);
+	useEffect(() => {
+		axios({
+			method: "get",
+			url: getApiLink('all-groups'),
+			headers: { "X-WP-Nonce": appLocalizer.nonce },
+		}).then((response) => {
+			setGroups(response.data.groups)
+			setCohorts(response.data.cohorts)
 		});
 	}, []);
 
@@ -109,6 +121,8 @@ const Enrollment = () => {
 		search_student_field = "",
 		search_student_action = "",
 		courseField = "",
+		groupField = "",
+		cohortField = "",
 		typeCount = "",
 		start_date = new Date(0),
 		end_date = new Date()
@@ -125,6 +139,8 @@ const Enrollment = () => {
 				student: search_student_field,
 				student_action: search_student_action,
 				course: courseField,
+				group: groupField,
+				cohort: cohortField,
 				status: typeCount == 'all' ? '' : typeCount,
 				start_date: start_date,
 				end_date: end_date,
@@ -149,6 +165,8 @@ const Enrollment = () => {
 			filterData?.search_student_field,
 			filterData?.search_student_action,
 			filterData?.courseField,
+			filterData?.groupField,
+			filterData?.cohortField,
 			filterData?.typeCount,
 			filterData?.date?.start_date,
 			filterData?.date?.end_date,
@@ -170,6 +188,48 @@ const Enrollment = () => {
 								<option value="">Courses</option>
 								{Object.entries(courses).map(([courseId, courseName]) => (
 									<option value={courseId}>{courseName}</option>
+								))}
+							</select>
+						</div>
+					</>
+				);
+			},
+		},
+		{
+			name: "groupField",
+			render: (updateFilter, filterValue) => {
+				return (
+					<>
+						<div className="admin-header-search-section">
+							<select
+								name="groupField"
+								onChange={(e) => updateFilter(e.target.name, e.target.value)}
+								value={filterValue || ""}
+							>
+								<option value="">Groups</option>
+								{Object.entries(groups).map(([groupId, groupName]) => (
+									<option value={groupId}>{groupName}</option>
+								))}
+							</select>
+						</div>
+					</>
+				);
+			},
+		},
+		{
+			name: "cohortField",
+			render: (updateFilter, filterValue) => {
+				return (
+					<>
+						<div className="admin-header-search-section">
+							<select
+								name="cohortField"
+								onChange={(e) => updateFilter(e.target.name, e.target.value)}
+								value={filterValue || ""}
+							>
+								<option value="">Cohorts</option>
+								{Object.entries(cohorts).map(([cohortId, cohortName]) => (
+									<option value={cohortId}>{cohortName}</option>
 								))}
 							</select>
 						</div>
@@ -266,10 +326,10 @@ const Enrollment = () => {
 				<TableCell title="course_name" >
 					<img src={row.course_img || defaultImage} alt="" />
 					<div className="action-section">
-						<p>{row.course_name}</p>
-						<div className='action-btn'>
+						<p>{row.course_name || row.group_name || row.cohort_name}</p>
+						{/* <div className='action-btn'>
 							<a target='_blank' href={row.course_url} className="">Edit link product</a>
-						</div>
+						</div> */}
 					</div>
 				</TableCell>,
 		},

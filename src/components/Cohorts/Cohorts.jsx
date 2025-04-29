@@ -14,23 +14,11 @@ import defaultImage from '../../assets/images/moowoodle-product-default.png';
 export default function Cohorts() {
     const { __ } = wp.i18n;
     const [data, setData] = useState(null);
-    const [cohorts, setCohorts] = useState([]);
-    const [products, setProducts] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
     const [totalRows, setTotalRows] = useState();
     const bulkSelectRef = useRef();
     const [openDialog, setOpenDialog] = useState(false);
 
-    useEffect(() => {
-        axios({
-            method: "get",
-            url: getApiLink('all-cohorts'),
-            headers: { "X-WP-Nonce": appLocalizer.nonce },
-        }).then((response) => {
-            setCohorts(response.data.cohorts);
-            setProducts(response.data.products);
-        });
-    }, []);
 
     /**
      * Function that request data from backend
