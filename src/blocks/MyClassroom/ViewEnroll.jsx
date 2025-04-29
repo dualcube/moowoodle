@@ -35,45 +35,84 @@ const ViewEnroll = ({ classroom }) => {
 
   const fetchClassroomData = async (page = 1) => {
     try {
-      let response = await axios.get(getApiLink("view"), {
-        params: {
-          classroom_id: classroom.classroom_id,
-          cohort_id: classroom.cohort_id,
-          group_id: classroom.group_id,
-          page,
-          per_page: studentsPerPage,
-        },
-        headers: { "X-WP-Nonce": appLocalizer?.nonce },
-      });
+      if (classroom?.classroom_id) {
 
-      response = response.data;
+        let response = await axios.get(getApiLink("view-classroom"), {
+          params: {
+            classroom_id: classroom.classroom_id,
+            page,
+            per_page: studentsPerPage,
+          },
+          headers: { "X-WP-Nonce": appLocalizer?.nonce },
+        });
 
-      if (response.success) {
-        const { students, courses, total_courses, total_enrolled } =
-          response.data;
+        response = response.data;
 
-        setEnrolledStudents(students || []);
-        setAvailableCourses(courses || []);
-        setTotalCourses(total_courses || 0);
-        setTotalEnrolled(total_enrolled || 0);
+        if (response.success) {
+          const { students, courses, total_courses, total_enrolled } =
+            response.data;
 
-        const totalAvailable = (courses || []).reduce(
-          (acc, course) => acc + Number(course.available_quantity || 0),
-          0
-        );
-        setTotalAvailable(totalAvailable);
+          setEnrolledStudents(students || []);
+          setAvailableCourses(courses || []);
+          setTotalCourses(total_courses || 0);
+          setTotalEnrolled(total_enrolled || 0);
 
-        setTotalPages(response.pagination?.total_pages || 1);
-        setCurrentPage(response.pagination?.current_page || page);
-      } else {
-        console.error("Failed to load classroom data:", response.message);
+          const totalAvailable = (courses || []).reduce(
+            (acc, course) => acc + Number(course.available_quantity || 0),
+            0
+          );
+          setTotalAvailable(totalAvailable);
+
+          setTotalPages(response.pagination?.total_pages || 1);
+          setCurrentPage(response.pagination?.current_page || page);
+        } else {
+          console.error("Failed to load classroom data:", response.message);
+        }
+
+      } if (classroom?.cohort_id || classroom?.group_id) {
+        const params = classroom?.cohort_id
+          ? {
+            cohort_id: classroom.cohort_id,
+            cohort_item_id: classroom.cohort_item_id,
+          }
+          : {
+            group_id: classroom.group_id,
+            group_item_id: classroom.group_item_id,
+          };
+
+        let response = await axios.get(getApiLink("view-cohort"), {
+          params: {
+            ...params,
+            page,
+            per_page: studentsPerPage,
+          },
+          headers: { "X-WP-Nonce": appLocalizer?.nonce },
+        });
+
+        if (response.data.success) {
+          setEnrolledStudents(response.data.data.students || []);
+          setTotalEnrolled(response.data.data.total_enrolled || 0);
+          const totalAvailable = (courses || []).reduce(
+            (acc, course) => acc + Number(course?.available_quantity || 0),
+            0
+          );
+          setTotalAvailable(totalAvailable);
+
+          setTotalPages(response.data.pagination?.total_pages || 1);
+          setCurrentPage(response.data.pagination?.current_page || page);
+        } else {
+          console.error("Failed to load data:", response.message);
+        }
       }
+
+
     } catch (error) {
       console.error(__("Error fetching classroom data:", "moowoodle"), error);
     }
   };
 
   useEffect(() => {
+    console.log(classroom)
     fetchClassroomData(currentPage);
   }, [currentPage]);
 
@@ -99,29 +138,59 @@ const ViewEnroll = ({ classroom }) => {
 
   const handleEnrollStudent = async (e) => {
     e.preventDefault();
-    if (
-      !newStudent.first_name ||
-      !newStudent.last_name ||
-      !newStudent.email ||
-      !Array.isArray(newStudent.courses) ||
-      !newStudent.courses.length
-    ) {
-      alert(__("Please fill in all fields.", "moowoodle"));
-      return;
+    if (classroom?.classroom_id) {
+      if (
+        !newStudent.first_name ||
+        !newStudent.last_name ||
+        !newStudent.email ||
+        !Array.isArray(newStudent.courses) ||
+        !newStudent.courses.length
+      ) {
+        alert(__("Please fill in all fields.", "moowoodle"));
+        return;
+      }
+    } else {
+      if (
+        !newStudent.first_name ||
+        !newStudent.last_name ||
+        !newStudent.email
+      ) {
+        alert(__("Please fill in all fields.", "moowoodle"));
+        return;
+      }
     }
-
     setIsLoading(true);
-    const payload = {
-      group_id: classroom.classroom_id,
+    let payload = {
       email: newStudent.email,
       first_name: newStudent.first_name,
       last_name: newStudent.last_name,
-      order_id: classroom?.order_id || 0,
-      course_selections: newStudent.courses.map((course) => ({
-        course_id: course.course_id,
-        group_item_id: course.group_item_id,
-      })),
     };
+    if (classroom.classroom_id) {
+      payload = {
+        ...payload,
+        classroom_id: classroom.classroom_id,
+        order_id: classroom?.order_id || 0,
+        course_selections: newStudent.courses.map((course) => ({
+          course_id: course.course_id,
+          classroom_item_id: course.group_item_id,
+        })),
+      }
+
+    } else if (classroom.cohort_id) {
+      payload = {
+        ...payload,
+        cohort_id: classroom.cohort_id,
+        cohort_item_id: classroom.cohort_item_id
+      }
+
+    } else if (classroom.group_id) {
+      payload = {
+        ...payload,
+        group_id: classroom.group_id,
+        group_item_id: classroom.group_item_id
+      }
+
+    }
     console.log(payload);
     try {
       const response = await axios.post(getApiLink("enroll"), payload, {
@@ -146,7 +215,7 @@ const ViewEnroll = ({ classroom }) => {
       } else {
         alert(
           __("Enrollment failed: ", "moowoodle") +
-            (response.data.message || __("Unknown error", "moowoodle"))
+          (response.data.message || __("Unknown error", "moowoodle"))
         );
       }
     } catch (error) {
@@ -185,7 +254,7 @@ const ViewEnroll = ({ classroom }) => {
       } else {
         alert(
           __("Bulk enrollment failed: ", "moowoodle") +
-            (response.data.message || __("Unknown error", "moowoodle"))
+          (response.data.message || __("Unknown error", "moowoodle"))
         );
       }
     } catch (error) {
@@ -201,14 +270,14 @@ const ViewEnroll = ({ classroom }) => {
       alert(__("Please select at least one course to unenroll.", "moowoodle"));
       return;
     }
-
+  
     try {
       setIsLoading(true);
       const response = await axios.post(
         getApiLink("unenroll"),
         {
           user_id: selectedStudentForUnenroll.id,
-          group_id: classroom.classroom_id,
+          classroom_id: classroom.classroom_id, 
           email: selectedStudentForUnenroll.email,
           course_selections: unenrollCourses,
         },
@@ -216,7 +285,7 @@ const ViewEnroll = ({ classroom }) => {
           headers: { "X-WP-Nonce": appLocalizer?.nonce },
         }
       );
-
+  
       if (response.data.success) {
         alert(__("Unenrollment successful.", "moowoodle"));
         await fetchClassroomData(currentPage);
@@ -232,6 +301,59 @@ const ViewEnroll = ({ classroom }) => {
       setIsLoading(false);
     }
   };
+  
+  const handleUnenrollStudentCohortAndGroup = async (student) => {
+    try {
+      setIsLoading(true);
+  
+      let payload = {
+        user_id: student.id,
+        email: student.email,
+      };
+  
+      if (classroom?.group_id) {
+        payload = {
+          ...payload,
+          group_id: classroom.group_id,
+          group_item_id: classroom.group_item_id,
+        };
+      } else if (classroom?.cohort_id) {
+        payload = {
+          ...payload,
+          cohort_id: classroom.cohort_id,
+          cohort_item_id: classroom.cohort_item_id,
+        };
+      } else {
+        alert(__("This action is only available for groups or cohorts.", "moowoodle"));
+        return;
+      }
+  
+      console.log(payload);
+  
+      // const response = await axios.post(
+      //   getApiLink("unenroll"),
+      //   payload,
+      //   {
+      //     headers: { "X-WP-Nonce": appLocalizer?.nonce },
+      //   }
+      // );
+  
+      if (response.data.success) {
+        alert(__("Unenrollment successful.", "moowoodle"));
+        await fetchClassroomData(currentPage);
+        setShowUnenrollModal(false);
+        setUnenrollCourses([]);
+      } else {
+        alert(__("Unenrollment failed: ", "moowoodle") + response.data.message);
+      }
+    } catch (error) {
+      console.error("Error during unenroll:", error);
+      alert(__("Something went wrong. Please try again.", "moowoodle"));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -255,7 +377,7 @@ const ViewEnroll = ({ classroom }) => {
   return (
     <div className="enrollment-container">
       <h4 className="heading">
-        You are viewing {classroom?.group_name || "Classroom"}
+        You are viewing {classroom?.group_name || classroom?.cohort_name || classroom?.classroom_name || "Classroom"}
       </h4>
 
       <div className="class-details">
@@ -298,9 +420,8 @@ const ViewEnroll = ({ classroom }) => {
         Enrolled Student
         <div className="button-group">
           <button
-            className={`enroll-button bulk-enroll-button ${
-              showForm ? "btn-red" : "btn-green"
-            }`}
+            className={`enroll-button bulk-enroll-button ${showForm ? "btn-red" : "btn-green"
+              }`}
             onClick={() => {
               setShowForm((prev) => !prev);
               setShowBulkModal(false);
@@ -311,9 +432,8 @@ const ViewEnroll = ({ classroom }) => {
               : "+ " + __("Enroll Student", "moowoodle")}
           </button>
           <button
-            className={`enroll-button bulk-enroll-button ${
-              showBulkModal ? "btn-red" : "btn-green"
-            }`}
+            className={`enroll-button bulk-enroll-button ${showBulkModal ? "btn-red" : "btn-green"
+              }`}
             onClick={() => {
               setShowBulkModal((prev) => !prev);
               setShowForm(false);
@@ -416,7 +536,17 @@ const ViewEnroll = ({ classroom }) => {
             <tr>
               <th className="woocommerce-orders-table__header">Name</th>
               <th className="woocommerce-orders-table__header">Email</th>
-              <th className="woocommerce-orders-table__header">Courses</th>
+              {classroom?.classroom_id && (
+                <th className="woocommerce-orders-table__header">Courses</th>
+              )}
+              {classroom?.cohort_id && (
+                <th className="woocommerce-orders-table__header">Cohort</th>
+              )}
+              {classroom?.group_id && (
+                <th className="woocommerce-orders-table__header">Group</th>
+              )}
+
+
               <th className="woocommerce-orders-table__header">Action</th>
             </tr>
           </thead>
@@ -431,17 +561,31 @@ const ViewEnroll = ({ classroom }) => {
                     {student.email}
                   </td>
                   <td className="woocommerce-orders-table__cell">
-                    {student.courses
-                      ?.map((course) => course.course_name)
-                      .join(", ") || "No courses assigned"}
+                    {classroom?.classroom_id ? (
+                      student.courses?.map((course) => course.course_name).join(", ") || "No courses assigned"
+                    ) : classroom?.cohort_id ? (
+                      classroom.cohort_name || "No cohort assigned"
+                    ) : classroom?.group_id ? (
+                      classroom.group_name || "No group assigned"
+                    ) : (
+                      "N/A"
+                    )}
                   </td>
+
                   <td className="woocommerce-orders-table__cell">
                     <button
                       className="unenroll-button btn-red"
                       onClick={() => {
                         setSelectedStudentForUnenroll(student);
-                        setShowUnenrollModal(true);
+                      
+                        // Check if it's a group or cohort and directly call unenroll function
+                        if (classroom?.group_id || classroom?.cohort_id) {
+                          handleUnenrollStudentCohortAndGroup(student);  // Direct unenroll for cohort or group
+                        } else if (classroom?.classroom_id) {
+                          setShowUnenrollModal(true);  // Show modal for classroom-based unenroll
+                        }
                       }}
+                      
                     >
                       {__("Unenroll", "moowoodle")}
                     </button>

@@ -14,7 +14,7 @@ import defaultImage from '../../assets/images/moowoodle-product-default.png';
 export default function Cohorts() {
     const { __ } = wp.i18n;
     const [data, setData] = useState(null);
-    const [courses, setCohorts] = useState([]);
+    const [cohorts, setCohorts] = useState([]);
     const [products, setProducts] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
     const [totalRows, setTotalRows] = useState();
@@ -49,14 +49,12 @@ export default function Cohorts() {
         //Fetch the data to show in the table
         axios({
             method: "post",
-            url: getApiLink('get-courses'),
+            url: getApiLink('get-cohorts'),
             headers: { "X-WP-Nonce": appLocalizer.nonce },
             data: {
                 page: currentPage,
                 row: rowsPerPage,
-                course: courseField,
                 product: productField,
-                catagory: catagoryField,
                 searchaction: searchAction,
                 search: searchCourseField
             },
@@ -161,7 +159,7 @@ export default function Cohorts() {
     useEffect(() => {
         axios({
             method: "post",
-            url: getApiLink('get-courses'),
+            url: getApiLink('get-cohorts'),
             headers: { "X-WP-Nonce": appLocalizer.nonce },
             data: { count: true },
         }).then((response) => {
@@ -178,14 +176,14 @@ export default function Cohorts() {
     const columns = [
         {
             name: __('Cohorts', 'moowoodle'),
-            selector: row => row.course_name,
+            selector: row => row.cohort_name,
             cell: (row) => (
                 <TableCell>
                     <img src={row.productimage || defaultImage} />
                     <div className="action-section">
-                        <p>{row.course_name}</p>
+                        <p>{row.cohort_name}</p>
                         <div className='action-btn'>
-                            <a target='_blank' href={row.moodle_url} className="">Edit course</a>
+                            <a target='_blank' href={row.moodle_url} className="">Edit cohort</a>
                         </div>
                     </div>
                 </TableCell>
@@ -369,7 +367,7 @@ export default function Cohorts() {
             (
                 <div className="course-container-wrapper">
                     <div className="admin-page-title">
-                        <p>{__("Courses", "moowoodle")}</p>
+                        <p>{__("Cohorts", "moowoodle")}</p>
                     </div>
 
                     <div className="admin-table-wrapper">

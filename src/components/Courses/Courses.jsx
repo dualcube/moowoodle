@@ -188,9 +188,9 @@ export default function Course() {
                     <img src={row.productimage || defaultImage} />
                     <div className="action-section">
                         <p>{row.course_name}</p>
-                        <div className='action-btn'>
+                        {/* <div className='action-btn'>
                             <a target='_blank' href={row.moodle_url} className="">Edit course</a>
-                        </div>
+                        </div> */}
                     </div>
                 </TableCell>
             ),

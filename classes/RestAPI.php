@@ -55,7 +55,11 @@ class RestAPI {
             'callback'            =>[ $this, 'get_courses' ],
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
-
+        register_rest_route( MooWoodle()->rest_namespace, '/get-cohorts', [
+            'methods'             => \WP_REST_Server::ALLMETHODS,
+            'callback'            =>[ $this, 'get_cohorts' ],
+            'permission_callback' =>[ $this, 'moowoodle_permission' ],
+        ]);
         register_rest_route( MooWoodle()->rest_namespace, '/all-courses', [
             'methods'             => \WP_REST_Server::ALLMETHODS,
             'callback'            =>[ $this, 'get_all_courses' ],
@@ -208,7 +212,6 @@ class RestAPI {
         // get all category from moodle.
         $response   = MooWoodle()->external_service->do_request( 'get_categories' );
         $categories = $response[ 'data' ];
-
         // update course and product categories.
         if ( in_array( 'sync_courses_category', $sync_setting ) ) {
 
@@ -255,7 +258,9 @@ class RestAPI {
         MooWoodle()->product->update_products( $courses );
 
         do_action( 'moowoodle_save_cohorts' );
+
         do_action( 'moowoodle_sync_all_course_groups' );
+
         delete_transient( 'course_sync_running' );
 
         /**
@@ -419,6 +424,126 @@ class RestAPI {
     
         return rest_ensure_response( $formatted_courses );
     }
+    public function get_cohorts( $request ) {
+        global $wpdb;
+    
+        $nonce = $request->get_header( 'X-WP-Nonce' );
+        if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return new \WP_Error( 'invalid_nonce', __( 'Invalid nonce', 'moowoodle' ), [ 'status' => 403 ] );
+        }
+    
+        $count_cohorts = $request->get_param( 'count' );
+        $limit         = max( intval( $request->get_param( 'row' ) ), 10 );
+        $page          = max( intval( $request->get_param( 'page' ) ), 1 );
+        $offset        = ( $page - 1 ) * $limit;
+        $search_action = $request->get_param( 'searchaction' );
+        $search_field  = $request->get_param( 'search' );
+    
+        $cohort_table = $wpdb->prefix . 'moowoodle_cohorts';
+    
+        $where_clauses = [ "1=1" ];
+        $query_params  = [];
+    
+        if ( $search_action === 'cohort' && $search_field ) {
+            $where_clauses[] = "cohort_name LIKE %s";
+            $query_params[]  = '%' . $wpdb->esc_like( $search_field ) . '%';
+        } elseif ( $search_action === 'id' && $search_field ) {
+            $where_clauses[] = "cohort_id LIKE %s";
+            $query_params[]  = '%' . $wpdb->esc_like( $search_field ) . '%';
+        }
+    
+        $where_sql = implode( ' AND ', $where_clauses );
+    
+        if ( $count_cohorts ) {
+            $sql = "SELECT COUNT(*) FROM $cohort_table WHERE $where_sql";
+            return rest_ensure_response( (int) $wpdb->get_var( $wpdb->prepare( $sql, $query_params ) ) );
+        }
+    
+        $sql = "SELECT * FROM $cohort_table
+                WHERE $where_sql ORDER BY id DESC LIMIT %d OFFSET %d";
+    
+        $query_params[] = $limit;
+        $query_params[] = $offset;
+    
+        $cohorts = $wpdb->get_results( $wpdb->prepare( $sql, $query_params ) );
+    
+        if ( empty( $cohorts ) ) {
+            return rest_ensure_response( [] );
+        }
+    
+        $cohort_ids = array_map( fn( $c ) => $c->id, $cohorts );
+    
+        // Synced WooCommerce products by cohort
+        $product_map = [];
+        $product_query = new \WC_Product_Query([
+            'limit'      => -1,
+            'status'     => 'publish',
+            'meta_query' => [
+                [
+                    'key'     => 'linked_cohort_id',
+                    'value'   => $cohort_ids,
+                    'compare' => 'IN',
+                ],
+            ],
+        ]);
+        $products = $product_query->get_products();
+    
+        foreach ( $products as $product ) {
+            $linked_id = (int) get_post_meta( $product->get_id(), 'linked_cohort_id', true );
+            $product_map[ $linked_id ][] = $product;
+        }
+    
+        // Enrollment count for cohorts
+        $placeholders = implode( ',', array_fill( 0, count( $cohort_ids ), '%d' ) );
+        $enrollment_sql = "
+            SELECT cohort_id, COUNT(*) as enrolled_count
+            FROM {$wpdb->prefix}moowoodle_enrollment
+            WHERE status = 'enrolled' AND cohort_id IN ($placeholders)
+            GROUP BY cohort_id
+        ";
+        $enrollment_counts = $wpdb->get_results( $wpdb->prepare( $enrollment_sql, $cohort_ids ) );
+    
+        $enrollment_map = [];
+        foreach ( $enrollment_counts as $row ) {
+            $enrollment_map[ (int) $row->cohort_id ] = (int) $row->enrolled_count;
+        }
+    
+        $formatted_cohorts = [];
+    
+        foreach ( $cohorts as $cohort ) {
+            $cohort_id = (int) $cohort->id;
+    
+            $synced_products = [];
+            $product_image   = '';
+    
+            if ( isset( $product_map[ $cohort_id ] ) ) {
+                foreach ( $product_map[ $cohort_id ] as $product ) {
+                    $synced_products[ $product->get_name() ] = add_query_arg( [ 'post' => $product->get_id(), 'action' => 'edit' ], admin_url( 'post.php' ) );
+                    if ( ! $product_image ) {
+                        $product_image = wp_get_attachment_url( $product->get_image_id() );
+                    }
+                }
+            }
+    
+            $moodle_url    = trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "cohort/edit.php?id={$cohort->cohort_id}";
+            $view_user_url = trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "cohort/index.php?id={$cohort->cohort_id}";
+    
+            $formatted_cohorts[] = [
+                'id'             => $cohort_id,
+                'moodle_url'     => $moodle_url,
+                'cohort_id'      => $cohort->cohort_id,
+                'cohort_name'    => $cohort->cohort_name,
+                'products'       => $synced_products,
+                'productimage'   => $product_image,
+                'enroled_user'   => $enrollment_map[ $cohort_id ] ?? 0,
+                'view_users_url' => $view_user_url,
+                'date'           => wp_date( 'M j, Y', strtotime( $cohort->created_at ) ),
+            ];
+        }
+    
+        return rest_ensure_response( $formatted_cohorts );
+    }
+    
 
     /**
      * Get all courses
