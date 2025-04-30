@@ -35,6 +35,7 @@ class ExternalService {
 			'get_groups_s'      => 'core_group_get_groups_for_selector',//need check
 			'create_group'      => 'core_group_create_groups',
 			'add_group_member'  => 'core_group_add_group_members',
+			'remove_group_member'=>'core_group_delete_group_members',
         ]);
 	}
 

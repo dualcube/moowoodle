@@ -385,9 +385,14 @@ const Enrollment = () => {
 				url: getApiLink('manage-enrollment'),
 				headers: { "X-WP-Nonce": appLocalizer.nonce },
 				data: {
+					id:row.id,
 					order_id: row.order_id,
 					course_id: row.course_id,
+					group_id:row.group_id,
+					cohort_id:row.cohort_id,
 					user_id: row.customer_id,
+					customer_email:row.customer_email,
+					group_item_id:row.group_item_id,
 					action: row.status == 'enrolled' ? 'unenroll' : 'enrolled'
 				},
 			}).then((response) => {

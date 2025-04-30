@@ -276,6 +276,7 @@ const ViewEnroll = ({ classroom }) => {
       const response = await axios.post(
         getApiLink("unenroll"),
         {
+          type:'classroom',
           user_id: selectedStudentForUnenroll.id,
           classroom_id: classroom.classroom_id, 
           email: selectedStudentForUnenroll.email,
@@ -314,14 +315,16 @@ const ViewEnroll = ({ classroom }) => {
       if (classroom?.group_id) {
         payload = {
           ...payload,
+          type:'group',
           group_id: classroom.group_id,
           group_item_id: classroom.group_item_id,
         };
       } else if (classroom?.cohort_id) {
         payload = {
           ...payload,
+          type:'cohort',
           cohort_id: classroom.cohort_id,
-          cohort_item_id: classroom.cohort_item_id,
+          group_item_id: classroom.cohort_item_id,
         };
       } else {
         alert(__("This action is only available for groups or cohorts.", "moowoodle"));
@@ -330,13 +333,13 @@ const ViewEnroll = ({ classroom }) => {
   
       console.log(payload);
   
-      // const response = await axios.post(
-      //   getApiLink("unenroll"),
-      //   payload,
-      //   {
-      //     headers: { "X-WP-Nonce": appLocalizer?.nonce },
-      //   }
-      // );
+      const response = await axios.post(
+        getApiLink("unenroll"),
+        payload,
+        {
+          headers: { "X-WP-Nonce": appLocalizer?.nonce },
+        }
+      );
   
       if (response.data.success) {
         alert(__("Unenrollment successful.", "moowoodle"));

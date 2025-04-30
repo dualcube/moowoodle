@@ -80,22 +80,22 @@ export default function Cohorts() {
     /**
      * Handle single row action
      * @param {*} actionName 
-     * @param {*} courseId 
+     * @param {*} cohortId 
      * @param {*} rowId 
      * @param {*} rowIndex 
      */
-    const handleSingleAction = (actionName, courseId, moodleCourseId) => {
+    const handleSingleAction = (actionName, cohortId, moodleCohortId) => {
         if (appLocalizer.khali_dabba) {
             setData(null);
             axios({
                 method: 'post',
-                url: getApiLink(`course-bulk-action`),
+                url: getApiLink(`cohort-bulk-action`),
                 headers: { 'X-WP-Nonce': appLocalizer.nonce },
                 data: {
                     selected_action: actionName,
-                    course_ids: [{
-                        course_id: courseId,
-                        moodle_course_id: moodleCourseId,
+                    cohort_ids: [{
+                        cohort_id: cohortId,
+                        moodle_cohort_id: moodleCohortId,
                     }]
                 },
             }).then((response) => {
@@ -120,12 +120,12 @@ export default function Cohorts() {
             setData(null);
             axios({
                 method: 'post',
-                url: getApiLink(`course-bulk-action`),
+                url: getApiLink(`cohort-bulk-action`),
                 headers: { 'X-WP-Nonce': appLocalizer.nonce },
                 data: {
                     selected_action: bulkSelectRef.current.value,
-                    course_ids: selectedRows.map((row) => {
-                        return { course_id: row.id, moodle_course_id: row.moodle_course_id }
+                    cohort_ids: selectedRows.map((row) => {
+                        return { cohort_id: row.id, moodle_cohort_id: row.moodle_cohort_id }
                     })
                 },
             }).then((response) => {
@@ -225,12 +225,12 @@ export default function Cohorts() {
                 <div class="moowoodle-course-actions">
                     <button
                         class={`sync-single-course button-primary`}
-                        title={__('Sync course data')}
+                        title={__('Sync cohort data')}
                         onClick={(e) => {
                             handleSingleAction(
-                                'sync_courses',
+                                'sync_cohort',
                                 row.id,
-                                row.moodle_course_id,
+                                row.moodle_cohort_id,
                             )
                         }}
                     >
@@ -240,12 +240,12 @@ export default function Cohorts() {
                         Object.keys(row.products).length ?
                             <button
                                 class={`update-existed-single-product button-secondary `}
-                                title={__('Sync Course Data & Update Product')}
+                                title={__('Sync Cohort Data & Update Product')}
                                 onClick={(e) => {
                                     handleSingleAction(
                                         'update_product',
                                         row.id,
-                                        row.moodle_course_id,
+                                        row.moodle_cohort_id,
                                     )
                                 }}
                             >
@@ -259,7 +259,7 @@ export default function Cohorts() {
                                     handleSingleAction(
                                         'create_product',
                                         row.id,
-                                        row.moodle_course_id,
+                                        row.moodle_cohort_id,
                                     )
                                 }}
                             >
@@ -279,7 +279,7 @@ export default function Cohorts() {
                     <div className="course-bulk-action bulk-action">
                         <select name="action" ref={bulkSelectRef} >
                             <option value="">{__('Bulk actions')}</option>
-                            <option value="sync_courses">{__('Sync course')}</option>
+                            <option value="sync_cohort">{__('Sync cohort')}</option>
                             <option value="create_product">{__('Create product')}</option>
                             <option value="update_product">{__('Update product')}</option>
                         </select>

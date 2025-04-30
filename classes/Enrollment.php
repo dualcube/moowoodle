@@ -560,16 +560,29 @@ class Enrollment {
 		try {
 			// Check if same user/course/group_item exists with 'unenrolled' status
 			$existing_id = $wpdb->get_var( $wpdb->prepare(
-				"SELECT id FROM $table 
-				 WHERE user_email = %s 
-				   AND course_id = %d 
-				   AND group_item_id = %d 
-				   AND status = 'unenrolled'
+				"SELECT id FROM $table
+				 WHERE user_email = %s
+				 AND (
+					 (course_id = %d AND group_item_id = 0 AND cohort_id = 0) OR  -- Case: Email + Course ID
+					 (group_id = %d AND group_item_id = 0 AND cohort_id = 0) OR   -- Case: Email + Group ID
+					 (cohort_id = %d AND group_item_id = 0 AND group_id = 0) OR   -- Case: Email + Cohort ID
+					 (cohort_id = %d AND group_item_id = %d AND group_id = 0) OR  -- Case: Email + Cohort ID + Group Item ID
+					 (course_id = %d AND group_item_id = %d AND cohort_id = 0) OR -- Case: Email + Course ID + Group Item ID
+					 (group_id = %d AND group_item_id = %d AND cohort_id = 0)     -- Case: Email + Group ID + Group Item ID
+				 )
 				 LIMIT 1",
 				$args['user_email'],
 				$args['course_id'],
+				isset( $args['group_id'] ) ? $args['group_id'] : 0,
+				isset( $args['cohort_id'] ) ? $args['cohort_id'] : 0,
+				isset( $args['cohort_id'] ) ? $args['cohort_id'] : 0,
+				isset( $args['group_item_id'] ) ? $args['group_item_id'] : 0,
+				isset( $args['course_id'] ) ? $args['course_id'] : 0,
+				isset( $args['group_item_id'] ) ? $args['group_item_id'] : 0,
+				isset( $args['group_id'] ) ? $args['group_id'] : 0,
 				isset( $args['group_item_id'] ) ? $args['group_item_id'] : 0
 			) );
+			
 	
 			if ( $existing_id ) {
 				// Update existing record with new enrollment data
