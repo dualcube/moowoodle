@@ -54,35 +54,28 @@ class EnrollmentEmail extends \WC_Email {
 
 	function get_content_html() {
 		ob_start();
-		wc_get_template(
-			$this->template_html,
-			[
-				'enrollments'   => $this->email_data,
-				'user_email'    => $this->recipient,
-				'email_heading' => $this->get_heading(),
-				'sent_to_admin' => false,
-				'plain_text'    => false,
-			],
-			'',
-			$this->template_base
-		);
+		MooWoodle()->util->get_template($this->template_html,
+		[
+			'enrollments'   => $this->email_data,
+			'user_email'    => $this->recipient,
+			'email_heading' => $this->get_heading(),
+			'sent_to_admin' => false,
+			'plain_text'    => false,
+		]);
+
 		return ob_get_clean();
 	}
 
 	function get_content_plain() {
 		ob_start();
-		wc_get_template(
-			$this->template_plain,
-			[
-				'enrollments'   => $this->email_data,
-				'user_email'    => $this->recipient,
-				'email_heading' => $this->get_heading(),
-				'sent_to_admin' => false,
-				'plain_text'    => true,
-			],
-			'',
-			$this->template_base
-		);
+		MooWoodle()->util->get_template($this->template_plain,
+		[
+			'enrollments'   => $this->email_data,
+			'user_email'    => $this->recipient,
+			'email_heading' => $this->get_heading(),
+			'sent_to_admin' => false,
+			'plain_text'    => true,
+		]);
 		return ob_get_clean();
 	}
 }

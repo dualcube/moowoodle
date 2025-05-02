@@ -327,9 +327,6 @@ const Enrollment = () => {
 					<img src={row.course_img || defaultImage} alt="" />
 					<div className="action-section">
 						<p>{row.course_name || row.group_name || row.cohort_name}</p>
-						{/* <div className='action-btn'>
-							<a target='_blank' href={row.course_url} className="">Edit link product</a>
-						</div> */}
 					</div>
 				</TableCell>,
 		},
