@@ -18,7 +18,10 @@ class RestAPI {
             add_action( 'rest_api_init', [ &$this, 'register' ] );
         }
 
-        add_action( 'rest_api_init', [ &$this, 'register_user_api' ] );
+        // If user is admin or customer
+        if ( current_user_can( 'customer' ) || current_user_can( 'manage_options' ) ) {
+            add_action( 'rest_api_init', [ &$this, 'register_user_api' ] );
+        }
     }
 
     /**
@@ -207,6 +210,7 @@ class RestAPI {
         // get all category from moodle.
         $response   = MooWoodle()->external_service->do_request( 'get_categories' );
         $categories = $response[ 'data' ];
+
         // update course and product categories.
         if ( in_array( 'sync_courses_category', $sync_setting ) ) {
 
@@ -252,8 +256,10 @@ class RestAPI {
         
         MooWoodle()->product->update_products( $courses );
 
-        do_action( 'moowoodle_save_cohorts' );
+        // Pro feature: Sync all cohorts in MooWoodle (only available in Pro version)
+        do_action( 'moowoodle_sync_all_cohorts' );
 
+        // Pro feature: Sync all course groups in MooWoodle (only available in Pro version)
         do_action( 'moowoodle_sync_all_course_groups' );
 
         delete_transient( 'course_sync_running' );
@@ -594,7 +600,7 @@ class RestAPI {
         $user = wp_get_current_user();
     
         if ( empty( $user->ID ) ) {
-            Util::_log( "[MooWoodle] get_user_courses(): No logged-in user found." );
+            Util::log( "[MooWoodle] get_user_courses(): No logged-in user found." );
     
             return rest_ensure_response([
                 'data' => [],
@@ -623,7 +629,7 @@ class RestAPI {
         ) );
     
         if ( ! $courses ) {
-            Util::_log( "[MooWoodle] No enrolled courses found for user #{$user->ID}." );
+            Util::log( "[MooWoodle] No enrolled courses found for user #{$user->ID}." );
         }
     
         $data = array_map( function( $course ) use ( $user ) {
@@ -632,7 +638,7 @@ class RestAPI {
             $passwordMoowoodle = get_user_meta( $user->ID, 'moowoodle_moodle_user_pwd', true );
     
             if ( ! $linked_product_id || ! $moodle_course_id ) {
-                Util::_log( "[MooWoodle] Course #{$course->course_id} has missing metadata (linked_product_id or moodle_course_id)." );
+                Util::log( "[MooWoodle] Course #{$course->course_id} has missing metadata (linked_product_id or moodle_course_id)." );
             }
     
             return [
@@ -665,8 +671,5 @@ class RestAPI {
             'message' => __( 'Courses fetched successfully', 'moowoodle' )
         ]);
     }
-    
-    
-    
 
 }

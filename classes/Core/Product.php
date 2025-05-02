@@ -71,7 +71,7 @@ class Product {
 		$update_product = in_array( 'update', $product_sync_setting );
 
 		// None of the option is choosen.
-		if ( ! $create_product && ! $update_product ) return true;
+		if ( ! $create_product && ! $update_product ) return;
         // Update all product
          \MooWoodle\Util::set_sync_status( [
             'action'    => __( 'Update Product', 'moowoodle' ),

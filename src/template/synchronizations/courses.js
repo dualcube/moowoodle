@@ -81,6 +81,7 @@ export default {
             desc: __("", 'moowoodle'),
             label: __("Cohort & product synchronization", 'moowoodle'),
             select_deselect: true,
+            proSetting: true,
             options: [
                 {
                     key: "create",

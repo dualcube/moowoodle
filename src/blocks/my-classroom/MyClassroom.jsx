@@ -118,336 +118,177 @@ const MyClassroom = () => {
           ) : error ? (
             <p className="error-message">{error}</p>
           ) : (
-            // <>
-            //   <div className="classroom-grid">
-            //     {classrooms.length > 0 ? (
-            //       classrooms.map((group) => (
-            //         <div key={group.classroom_id} className="classroom-card">
-            //           <div className="classroom-title">
-            //             {editingClassroom === group.classroom_id ? (
-            //               <>
-            //                 <input
-            //                   type="text"
-            //                   value={newName}
-            //                   onChange={(e) => setNewName(e.target.value)}
-            //                   onKeyDown={(e) =>
-            //                     e.key === "Enter" &&
-            //                     handleUpdateClassroom(group)
-            //                   }
-            //                   className="edit-input"
-            //                 />
-            //                 <div className="button-group">
-            //                   <a
-            //                     className="cancel-btn"
-            //                     onClick={() => setEditingClassroom(null)}
-            //                   >
-            //                     {__("Cancel", "moowoodle")}
-            //                   </a>
-            //                   <a
-            //                     className="save-btn"
-            //                     onClick={() => handleUpdateClassroom(group)}
-            //                   >
-            //                     {__("Save", "moowoodle")}
-            //                   </a>
-            //                 </div>
-            //               </>
-            //             ) : (
-            //               <>
-            //                 <div className="heading-text">
-            //                   <h2>{group.classroom_name}</h2>
-            //                   <span
-            //                     className="edit-button"
-            //                     onClick={() => handleEditClick(group)}
-            //                   >
-            //                     <svg
-            //                       width="20px"
-            //                       height="20px"
-            //                       viewBox="0 0 24 24"
-            //                       fill="none"
-            //                       xmlns="http://www.w3.org/2000/svg"
-            //                     >
-            //                       <path
-            //                         fill-rule="evenodd"
-            //                         clip-rule="evenodd"
-            //                         d="M21.1213 2.70705C19.9497 1.53548 18.0503 1.53547 16.8787 2.70705L15.1989 4.38685L7.29289 12.2928C7.16473 12.421 7.07382 12.5816 7.02986 12.7574L6.02986 16.7574C5.94466 17.0982 6.04451 17.4587 6.29289 17.707C6.54127 17.9554 6.90176 18.0553 7.24254 17.9701L11.2425 16.9701C11.4184 16.9261 11.5789 16.8352 11.7071 16.707L19.5556 8.85857L21.2929 7.12126C22.4645 5.94969 22.4645 4.05019 21.2929 2.87862L21.1213 2.70705ZM18.2929 4.12126C18.6834 3.73074 19.3166 3.73074 19.7071 4.12126L19.8787 4.29283C20.2692 4.68336 20.2692 5.31653 19.8787 5.70705L18.8622 6.72357L17.3068 5.10738L18.2929 4.12126ZM15.8923 6.52185L17.4477 8.13804L10.4888 15.097L8.37437 15.6256L8.90296 13.5112L15.8923 6.52185ZM4 7.99994C4 7.44766 4.44772 6.99994 5 6.99994H10C10.5523 6.99994 11 6.55223 11 5.99994C11 5.44766 10.5523 4.99994 10 4.99994H5C3.34315 4.99994 2 6.34309 2 7.99994V18.9999C2 20.6568 3.34315 21.9999 5 21.9999H16C17.6569 21.9999 19 20.6568 19 18.9999V13.9999C19 13.4477 18.5523 12.9999 18 12.9999C17.4477 12.9999 17 13.4477 17 13.9999V18.9999C17 19.5522 16.5523 19.9999 16 19.9999H5C4.44772 19.9999 4 19.5522 4 18.9999V7.99994Z"
-            //                         fill="#000000"
-            //                       />
-            //                     </svg>
-            //                   </span>
-            //                 </div>
-            //               </>
-            //             )}
-            //           </div>
-
-            //           <ul>
-            //             {group.items && group.items.length > 0 ? (
-            //               group.items.map((item, index) => (
-            //                 <li key={index}>{item.course_name}</li>
-            //               ))
-            //             ) : (
-            //               <li>{__("No courses available", "moowoodle")}</li>
-            //             )}
-            //           </ul>
-            //           <div className="view-btn-container">
-            //             <button
-            //               className="view-button"
-            //               onClick={() => handleViewEnroll(group)}
-            //             >
-            //               {__("View", "moowoodle")}
-            //             </button>
-            //           </div>
-            //         </div>
-            //       ))
-            //     ) : (
-            //       <p>{__("No classrooms found.", "moowoodle")}</p>
-            //     )}
-            //   </div>
-            //   <div className="classroom-grid">
-            //     {cohorts.length > 0 ? (
-            //       cohorts.map((cohort) => (
-            //         <div key={cohort.cohort_id} className="classroom-card">
-            //           <div className="classroom-title">
-            //             <>
-            //               <div className="heading-text">
-            //                 <h2>{cohort.cohort_name}</h2>
-            //               </div>
-            //             </>
-            //           </div>
-            //           <div className="view-btn-container">
-            //             <button
-            //               className="view-button"
-            //               onClick={() => handleViewEnroll(cohort)}
-            //             >
-            //               {__("View", "moowoodle")}
-            //             </button>
-            //           </div>
-            //         </div>
-            //       ))
-            //     ) : (
-            //       <p>{__("No classrooms found.", "moowoodle")}</p>
-            //     )}
-            //   </div>
-            //   <div className="classroom-grid">
-            //     {groups.length > 0 ? (
-            //       groups.map((group) => (
-            //         <div key={group.group_id} className="classroom-card">
-            //           <div className="classroom-title">
-            //             <>
-            //               <div className="heading-text">
-            //                 <h2>{group.group_name}</h2>
-            //               </div>
-            //             </>
-            //           </div>
-            //           <div className="view-btn-container">
-            //             <button
-            //               className="view-button"
-            //               onClick={() => handleViewEnroll(group)}
-            //             >
-            //               {__("View", "moowoodle")}
-            //             </button>
-            //           </div>
-            //         </div>
-            //       ))
-            //     ) : (
-            //       <p>{__("No classrooms found.", "moowoodle")}</p>
-            //     )}
-            //   </div>
-
-            //   {/* Pagination Controls */}
-            //   {totalPages > 1 && (
-            //     <div className="pagination">
-            //       <button
-            //         onClick={() => handlePageChange(currentPage - 1)}
-            //         disabled={currentPage === 1}
-            //       >
-            //         {__("Previous", "moowoodle")}
-            //       </button>
-
-            //       <span className="page-info">
-            //         {__("Page", "moowoodle")} {currentPage}{" "}
-            //         {__("of", "moowoodle")} {totalPages}
-            //       </span>
-
-            //       <button
-            //         onClick={() => handlePageChange(currentPage + 1)}
-            //         disabled={currentPage >= totalPages}
-            //       >
-            //         {__("Next", "moowoodle")}
-            //       </button>
-            //     </div>
-            //   )}
-            // </>
             <>
-            {/* Tab Buttons */}
-            <div className="tabs">
-              <button
-                className={activeTab === 'classrooms' ? 'active' : ''}
-                onClick={() => setActiveTab('classrooms')}
-              >
-                {__("Classrooms", "moowoodle")}
-              </button>
-              <button
-                className={activeTab === 'cohorts' ? 'active' : ''}
-                onClick={() => setActiveTab('cohorts')}
-              >
-                {__("Cohorts", "moowoodle")}
-              </button>
-              <button
-                className={activeTab === 'groups' ? 'active' : ''}
-                onClick={() => setActiveTab('groups')}
-              >
-                {__("Groups", "moowoodle")}
-              </button>
-            </div>
-      
-            {/* Tab Content */}
-            {activeTab === 'classrooms' && (
-              <div className="classroom-grid">
-                {classrooms.length > 0 ? (
-                  classrooms.map((group) => (
-                    <div key={group.classroom_id} className="classroom-card">
-                      <div className="classroom-title">
-                        {editingClassroom === group.classroom_id ? (
-                          <>
-                            <input
-                              type="text"
-                              value={newName}
-                              onChange={(e) => setNewName(e.target.value)}
-                              onKeyDown={(e) =>
-                                e.key === "Enter" && handleUpdateClassroom(group)
-                              }
-                              className="edit-input"
-                            />
-                            <div className="button-group">
-                              <a
-                                className="cancel-btn"
-                                onClick={() => setEditingClassroom(null)}
-                              >
-                                {__("Cancel", "moowoodle")}
-                              </a>
-                              <a
-                                className="save-btn"
-                                onClick={() => handleUpdateClassroom(group)}
-                              >
-                                {__("Save", "moowoodle")}
-                              </a>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <div className="heading-text">
-                              <h2>{group.classroom_name}</h2>
-                              <span
-                                className="edit-button"
-                                onClick={() => handleEditClick(group)}
-                              >
-                                ✏️
-                              </span>
-                            </div>
-                          </>
-                        )}
-                      </div>
-      
-                      <ul>
-                        {group.items && group.items.length > 0 ? (
-                          group.items.map((item, index) => (
-                            <li key={index}>{item.course_name}</li>
-                          ))
-                        ) : (
-                          <li>{__("No courses available", "moowoodle")}</li>
-                        )}
-                      </ul>
-                      <div className="view-btn-container">
-                        <button
-                          className="view-button"
-                          onClick={() => handleViewEnroll(group)}
-                        >
-                          {__("View", "moowoodle")}
-                        </button>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p>{__("No classrooms found.", "moowoodle")}</p>
-                )}
-              </div>
-            )}
-      
-            {activeTab === 'cohorts' && (
-              <div className="classroom-grid">
-                {cohorts.length > 0 ? (
-                  cohorts.map((cohort) => (
-                    <div key={cohort.cohort_id} className="classroom-card">
-                      <div className="classroom-title">
-                        <div className="heading-text">
-                          <h2>{cohort.cohort_name}</h2>
-                        </div>
-                      </div>
-                      <div className="view-btn-container">
-                        <button
-                          className="view-button"
-                          onClick={() => handleViewEnroll(cohort)}
-                        >
-                          {__("View", "moowoodle")}
-                        </button>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p>{__("No cohorts found.", "moowoodle")}</p>
-                )}
-              </div>
-            )}
-      
-            {activeTab === 'groups' && (
-              <div className="classroom-grid">
-                {groups.length > 0 ? (
-                  groups.map((group) => (
-                    <div key={group.group_id} className="classroom-card">
-                      <div className="classroom-title">
-                        <div className="heading-text">
-                          <h2>{group.group_name}</h2>
-                        </div>
-                      </div>
-                      <div className="view-btn-container">
-                        <button
-                          className="view-button"
-                          onClick={() => handleViewEnroll(group)}
-                        >
-                          {__("View", "moowoodle")}
-                        </button>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p>{__("No groups found.", "moowoodle")}</p>
-                )}
-              </div>
-            )}
-      
-            {/* Pagination Controls */}
-            {totalPages > 1 && (
-              <div className="pagination">
+              {/* Tab Buttons */}
+              <div className="tabs">
                 <button
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={currentPage === 1}
+                  className={activeTab === 'classrooms' ? 'active' : ''}
+                  onClick={() => setActiveTab('classrooms')}
                 >
-                  {__("Previous", "moowoodle")}
+                  {__("Classrooms", "moowoodle")}
                 </button>
-      
-                <span className="page-info">
-                  {__("Page", "moowoodle")} {currentPage} {__("of", "moowoodle")} {totalPages}
-                </span>
-      
                 <button
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage >= totalPages}
+                  className={activeTab === 'cohorts' ? 'active' : ''}
+                  onClick={() => setActiveTab('cohorts')}
                 >
-                  {__("Next", "moowoodle")}
+                  {__("Cohorts", "moowoodle")}
+                </button>
+                <button
+                  className={activeTab === 'groups' ? 'active' : ''}
+                  onClick={() => setActiveTab('groups')}
+                >
+                  {__("Groups", "moowoodle")}
                 </button>
               </div>
-            )}
-          </>
+
+              {/* Tab Content */}
+              {activeTab === 'classrooms' && (
+                <div className="classroom-grid">
+                  {classrooms.length > 0 ? (
+                    classrooms.map((group) => (
+                      <div key={group.classroom_id} className="classroom-card">
+                        <div className="classroom-title">
+                          {editingClassroom === group.classroom_id ? (
+                            <>
+                              <input
+                                type="text"
+                                value={newName}
+                                onChange={(e) => setNewName(e.target.value)}
+                                onKeyDown={(e) =>
+                                  e.key === "Enter" && handleUpdateClassroom(group)
+                                }
+                                className="edit-input"
+                              />
+                              <div className="button-group">
+                                <a
+                                  className="cancel-btn"
+                                  onClick={() => setEditingClassroom(null)}
+                                >
+                                  {__("Cancel", "moowoodle")}
+                                </a>
+                                <a
+                                  className="save-btn"
+                                  onClick={() => handleUpdateClassroom(group)}
+                                >
+                                  {__("Save", "moowoodle")}
+                                </a>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className="heading-text">
+                                <h2>{group.classroom_name}</h2>
+                                <span
+                                  className="edit-button"
+                                  onClick={() => handleEditClick(group)}
+                                >
+                                  ✏️
+                                </span>
+                              </div>
+                            </>
+                          )}
+                        </div>
+
+                        <ul>
+                          {group.items && group.items.length > 0 ? (
+                            group.items.map((item, index) => (
+                              <li key={index}>{item.course_name}</li>
+                            ))
+                          ) : (
+                            <li>{__("No courses available", "moowoodle")}</li>
+                          )}
+                        </ul>
+                        <div className="view-btn-container">
+                          <button
+                            className="view-button"
+                            onClick={() => handleViewEnroll(group)}
+                          >
+                            {__("View", "moowoodle")}
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p>{__("No classrooms found.", "moowoodle")}</p>
+                  )}
+                </div>
+              )}
+
+              {activeTab === 'cohorts' && (
+                <div className="classroom-grid">
+                  {cohorts.length > 0 ? (
+                    cohorts.map((cohort) => (
+                      <div key={cohort.cohort_id} className="classroom-card">
+                        <div className="classroom-title">
+                          <div className="heading-text">
+                            <h2>{cohort.cohort_name}</h2>
+                          </div>
+                        </div>
+                        <div className="view-btn-container">
+                          <button
+                            className="view-button"
+                            onClick={() => handleViewEnroll(cohort)}
+                          >
+                            {__("View", "moowoodle")}
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p>{__("No cohorts found.", "moowoodle")}</p>
+                  )}
+                </div>
+              )}
+
+              {activeTab === 'groups' && (
+                <div className="classroom-grid">
+                  {groups.length > 0 ? (
+                    groups.map((group) => (
+                      <div key={group.group_id} className="classroom-card">
+                        <div className="classroom-title">
+                          <div className="heading-text">
+                            <h2>{group.group_name}</h2>
+                          </div>
+                        </div>
+                        <div className="view-btn-container">
+                          <button
+                            className="view-button"
+                            onClick={() => handleViewEnroll(group)}
+                          >
+                            {__("View", "moowoodle")}
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p>{__("No groups found.", "moowoodle")}</p>
+                  )}
+                </div>
+              )}
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="pagination">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  >
+                    {__("Previous", "moowoodle")}
+                  </button>
+
+                  <span className="page-info">
+                    {__("Page", "moowoodle")} {currentPage} {__("of", "moowoodle")} {totalPages}
+                  </span>
+
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage >= totalPages}
+                  >
+                    {__("Next", "moowoodle")}
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </>
       )}

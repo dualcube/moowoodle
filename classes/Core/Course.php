@@ -15,26 +15,32 @@ class Course {
 		if ($hook !== 'post.php' && $hook !== 'post-new.php') {
 			return;
 		}
+		
+		// Use dynamic version from MooWoodle class
+		$version = MooWoodle()->version;
+	
 		wp_enqueue_style(
 			'moowoodle-linked-panel-css',
-			 MooWoodle()->plugin_url . 'assets/css/linked-panel.css',
+			MooWoodle()->plugin_url . 'assets/css/linked-panel.css',
 			[],
-			'1.0.0'
+			$version
 		);
+		
 		wp_enqueue_script(
 			'moowoodle-linked-panel-js',
 			MooWoodle()->plugin_url . 'assets/js/linked-panel.js',
 			['jquery'],
-			'1.0.0',
+			$version,
 			true
 		);
 	
 		wp_localize_script('moowoodle-linked-panel-js', 'moowoodle', [
 			'ajaxurl'     => admin_url('admin-ajax.php'),
 			'select_text' => __('Select an item...', 'moowoodle'),
-			'khali_dabba'  => MooWoodle()->util->is_khali_dabba(),
+			'khali_dabba' => MooWoodle()->util->is_khali_dabba(),
 		]);
 	}
+	
 	
 	/**
 	 * Get the course url
