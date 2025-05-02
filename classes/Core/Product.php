@@ -212,31 +212,51 @@ class Product {
 	}
 
 	/**
-	 * Save product meta.
-	 * @param int $post_id
-	 * @return int | void
+	 * Linked course with a product
+	 * @param int $product_id
+	 * @return mixed
 	 */
-	public function save_product_meta_data( $post_id ) {
-
+	public function save_product_meta_data( $product_id ) {
 		// Security check
 		if (
-			! filter_input( INPUT_POST, 'product_meta_nonce', FILTER_DEFAULT ) === null
-			|| ! wp_verify_nonce( filter_input( INPUT_POST, 'product_meta_nonce', FILTER_DEFAULT ) )
-			|| ! current_user_can( 'edit_product', $post_id )
+			filter_input( INPUT_POST, 'product_meta_nonce' ) === null ||
+			! wp_verify_nonce( filter_input( INPUT_POST, 'product_meta_nonce' ) ) ||
+			! current_user_can( 'edit_product', $product_id )
 		) {
-			return $post_id;
+			return $product_id;
 		}
-
-		$course_id        = filter_input( INPUT_POST, 'course_id', FILTER_DEFAULT );
-		$course_sku       = get_post_meta( $course_id, '_sku', true );
-		$moodle_course_id = MooWoodle()->course->moowoodle_get_moodle_course_id( $course_id );
-
-		if ( $course_id ) {
-			update_post_meta( $post_id, 'linked_course_id', wp_kses_post( $course_id ) );
-			update_post_meta( $post_id, '_sku', 'course-' . $course_sku );
-			update_post_meta( $post_id, 'moodle_course_id', $moodle_course_id );
+	
+		$link_type = filter_input( INPUT_POST, 'link_type', FILTER_SANITIZE_STRING );
+		$link_item = intval( filter_input( INPUT_POST, 'linked_item', FILTER_DEFAULT ) );
+	
+		// Only handle course links in Free version
+		if ( $link_type !== 'course' ) {
+			return $product_id;
 		}
+	
+		// Unlink previously linked course
+		$previous_course_id = intval( get_post_meta( $product_id, 'linked_course_id', true ) );
+		if ( $previous_course_id ) {
+			delete_post_meta( $previous_course_id, 'linked_product_id' );
+		}
+		delete_post_meta( $product_id, 'linked_course_id' );
+		delete_post_meta( $product_id, 'moodle_course_id' );
+	
+		// Handle selected course link
+		if ( $link_item ) {
+			update_post_meta( $link_item, 'linked_product_id', $product_id );
+			update_post_meta( $product_id, 'linked_course_id', $link_item );
+	
+			$course = MooWoodle()->course->get_course( $link_item );
+			if ( $course && isset( $course->moodle_course_id ) ) {
+				update_post_meta( $product_id, 'moodle_course_id', $course->moodle_course_id );
+			}
+			
+		}
+	
+		return $product_id;
 	}
+	
 	
 
 	// Function to fetch course from wp_moowoodle_courses table based on Moodle course ID

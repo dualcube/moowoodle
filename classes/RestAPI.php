@@ -216,7 +216,7 @@ class RestAPI {
                 'current'   => 0
             ], 'course' );
 
-            MooWoodle()->category->store_moodle_categories( $categories );
+            MooWoodle()->category->save_categories( $categories );
             
             Util::set_sync_status( [
                 'action'    => __( 'Update Product Category', 'moowoodle' ),
@@ -234,7 +234,7 @@ class RestAPI {
                 'current'   => 0
             ], 'course' );
 
-            MooWoodle()->category->store_moodle_categories( $categories );
+            MooWoodle()->category->save_categories( $categories );
         }
 
 		// get all caurses from moodle.
