@@ -53,6 +53,7 @@ class MooWoodle {
         $this->container[ 'plugin_url' ]             = trailingslashit( plugins_url( '', $file ) );
         $this->container[ 'plugin_path' ]            = trailingslashit( dirname( $file ) );
         $this->container[ 'version' ]                = MOOWOODLE_PLUGIN_VERSION;
+        $this->container[ 'block_paths' ]            = [];
         $this->container[ 'rest_namespace' ]         = 'moowoodle/v1';
         $this->container[ 'moowoodle_logs_dir' ]     = ( trailingslashit( wp_upload_dir(null, false)['basedir'] ) . 'mw-logs' );
 
@@ -135,6 +136,9 @@ class MooWoodle {
         $this->container[ 'external_service' ] = new ExternalService();
 		$this->container[ 'enrollment' ]       = new Enrollment();
 		$this->container[ 'frontend' ]         = new Frontend();
+        $this->container['block'] 		       = new Block();
+        $this->container['frontendscripts']    = new FrontendScripts();
+
         new EndPoint();
 
         $this->initialize_moowoodle_log_file();

@@ -3,74 +3,54 @@
 namespace MooWoodle;
 
 class EndPoint {
-    private $endpoint = 'my-courses';
+	private $endpoint = 'my-courses';
 
-    public function __construct() {
-        add_action('init', [$this, 'init']);
-        add_filter('woocommerce_account_menu_items', [$this, 'modify_menu']);
-        add_action('woocommerce_account_' . $this->endpoint . '_endpoint', [$this, 'render_content']);
-        add_action('enqueue_block_assets', [$this, 'enqueue_assets']);
-    }
+	public function __construct() {
+		// Register custom endpoint and hooks.
+		add_action( 'init', [ $this, 'register_endpoint' ] );
+		add_filter( 'woocommerce_account_menu_items', [ $this, 'add_menu_item' ] );
+		add_action( 'woocommerce_account_' . $this->endpoint . '_endpoint', [ $this, 'render_view' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_assets' ] );
+	}
 
-    /**
-     * Initializes the endpoint and registers the block.
-     */
-    public function init() {
-        add_rewrite_endpoint($this->endpoint, EP_ROOT | EP_PAGES);
-        $this->register_block();
-    }
+	/**
+	 * Registers the custom WooCommerce endpoint.
+	 */
+	public function register_endpoint() {
+		add_rewrite_endpoint( $this->endpoint, EP_ROOT | EP_PAGES );
+		flush_rewrite_rules();
+	}
 
-    /**
-     * Registers the Gutenberg block.
-     */
-    private function register_block() {
-        register_block_type(MooWoodle()->plugin_path . 'build/blocks/MyCourses/', [
-            'render_callback' => [$this, 'render_my_block'],
-        ]);
-    }
+	/**
+	 * Adds 'My Courses' link to WooCommerce My Account menu.
+	 */
+	public function add_menu_item( $menu ) {
+		$priority = (int) MooWoodle()->setting->get_setting( 'my_courses_priority' ) ?: 0;
 
-    /**
-     * Modifies the WooCommerce My Account menu.
-     */
-    public function modify_menu($menu) {
-        $priority = (int) MooWoodle()->setting->get_setting('my_courses_priority') ?: 0;
+		return array_merge(
+			array_slice( $menu, 0, $priority + 1, true ),
+			[ $this->endpoint => __( 'My Courses', 'moowoodle' ) ],
+			array_slice( $menu, $priority + 1, null, true )
+		);
+	}
 
-        return array_merge(
-            array_slice($menu, 0, $priority + 1, true),
-            [$this->endpoint => __('My Courses', 'moowoodle')],
-            array_slice($menu, $priority + 1, null, true)
-        );
-    }
+	/**
+	 * Renders the endpoint content on the My Account page.
+	 */
+	public function render_view() {
+		if ( is_account_page() ) {
+			echo '<div id="moowoodle-my-course"></div>';
+		}
+	}
 
-    /**
-     * Renders the WooCommerce My Account section.
-     */
-    public function render_content() {
-        echo render_block(['blockName' => 'moowoodle/my-courses']);
-    }
-
-    /**
-     * Callback function to render the block.
-     */
-    public function render_my_block() {
-        return is_account_page() ? '<div id="moowoodle-my-course"></div>' : '';
-    }
-
-    /**
-     * Enqueues localized script data.
-     */
-    public function enqueue_assets() {
-        wp_set_script_translations('my-courses', 'moowoodle');
-
-        wp_localize_script(
-            'moowoodle-my-courses-script',
-            'appLocalizer',
-            [
-                'apiUrl'          => untrailingslashit(get_rest_url()),
-                'restUrl'         => 'moowoodle/v1',
-                'nonce'           => wp_create_nonce('wp_rest'),
-                'moodle_site_url' => MooWoodle()->setting->get_setting('moodle_url'),
-            ]
-        );
-    }
+	/**
+	 * Enqueues frontend scripts only on the account page.
+	 */
+	public function enqueue_assets() {
+		if ( is_account_page() ) {
+			FrontendScripts::load_scripts();
+			FrontendScripts::enqueue_script( 'moowoodle-my-courses-script' );
+			FrontendScripts::localize_scripts( 'moowoodle-my-courses-script' );
+		}
+	}
 }

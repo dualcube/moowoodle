@@ -17,9 +17,9 @@ class Enrollment {
 	}
 
 	public function fetch_course_quantity( $order ) {
-		// Check if any item has quantity > 1
-		foreach ($order->get_items() as $item) {
-			if ($item->get_quantity() > 1) {
+		// Check if any item has quantity > 1.
+		foreach ( $order->get_items() as $item ) {
+			if ( $item->get_quantity() > 1 ) {
 				return true;
 			}
 		}
@@ -27,44 +27,47 @@ class Enrollment {
 		return false;
 	}
 
+
 	/**
 	 * Process the order when order status is complete.
 	 * @param int $order_id
 	 * @return void
 	 */
-	public function process_order($order_id) {
-		$order           = new \WC_Order($order_id);
-		$this->order     = $order;
-		$user_id         = $order->get_customer_id();
-		$user_email      = $order->get_billing_email();
-		$first_name      = $order->get_billing_first_name();
-		$last_name       = $order->get_billing_last_name();
-		$gifted          = $order->get_meta("_wc_billing/MooWoodle/gift_someone", true);
-		$is_khali_dabba  = MooWoodle()->util->is_khali_dabba();
-		if ($gifted) {
-			$first_name = trim($order->get_meta("_wc_billing/MooWoodle/first_name", true));
-			$last_name  = trim($order->get_meta("_wc_billing/MooWoodle/last_name", true));
-			$user_email = $order->get_meta("_wc_billing/MooWoodle/email_address", true);
-			$user_id    = $this->get_or_create_wp_user($first_name, $last_name, $user_email);
+	public function process_order( $order_id ) {
+		$order          = new \WC_Order( $order_id );
+		$this->order    = $order;
+		$user_id        = $order->get_customer_id();
+		$user_email     = $order->get_billing_email();
+		$first_name     = $order->get_billing_first_name();
+		$last_name      = $order->get_billing_last_name();
+		$gifted         = $order->get_meta( "_wc_billing/MooWoodle/gift_someone", true );
+		$is_khali_dabba = MooWoodle()->util->is_khali_dabba();
+
+		if ( $gifted ) {
+			$first_name = trim( $order->get_meta( "_wc_billing/MooWoodle/first_name", true ) );
+			$last_name  = trim( $order->get_meta( "_wc_billing/MooWoodle/last_name", true ) );
+			$user_email = $order->get_meta( "_wc_billing/MooWoodle/email_address", true );
+			$user_id    = $this->get_or_create_wp_user( $first_name, $last_name, $user_email );
 		}
-		if (empty($user_id)) {
-			Util::log("[MooWoodle] Order processing failed for Order #$order_id – Moodle User ID is missing.");
+
+		if ( empty( $user_id ) ) {
+			Util::log( "[MooWoodle] Order processing failed for Order #$order_id - Moodle User ID is missing." );
 			return;
 		}
 
-        $group_purchase =  $this->fetch_course_quantity( $order );
+		$group_purchase = $this->fetch_course_quantity( $order );
 
 		if ( ! $group_purchase ) {
 			$successful_enrollments = [];
 
 			foreach ( $order->get_items() as $item_id => $item ) {
 				$product = $item->get_product();
-			
+
 				if ( ! $product ) {
-					Util::log( "[MooWoodle] Skipping item #$item_id – Invalid product." );
+					Util::log( "[MooWoodle] Skipping item #$item_id - Invalid product." );
 					continue;
 				}
-			
+
 				// Common enrollment data
 				$enroll_data = [
 					'first_name'    => $first_name,
@@ -78,56 +81,50 @@ class Enrollment {
 				];
 
 				if ( $product->is_type( 'variation' ) ) {
-
-					$enroll_data['group_id']        = $product->get_meta( 'linked_group_id', true );
-					$enroll_data['moodle_group_id'] = $product->get_meta( 'moodle_group_id', true );
+					$enroll_data['group_id']         = $product->get_meta( 'linked_group_id', true );
+					$enroll_data['moodle_group_id']  = $product->get_meta( 'moodle_group_id', true );
 					$enroll_data['moodle_course_id'] = $product->get_meta( 'moodle_course_id', true );
 
-					do_action( 'moowoodle_after_group_product_enrollment', $enroll_data );
-				
+					do_action( 'moowoodle_handle_group_purchase', $enroll_data );
+
 					continue;
 				}
-				
-				
-			
+
 				$moodle_cohort_id = $product->get_meta( 'moodle_cohort_id', true );
 				if ( ! empty( $moodle_cohort_id ) ) {
-					// Add cohort data to enroll_data
 					$enroll_data['cohort_id']        = $product->get_meta( 'linked_cohort_id', true );
 					$enroll_data['moodle_cohort_id'] = $moodle_cohort_id;
-			
-					do_action( 'moowoodle_after_cohort_product_enrollment', $enroll_data );
+
+					do_action( 'moowoodle_handle_group_purchase', $enroll_data );
+
 					continue;
 				}
-			
+
 				// Normal course enrollment flow
 				$enroll_data['course_id']        = $product->get_meta( 'linked_course_id', true );
 				$enroll_data['moodle_course_id'] = $product->get_meta( 'moodle_course_id', true );
-			
-				if ( $this->process_enrollment( $enroll_data ) ) {
+
+				if ( ! empty( $enroll_data['moodle_course_id'] ) && $this->process_enrollment( $enroll_data ) ) {
 					$successful_enrollments[] = $enroll_data['course_id'];
 				}
 			}
-			
+
 			if ( ! empty( $successful_enrollments ) ) {
 				do_action( 'moowoodle_after_successful_enrollments', $successful_enrollments, $user_id );
 			}
-			
-			
+
 		} else {
-			$group_purchase_enabled = MooWoodle()->setting->get_setting('group_purchase_enable');
-	
+			$group_purchase_enabled = MooWoodle()->setting->get_setting( 'group_purchase_enable' );
+
 			if (
-				is_array($group_purchase_enabled) &&
-				in_array('group_purchase_enable', $group_purchase_enabled) &&
+				is_array( $group_purchase_enabled ) &&
+				in_array( 'group_purchase_enable', $group_purchase_enabled ) &&
 				$is_khali_dabba
 			) {
-				do_action('moowoodle_after_classroom_purchase', $user_id, $first_name, $last_name, $order);
+				do_action( 'moowoodle_process_multiple_products_purchase', $user_id, $first_name, $last_name, $order );
 			}
 		}
 	}
-	
-	
 
 	public function get_or_create_wp_user( $first_name, $last_name, $user_email ) {
 
@@ -474,76 +471,6 @@ class Enrollment {
 			if ( $enddate ) {
 				echo esc_html_e( "End Date : ", 'moowoodle' ) . esc_html_e( gmdate( 'Y-m-d', $enddate ), 'moowoodle' );
 			}
-		}
-	}
-
-
-	/**
-	 * Migrate enrollment data from order to our custom table
-	 * @return void
-	 */
-	public static function migrate_enrollments() {
-		// Get all enrollment data
-		$order_ids = wc_get_orders( [
-			'status' 	  => 'completed',
-			'meta_query'  => [
-				[
-					'key'     => 'moodle_user_enrolled',
-					'value'   => 1,
-					'compare' => '=',
-				],
-			],
-			'return' => 'ids',
-		]);
-
-		// Migrate all orders
-        foreach ( $order_ids as $order_id ) {
-			$order = wc_get_order( $order_id );
-			self::migrate_enrollment( $order );
-		}
-	}
-
-	/**
-	 * Migrate all enrollment from a order
-	 * @param mixed $order
-	 * @return void
-	 */
-	public static function migrate_enrollment( $order ) {
-		// Get all unenrolled courses of the order
-		$unenrolled_courses = $order->get_meta( '_course_unenroled', true );
-		$unenrolled_courses = $unenrolled_courses ? explode( ',', $unenrolled_courses ) : [];
-
-		foreach ( $order->get_items() as $enrolment ) {
-
-			$customer = $order->get_user();
-
-			if ( ! $customer ) continue;
-
-			$product = $enrolment->get_product();
-
-			if ( ! $product ) continue;
-
-			// Get linked course id
-			$linked_course_id = $product->get_meta( 'linked_course_id', true );
-			
-			// Get enrollment date
-			$enrollment_date   = $order->get_meta( 'moodle_user_enrolment_date', true );
-			if ( is_numeric( $enrollment_date) ) {
-				$enrollment_date = date( "Y-m-d H:i:s", $enrollment_date );
-			}
-			
-			// Get the enrollment status
-			$enrollment_status = in_array( $linked_course_id, $unenrolled_courses ) ? 'unenrolled' : 'enrolled';
-
-			self::add_enrollment([
-				'user_id' 	 => $customer->ID,
-				'user_email' => $customer->user_email,
-				'course_id'  => $linked_course_id,
-				'order_id'   => $order->get_id(),
-				'item_id'    => $enrolment->get_id(),
-				'status'     => $enrollment_status,
-				'date'	     => $enrollment_date,
-			]);
 		}
 	}
 

@@ -140,7 +140,7 @@ class Product {
 		}
 
 		// get the course id linked with moodle.
-        $wp_course = self::get_course_from_moowoodle_courses( $course['id'] );
+        $wp_course = MooWoodle()->course->get_course_by_mmodle_course_id( $course['id'] );
 
         // Set product meta data.
         $product->update_meta_data( '_course_startdate', $course[ 'startdate' ] );
@@ -257,24 +257,5 @@ class Product {
 		return $product_id;
 	}
 	
-	
-
-	// Function to fetch course from wp_moowoodle_courses table based on Moodle course ID
-	public static function get_course_from_moowoodle_courses( $course_id ) {
-		global $wpdb;
-
-		$table = $wpdb->prefix . 'moowoodle_courses';
-
-		// Fetch course data linked to Moodle course ID
-		$course = $wpdb->get_row(
-			$wpdb->prepare(
-				"SELECT * FROM $table WHERE moodle_course_id = %d",
-				$course_id
-			)
-		);
-
-		// Return course data if found, otherwise return null
-		return $course ? $course : null;
-	}
 
 }

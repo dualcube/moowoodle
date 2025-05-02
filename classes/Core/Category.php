@@ -111,7 +111,7 @@ class Category {
 
 			return $category[ 'id' ];
 		} else {
-			//g( "moowoodle url:" . $term->get_error_message() . "\n");
+			MooWoodle()->util->log( "moowoodle url:" . $term->get_error_message() . "\n");
 		}
 
 		return null;
@@ -163,10 +163,10 @@ class Category {
 		$table_name = $wpdb->prefix . 'moowoodle_categories';
 
 		foreach ( $categories_data as $category ) {
-			// Validate required fields.
-			if ( empty( $category['id'] ) || empty( $category['name'] ) || ! isset( $category['parent'] ) ) {
+			if ( empty( $category['id'] ) || empty( $category['name'] ) || ! array_key_exists( 'parent', $category ) ) {
 				continue;
 			}
+			
 
 			// Prepare data.
 			$moodle_category_id = intval( $category['id'] );
@@ -181,7 +181,7 @@ class Category {
 				)
 			);
 
-			if ( null === $existing ) {
+			if ( ! $existing ) {
 				// Insert new category.
 				$wpdb->insert(
 					$table_name,
@@ -205,84 +205,6 @@ class Category {
 
 			// Increment sync count.
 			\MooWoodle\Util::increment_sync_count( 'course' );
-		}
-	}
-
-	
-	/**
-	 * Migrate WordPress term data to the MooWoodle categories table.
-	 * 
-	 * This function reads terms from the 'course_cat' taxonomy that have Moodle category IDs
-	 * stored in term meta (_category_id), and inserts or updates them in the moowoodle_categories table.
-	 *
-	 * @return void
-	 */
-	public static function migrate_categories() {
-		global $wpdb;
-
-		$table_name = $wpdb->prefix . 'moowoodle_categories';
-
-		// Get terms with '_category_id' meta and optional '_parent' meta for 'course_cat' taxonomy
-		$query = $wpdb->prepare("
-			SELECT 
-				t.term_id,
-				t.name,
-				CAST(tm.meta_value AS UNSIGNED) AS moodle_category_id,
-				COALESCE(CAST(pm.meta_value AS UNSIGNED), 0) AS parent_id
-			FROM {$wpdb->terms} t
-			INNER JOIN {$wpdb->term_taxonomy} tt 
-				ON t.term_id = tt.term_id
-			INNER JOIN {$wpdb->termmeta} tm 
-				ON t.term_id = tm.term_id AND tm.meta_key = '_category_id' AND tm.meta_value > 0
-			LEFT JOIN {$wpdb->termmeta} pm 
-				ON t.term_id = pm.term_id AND pm.meta_key = '_parent'
-			WHERE tt.taxonomy = %s
-		", 'course_cat');
-
-		$terms = $wpdb->get_results( $query, ARRAY_A );
-
-		if ( empty( $terms ) ) {
-			return;
-		}
-
-		foreach ( $terms as $term ) {
-			$moodle_category_id = (int) $term['moodle_category_id'];
-			$name               = sanitize_text_field( $term['name'] );
-			$parent_id          = (int) $term['parent_id'];
-
-			// Check if the category already exists in the custom table
-			$existing = $wpdb->get_row(
-				$wpdb->prepare(
-					"SELECT name, parent_id FROM `$table_name` WHERE moodle_category_id = %d",
-					$moodle_category_id
-				),
-				ARRAY_A
-			);
-
-			if ( ! $existing ) {
-				// Insert new category
-				$wpdb->insert(
-					$table_name,
-					[
-						'moodle_category_id' => $moodle_category_id,
-						'name'               => $name,
-						'parent_id'          => $parent_id,
-					],
-					[ '%d', '%s', '%d' ]
-				);
-			} elseif ( $existing['name'] !== $name || (int) $existing['parent_id'] !== $parent_id ) {
-				// Update if name or parent has changed
-				$wpdb->update(
-					$table_name,
-					[
-						'name'      => $name,
-						'parent_id' => $parent_id,
-					],
-					[ 'moodle_category_id' => $moodle_category_id ],
-					[ '%s', '%d' ],
-					[ '%d' ]
-				);
-			}
 		}
 	}
 

@@ -8,7 +8,34 @@ class Course {
 		add_filter( 'woocommerce_product_data_tabs', [ &$this, 'moowoodle_linked_course_tab' ], 99, 1 );
 		add_action( 'woocommerce_product_data_panels', [ &$this, 'moowoodle_linked_course_panals' ] );
 		add_action( 'wp_ajax_get_linked_items', [ $this, 'ajax_get_linked_items' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_assets' ] );
+
 	}
+	public function enqueue_admin_assets($hook) {
+		if ($hook !== 'post.php' && $hook !== 'post-new.php') {
+			return;
+		}
+		wp_enqueue_style(
+			'moowoodle-linked-panel-css',
+			 MooWoodle()->plugin_url . 'assets/css/linked-panel.css',
+			[],
+			'1.0.0'
+		);
+		wp_enqueue_script(
+			'moowoodle-linked-panel-js',
+			MooWoodle()->plugin_url . 'assets/js/linked-panel.js',
+			['jquery'],
+			'1.0.0',
+			true
+		);
+	
+		wp_localize_script('moowoodle-linked-panel-js', 'moowoodle', [
+			'ajaxurl'     => admin_url('admin-ajax.php'),
+			'select_text' => __('Select an item...', 'moowoodle'),
+			'khali_dabba'  => MooWoodle()->util->is_khali_dabba(),
+		]);
+	}
+	
 	/**
 	 * Get the course url
 	 * @param mixed $moodle_course_id
@@ -54,56 +81,6 @@ class Course {
 	
 		$pro_active = MooWoodle()->util->is_khali_dabba();
 		?>
-		<style>
-			#moowoodle_course_link_tab {
-				padding: 1rem;
-			}
-			#moowoodle_course_link_tab .moowoodle-radio-group {
-				display: flex;
-				gap: 20px;
-				padding-left: 0.625rem;
-			}
-			#moowoodle_course_link_tab .moowoodle-radio-option {
-				display: flex;
-				align-items: center;
-				gap: 8px;
-				font-weight: normal;
-				position: relative;
-			}
-			#moowoodle_course_link_tab .moowoodle-radio-option span {
-				background: #e35047;
-				border-radius: 2rem 0;
-				color: #f9f8fb;
-				font-size: .5rem;
-				font-weight: 700;
-				line-height: 1.1;
-				margin-left: .25rem;
-				padding: .125rem .5rem;
-				position: absolute;
-				right: -2.188rem;
-				top: -20%;
-			}
-			#moowoodle_course_link_tab p {
-				display: flex;
-				align-items: center;
-				gap: 4rem;
-				padding: 0 1rem;
-				font-size: 0.938rem;
-			}
-			#moowoodle_course_link_tab br {
-				display: none;
-			}
-			#moowoodle_course_link_tab .dynamic-link-select {
-				display: none;
-			}
-			#moowoodle_course_link_tab .dynamic-link-select.show {
-				display: block;
-			}
-			#dynamic-link-select select {
-				width: 30%;
-			}
-		</style>
-	
 		<div id="moowoodle_course_link_tab" class="panel">
 			<p class="form-field moowoodle-link-type-field">
 				<label><?php esc_html_e('Link Type', 'moowoodle'); ?></label><br>
@@ -144,69 +121,9 @@ class Course {
 			<input type="hidden" name="product_meta_nonce" value="<?php echo wp_create_nonce(); ?>">
 			<input type="hidden" id="post_ID" value="<?php echo esc_attr($post_id); ?>">
 		</div>
-	
-		<script>
-		jQuery(document).ready(function ($) {
-			const cohortRadio = $('input[name="link_type"][value="cohort"]');
-	
-			<?php if (!$pro_active): ?>
-			// Prevent any cohort selection in Free
-			cohortRadio.prop('disabled', true).prop('checked', false);
-			<?php endif; ?>
-	
-			function fetchAndRenderLinkedItems(type) {
-				$.ajax({
-					url: ajaxurl,
-					type: 'POST',
-					data: {
-						action: 'get_linked_items',
-						type: type,
-						nonce: $('input[name="moowoodle_meta_nonce"]').val(),
-						post_id: $('#post_ID').val()
-					},
-					success: function (response) {
-						if (response.success) {
-							const select = $('#linked_item');
-							const selectedId = response.data.selected_id;
-	
-							select.empty().append('<option value=""><?php esc_html_e('Select an item...', 'moowoodle'); ?></option>');
-	
-							response.data.items.forEach(function (item) {
-								const isSelected = selectedId == item.id ? 'selected' : '';
-								select.append(`<option value="${item.id}" ${isSelected}>${item.name}</option>`);
-							});
-	
-							$('#dynamic-link-select').show();
-						} else {
-							console.error('AJAX error:', response.data);
-						}
-					},
-					error: function (xhr, status, error) {
-						console.error('AJAX request failed:', status, error);
-					}
-				});
-			}
-	
-			$('input[name="link_type"]').on('change', function () {
-				const type = $(this).val();
-				if (type) {
-					fetchAndRenderLinkedItems(type);
-				} else {
-					$('#dynamic-link-select').hide();
-				}
-			});
-	
-			const defaultType = $('input[name="link_type"]:checked').val();
-			if (defaultType) {
-				fetchAndRenderLinkedItems(defaultType);
-			}
-		});
-		</script>
 	<?php
 	}
 	
-    
-    
 	public function ajax_get_linked_items() {
 		// Verify nonce
 		if ( ! check_ajax_referer( 'moowoodle_meta_nonce', 'nonce', false ) ) {
@@ -250,8 +167,6 @@ class Course {
 		// If type is not 'course', do nothing — Pro plugin may handle it
 	}
 	
-
-
 
 	/**
 	 * Insert or update Moodle courses into custom database table.
@@ -323,69 +238,7 @@ class Course {
 	}
 	
 	
-	/**
-	 * Migrate courses from post table
-	 */
-	public static function migrate_courses() {
-		global $wpdb;
-	
-		$courses = get_posts( [
-			'post_type'      => 'course',
-			'post_status'    => 'any',
-			'posts_per_page' => -1,
-			'meta_key'       => 'moodle_course_id',
-		] );
-	
-		if ( empty( $courses ) ) return;
-	
-		foreach ( $courses as $course ) {
-			$moodle_course_id = get_post_meta( $course->ID, 'moodle_course_id', true );
-			if ( ! $moodle_course_id ) continue;
-	
-			$shortname   = get_post_meta( $course->ID, '_course_short_name', true );
-			$category_id = get_post_meta( $course->ID, '_category_id', true );
-			$startdate   = get_post_meta( $course->ID, '_course_startdate', true );
-			$enddate     = get_post_meta( $course->ID, '_course_enddate', true );
-			$product_id  = get_post_meta( $course->ID, 'linked_product_id', true );
-	
-			// Check if course already exists
-			$exists = $wpdb->get_var( $wpdb->prepare(
-				"SELECT id FROM {$wpdb->prefix}moowoodle_courses WHERE moodle_course_id = %d",
-				$moodle_course_id
-			) );
-	
-			$data = [
-				'moodle_course_id' => (int) $moodle_course_id,
-				'shortname'        => sanitize_text_field( $shortname ),
-				'category_id'      => (int) $category_id,
-				'fullname'         => sanitize_text_field( $course->post_title ),
-				'startdate'        => $startdate ? (int) $startdate : null,
-				'enddate'          => $enddate ? (int) $enddate : null,
-				'created'          => time(),
-			];
-	
-			if ( $exists ) {
-				$wpdb->update(
-					$wpdb->prefix . 'moowoodle_courses',
-					$data,
-					[ 'id' => $exists ]
-				);
-				$new_course_id = $exists;
-			} else {
-				$wpdb->insert(
-					$wpdb->prefix . 'moowoodle_courses',
-					$data
-				);
-				$new_course_id = $wpdb->insert_id;
-			}
-	
-			if ( $product_id ) {
-				update_post_meta( $product_id, 'linked_course_id', $new_course_id );
-			}
-	
-			wp_delete_post( $course->ID, true );
-		}
-	}
+
 
 	/**
 	 * Get the full course data from the course table by course ID.
@@ -409,7 +262,24 @@ class Course {
 
 		return $course ?: null;
 	}
+	
+	// Function to fetch course from wp_moowoodle_courses table based on Moodle course ID
+	public static function get_course_by_mmodle_course_id( $moodle_course_id ) {
+		global $wpdb;
 
+		$table = $wpdb->prefix . 'moowoodle_courses';
+
+		// Fetch course data linked to Moodle course ID
+		$course = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM $table WHERE moodle_course_id = %d",
+				$moodle_course_id
+			)
+		);
+
+		// Return course data if found, otherwise return null
+		return $course ? $course : null;
+	}
 
 	
 }
