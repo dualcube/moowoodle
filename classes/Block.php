@@ -5,7 +5,7 @@ namespace MooWoodle;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * CatalogX Block class
+ * MooWoodle Block class
  *
  * @class 		Block class
  * @version		6.0.0

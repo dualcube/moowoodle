@@ -82,7 +82,7 @@ class RestAPI {
         register_rest_route( MooWoodle()->rest_namespace, '/courses', [
             'methods'             => \WP_REST_Server::READABLE,
             'callback'            =>[ $this, 'get_user_courses' ],
-            'permission_callback' =>[ $this, 'user_has_api_permission' ],
+            'permission_callback' =>[ $this, 'user_can_access_api' ],
         ]);
 
     }
@@ -100,7 +100,8 @@ class RestAPI {
      *
      * @return bool True if the user is an administrator or customer, otherwise false.
      */
-    public function user_has_api_permission() {
+    public function user_can_access_api()
+    {
         return current_user_can( 'customer' ) || current_user_can( 'manage_options' );
     }
     

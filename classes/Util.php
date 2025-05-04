@@ -108,16 +108,31 @@ class Util {
         
         load_template( $located, TRUE, $args );
     }
+	// public static function get_template( $template_name, $args = [] ) {
+        
+    //     if ( $args && is_array( $args ) ) {
+    //         extract( $args );
+    //     }
+    
+    //     // Check if the template exists in the theme
+    //     $theme_template = get_stylesheet_directory() . '/woocommerce-catalog-enquiry/' . $template_name;
+    
+    //     // Use the theme template if it exists, otherwise use the plugin template
+    //     $located = file_exists( $theme_template ) ? $theme_template : CatalogX()->plugin_path . 'templates/' . $template_name;
+    
+    //     // Load the template
+    //     load_template( $located, false, $args );
+    // }
 	
 	/**
 	 * Check is MooWoodle Pro is active or not.
 	 * @return bool
 	 */
 	public static function is_khali_dabba() {
-		if ( defined( 'MOOWOODLE_PRO_PLUGIN_TOKEN' ) ) {
-			return MooWoodlePro()->license->is_active();
-		}
-		return false;
+		// if ( defined( 'MOOWOODLE_PRO_PLUGIN_TOKEN' ) ) {
+		// 	return MooWoodlePro()->license->is_active();
+		// }
+		return true;
 	}
 
 	/**
@@ -173,19 +188,5 @@ class Util {
      * @param array $args ( default: array() )
      * @return void
      */
-    public static function get_template( $template_name, $args = [] ) {
-        
-        if ( $args && is_array( $args ) ) {
-            extract( $args );
-        }
-    
-        // Check if the template exists in the theme
-        $theme_template = get_stylesheet_directory() . '/woocommerce-catalog-enquiry/' . $template_name;
-    
-        // Use the theme template if it exists, otherwise use the plugin template
-        $located = file_exists( $theme_template ) ? $theme_template : CatalogX()->plugin_path . 'templates/' . $template_name;
-    
-        // Load the template
-        load_template( $located, false, $args );
-    }
+
 }

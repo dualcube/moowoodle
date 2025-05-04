@@ -3,7 +3,7 @@
 namespace MooWoodle;
 
 /**
- * CatalogX FrontendScripts class
+ * MooWoodle FrontendScripts class
  *
  * @class 		FrontendScripts class
  * @version		6.0.4
@@ -37,7 +37,7 @@ class FrontendScripts {
 				'src'     => MooWoodle()->plugin_url . 'build/blocks/my-courses/index.js',
 				'deps'    => [ 'jquery', 'jquery-blockui', 'wp-element', 'wp-i18n' ],
 				'version' => $version,
-                'text_domain' => 'catalogx-pro'
+                'text_domain' => 'moowoodle'
             ],
 		) );
 		foreach ( $register_scripts as $name => $props ) {

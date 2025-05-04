@@ -136,8 +136,8 @@ class MooWoodle {
         $this->container[ 'external_service' ] = new ExternalService();
 		$this->container[ 'enrollment' ]       = new Enrollment();
 		$this->container[ 'frontend' ]         = new Frontend();
-        $this->container['block'] 		       = new Block();
-        $this->container['frontendscripts']    = new FrontendScripts();
+        $this->container[ 'block' ] 		   = new Block();
+        $this->container[ 'frontendscripts' ]  = new FrontendScripts();
 
         new EndPoint();
 
