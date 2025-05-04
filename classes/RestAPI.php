@@ -621,41 +621,34 @@ class RestAPI {
         ) );
     
         $courses = $wpdb->get_results( $wpdb->prepare(
-            "SELECT course_id, date 
+            "SELECT course_id,group_id,cohort_id date 
              FROM {$wpdb->prefix}moowoodle_enrollment 
              WHERE user_id = %d AND status = 'enrolled' 
              ORDER BY date DESC 
              LIMIT %d OFFSET %d",
             $user->ID, $per_page, $offset
         ) );
-    
+        file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'res: ' . var_export( $courses, true ) . "\n", FILE_APPEND );
+
         if ( ! $courses ) {
             Util::log( "[MooWoodle] No enrolled courses found for user #{$user->ID}." );
         }
     
         $data = array_map( function( $course ) use ( $user ) {
-            $linked_product_id = get_post_meta( $course->course_id, 'linked_product_id', true );
-            file_put_contents(WP_CONTENT_DIR . '/mo_file_log.txt', "response:eid type: pi" . var_export($linked_product_id, true) . "\n", FILE_APPEND);
-
-            $moodle_course_id  = get_post_meta( $linked_product_id, 'moodle_course_id', true );
-            file_put_contents(WP_CONTENT_DIR . '/mo_file_log.txt', "response:eid type: mci" . var_export($moodle_course_id, true) . "\n", FILE_APPEND);
+            $course_data = MooWoodle()->course->get_course( $course->course_id );
 
             $passwordMoowoodle = get_user_meta( $user->ID, 'moowoodle_moodle_user_pwd', true );
     
-            if ( ! $linked_product_id || ! $moodle_course_id ) {
-                Util::log( "[MooWoodle] Course #{$course->course_id} has missing metadata (linked_product_id or moodle_course_id)." );
-            }
-    
             return [
                 'user_name'      => $user->user_login,
-                'course_name'    => get_the_title( $linked_product_id ) ?: __( 'Unknown Course', 'moowoodle' ),
+                'course_name'    => $course_data->fullname,
                 'enrolment_date' => date( 'M j, Y - H:i', strtotime( $course->date ) ),
                 'password'       => $passwordMoowoodle,
-                'moodle_url'     => $moodle_course_id
+                'moodle_url'     => $course_data->moodle_course_id
                     ? apply_filters(
                         'moodle_course_view_url',
-                        trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "course/view.php?id={$moodle_course_id}",
-                        $moodle_course_id
+                        trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "course/view.php?id={$course_data->moodle_course_id}",
+                        $course_data->moodle_course_id
                     )
                     : null,
             ];

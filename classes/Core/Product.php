@@ -140,7 +140,7 @@ class Product {
 		}
 
 		// get the course id linked with moodle.
-        $wp_course = MooWoodle()->course->get_course_by_mmodle_course_id( $course['id'] );
+        $wp_course = MooWoodle()->course->get_course_by_moodle_course_id( $course['id'] );
 
         // Set product meta data.
         $product->update_meta_data( '_course_startdate', $course[ 'startdate' ] );
