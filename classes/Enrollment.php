@@ -479,57 +479,109 @@ class Enrollment {
 	 * @param mixed $args
 	 * @return bool|int|null
 	 */
-	public static function add_enrollment( $args ) {
+	public static function add_enrollment($args) {
 		global $wpdb;
-	
+
 		$table = "{$wpdb->prefix}moowoodle_enrollment";
-	
+
 		try {
-			// Check if same user/course/group_item exists with 'unenrolled' status
-			$existing_id = $wpdb->get_var( $wpdb->prepare(
+			// Default values for optional fields
+			$args = wp_parse_args($args, [
+				'user_id' => 0,
+				'user_email' => '',
+				'course_id' => 0,
+				'cohort_id' => 0,
+				'group_id' => 0,
+				'order_id' => 0,
+				'item_id' => 0,
+				'group_item_id' => 0,
+				'status' => 'enrolled',
+				'date' => current_time('mysql'),
+			]);
+
+			// Log input arguments
+			$enrollment_type = $args['group_item_id'] == 0 ? 'direct' : 'bulk';
+			// file_put_contents(WP_CONTENT_DIR . '/mo_file_log.txt', "response:eid type:{$enrollment_type} " . var_export($args, true) . "\n", FILE_APPEND);
+
+			// Validate required fields
+			if (empty($args['user_email']) || ($args['course_id'] == 0 && $args['cohort_id'] == 0 && $args['group_id'] == 0)) {
+				// file_put_contents(WP_CONTENT_DIR . '/mo_file_log.txt', "response:invalid_args type:{$enrollment_type}\n", FILE_APPEND);
+				return false;
+			}
+
+			// Check for existing enrollment (active or unenrolled)
+			$existing_id = $wpdb->get_var($wpdb->prepare(
 				"SELECT id FROM $table
 				 WHERE user_email = %s
 				 AND (
-					 (course_id = %d AND group_item_id = 0 AND cohort_id = 0) OR  -- Case: Email + Course ID
-					 (group_id = %d AND group_item_id = 0 AND cohort_id = 0) OR   -- Case: Email + Group ID
-					 (cohort_id = %d AND group_item_id = 0 AND group_id = 0) OR   -- Case: Email + Cohort ID
-					 (cohort_id = %d AND group_item_id = %d AND group_id = 0) OR  -- Case: Email + Cohort ID + Group Item ID
-					 (course_id = %d AND group_item_id = %d AND cohort_id = 0) OR -- Case: Email + Course ID + Group Item ID
-					 (group_id = %d AND group_item_id = %d AND cohort_id = 0)     -- Case: Email + Group ID + Group Item ID
+					 (course_id = %d AND cohort_id = 0 AND group_id = 0 AND group_item_id = %d) OR  -- Course enrollment
+					 (cohort_id = %d AND course_id = 0 AND group_id = 0 AND group_item_id = %d) OR  -- Cohort enrollment
+					 (group_id = %d AND course_id = 0 AND cohort_id = 0 AND group_item_id = %d)     -- Group enrollment
 				 )
+				 AND status IN ('enrolled', 'unenrolled')
 				 LIMIT 1",
 				$args['user_email'],
 				$args['course_id'],
-				isset( $args['group_id'] ) ? $args['group_id'] : 0,
-				isset( $args['cohort_id'] ) ? $args['cohort_id'] : 0,
-				isset( $args['cohort_id'] ) ? $args['cohort_id'] : 0,
-				isset( $args['group_item_id'] ) ? $args['group_item_id'] : 0,
-				isset( $args['course_id'] ) ? $args['course_id'] : 0,
-				isset( $args['group_item_id'] ) ? $args['group_item_id'] : 0,
-				isset( $args['group_id'] ) ? $args['group_id'] : 0,
-				isset( $args['group_item_id'] ) ? $args['group_item_id'] : 0
-			) );
-			
-	
-			if ( $existing_id ) {
-				// Update existing record with new enrollment data
-				return $wpdb->update(
-					$table,
-					[
-						'status'     => 'enrolled',
-						'order_id'   => $args['order_id'],
-						'item_id'    => $args['item_id'],
-						'date'       => isset( $args['date'] ) ? $args['date'] : current_time( 'mysql' ),
-					],
-					[ 'id' => $existing_id ]
-				);
+				$args['group_item_id'],
+				$args['cohort_id'],
+				$args['group_item_id'],
+				$args['group_id'],
+				$args['group_item_id']
+			));
+
+			if ($existing_id) {
+				// Check if the existing record is active (enrolled)
+				$existing_status = $wpdb->get_var($wpdb->prepare(
+					"SELECT status FROM $table WHERE id = %d",
+					$existing_id
+				));
+
+				if ($existing_status === 'enrolled') {
+					// Active enrollment exists, prevent new enrollment
+					// file_put_contents(WP_CONTENT_DIR . '/mo_file_log.txt', "response:existing_active_enrollment_id:{$existing_id} type:{$enrollment_type}\n", FILE_APPEND);
+					return false;
+				} else {
+					// Update unenrolled record to enrolled
+					$result = $wpdb->update(
+						$table,
+						[
+							'status' => 'enrolled',
+							'order_id' => $args['order_id'],
+							'item_id' => $args['item_id'],
+							'date' => $args['date'],
+						],
+						['id' => $existing_id]
+					);
+					// file_put_contents(WP_CONTENT_DIR . '/mo_file_log.txt', "response:updated_enrollment_id:{$existing_id} type:{$enrollment_type}\n", FILE_APPEND);
+					return $result !== false;
+				}
 			}
 
-			// Otherwise insert fresh record (original logic)
-			return $wpdb->insert( $table, $args );
-	
-		} catch ( \Exception $error ) {
-			return null;
+			// Insert new enrollment record
+			$result = $wpdb->insert($table, [
+				'user_id' => $args['user_id'],
+				'user_email' => $args['user_email'],
+				'course_id' => $args['course_id'],
+				'cohort_id' => $args['cohort_id'],
+				'group_id' => $args['group_id'],
+				'order_id' => $args['order_id'],
+				'item_id' => $args['item_id'],
+				'group_item_id' => $args['group_item_id'],
+				'status' => $args['status'],
+				'date' => $args['date'],
+			]);
+
+			if ($result !== false) {
+				// file_put_contents(WP_CONTENT_DIR . '/mo_file_log.txt', "response:new_enrollment_id:{$wpdb->insert_id} type:{$enrollment_type}\n", FILE_APPEND);
+				return $wpdb->insert_id;
+			} else {
+				// file_put_contents(WP_CONTENT_DIR . '/mo_file_log.txt', "response:insert_failed type:{$enrollment_type}\n", FILE_APPEND);
+				return false;
+			}
+
+		} catch (\Exception $error) {
+			// file_put_contents(WP_CONTENT_DIR . '/mo_file_log.txt', "response:error:{$error->getMessage()} type:{$enrollment_type}\n", FILE_APPEND);
+			return false;
 		}
 	}
 	

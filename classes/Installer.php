@@ -22,7 +22,7 @@ class Installer {
 
             $this->run_default_migration();
 
-            update_option( 'moowoodle_version', MOOWOODLE_PLUGIN_VERSION );
+            // update_option( 'moowoodle_version', MOOWOODLE_PLUGIN_VERSION );
             
             do_action( 'moowoodle_updated' );
         }
@@ -232,6 +232,7 @@ class Installer {
 	
 			if ( $product_id ) {
 				update_post_meta( $product_id, 'linked_course_id', $new_course_id );
+				update_post_meta( $new_course_id, 'linked_product_id', $product_id );
 			}
 	
 			wp_delete_post( $course->ID, true );
@@ -285,7 +286,9 @@ class Installer {
 
 			// Get linked course id
 			$linked_course_id = $product->get_meta( 'linked_course_id', true );
-			
+			$moodle_course_id = $product->get_meta( 'moodle_course_id', true );
+			$course = \MooWoodle\Core\Course::get_course_by_moodle_course_id( $moodle_course_id );
+
 			// Get enrollment date
 			$enrollment_date   = $order->get_meta( 'moodle_user_enrolment_date', true );
 			if ( is_numeric( $enrollment_date) ) {
@@ -295,15 +298,16 @@ class Installer {
 			// Get the enrollment status
 			$enrollment_status = in_array( $linked_course_id, $unenrolled_courses ) ? 'unenrolled' : 'enrolled';
 
-			self::add_enrollment([
-				'user_id' 	 => $customer->ID,
+			\MooWoodle\Enrollment::add_enrollment([
+				'user_id'    => $customer->ID,
 				'user_email' => $customer->user_email,
-				'course_id'  => $linked_course_id,
+				'course_id'  => (int)$course->id,
 				'order_id'   => $order->get_id(),
 				'item_id'    => $enrolment->get_id(),
 				'status'     => $enrollment_status,
-				'date'	     => $enrollment_date,
+				'date'       => $enrollment_date,
 			]);
+			
 		}
 	}
 

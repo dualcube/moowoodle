@@ -635,7 +635,11 @@ class RestAPI {
     
         $data = array_map( function( $course ) use ( $user ) {
             $linked_product_id = get_post_meta( $course->course_id, 'linked_product_id', true );
+            file_put_contents(WP_CONTENT_DIR . '/mo_file_log.txt', "response:eid type: pi" . var_export($linked_product_id, true) . "\n", FILE_APPEND);
+
             $moodle_course_id  = get_post_meta( $linked_product_id, 'moodle_course_id', true );
+            file_put_contents(WP_CONTENT_DIR . '/mo_file_log.txt', "response:eid type: mci" . var_export($moodle_course_id, true) . "\n", FILE_APPEND);
+
             $passwordMoowoodle = get_user_meta( $user->ID, 'moowoodle_moodle_user_pwd', true );
     
             if ( ! $linked_product_id || ! $moodle_course_id ) {

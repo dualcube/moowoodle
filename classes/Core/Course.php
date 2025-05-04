@@ -270,7 +270,7 @@ class Course {
 	}
 	
 	// Function to fetch course from wp_moowoodle_courses table based on Moodle course ID
-	public static function get_course_by_mmodle_course_id( $moodle_course_id ) {
+	public static function get_course_by_moodle_course_id( $moodle_course_id ) {
 		global $wpdb;
 
 		$table = $wpdb->prefix . 'moowoodle_courses';
