@@ -287,7 +287,9 @@ class Installer {
 			// Get linked course id
 			$linked_course_id = $product->get_meta( 'linked_course_id', true );
 			$moodle_course_id = $product->get_meta( 'moodle_course_id', true );
-			$course = \MooWoodle\Core\Course::get_course( $moodle_course_id, true );
+			$course = \MooWoodle\Core\Course::get_course([
+				'moodle_course_id' => $moodle_course_id
+			] );
 
 			// Get enrollment date
 			$enrollment_date   = $order->get_meta( 'moodle_user_enrolment_date', true );

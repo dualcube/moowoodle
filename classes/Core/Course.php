@@ -219,38 +219,9 @@ class Course {
 		return $moodle_course_id;
 	}
 	
-	
-	
-	
-	/**
-	 * Get the full course data from the course table by internal ID or Moodle course ID.
-	 *
-	 * @param int $id The course ID.
-	 * @param bool $is_moodle_id Whether the ID is a Moodle course ID (true) or internal ID (false).
-	 * @return object|null Course data if found, null otherwise.
-	 */
-	// public function get_course( $id, $is_moodle_id = false ) {
-	// 	global $wpdb;
-
-	// 	$id = (int) $id;
-	// 	if ( $id <= 0 ) {
-	// 		return null;
-	// 	}
-
-	// 	$table = $wpdb->prefix . Util::TABLES['course'];
-	// 	$column = $is_moodle_id ? 'moodle_course_id' : 'id';
-
-	// 	return $wpdb->get_row(
-	// 		$wpdb->prepare(
-	// 			"SELECT * FROM $table WHERE $column = %d",
-	// 			$id
-	// 		)
-	// 	);
-	// }
-
 
 	/**
-     * Get all rules
+     * Get all course
      * @return array|object|null
      */
     public static function get_course( $where ) {
