@@ -211,7 +211,7 @@ class RestAPI {
         // get all category from moodle.
         $response   = MooWoodle()->external_service->do_request( 'get_categories' );
         $categories = $response[ 'data' ];
-
+        file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:'. var_export($categories, true) . "\n", FILE_APPEND );
         // update course and product categories.
         if ( in_array( 'sync_courses_category', $sync_setting ) ) {
 

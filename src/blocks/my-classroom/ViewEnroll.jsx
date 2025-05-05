@@ -225,74 +225,78 @@ const ViewEnroll = ({ classroom }) => {
 
   const handleCsvUpload = async (e) => {
     e.preventDefault();
-
+  
     if (!csvFile) {
-        alert(__("Please select a CSV file.", "moowoodle"));
-        return;
+      alert(__("Please select a CSV file.", "moowoodle"));
+      return;
     }
-
-    if (classroom?.classroom_id && (!Array.isArray(availableCourses) || !availableCourses.length)) {
+  
+    if (classroom?.classroom_id) {
+      if (!Array.isArray(availableCourses) || !availableCourses.length) {
         alert(__("No courses available for classroom enrollment.", "moowoodle"));
         return;
+      }
     }
-
+  
     setIsLoading(true);
     const formData = new FormData();
     formData.append("file", csvFile);
-
-    // Base payload
     formData.append("order_id", classroom?.order_id || 0);
-
+  
     // Enrollment type-specific payload
     if (classroom?.classroom_id) {
-        formData.append("classroom_id", classroom.classroom_id);
-        const courseSelections = availableCourses.map(course => ({
-            course_id: String(course.course_id),
-            classroom_item_id: String(course.group_item_id || course.course_id) // Fallback to course_id if group_item_id is missing
-        }));
-        formData.append("course_selections", JSON.stringify(courseSelections));
+      formData.append("classroom_id", classroom.classroom_id);
+  
+      availableCourses.forEach((course, index) => {
+        formData.append(`course_selections[${index}][course_id]`, String(course.course_id));
+        formData.append(`course_selections[${index}][classroom_item_id]`, String(course.group_item_id));
+      });
+  
     } else if (classroom?.group_id) {
-        formData.append("group_id", classroom.group_id);
-        if (classroom.group_item_id) {
-            formData.append("group_item_id", classroom.group_item_id);
-        }
+      formData.append("group_id", classroom.group_id);
+      if (classroom.group_item_id) {
+        formData.append("group_item_id", classroom.group_item_id);
+      }
     } else if (classroom?.cohort_id) {
-        formData.append("cohort_id", classroom.cohort_id);
-        if (classroom.cohort_item_id) {
-            formData.append("cohort_item_id", classroom.cohort_item_id);
-        }
+      formData.append("cohort_id", classroom.cohort_id);
+      if (classroom.cohort_item_id) {
+        formData.append("cohort_item_id", classroom.cohort_item_id);
+      }
     } else {
-        setIsLoading(false);
-        alert(__("Invalid enrollment type. Please specify classroom, group, or cohort.", "moowoodle"));
-        return;
+      setIsLoading(false);
+      alert(__("Invalid enrollment type. Please specify classroom, group, or cohort.", "moowoodle"));
+      return;
     }
-
+  
     try {
-        const response = await axios.post(getApiLink("bulk-enroll"), formData, {
-            headers: {
-                "X-WP-Nonce": appLocalizer?.nonce,
-                "Content-Type": "multipart/form-data",
-            },
-        });
-
-        if (response.data.success) {
-            setCsvFile(null);
-            setShowBulkModal(false);
-            await fetchClassroomData(1); // Reset to page 1 after bulk enrollment
-            alert(__("Bulk enrollment successful! " + response.data.message, "moowoodle"));
-        } else {
-            alert(
-                __("Bulk enrollment failed: ", "moowoodle") +
-                (response.data.message || __("Unknown error", "moowoodle"))
-            );
-        }
+      const response = await axios.post(getApiLink("bulk-enroll"), formData, {
+        headers: {
+          "X-WP-Nonce": appLocalizer?.nonce,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+  
+      if (response.success) {
+        setCsvFile(null);
+        setBulkSelectedCourses([]);
+        setShowBulkModal(false);
+        await fetchClassroomData(1);
+        alert(__("Bulk enrollment successful! " + response.data.message, "moowoodle"));
+      } else {
+        alert(
+          __("Bulk enrollment failed: ", "moowoodle") +
+          (response.data.message || __("Unknown error", "moowoodle"))
+        );
+      }
     } catch (error) {
-        console.error(__("Error during bulk enrollment:", "moowoodle"), error);
-        alert(__("Error during bulk enrollment. Please try again.", "moowoodle"));
+      console.error(__("Error during bulk enrollment:", "moowoodle"), error);
+      alert(__("Error during bulk enrollment. Please try again.", "moowoodle"));
     }
-
+  
     setIsLoading(false);
-};
+  };
+  
+  
 
   const handleUnenrollStudent = async () => {
     if (!unenrollCourses.length) {

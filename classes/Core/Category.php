@@ -2,6 +2,8 @@
 
 namespace MooWoodle\Core;
 
+use MooWoodle\Util as util;
+
 class Category {
 
 	/**
@@ -154,56 +156,50 @@ class Category {
 	/**
 	 * Store Moodle categories in the database if not already present or update if changed.
 	 * 
-	 * @param array $categories_data An array of categories with 'id', 'name', and 'parent' fields.
+	 * @param array $categories An array of categories with 'id', 'name', and 'parent' fields.
 	 * @return void
 	 */
-	public static function save_categories( $categories_data ) {
+	public static function save_categories( $categories ) {
 		global $wpdb;
-
-		$table_name = $wpdb->prefix . 'moowoodle_categories';
-
-		foreach ( $categories_data as $category ) {
-			if ( empty( $category['id'] ) || empty( $category['name'] ) || ! array_key_exists( 'parent', $category ) ) {
+	
+		$table_name = $wpdb->prefix . Util::TABLES['category'];
+	
+		foreach ( $categories as $category ) {
+			// Skip if essential fields are missing.
+			if ( empty( $category['id'] ) || empty( $category['name'] ) ) {
 				continue;
 			}
-			
-
-			// Prepare data.
-			$moodle_category_id = intval( $category['id'] );
-			$name               = sanitize_text_field( $category['name'] );
-			$parent_id          = intval( $category['parent'] );
-
-			// Check if the category already exists.
+	
+			$category_id = (int) $category['id'];
+			$name        = trim( sanitize_text_field( $category['name'] ) );
+			$parent_id   = (int) $category['parent'];
+	
 			$existing = $wpdb->get_row(
 				$wpdb->prepare(
 					"SELECT name, parent_id FROM `$table_name` WHERE `moodle_category_id` = %d",
-					$moodle_category_id
+					$category_id
 				)
 			);
-
-			if ( ! $existing ) {
-				// Insert new category.
+	
+			if ( $existing ) {
+				if ( $existing->name !== $name || (int) $existing->parent_id !== $parent_id ) {
+					$wpdb->update(
+						$table_name,
+						[ 'name' => $name, 'parent_id' => $parent_id ],
+						[ 'moodle_category_id' => $category_id ]
+					);
+				}
+			} else {
 				$wpdb->insert(
 					$table_name,
 					[
-						'moodle_category_id' => $moodle_category_id,
+						'moodle_category_id' => $category_id,
 						'name'               => $name,
 						'parent_id'          => $parent_id,
 					]
 				);
-			} elseif ( $existing->name !== $name || intval( $existing->parent_id ) !== $parent_id ) {
-				// Update if data has changed.
-				$wpdb->update(
-					$table_name,
-					[
-						'name'      => $name,
-						'parent_id' => $parent_id,
-					],
-					[ 'moodle_category_id' => $moodle_category_id ]
-				);
 			}
-
-			// Increment sync count.
+	
 			\MooWoodle\Util::increment_sync_count( 'course' );
 		}
 	}

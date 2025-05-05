@@ -42,7 +42,7 @@ class Installer {
         }
 
         $wpdb->query(
-            "CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "moowoodle_enrollment` (
+            "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}" . Utill::TABLES[ 'enrollment' ] . "` (
                 `id` bigint(20) NOT NULL AUTO_INCREMENT,
                 `user_id` bigint(20) NOT NULL DEFAULT 0,
                 `user_email` varchar(100) NOT NULL,
@@ -59,7 +59,7 @@ class Installer {
         );
 
         $wpdb->query(
-            "CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "moowoodle_categories` (
+             "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}" . Utill::TABLES[ 'category' ] . "` (
                 `moodle_category_id` bigint(20) NOT NULL,
                 `name` varchar(255) NOT NULL,
                 `parent_id` bigint(20) NOT NULL DEFAULT 0,
@@ -69,7 +69,7 @@ class Installer {
         
 
         $wpdb->query(
-            "CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "moowoodle_courses` (
+             "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}" . Utill::TABLES[ 'course' ] . "` (
                 `id` bigint(20) NOT NULL AUTO_INCREMENT,
                 `moodle_course_id` bigint(20) NOT NULL,
                 `shortname` varchar(255) NOT NULL,
@@ -287,7 +287,7 @@ class Installer {
 			// Get linked course id
 			$linked_course_id = $product->get_meta( 'linked_course_id', true );
 			$moodle_course_id = $product->get_meta( 'moodle_course_id', true );
-			$course = \MooWoodle\Core\Course::get_course_by_moodle_course_id( $moodle_course_id );
+			$course = \MooWoodle\Core\Course::get_course( $moodle_course_id, true );
 
 			// Get enrollment date
 			$enrollment_date   = $order->get_meta( 'moodle_user_enrolment_date', true );
