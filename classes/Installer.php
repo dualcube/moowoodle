@@ -109,7 +109,7 @@ class Installer {
 	public static function migrate_categories() {
 		global $wpdb;
 
-		$table_name = $wpdb->prefix . 'moowoodle_categories';
+		$table_name = $wpdb->prefix . Util::TABLES['category'];
 
 		// Get terms with '_category_id' meta and optional '_parent' meta for 'course_cat' taxonomy
 		$query = $wpdb->prepare("
@@ -139,16 +139,28 @@ class Installer {
 			$name               = sanitize_text_field( $term['name'] );
 			$parent_id          = (int) $term['parent_id'];
 
-			// Check if the category already exists in the custom table
-			$existing = $wpdb->get_row(
-				$wpdb->prepare(
-					"SELECT name, parent_id FROM `$table_name` WHERE moodle_category_id = %d",
-					$moodle_category_id
-				),
-				ARRAY_A
-			);
+			// Fetch existing category (we expect a list, use the first one if available)
+			$existing_list = \MooWoodle\Core\Category::get_filtered_categories([
+				'moodle_category_id' => $moodle_category_id
+			]);
 
-			if ( ! $existing ) {
+			$existing = $existing_list[0] ?? null;
+
+			if ( $existing ) {
+				// Update only if name or parent has changed
+				if ( $existing['name'] !== $name || (int) $existing['parent_id'] !== $parent_id ) {
+					$wpdb->update(
+						$table_name,
+						[
+							'name'      => $name,
+							'parent_id' => $parent_id,
+						],
+						[ 'moodle_category_id' => $moodle_category_id ],
+						[ '%s', '%d' ],
+						[ '%d' ]
+					);
+				}
+			} else {
 				// Insert new category
 				$wpdb->insert(
 					$table_name,
@@ -159,41 +171,34 @@ class Installer {
 					],
 					[ '%d', '%s', '%d' ]
 				);
-			} elseif ( $existing['name'] !== $name || (int) $existing['parent_id'] !== $parent_id ) {
-				// Update if name or parent has changed
-				$wpdb->update(
-					$table_name,
-					[
-						'name'      => $name,
-						'parent_id' => $parent_id,
-					],
-					[ 'moodle_category_id' => $moodle_category_id ],
-					[ '%s', '%d' ],
-					[ '%d' ]
-				);
 			}
 		}
 	}
 
-    /**
-	 * Migrate courses from post table
+
+	/**
+	 * Migrate courses from post table to MooWoodle custom course table.
 	 */
 	public static function migrate_courses() {
 		global $wpdb;
-	
+
 		$courses = get_posts( [
 			'post_type'      => 'course',
 			'post_status'    => 'any',
 			'posts_per_page' => -1,
 			'meta_key'       => 'moodle_course_id',
 		] );
-	
-		if ( empty( $courses ) ) return;
-	
+
+		if ( empty( $courses ) ) {
+			return;
+		}
+
 		foreach ( $courses as $course ) {
 			$moodle_course_id = get_post_meta( $course->ID, 'moodle_course_id', true );
-			if ( ! $moodle_course_id ) continue;
-	
+			if ( ! $moodle_course_id ) {
+				continue;
+			}
+
 			$shortname   = get_post_meta( $course->ID, '_course_short_name', true );
 			$category_id = get_post_meta( $course->ID, '_category_id', true );
 			$startdate   = get_post_meta( $course->ID, '_course_startdate', true );
@@ -201,12 +206,14 @@ class Installer {
 			$product_id  = get_post_meta( $course->ID, 'linked_product_id', true );
 
 			$table = $wpdb->prefix . Util::TABLES['course'];
-			
-			// Check if course already exists
-			$exists = \MooWoodle\Core\Course::get_course([
+
+			// Fetch existing course (expect list, use first if available)
+			$existing_list = \MooWoodle\Core\Course::get_course([
 				'moodle_course_id' => $moodle_course_id
 			]);
-	
+
+			$existing = $existing_list[0] ?? null;
+
 			$data = [
 				'moodle_course_id' => (int) $moodle_course_id,
 				'shortname'        => sanitize_text_field( $shortname ),
@@ -217,29 +224,27 @@ class Installer {
 				'enddate'          => $enddate ? (int) $enddate : null,
 				'created'          => time(),
 			];
-	
-			if ( $exists ) {
+
+			if ( $existing ) {
 				$wpdb->update(
 					$table,
 					$data,
-					[ 'id' => $exists ]
+					[ 'id' => $existing['id'] ]
 				);
-				$new_course_id = $exists;
+				$new_course_id = $existing['id'];
 			} else {
-				$wpdb->insert(
-					$table,
-					$data
-				);
+				$wpdb->insert( $table, $data );
 				$new_course_id = $wpdb->insert_id;
 			}
-	
+
 			if ( $product_id ) {
 				update_post_meta( $product_id, 'linked_course_id', $new_course_id );
 			}
-	
+
 			wp_delete_post( $course->ID, true );
 		}
 	}
+
 
     	/**
 	 * Migrate enrollment data from order to our custom table
