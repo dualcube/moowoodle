@@ -42,7 +42,7 @@ class Installer {
         }
 
         $wpdb->query(
-            "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}" . Utill::TABLES[ 'enrollment' ] . "` (
+            "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}" . Util::TABLES[ 'enrollment' ] . "` (
                 `id` bigint(20) NOT NULL AUTO_INCREMENT,
                 `user_id` bigint(20) NOT NULL DEFAULT 0,
                 `user_email` varchar(100) NOT NULL,
@@ -59,7 +59,7 @@ class Installer {
         );
 
         $wpdb->query(
-             "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}" . Utill::TABLES[ 'category' ] . "` (
+             "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}" . Util::TABLES[ 'category' ] . "` (
                 `moodle_category_id` bigint(20) NOT NULL,
                 `name` varchar(255) NOT NULL,
                 `parent_id` bigint(20) NOT NULL DEFAULT 0,
@@ -69,12 +69,13 @@ class Installer {
         
 
         $wpdb->query(
-             "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}" . Utill::TABLES[ 'course' ] . "` (
+             "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}" . Util::TABLES[ 'course' ] . "` (
                 `id` bigint(20) NOT NULL AUTO_INCREMENT,
                 `moodle_course_id` bigint(20) NOT NULL,
                 `shortname` varchar(255) NOT NULL,
                 `category_id` bigint(20) NOT NULL,
                 `fullname` text NOT NULL,
+				`product_id` bigint(20) NOT NULL,
                 `startdate` bigint(20) DEFAULT NULL,
                 `enddate` bigint(20) DEFAULT NULL,
                 `created` bigint(20) DEFAULT NULL,
@@ -198,18 +199,20 @@ class Installer {
 			$startdate   = get_post_meta( $course->ID, '_course_startdate', true );
 			$enddate     = get_post_meta( $course->ID, '_course_enddate', true );
 			$product_id  = get_post_meta( $course->ID, 'linked_product_id', true );
-	
+
+			$table = $wpdb->prefix . Util::TABLES['course'];
+			
 			// Check if course already exists
-			$exists = $wpdb->get_var( $wpdb->prepare(
-				"SELECT id FROM {$wpdb->prefix}moowoodle_courses WHERE moodle_course_id = %d",
-				$moodle_course_id
-			) );
+			$exists = \MooWoodle\Core\Course::get_course([
+				'moodle_course_id' => $moodle_course_id
+			]);
 	
 			$data = [
 				'moodle_course_id' => (int) $moodle_course_id,
 				'shortname'        => sanitize_text_field( $shortname ),
 				'category_id'      => (int) $category_id,
 				'fullname'         => sanitize_text_field( $course->post_title ),
+				'product_id'       => (int) $product_id,
 				'startdate'        => $startdate ? (int) $startdate : null,
 				'enddate'          => $enddate ? (int) $enddate : null,
 				'created'          => time(),
@@ -217,14 +220,14 @@ class Installer {
 	
 			if ( $exists ) {
 				$wpdb->update(
-					$wpdb->prefix . 'moowoodle_courses',
+					$table,
 					$data,
 					[ 'id' => $exists ]
 				);
 				$new_course_id = $exists;
 			} else {
 				$wpdb->insert(
-					$wpdb->prefix . 'moowoodle_courses',
+					$table,
 					$data
 				);
 				$new_course_id = $wpdb->insert_id;
@@ -232,7 +235,6 @@ class Installer {
 	
 			if ( $product_id ) {
 				update_post_meta( $product_id, 'linked_course_id', $new_course_id );
-				update_post_meta( $new_course_id, 'linked_product_id', $product_id );
 			}
 	
 			wp_delete_post( $course->ID, true );

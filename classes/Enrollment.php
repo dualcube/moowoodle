@@ -47,7 +47,7 @@ class Enrollment {
 			$first_name = trim( $order->get_meta( "_wc_billing/MooWoodle/first_name", true ) );
 			$last_name  = trim( $order->get_meta( "_wc_billing/MooWoodle/last_name", true ) );
 			$user_email = $order->get_meta( "_wc_billing/MooWoodle/email_address", true );
-			$user_id    = $this->get_or_create_wp_user( $first_name, $last_name, $user_email );
+			$user_id    = $this->create_wordpress_user( $first_name, $last_name, $user_email );
 		}
 
 		if ( empty( $user_id ) ) {
@@ -126,7 +126,7 @@ class Enrollment {
 		}
 	}
 
-	public function get_or_create_wp_user( $first_name, $last_name, $user_email ) {
+	public function create_wordpress_user( $first_name, $last_name, $user_email ) {
 
 		// Check if the user already exists by email
 		$user = get_user_by( 'email', $user_email );

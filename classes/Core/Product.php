@@ -149,18 +149,21 @@ class Product {
         $wp_course = MooWoodle()->course->get_course([
 			'moodle_course_id' => $course['id']
 		]);
-		
+
+
+		// Extract the course ID from the result.
+		$wp_course_id = isset($wp_course[0]['id']) ? (int) $wp_course[0]['id'] : 0;
 
         // Set product meta data.
         $product->update_meta_data( '_course_startdate', $course[ 'startdate' ] );
         $product->update_meta_data( '_course_enddate', $course[ 'enddate' ] );
         $product->update_meta_data( 'moodle_course_id', $course[ 'id' ] );
-        $product->update_meta_data( 'linked_course_id', $wp_course->id );
+        $product->update_meta_data( 'linked_course_id', $wp_course_id );
 		$product->set_status( 'publish' );
 		$product->save();
 
-		// Linked product to course.
-		update_post_meta( $wp_course->id, 'linked_product_id', $product->get_id() );
+		// Call the update_course function to update the course table.
+		MooWoodle()->course->update_course_product_id( $wp_course_id, $product->get_id() );
 
 		return $product->get_id();
 	}
@@ -221,50 +224,52 @@ class Product {
 	}
 
 	/**
-	 * Linked course with a product
+	 * Link course to a WooCommerce product (Free version).
+	 *
 	 * @param int $product_id
-	 * @return mixed
+	 * @return int
 	 */
 	public function save_product_meta_data( $product_id ) {
-		// Security check (nonce verification)
+		// Verify nonce
 		$nonce = filter_input( INPUT_POST, 'product_meta_nonce' );
 		if ( ! $nonce || ! wp_verify_nonce( $nonce ) ) {
 			return $product_id;
 		}
 
-		// Retrieve and sanitize input
 		$link_type = sanitize_text_field( filter_input( INPUT_POST, 'link_type' ) ?: '' );
 		$link_item = absint( filter_input( INPUT_POST, 'linked_item' ) ?: 0 );
 
-		// Only handle course links in Free version
+		// Only process if it's a course link
 		if ( $link_type !== 'course' ) {
 			return $product_id;
 		}
 
-		// Unlink previously linked course
-		$previous_course_id = absint( get_post_meta( $product_id, 'linked_course_id', true ) );
-		if ( $previous_course_id ) {
-			delete_post_meta( $previous_course_id, 'linked_product_id' );
+		// Unlink previous course if exists
+		$prev_course_id = absint( get_post_meta( $product_id, 'linked_course_id', true ) );
+		if ( $prev_course_id ) {
 			delete_post_meta( $product_id, 'linked_course_id' );
 			delete_post_meta( $product_id, 'moodle_course_id' );
+
+			$course = MooWoodle()->course->get_course([ 'product_id' => $product_id ]);
+			if ( ! empty( $course[0]['id'] ) ) {
+				MooWoodle()->course->update_course_product_id( (int) $course[0]['id'], 0 );
+			}
 		}
 
-		// Handle selected course link
+		// Link new course if provided
 		if ( $link_item ) {
-			update_post_meta( $link_item, 'linked_product_id', $product_id );
 			update_post_meta( $product_id, 'linked_course_id', $link_item );
 
-			$course = MooWoodle()->course->get_course( [
-				'id' => $link_item
-			]);
-
-			if ( $course ) {
-				update_post_meta( $product_id, 'moodle_course_id', $course->moodle_course_id );
+			$course = MooWoodle()->course->get_course([ 'id' => $link_item ]);
+			if ( ! empty( $course[0]['moodle_course_id'] ) ) {
+				update_post_meta( $product_id, 'moodle_course_id', (int) $course[0]['moodle_course_id'] );
 			}
+			MooWoodle()->course->update_course_product_id( (int) $course[0]['id'], $product_id );
 		}
 
 		return $product_id;
 	}
+
 
 
 }

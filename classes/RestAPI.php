@@ -254,11 +254,11 @@ class RestAPI {
         
         MooWoodle()->product->update_products( $courses );
 
-        // Pro feature: Sync all cohorts in MooWoodle (only available in Pro version)
-        do_action( 'moowoodle_sync_all_cohorts' );
+        // // Pro feature: Sync all cohorts in MooWoodle (only available in Pro version)
+        // do_action( 'moowoodle_sync_all_cohorts' );
 
-        // Pro feature: Sync all course groups in MooWoodle (only available in Pro version)
-        do_action( 'moowoodle_sync_all_course_groups' );
+        // // Pro feature: Sync all course groups in MooWoodle (only available in Pro version)
+        // do_action( 'moowoodle_sync_all_course_groups' );
 
         delete_transient( 'course_sync_running' );
 
@@ -310,12 +310,13 @@ class RestAPI {
         $courses = MooWoodle()->course->get_course([]);
 
         $categories = MooWoodle()->category->get_filtered_categories([]);
-
-         // Extract unique category IDs
+        
+        $enrollment = MooWoodle()->enrollment->
+        // Extract unique category IDs
         $ids = array_unique( wp_list_pluck( $courses, 'id' ) );
-        file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:'. var_export($courses, true) . "\n", FILE_APPEND );
-        file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:'. var_export($categories, true) . "\n", FILE_APPEND );
-        file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:'. var_export($ids, true) . "\n", FILE_APPEND );
+        // file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:'. var_export($courses, true) . "\n", FILE_APPEND );
+        // file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:'. var_export($categories, true) . "\n", FILE_APPEND );
+        // file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:'. var_export($ids, true) . "\n", FILE_APPEND );
 
         
         // if ( $search_action === 'course' && $search_field ) {
@@ -326,17 +327,12 @@ class RestAPI {
         //     $query_params[]  = '%' . $wpdb->esc_like( $search_field ) . '%';
         // }
     
-        // if ( $category_field ) {
-        //     $where_clauses[] = "category_id = %d";
-        //     $query_params[]  = intval( $category_field );
-        // }
+
     
-        // $where_sql = implode( ' AND ', $where_clauses );
     
-        // if ( $count_courses ) {
-        //     $sql = "SELECT COUNT(*) FROM $course_table WHERE $where_sql";
-        //     return rest_ensure_response( (int) $wpdb->get_var( $wpdb->prepare( $sql, $query_params ) ) );
-        // }
+        if ( $count_courses ) {
+            return rest_ensure_response( count( $courses ) );
+        }
     
         // $sql = "SELECT c.*, cat.name as category_name FROM $course_table c
         //         LEFT JOIN $category_table cat ON c.category_id = cat.moodle_category_id

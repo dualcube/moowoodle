@@ -44,15 +44,9 @@ class Course {
 	public function moowoodle_linked_course_panals() {
 		global $post;
 
-		// Get linked course and cohort IDs
 		$linked_course_id = get_post_meta( $post->ID, 'linked_course_id', true );
 		$linked_cohort_id = get_post_meta( $post->ID, 'linked_cohort_id', true );
-
-		// Determine the default link type (course or cohort)
-		$default_type = $linked_course_id ? 'course' : ( $linked_cohort_id ? 'cohort' : '' );
-
-		// Check if Pro version is active
-		$pro_active = MooWoodle()->util->is_khali_dabba();
+		$default_type     = $linked_course_id ? 'course' : ( $linked_cohort_id ? 'cohort' : '' );
 		?>
 		<div id="moowoodle_course_link_tab" class="panel">
 			<p class="form-field moowoodle-link-type-field">
@@ -63,13 +57,10 @@ class Course {
 						<?php esc_html_e( 'Course', 'moowoodle' ); ?>
 					</label>
 					<label class="moowoodle-radio-option cohort">
-						<input type="radio" name="link_type" value="cohort"
-							<?php checked( $default_type, 'cohort' ); ?>
-							<?php echo ! $pro_active ? 'disabled' : ''; ?>>
+						<input type="radio" name="link_type" value="cohort" <?php checked( $default_type, 'cohort' ); ?> 
+							<?php echo MooWoodle()->util->is_khali_dabba() ? '' : 'disabled'; ?>>
 						<?php esc_html_e( 'Cohort', 'moowoodle' ); ?>
-						<?php if ( ! $pro_active ) : ?>
-							<span>Pro</span>
-						<?php endif; ?>
+						<?php echo MooWoodle()->util->is_khali_dabba() ? '' : '<span>Pro</span>'; ?>
 					</label>
 				</span>
 			</p>
@@ -96,9 +87,7 @@ class Course {
 		</div>
 		<?php
 	}
-
-
-		
+	
 	/**
 	 * Handle request to fetch linkable items (courses/cohorts) for product linking.
 	 *
@@ -110,113 +99,129 @@ class Course {
 			wp_send_json_error( __( 'Invalid nonce', 'moowoodle' ) );
 			return;
 		}
-	
-		global $wpdb;
-	
+
 		// Retrieve and sanitize input
 		$type        = sanitize_text_field( filter_input( INPUT_POST, 'type' ) ?: '' );
 		$post_id     = absint( filter_input( INPUT_POST, 'post_id' ) ?: 0 );
 		$items       = [];
 		$selected_id = null;
-	
+
 		if ( $type === 'course' ) {
 			$selected_id = get_post_meta( $post_id, 'linked_course_id', true );
-	
+
 			if ( $selected_id ) {
-				$item = $wpdb->get_row(
-					$wpdb->prepare(
-						"SELECT id, fullname AS name FROM {$wpdb->prefix}moowoodle_courses WHERE id = %d",
-						$selected_id
-					)
-				);
-	
-				if ( $item ) {
-					$items[] = $item;
+				$courses = MooWoodle()->course->get_course([
+					'id' => $selected_id
+				]);
+
+				if ( ! empty( $courses ) ) {
+					$items[] = $courses[0];
 				}
 			} else {
-				$items = $wpdb->get_results(
-					"SELECT id, fullname AS name 
-					 FROM {$wpdb->prefix}moowoodle_courses 
-					 WHERE id NOT IN (
-						 SELECT meta_value 
-						 FROM {$wpdb->postmeta} 
-						 WHERE meta_key = 'linked_course_id'
-					 )"
-				);
+				$items = MooWoodle()->course->get_course([
+					'product_id' => 0
+				]);
 			}
-	
 			wp_send_json_success( [
 				'items'       => $items,
 				'selected_id' => $selected_id,
 			] );
 		}
-	
+
 		wp_send_json_error( __( 'Invalid type', 'moowoodle' ) );
 	}
-	
 
 	
 
 	/**
-	 * Insert or update Moodle courses into custom database table.
+	 * Insert or update Moodle courses into the custom database table.
 	 *
 	 * @param array $courses List of Moodle course objects.
 	 * @return array List of updated Moodle course IDs.
 	 */
 	public function update_courses( $courses ) {
-		$updated_ids = [];
-	
-		foreach ( $courses as $course ) {
-			$updated_id = $this->update_course( $course );
-	
-			if ( $updated_id ) {
-				$updated_ids[] = $updated_id;
-				// Only increment sync count on insert
-			    \MooWoodle\Util::increment_sync_count( 'course' );
-			}
-		}
-	
-		return $updated_ids;
-	}
-	
 
+		foreach ( $courses as $course ) {
+			// Skip site format courses
+			if ( $course['format'] === 'site' ) {
+				continue;
+			}
+
+			$moodle_course_id = (int) $course['id'];
+
+			// Check if the course already exists
+			$existing_course = $this->get_course([
+				'moodle_course_id' => (int) $course['id'],
+			]);
+
+			if ( $existing_course ) {
+				$this->update_course( $course );
+			} else {
+				$this->set_course( $course );
+			}
+
+			\MooWoodle\Util::increment_sync_count( 'course' );
+		}
+
+	}
+
+	/**
+	 * Update an existing course record.
+	 *
+	 * @param array $course Moodle course object.
+	 */
 	public function update_course( $course ) {
 		global $wpdb;
-	
+
 		$table = $wpdb->prefix . Util::TABLES['course'];
-	
-		// Skip site format courses
-		if ( $course['format'] === 'site' ) {
-			return false;
-		}
-	
-		$moodle_course_id = (int) $course['id'];
-	
-		// Prepare data for insertion or update
+
 		$data = [
-			'moodle_course_id' => $moodle_course_id,
+			'shortname'   => sanitize_text_field( $course['shortname'] ?? '' ),
+			'category_id' => (int) ( $course['categoryid'] ?? 0 ),
+			'fullname'    => sanitize_text_field( $course['fullname'] ?? '' ),
+			'startdate'   => (int) ( $course['startdate'] ?? 0 ),
+			'enddate'     => (int) ( $course['enddate'] ?? 0 ),
+		];
+
+		$wpdb->update( $table, $data, [ 'moodle_course_id' => (int) $course['id'] ] );
+	}
+
+	/**
+	 * Insert a new course record — no product_id on insert.
+	 *
+	 * @param array $course Moodle course object.
+	 */
+	public function set_course( $course ) {
+		global $wpdb;
+
+		$table = $wpdb->prefix . Util::TABLES['course'];
+
+		$data = [
+			'moodle_course_id' => (int) $course['id'],
 			'shortname'        => sanitize_text_field( $course['shortname'] ?? '' ),
 			'category_id'      => (int) ( $course['categoryid'] ?? 0 ),
 			'fullname'         => sanitize_text_field( $course['fullname'] ?? '' ),
 			'startdate'        => (int) ( $course['startdate'] ?? 0 ),
 			'enddate'          => (int) ( $course['enddate'] ?? 0 ),
+			'created'          => time(),
 		];
-	
-		// Check if the course already exists
-		$existing_course = $this->get_course([
-			'moodle_course_id' => $course['id']
-		] );
-	
-		if ( $existing_course ) {
-			// Course exists, so update it
-			$wpdb->update( $table, $data, [ 'moodle_course_id' => $moodle_course_id ] );
-		} else {
-			// Course doesn't exist, insert new course
-			$data['created'] = time();
-			$wpdb->insert( $table, $data );
-		}
-	
-		return $moodle_course_id;
+
+		$wpdb->insert( $table, $data );
+	}
+
+	/**
+	 * Update an existing course record.
+	 *
+	 * @param array $course Moodle course object.
+	 */
+	public static function update_course_product_id( $id, $product_id ) {
+		if( ! $id ) return;
+
+		global $wpdb;
+
+		$table = $wpdb->prefix . Util::TABLES['course'];
+
+		$wpdb->update( $table, [ 'product_id' => $product_id ], [ 'id' => $id ] );
 	}
 	
 
@@ -248,6 +253,10 @@ class Course {
         // Category Query
         if ( isset( $where[ 'category_id' ] ) ) {
             $query_segments[] = " ( category_id = " . $where[ 'category_id' ] . " ) ";
+        }
+
+        if ( isset( $where[ 'product_id' ] ) ) {
+            $query_segments[] = " ( product_id = " . $where[ 'product_id' ] . " ) ";
         }
 
         if ( isset( $where[ 'fullname' ] ) ) {

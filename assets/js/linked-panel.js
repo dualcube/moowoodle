@@ -24,7 +24,7 @@ jQuery(document).ready(function ($) {
 
 					response.data.items.forEach(function (item) {
 						const isSelected = selectedId == item.id ? 'selected' : '';
-						select.append(`<option value="${item.id}" ${isSelected}>${item.name}</option>`);
+						select.append(`<option value="${item.id}" ${isSelected}>${item.fullname}</option>`);
 					});
 
 					$('#dynamic-link-select').show();
