@@ -6,7 +6,7 @@ export default {
     name: __("General", 'moowoodle'),
     desc: __("Effortlessly configure and verify your WordPress-Moodle connection.", 'moowoodle'),
     icon: "adminLib-settings",
-    submitUrl: "save-moowoodle-setting",
+    submitUrl: "settings",
     modal: [
         {
             key: "moodle_url",

@@ -6,7 +6,7 @@ export default {
     name: __("Classroom", 'moowoodle'),
     desc: __("Manage group purchase", 'moowoodle'),
     icon: "adminLib-vpn_key",
-    submitUrl: "save-moowoodle-setting",
+    submitUrl: "settings",
     proDependent: true,
     modal: [
         {

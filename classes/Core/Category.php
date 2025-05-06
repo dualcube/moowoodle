@@ -204,4 +204,50 @@ class Category {
 		}
 	}
 
+	/**
+     * Get all categories
+     * @return array|object|null
+     */
+    public static function get_filtered_categories( $where ) {
+        global $wpdb;
+
+        // Store query segment
+        $query_segments = []; 
+
+        if ( isset( $where[ 'moodle_category_id' ] ) ) {
+            $query_segments[] = " ( moodle_category_id = " . $where[ 'moodle_category_id' ] . " ) ";
+        }
+
+        if ( isset( $where[ 'name' ] ) ) {
+            $query_segments[] = " ( name = " . $where[ 'name' ] . " ) ";
+        }
+
+        if ( isset( $where[ 'parent_id' ] ) ) {
+            $query_segments[] = " ( parent_id = " . $where[ 'parent_id' ] . " ) ";
+        }
+        
+		if ( isset( $where['category_ids'] ) ) {
+			$ids = implode( ',', array_map( 'intval', $where['category_ids'] ) );
+			$query_segments[] = " ( moodle_category_id IN ($ids) ) ";
+		}
+
+        // get the table
+        $table = $wpdb->prefix . Util::TABLES['category'];
+
+        // Base query
+        $query = "SELECT * FROM $table";
+
+        // Join the query parts with 'AND'
+        $where_query = implode( ' AND ', $query_segments );
+
+        if ( $where_query ) {
+            $query .= " WHERE $where_query";
+        }
+
+        // Get all rows
+        $results = $wpdb->get_results( $query, ARRAY_A );
+
+        return $results;
+    }
+
 }

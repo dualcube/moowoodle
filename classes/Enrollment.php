@@ -585,4 +585,67 @@ class Enrollment {
 		}
 	}
 	
+	/**
+	 * Get enrollment records based on filters
+	 *
+	 * @param array $where Filters like user_id, course_id, status, etc.
+	 * @return array|null
+	 */
+	public static function get_enrollments( $where ) {
+		global $wpdb;
+
+		$query_segments = [];
+
+		if ( isset( $where['id'] ) ) {
+			$query_segments[] = $wpdb->prepare( "id = %d", $where['id'] );
+		}
+
+		if ( isset( $where['user_id'] ) ) {
+			$query_segments[] = $wpdb->prepare( "user_id = %d", $where['user_id'] );
+		}
+
+		if ( isset( $where['user_email'] ) ) {
+			$query_segments[] = $wpdb->prepare( "user_email = %s", $where['user_email'] );
+		}
+
+		if ( isset( $where['course_id'] ) ) {
+			$query_segments[] = $wpdb->prepare( "course_id = %d", $where['course_id'] );
+		}
+
+		if ( isset( $where['cohort_id'] ) ) {
+			$query_segments[] = $wpdb->prepare( "cohort_id = %d", $where['cohort_id'] );
+		}
+
+		if ( isset( $where['group_id'] ) ) {
+			$query_segments[] = $wpdb->prepare( "group_id = %d", $where['group_id'] );
+		}
+
+		if ( isset( $where['status'] ) ) {
+			$query_segments[] = $wpdb->prepare( "status = %s", $where['status'] );
+		}
+
+		if ( isset( $where['date'] ) ) {
+			$query_segments[] = $wpdb->prepare( "date = %s", $where['date'] );
+		}
+
+		if ( isset( $where['group_item_id'] ) ) {
+			$query_segments[] = $wpdb->prepare( "group_item_id = %d", $where['group_item_id'] );
+		}
+
+		if ( isset( $where['ids'] ) ) {
+			$ids = implode( ',', array_map( 'intval', $where['ids'] ) );
+			$query_segments[] = " ( id IN ($ids) ) ";
+		}
+
+		$table = $wpdb->prefix . Util::TABLES['enrollment'];
+		$query = "SELECT * FROM $table";
+
+		if ( !empty( $query_segments ) ) {
+			$query .= " WHERE " . implode( ' AND ', $query_segments );
+		}
+
+		return $wpdb->get_results( $query, ARRAY_A );
+	}
+
+
 }

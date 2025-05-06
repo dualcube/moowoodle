@@ -6,7 +6,7 @@ export default {
     name: __("Tools", "moowoodle"),
     desc: __("Review all system logs and errors", "moowoodle"),
     icon: 'adminLib-tools',
-    submitUrl: "save-moowoodle-setting",
+    submitUrl: "settings",
     modal: [
         {
             key: "moowoodle_adv_log",
