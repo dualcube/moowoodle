@@ -153,14 +153,7 @@ class Category {
 		}
 	}
 
-	/**
-	 * Store Moodle categories in the database if not already present or update if changed.
-	 * 
-	 * @param array $categories An array of categories with 'id', 'name', and 'parent' fields.
-	 * @return void
-	 */
 	public static function save_categories( $categories ) {
-	
 		foreach ( $categories as $category ) {
 			// Skip if essential fields are missing.
 			if ( empty( $category['id'] ) || empty( $category['name'] ) ) {
@@ -168,22 +161,27 @@ class Category {
 			}
 	
 			$category_id = (int) $category['id'];
-			$name        = trim( sanitize_text_field( $category['name'] ) );
-			$parent_id   = (int) $category['parent'];
+	
+			$args = [
+				'moodle_category_id' => $category_id,
+				'name'               => trim( sanitize_text_field( $category['name'] ) ),
+				'parent_id'          => isset( $category['parent'] ) ? (int) $category['parent'] : 0,
+			];
 	
 			$existing = self::get_filtered_categories([
 				'moodle_category_id' => $category_id
 			]);
 	
 			if ( $existing ) {
-				self::edit_category( $category_id, $name, $parent_id );
+				self::edit_category( $category_id, $args );
 			} else {
-				self::set_category( $category_id, $name, $parent_id );
+				self::set_category( $args );
 			}
-		
+	
 			\MooWoodle\Util::increment_sync_count( 'course' );
 		}
 	}
+	
 
 	/**
      * Get all categories
@@ -231,51 +229,37 @@ class Category {
         return $results;
     }
 
-	/**
-	 * Update an existing Moodle category in the database.
-	 *
-	 * @param int    $category_id The Moodle category ID.
-	 * @param string $name        The updated category name.
-	 * @param int    $parent_id   The updated parent category ID.
-	 * @return void
-	 */
-	public static function edit_category( $category_id, $name, $parent_id ) {
+	public static function edit_category( $id, $args ) {
 		global $wpdb;
-
+	
+		if ( ! $id || empty( $args ) ) {
+			return false;
+		}
+	
 		$table_name = $wpdb->prefix . Util::TABLES['category'];
-
-		$wpdb->update(
+	
+		return $wpdb->update(
 			$table_name,
-			[
-				'name'      => trim( sanitize_text_field( $name ) ),
-				'parent_id' => (int) $parent_id,
-			],
-			[ 'moodle_category_id' => (int) $category_id ]
+			$args,
+			[ 'moodle_category_id' => $id ]
 		);
 	}
-
-	/**
-	 * Insert a new Moodle category into the database.
-	 *
-	 * @param int    $category_id The Moodle category ID.
-	 * @param string $name        The category name.
-	 * @param int    $parent_id   The parent category ID.
-	 * @return void
-	 */
-	public static function set_category( $category_id, $name, $parent_id ) {
+	
+	public static function set_category( $args ) {
 		global $wpdb;
-
+	
+		if ( empty( $args ) || empty( $args['moodle_category_id'] ) ) {
+			return false;
+		}
+	
 		$table_name = $wpdb->prefix . Util::TABLES['category'];
-
-		$wpdb->insert(
+	
+		return $wpdb->insert(
 			$table_name,
-			[
-				'moodle_category_id' => (int) $category_id,
-				'name'               => trim( sanitize_text_field( $name ) ),
-				'parent_id'          => (int) $parent_id,
-			]
+			$args
 		);
 	}
+	
 
 
 }

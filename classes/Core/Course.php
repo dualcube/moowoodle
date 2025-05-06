@@ -133,98 +133,68 @@ class Course {
 
 	
 
-	/**
-	 * Insert or update Moodle courses into the custom database table.
-	 *
-	 * @param array $courses List of Moodle course objects.
-	 * @return array List of updated Moodle course IDs.
-	 */
 	public function update_courses( $courses ) {
-
 		foreach ( $courses as $course ) {
 			// Skip site format courses
 			if ( $course['format'] === 'site' ) {
 				continue;
 			}
-
+	
 			$moodle_course_id = (int) $course['id'];
-
-			// Check if the course already exists
-			$existing_course = $this->get_course([
-				'moodle_course_id' => (int) $course['id'],
-			]);
-
-			if ( $existing_course ) {
-				$this->update_course( $course );
+	
+			$args = [
+				'moodle_course_id' => $moodle_course_id,
+				'shortname'        => sanitize_text_field( $course['shortname'] ?? '' ),
+				'category_id'      => (int) ( $course['categoryid'] ?? 0 ),
+				'fullname'         => sanitize_text_field( $course['fullname'] ?? '' ),
+				'startdate'        => (int) ( $course['startdate'] ?? 0 ),
+				'enddate'          => (int) ( $course['enddate'] ?? 0 ),
+			];
+	
+			$existing = $this->get_course([ 'moodle_course_id' => $moodle_course_id ]);
+	
+			if ( $existing ) {
+				$this->update_course( $moodle_course_id, $args );
 			} else {
-				$this->set_course( $course );
+				$args['created'] = time();
+				$this->set_course( $args );
 			}
-
+	
 			\MooWoodle\Util::increment_sync_count( 'course' );
 		}
-
-	}
-
-	/**
-	 * Update an existing course record.
-	 *
-	 * @param array $course Moodle course object.
-	 */
-	public function update_course( $course ) {
-		global $wpdb;
-
-		$table = $wpdb->prefix . Util::TABLES['course'];
-
-		$data = [
-			'shortname'   => sanitize_text_field( $course['shortname'] ?? '' ),
-			'category_id' => (int) ( $course['categoryid'] ?? 0 ),
-			'fullname'    => sanitize_text_field( $course['fullname'] ?? '' ),
-			'startdate'   => (int) ( $course['startdate'] ?? 0 ),
-			'enddate'     => (int) ( $course['enddate'] ?? 0 ),
-		];
-
-		$wpdb->update( $table, $data, [ 'moodle_course_id' => (int) $course['id'] ] );
-	}
-
-	/**
-	 * Insert a new course record — no product_id on insert.
-	 *
-	 * @param array $course Moodle course object.
-	 */
-	public function set_course( $course ) {
-		global $wpdb;
-
-		$table = $wpdb->prefix . Util::TABLES['course'];
-
-		$data = [
-			'moodle_course_id' => (int) $course['id'],
-			'shortname'        => sanitize_text_field( $course['shortname'] ?? '' ),
-			'category_id'      => (int) ( $course['categoryid'] ?? 0 ),
-			'fullname'         => sanitize_text_field( $course['fullname'] ?? '' ),
-			'startdate'        => (int) ( $course['startdate'] ?? 0 ),
-			'enddate'          => (int) ( $course['enddate'] ?? 0 ),
-			'created'          => time(),
-		];
-
-		$wpdb->insert( $table, $data );
-	}
-
-	/**
-	 * Update an existing course record.
-	 *
-	 * @param array $course Moodle course object.
-	 */
-	public static function update_course_product_id( $id, $product_id ) {
-		if( ! $id ) return;
-
-		global $wpdb;
-
-		$table = $wpdb->prefix . Util::TABLES['course'];
-
-		$wpdb->update( $table, [ 'product_id' => $product_id ], [ 'id' => $id ] );
 	}
 	
 
+	public function update_course( $moodle_course_id, $args ) {
+		global $wpdb;
+	
+		if ( ! $moodle_course_id || empty( $args ) ) {
+			return false;
+		}
+		$table = $wpdb->prefix . Util::TABLES['course'];
+	
+		return $wpdb->update(
+			$table,
+			$args,
+			[ 'moodle_course_id' => $moodle_course_id ]
+		);
+	}
+	
+	public function set_course( $args ) {
+		global $wpdb;
+	
+		if ( empty( $args ) || empty( $args['moodle_course_id'] ) ) {
+			return false;
+		}
+	
+		$table = $wpdb->prefix . Util::TABLES['course'];
+	
+		return $wpdb->insert(
+			$table,
+			$args
+		);
+	}
+	
 	/**
      * Get all course
      * @return array|object|null

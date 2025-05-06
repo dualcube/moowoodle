@@ -162,8 +162,7 @@ class Product {
 		$product->set_status( 'publish' );
 		$product->save();
 
-		// Call the update_course function to update the course table.
-		MooWoodle()->course->update_course_product_id( $wp_course_id, $product->get_id() );
+		MooWoodle()->course->update_course( $course['id'], [ 'product_id' => $product->get_id() ] );
 
 		return $product->get_id();
 	}
@@ -252,7 +251,7 @@ class Product {
 
 			$course = MooWoodle()->course->get_course([ 'product_id' => $product_id ]);
 			if ( ! empty( $course[0]['id'] ) ) {
-				MooWoodle()->course->update_course_product_id( (int) $course[0]['id'], 0 );
+				MooWoodle()->course->update_course( $course[0]['moodle_course_id'], [ 'product_id' => 0 ] );
 			}
 		}
 
@@ -261,10 +260,11 @@ class Product {
 			update_post_meta( $product_id, 'linked_course_id', $link_item );
 
 			$course = MooWoodle()->course->get_course([ 'id' => $link_item ]);
+
 			if ( ! empty( $course[0]['moodle_course_id'] ) ) {
 				update_post_meta( $product_id, 'moodle_course_id', (int) $course[0]['moodle_course_id'] );
+				MooWoodle()->course->update_course( (int) $course[0]['moodle_course_id'], [ 'product_id' => $product_id ] );
 			}
-			MooWoodle()->course->update_course_product_id( (int) $course[0]['id'], $product_id );
 		}
 
 		return $product_id;
