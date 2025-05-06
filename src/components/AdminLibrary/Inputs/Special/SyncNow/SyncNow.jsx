@@ -4,7 +4,7 @@ import { getApiLink } from "../../../../../services/apiService";
 import "./SyncNow.scss";
 
 const SyncNow = (props) => {
-  const { interval, proSetting, proSettingChanged, value, description, apilink } = props;
+  const { interval, proSetting, proSettingChanged, value, description, apilink, parameter, status } = props;
 
   // it is true when sync start
   const [syncStarted, setSyncStarted] = useState(false);
@@ -41,6 +41,7 @@ const SyncNow = (props) => {
       method: "GET",
       url: getApiLink(apilink),
       headers: { "X-WP-Nonce": appLocalizer.nonce },
+      params: { parameter: parameter }
     }).then((response) => {
       const syncData = response.data;
 
@@ -73,6 +74,7 @@ const SyncNow = (props) => {
       method: "POST",
       url: getApiLink(apilink),
       headers: { "X-WP-Nonce": appLocalizer.nonce },
+      data: {parameter: parameter}
     }).then((response) => {
       if (response.data) {
         setSyncStarted(false);

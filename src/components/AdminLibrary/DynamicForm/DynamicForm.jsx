@@ -943,6 +943,8 @@ const DynamicForm = (props) => {
           input = <SyncNow
             buttonKey={inputField.key}
             apilink={inputField.apilink} // apilink 
+            parameter={inputField.parameter}
+            // status={inputField.status}
             value={inputField.value}
             description={inputField.desc}
             proSetting={isProSetting(inputField.proSetting)}
