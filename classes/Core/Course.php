@@ -165,7 +165,7 @@ class Course {
 	}
 	
 
-	public function update_course( $moodle_course_id, $args ) {
+	public static function update_course( $moodle_course_id, $args ) {
 		global $wpdb;
 	
 		if ( ! $moodle_course_id || empty( $args ) ) {
@@ -180,7 +180,7 @@ class Course {
 		);
 	}
 	
-	public function set_course( $args ) {
+	public static function set_course( $args ) {
 		global $wpdb;
 	
 		if ( empty( $args ) || empty( $args['moodle_course_id'] ) ) {

@@ -186,6 +186,7 @@ class Installer {
 				'shortname'        => get_post_meta( $course->ID, '_course_short_name', true ),
 				'category_id'      => get_post_meta( $course->ID, '_category_id', true ),
 				'fullname'         => sanitize_text_field( $course->post_title ),
+				'product_id'       => $product_id,
 				'startdate'        => get_post_meta( $course->ID, '_course_startdate', true ),
 				'enddate'          => get_post_meta( $course->ID, '_course_enddate', true ),
 			];
