@@ -74,7 +74,7 @@ class Enrollment {
 				$enroll_data['cohort_id']        = $product->get_meta( 'linked_cohort_id', true );
 				$enroll_data['moodle_cohort_id'] = $product->get_meta( 'moodle_cohort_id', true );
 	
-				do_action( 'moowoodle_handle_group_purchase', $enroll_data );
+				do_action( 'moowoodle_handle_cohort_purchase', $enroll_data );
 			} elseif ( $product->get_meta( 'moodle_course_id', true ) ) {
 				$enroll_data['course_id']        = $product->get_meta( 'linked_course_id', true );
 				$enroll_data['moodle_course_id'] = $product->get_meta( 'moodle_course_id', true );
@@ -532,23 +532,20 @@ class Enrollment {
 			$query_segments[] = " ( id IN ($ids) ) ";
 		}
 
-		// Add LIMIT and OFFSET if present
-		if ( isset( $where['limit'] ) ) {
-			$limit = intval( $where['limit'] );
-			$query_segments[] = "LIMIT $limit";
-		}
-
-		if ( isset( $where['offset'] ) ) {
-			$offset = intval( $where['offset'] );
-			$query_segments[] = "OFFSET $offset";
-		}
-
 		// Build the query
 		$table = $wpdb->prefix . Util::TABLES['enrollment'];
-		$query = "SELECT * FROM $table";
 
+		$query = "SELECT * FROM $table";
+		
 		if ( !empty( $query_segments ) ) {
 			$query .= " WHERE " . implode( ' AND ', $query_segments );
+		}
+
+		// LIMIT and OFFSET
+		if ( isset( $where['limit'] ) && isset( $where['offset'] ) ) {
+			$limit = intval( $where['limit'] );
+			$offset = intval( $where['offset'] );
+			$query .= $wpdb->prepare( " LIMIT %d OFFSET %d", $limit, $offset );
 		}
 
 		return $wpdb->get_results( $query, ARRAY_A );

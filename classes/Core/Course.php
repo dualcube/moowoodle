@@ -189,37 +189,33 @@ class Course {
 	
 		$table = $wpdb->prefix . Util::TABLES['course'];
 	
-		return $wpdb->insert(
-			$table,
-			$args
-		);
+	    $wpdb->insert( $table, $args );
+		return $wpdb->insert_id;
 	}
 	
 	public static function get_course( $where ) {
 		global $wpdb;
 	
-		// Store query segment
-		$query_segments = []; 
+		$query_segments = [];
 	
-		// Conditions
 		if ( isset( $where['id'] ) ) {
-			$query_segments[] = " ( id = " . intval( $where['id'] ) . " ) ";
+			$query_segments[] = " ( id = " . esc_sql( intval( $where['id'] ) ) . " ) ";
 		}
 	
 		if ( isset( $where['moodle_course_id'] ) ) {
-			$query_segments[] = " ( moodle_course_id = " . intval( $where['moodle_course_id'] ) . " ) ";
+			$query_segments[] = " ( moodle_course_id = " . esc_sql( intval( $where['moodle_course_id'] ) ) . " ) ";
 		}
 	
 		if ( isset( $where['shortname'] ) ) {
 			$query_segments[] = " ( shortname = '" . esc_sql( $where['shortname'] ) . "' ) ";
 		}
-			
+	
 		if ( isset( $where['category_id'] ) ) {
-			$query_segments[] = " ( category_id = " . intval( $where['category_id'] ) . " ) ";
+			$query_segments[] = " ( category_id = " . esc_sql( intval( $where['category_id'] ) ) . " ) ";
 		}
 	
 		if ( isset( $where['product_id'] ) ) {
-			$query_segments[] = " ( product_id = " . intval( $where['product_id'] ) . " ) ";
+			$query_segments[] = " ( product_id = " . esc_sql( intval( $where['product_id'] ) ) . " ) ";
 		}
 	
 		if ( isset( $where['fullname'] ) ) {
@@ -227,36 +223,31 @@ class Course {
 		}
 	
 		if ( isset( $where['startdate'] ) ) {
-			$query_segments[] = " ( startdate = " . intval( $where['startdate'] ) . " ) ";
+			$query_segments[] = " ( startdate = " . esc_sql( intval( $where['startdate'] ) ) . " ) ";
 		}
 	
 		if ( isset( $where['enddate'] ) ) {
-			$query_segments[] = " ( enddate = " . intval( $where['enddate'] ) . " ) ";
+			$query_segments[] = " ( enddate = " . esc_sql( intval( $where['enddate'] ) ) . " ) ";
 		}
 	
-		// Table
 		$table = $wpdb->prefix . Util::TABLES['course'];
-	
-		// Base query
 		$query = "SELECT * FROM $table";
 	
-		// WHERE conditions
 		if ( ! empty( $query_segments ) ) {
 			$query .= " WHERE " . implode( ' AND ', $query_segments );
 		}
 	
-		// LIMIT and OFFSET
 		if ( isset( $where['limit'] ) && isset( $where['offset'] ) ) {
-			$limit = intval( $where['limit'] );
-			$offset = intval( $where['offset'] );
-			$query .= $wpdb->prepare( " LIMIT %d OFFSET %d", $limit, $offset );
+			$limit = esc_sql( intval( $where['limit'] ) );
+			$offset = esc_sql( intval( $where['offset'] ) );
+			$query .= " LIMIT $limit OFFSET $offset";
 		}
 	
-		// Get results
 		$results = $wpdb->get_results( $query, ARRAY_A );
 	
 		return $results;
 	}
+	
 	
 
 }

@@ -135,44 +135,23 @@ class Installer {
 		}
 
 		foreach ( $terms as $term ) {
-			$moodle_category_id = (int) $term['moodle_category_id'];
-			$name               = sanitize_text_field( $term['name'] );
-			$parent_id          = (int) $term['parent_id'];
-
-			// Fetch existing category (we expect a list, use the first one if available)
-			$existing_list = \MooWoodle\Core\Category::get_filtered_categories([
-				'moodle_category_id' => $moodle_category_id
+			$args = [
+				'moodle_category_id' => (int) $term['moodle_category_id'],
+				'name'               => sanitize_text_field( $term['name'] ),
+				'parent_id'          => (int) $term['parent_id'],
+			];
+		
+			$existing = \MooWoodle\Core\Category::get_filtered_categories([
+				'moodle_category_id' => $args['moodle_category_id']
 			]);
-
-			$existing = $existing_list[0] ?? null;
-
+		
 			if ( $existing ) {
-				// Update only if name or parent has changed
-				if ( $existing['name'] !== $name || (int) $existing['parent_id'] !== $parent_id ) {
-					$wpdb->update(
-						$table_name,
-						[
-							'name'      => $name,
-							'parent_id' => $parent_id,
-						],
-						[ 'moodle_category_id' => $moodle_category_id ],
-						[ '%s', '%d' ],
-						[ '%d' ]
-					);
-				}
+				\MooWoodle\Core\Category::edit_category( $args['moodle_category_id'], $args );
 			} else {
-				// Insert new category
-				$wpdb->insert(
-					$table_name,
-					[
-						'moodle_category_id' => $moodle_category_id,
-						'name'               => $name,
-						'parent_id'          => $parent_id,
-					],
-					[ '%d', '%s', '%d' ]
-				);
+				\MooWoodle\Core\Category::set_category( $args );
 			}
 		}
+		
 	}
 
 
@@ -199,45 +178,27 @@ class Installer {
 				continue;
 			}
 
-			$shortname   = get_post_meta( $course->ID, '_course_short_name', true );
-			$category_id = get_post_meta( $course->ID, '_category_id', true );
-			$startdate   = get_post_meta( $course->ID, '_course_startdate', true );
-			$enddate     = get_post_meta( $course->ID, '_course_enddate', true );
-			$product_id  = get_post_meta( $course->ID, 'linked_product_id', true );
+			$existing   = \MooWoodle\Core\Course::get_course( [ 'moodle_course_id' => $moodle_course_id ] );
+			$product_id = get_post_meta( $course->ID, 'linked_product_id', true );
 
-			$table = $wpdb->prefix . Util::TABLES['course'];
-
-			// Fetch existing course (expect list, use first if available)
-			$existing_list = \MooWoodle\Core\Course::get_course([
-				'moodle_course_id' => $moodle_course_id
-			]);
-
-			$existing = $existing_list[0] ?? null;
-
-			$data = [
-				'moodle_course_id' => (int) $moodle_course_id,
-				'shortname'        => sanitize_text_field( $shortname ),
-				'category_id'      => (int) $category_id,
+			$course_data = [
+				'moodle_course_id' => $moodle_course_id,
+				'shortname'        => get_post_meta( $course->ID, '_course_short_name', true ),
+				'category_id'      => get_post_meta( $course->ID, '_category_id', true ),
 				'fullname'         => sanitize_text_field( $course->post_title ),
-				'product_id'       => (int) $product_id,
-				'startdate'        => $startdate ? (int) $startdate : null,
-				'enddate'          => $enddate ? (int) $enddate : null,
-				'created'          => time(),
+				'startdate'        => get_post_meta( $course->ID, '_course_startdate', true ),
+				'enddate'          => get_post_meta( $course->ID, '_course_enddate', true ),
 			];
 
 			if ( $existing ) {
-				$wpdb->update(
-					$table,
-					$data,
-					[ 'id' => $existing['id'] ]
-				);
-				$new_course_id = $existing['id'];
+				\MooWoodle\Core\Course::update_course( $moodle_course_id, $course_data );
+				$new_course_id = $existing[0]['id'];
 			} else {
-				$wpdb->insert( $table, $data );
-				$new_course_id = $wpdb->insert_id;
+				$course_data['created'] = time();
+				$new_course_id = \MooWoodle\Core\Course::set_course( $course_data );
 			}
 
-			if ( $product_id ) {
+			if ( $product_id && $new_course_id ) {
 				update_post_meta( $product_id, 'linked_course_id', $new_course_id );
 			}
 
@@ -245,8 +206,7 @@ class Installer {
 		}
 	}
 
-
-    	/**
+    /**
 	 * Migrate enrollment data from order to our custom table
 	 * @return void
 	 */
@@ -272,53 +232,56 @@ class Installer {
 	}
 
 	/**
-	 * Migrate all enrollment from a order
+	 * Migrate all enrollment from an order.
+	 *
 	 * @param mixed $order
 	 * @return void
 	 */
 	public static function migrate_enrollment( $order ) {
-		// Get all unenrolled courses of the order
 		$unenrolled_courses = $order->get_meta( '_course_unenroled', true );
 		$unenrolled_courses = $unenrolled_courses ? explode( ',', $unenrolled_courses ) : [];
 
-		foreach ( $order->get_items() as $enrolment ) {
-
+		foreach ( $order->get_items() as $item ) {
 			$customer = $order->get_user();
-
 			if ( ! $customer ) continue;
 
-			$product = $enrolment->get_product();
-
+			$product = $item->get_product();
 			if ( ! $product ) continue;
 
-			// Get linked course id
-			$linked_course_id = $product->get_meta( 'linked_course_id', true );
 			$moodle_course_id = $product->get_meta( 'moodle_course_id', true );
-			$course = \MooWoodle\Core\Course::get_course([
-				'moodle_course_id' => $moodle_course_id
-			] );
+			$linked_course_id = $product->get_meta( 'linked_course_id', true );
+			$course = \MooWoodle\Core\Course::get_course( [ 'moodle_course_id' => $moodle_course_id ] );
 
-			// Get enrollment date
-			$enrollment_date   = $order->get_meta( 'moodle_user_enrolment_date', true );
-			if ( is_numeric( $enrollment_date) ) {
+			if ( empty( $course ) || empty( $course[0]['id'] ) ) continue;
+
+			$enrollment_date = $order->get_meta( 'moodle_user_enrolment_date', true );
+			if ( is_numeric( $enrollment_date ) ) {
 				$enrollment_date = date( "Y-m-d H:i:s", $enrollment_date );
 			}
-			
-			// Get the enrollment status
-			$enrollment_status = in_array( $linked_course_id, $unenrolled_courses ) ? 'unenrolled' : 'enrolled';
 
-			\MooWoodle\Enrollment::add_enrollment([
+			$enrollment_data = [
 				'user_id'    => $customer->ID,
 				'user_email' => $customer->user_email,
-				'course_id'  => (int)$course->id,
+				'course_id'  => (int) $course[0]['id'],
 				'order_id'   => $order->get_id(),
-				'item_id'    => $enrolment->get_id(),
-				'status'     => $enrollment_status,
+				'item_id'    => $item->get_id(),
+				'status'     => in_array( $linked_course_id, $unenrolled_courses ) ? 'unenrolled' : 'enrolled',
 				'date'       => $enrollment_date,
+			];
+
+			$existing = \MooWoodle\Enrollment::get_enrollments([
+				'user_email' => $customer->user_email,
+				'course_id'  => (int) $course[0]['id'],
 			]);
-			
+
+			if ( $existing ) {
+				\MooWoodle\Enrollment::update_enrollment( $existing[0]['id'], $enrollment_data );
+			} else {
+				\MooWoodle\Enrollment::add_enrollment( $enrollment_data );
+			}
 		}
 	}
+
 
     /**
      * Set default moowoodle admin settings.

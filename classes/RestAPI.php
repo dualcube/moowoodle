@@ -335,9 +335,12 @@ class RestAPI {
         $filters = [
             'limit'       => $limit,
             'offset'      => $offset,
-            'category_id' => $category_field === '' ? null : $category_field,
         ];
 
+        if ( ! empty( $category_field ) ) {
+            $filters['category_id'] = $category_field;
+        }
+        
         // Add search filter
         if ( $search_action === 'course' ) {
             $filters['fullname'] = $search_field;
@@ -356,7 +359,7 @@ class RestAPI {
 
         foreach ( $courses as $course ) {
             $course_id        = (int) $course['id'];
-            $product_id       = (int) ( $course['product_id'] ?? 0 );
+            $product_id       = (int) ( $course['product_id'] );
             $synced_products  = [];
             $product_image    = '';
 
@@ -549,35 +552,43 @@ class RestAPI {
      */
 
     public function get_user_courses( $request ) {
-        // file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:'. var_export("in", true) . "\n", FILE_APPEND );
 
         $user = wp_get_current_user();
     
         if ( empty( $user->ID ) ) {
             Util::log( "[MooWoodle] get_user_courses(): No logged-in user found." );
             return rest_ensure_response([
-                'data' => [],
-                'pagination' => null,
                 'status' => 'error',
-                'message' => __( 'User not found', 'moowoodle' )
             ]);
         }
-    
-        $per_page = max( 1, (int) $request->get_param( 'row' ) ?: 10 );
+        $count    = $request->get_param( 'count' );
+        
+        if( $count ) {
+            $all_enrollments = MooWoodle()->enrollment->get_enrollments([
+                'user_id' => $user->ID,
+                'status'  => 'enrolled'
+            ]);
+            return rest_ensure_response( count( $all_enrollments ));
+        }
+
+        $limit = max( 1, (int) $request->get_param( 'row' ) ?: 10 );
         $page     = max( 1, (int) $request->get_param( 'page' ) ?: 1 );
-        $offset   = ( $page - 1 ) * $per_page;
-    
+        $offset   = ( $page - 1 ) * $limit;
+
         $all_enrollments = MooWoodle()->enrollment->get_enrollments([
             'user_id' => $user->ID,
-            'status'  => 'enrolled'
+            'status'  => 'enrolled',
+            'limit'   => $limit,
+            'offset'  => $offset,
+
         ]);
 
-        $total_courses = count( $all_enrollments );
-    
-        $paged_enrollments = array_slice( $all_enrollments, $offset, $per_page );
-    
-        if ( empty( $paged_enrollments ) ) {
-            Util::log( "[MooWoodle] No enrolled courses found for user #{$user->ID}." );
+
+        if ( empty( $all_enrollments ) ) {
+            return rest_ensure_response([
+                'data' => [],
+                'status' => 'success',
+            ]);
         }
     
         $data = array_map( function( $course ) use ( $user ) {
@@ -601,20 +612,13 @@ class RestAPI {
                     )
                     : null,
             ];
-        }, $paged_enrollments );
+        }, $all_enrollments );
     
+        $data = apply_filters( 'moowoodle_user_courses_data', $data, $user );
+        
         return rest_ensure_response([
             'data' => $data,
-            'pagination' => [
-                'current_page' => $page,
-                'per_page'     => $per_page,
-                'total_items'  => $total_courses,
-                'total_pages'  => max( 1, ceil( $total_courses / $per_page ) ),
-                'next_page'    => $page < ceil( $total_courses / $per_page ) ? $page + 1 : null,
-                'prev_page'    => $page > 1 ? $page - 1 : null
-            ],
             'status' => 'success',
-            'message' => __( 'Courses fetched successfully', 'moowoodle' )
         ]);
     }
     
