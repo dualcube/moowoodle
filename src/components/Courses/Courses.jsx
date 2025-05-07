@@ -23,7 +23,7 @@ export default function Course() {
     useEffect(() => {
         axios({
             method: "get",
-            url: getApiLink('all-courses'),
+            url: getApiLink('all-filters'),
             headers: { "X-WP-Nonce": appLocalizer.nonce },
         }).then((response) => {
             setCategory(response.data.category);

@@ -490,6 +490,7 @@ class Enrollment {
 
 		$query_segments = [];
 
+		// Existing filters
 		if ( isset( $where['id'] ) ) {
 			$query_segments[] = $wpdb->prepare( "id = %d", $where['id'] );
 		}
@@ -531,6 +532,18 @@ class Enrollment {
 			$query_segments[] = " ( id IN ($ids) ) ";
 		}
 
+		// Add LIMIT and OFFSET if present
+		if ( isset( $where['limit'] ) ) {
+			$limit = intval( $where['limit'] );
+			$query_segments[] = "LIMIT $limit";
+		}
+
+		if ( isset( $where['offset'] ) ) {
+			$offset = intval( $where['offset'] );
+			$query_segments[] = "OFFSET $offset";
+		}
+
+		// Build the query
 		$table = $wpdb->prefix . Util::TABLES['enrollment'];
 		$query = "SELECT * FROM $table";
 
@@ -540,6 +553,7 @@ class Enrollment {
 
 		return $wpdb->get_results( $query, ARRAY_A );
 	}
+
 
 
 }

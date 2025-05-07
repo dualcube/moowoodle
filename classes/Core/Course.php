@@ -195,69 +195,68 @@ class Course {
 		);
 	}
 	
-	/**
-     * Get all course
-     * @return array|object|null
-     */
-    public static function get_course( $where ) {
-        global $wpdb;
-
-        // Store query segment
-        $query_segments = []; 
-
-        // User Query
-        if ( isset( $where[ 'id' ] ) ) {
-            $query_segments[] = " ( id = " . $where[ 'id' ] . " ) ";
-        }
-
-        // Role Query
-        if ( isset( $where[ 'moodle_course_id' ] ) ) {
-            $query_segments[] = " ( moodle_course_id = " . $where[ 'moodle_course_id' ] . " ) ";
-        }
-
-        // Product Query
-        if ( isset( $where[ 'shortname' ] ) ) {
-            $query_segments[] = " ( shortname = " . $where[ 'shortname' ] . " ) ";
-        }
-        
-        // Category Query
-        if ( isset( $where[ 'category_id' ] ) ) {
-            $query_segments[] = " ( category_id = " . $where[ 'category_id' ] . " ) ";
-        }
-
-        if ( isset( $where[ 'product_id' ] ) ) {
-            $query_segments[] = " ( product_id = " . $where[ 'product_id' ] . " ) ";
-        }
-
-        if ( isset( $where[ 'fullname' ] ) ) {
-            $query_segments[] = " ( fullname = " . $where[ 'fullname' ] . " ) ";
-        }
-
-        if ( isset( $where[ 'startdate' ] ) ) {
-            $query_segments[] = " ( startdate = " . $where[ 'startdate' ] . " ) ";
-        }
-
-        if ( isset( $where[ 'enddate' ] ) ) {
-            $query_segments[] = " ( enddate = " . $where[ 'enddate' ] . " ) ";
-        }
-
-        // get the table
-        $table = $wpdb->prefix . Util::TABLES['course'];
-
-        // Base query
-        $query = "SELECT * FROM $table";
-
-        // Join the query parts with 'AND'
-        $where_query = implode( ' AND ', $query_segments );
-
-        if ( $where_query ) {
-            $query .= " WHERE $where_query";
-        }
-
-        // Get all rows
-        $results = $wpdb->get_results( $query, ARRAY_A );
-
-        return $results;
-    }
+	public static function get_course( $where ) {
+		global $wpdb;
+	
+		// Store query segment
+		$query_segments = []; 
+	
+		// Conditions
+		if ( isset( $where['id'] ) ) {
+			$query_segments[] = " ( id = " . intval( $where['id'] ) . " ) ";
+		}
+	
+		if ( isset( $where['moodle_course_id'] ) ) {
+			$query_segments[] = " ( moodle_course_id = " . intval( $where['moodle_course_id'] ) . " ) ";
+		}
+	
+		if ( isset( $where['shortname'] ) ) {
+			$query_segments[] = " ( shortname = '" . esc_sql( $where['shortname'] ) . "' ) ";
+		}
+			
+		if ( isset( $where['category_id'] ) ) {
+			$query_segments[] = " ( category_id = " . intval( $where['category_id'] ) . " ) ";
+		}
+	
+		if ( isset( $where['product_id'] ) ) {
+			$query_segments[] = " ( product_id = " . intval( $where['product_id'] ) . " ) ";
+		}
+	
+		if ( isset( $where['fullname'] ) ) {
+			$query_segments[] = " ( fullname = '" . esc_sql( $where['fullname'] ) . "' ) ";
+		}
+	
+		if ( isset( $where['startdate'] ) ) {
+			$query_segments[] = " ( startdate = " . intval( $where['startdate'] ) . " ) ";
+		}
+	
+		if ( isset( $where['enddate'] ) ) {
+			$query_segments[] = " ( enddate = " . intval( $where['enddate'] ) . " ) ";
+		}
+	
+		// Table
+		$table = $wpdb->prefix . Util::TABLES['course'];
+	
+		// Base query
+		$query = "SELECT * FROM $table";
+	
+		// WHERE conditions
+		if ( ! empty( $query_segments ) ) {
+			$query .= " WHERE " . implode( ' AND ', $query_segments );
+		}
+	
+		// LIMIT and OFFSET
+		if ( isset( $where['limit'] ) && isset( $where['offset'] ) ) {
+			$limit = intval( $where['limit'] );
+			$offset = intval( $where['offset'] );
+			$query .= $wpdb->prepare( " LIMIT %d OFFSET %d", $limit, $offset );
+		}
+	
+		// Get results
+		$results = $wpdb->get_results( $query, ARRAY_A );
+	
+		return $results;
+	}
+	
 
 }

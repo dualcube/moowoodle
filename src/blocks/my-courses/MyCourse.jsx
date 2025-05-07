@@ -18,7 +18,7 @@ const MyCourse = () => {
     setError(null);
 
     try {
-      const response = await axios.get(getApiLink("courses"), {
+      const response = await axios.get(getApiLink("my-acc-courses"), {
         params: { page, row: perPage },
         headers: { "X-WP-Nonce": appLocalizer.nonce },
       });
