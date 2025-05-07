@@ -159,7 +159,6 @@ class Installer {
 	 * Migrate courses from post table to MooWoodle custom course table.
 	 */
 	public static function migrate_courses() {
-		global $wpdb;
 
 		$courses = get_posts( [
 			'post_type'      => 'course',
@@ -173,27 +172,32 @@ class Installer {
 		}
 
 		foreach ( $courses as $course ) {
-			$moodle_course_id = get_post_meta( $course->ID, 'moodle_course_id', true );
+
+			$all_meta = get_post_meta( $course->ID );
+
+			$moodle_course_id = reset( $all_meta['moodle_course_id'] ?? [] );
 			if ( ! $moodle_course_id ) {
 				continue;
 			}
 
-			$existing   = \MooWoodle\Core\Course::get_course( [ 'moodle_course_id' => $moodle_course_id ] );
-			$product_id = get_post_meta( $course->ID, 'linked_product_id', true );
+			$product_id = reset( $all_meta['linked_product_id'] ?? [] );
 
 			$course_data = [
 				'moodle_course_id' => $moodle_course_id,
-				'shortname'        => get_post_meta( $course->ID, '_course_short_name', true ),
-				'category_id'      => get_post_meta( $course->ID, '_category_id', true ),
+				'shortname'        => reset( $all_meta['_course_short_name'] ?? [] ),
+				'category_id'      => reset( $all_meta['_category_id'] ?? [] ),
 				'fullname'         => sanitize_text_field( $course->post_title ),
 				'product_id'       => $product_id,
-				'startdate'        => get_post_meta( $course->ID, '_course_startdate', true ),
-				'enddate'          => get_post_meta( $course->ID, '_course_enddate', true ),
+				'startdate'        => reset( $all_meta['_course_startdate'] ?? [] ),
+				'enddate'          => reset( $all_meta['_course_enddate'] ?? [] ),
 			];
+
+			$existing = \MooWoodle\Core\Course::get_course( [ 'moodle_course_id' => $moodle_course_id ] );
+			$existing = reset( $existing );
 
 			if ( $existing ) {
 				\MooWoodle\Core\Course::update_course( $moodle_course_id, $course_data );
-				$new_course_id = $existing[0]['id'];
+				$new_course_id = $existing['id'];
 			} else {
 				$course_data['created'] = time();
 				$new_course_id = \MooWoodle\Core\Course::set_course( $course_data );
@@ -206,6 +210,7 @@ class Installer {
 			wp_delete_post( $course->ID, true );
 		}
 	}
+
 
     /**
 	 * Migrate enrollment data from order to our custom table
@@ -239,44 +244,55 @@ class Installer {
 	 * @return void
 	 */
 	public static function migrate_enrollment( $order ) {
-		$unenrolled_courses = $order->get_meta( '_course_unenroled', true );
+		// Fetch all order meta data
+		$order_meta = $order->get_meta( '', true );
+
+		// Get unenrolled courses and enrollment date from order meta
+		$unenrolled_courses = $order_meta['_course_unenroled'] ?? '';
+		$enrollment_date = $order_meta['moodle_user_enrolment_date'] ?? '';
+
+		// Convert unenrolled courses to an array
 		$unenrolled_courses = $unenrolled_courses ? explode( ',', $unenrolled_courses ) : [];
 
 		foreach ( $order->get_items() as $item ) {
 			$customer = $order->get_user();
-			if ( ! $customer ) continue;
 
-			$product = $item->get_product();
-			if ( ! $product ) continue;
+			// Fetch all product meta data
+			$all_meta = $item->get_product()->get_meta( '', true );
 
-			$moodle_course_id = $product->get_meta( 'moodle_course_id', true );
-			$linked_course_id = $product->get_meta( 'linked_course_id', true );
+			// Get Moodle Course ID and Linked Course ID
+			$moodle_course_id = $all_meta['moodle_course_id'] ?? '';
+			$linked_course_id = $all_meta['linked_course_id'] ?? '';
+
+			// Get the course data from MooWoodle
 			$course = \MooWoodle\Core\Course::get_course( [ 'moodle_course_id' => $moodle_course_id ] );
+			$course = reset( $course );
 
-			if ( empty( $course ) || empty( $course[0]['id'] ) ) continue;
+			if ( empty( $course ) ) continue;
 
-			$enrollment_date = $order->get_meta( 'moodle_user_enrolment_date', true );
-			if ( is_numeric( $enrollment_date ) ) {
-				$enrollment_date = date( "Y-m-d H:i:s", $enrollment_date );
-			}
+			// Convert enrollment date if numeric
+			$enrollment_date = is_numeric( $enrollment_date ) ? date( "Y-m-d H:i:s", $enrollment_date ) : $enrollment_date;
 
+			// Prepare the enrollment data
 			$enrollment_data = [
 				'user_id'    => $customer->ID,
 				'user_email' => $customer->user_email,
-				'course_id'  => (int) $course[0]['id'],
+				'course_id'  => (int) $course['id'],
 				'order_id'   => $order->get_id(),
 				'item_id'    => $item->get_id(),
 				'status'     => in_array( $linked_course_id, $unenrolled_courses ) ? 'unenrolled' : 'enrolled',
 				'date'       => $enrollment_date,
 			];
 
+			// Check if an enrollment already exists for this user and course
 			$existing = \MooWoodle\Enrollment::get_enrollments([
 				'user_email' => $customer->user_email,
-				'course_id'  => (int) $course[0]['id'],
+				'course_id'  => (int) $course['id'],
 			]);
 
+			// Update or add the enrollment
 			if ( $existing ) {
-				\MooWoodle\Enrollment::update_enrollment( $existing[0]['id'], $enrollment_data );
+				\MooWoodle\Enrollment::update_enrollment( $existing['id'], $enrollment_data );
 			} else {
 				\MooWoodle\Enrollment::add_enrollment( $enrollment_data );
 			}

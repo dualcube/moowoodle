@@ -177,9 +177,11 @@ class Enrollment {
 			'course_id'     => $enroll_data['course_id'],
 			'group_item_id' => $enroll_data['group_item_id'] ?? 0,
 		]);
-
+        
+		$existing_enrollment = reset( $existing_enrollment );
+		
 		if ( $existing_enrollment ) {
-			self::update_enrollment( $existing_enrollment[0]['id'], $enrollment_data );
+			self::update_enrollment( $existing_enrollment['id'], $enrollment_data );
 		} else {
 			self::add_enrollment( $enrollment_data );
 		}

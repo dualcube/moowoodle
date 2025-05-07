@@ -310,7 +310,6 @@ class RestAPI {
      * @return \WP_Error|\WP_REST_Response
      */
     public function get_courses( $request ) {
-        global $wpdb;
 
         $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
@@ -413,7 +412,6 @@ class RestAPI {
     
 
     public function get_all_filters( $request ) {
-        global $wpdb;
     
         // Verify nonce
         $nonce = $request->get_header('X-WP-Nonce');
