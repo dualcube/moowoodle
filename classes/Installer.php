@@ -207,7 +207,7 @@ class Installer {
 				update_post_meta( $product_id, 'linked_course_id', $new_course_id );
 			}
 
-			wp_delete_post( $course->ID, true );
+			//wp_delete_post( $course->ID, true );
 		}
 	}
 
