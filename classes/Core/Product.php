@@ -38,16 +38,14 @@ class Product {
 	 * @param int|string $course_id The Moodle course ID.
 	 * @return \WC_Product|null The associated product, or null if no product is found.
 	 */
-	public static function get_product_from_moodle_course($course_id) {
-		// Sanitize course ID
-		$course_id = absint($course_id);
+	public static function get_product_from_moodle_course( $moodle_course_id ) {
 
 		// Query products with matching moodle_course_id
 		$products = wc_get_products([
 			'meta_query' => [
 				[
 					'key'     => 'moodle_course_id',
-					'value'   => $course_id,
+					'value'   => $moodle_course_id,
 					'compare' => '=',
 				],
 			],
@@ -150,15 +148,13 @@ class Product {
 			'moodle_course_id' => $course['id']
 		]);
 
-
-		// Extract the course ID from the result.
-		$wp_course_id = isset($wp_course[0]['id']) ? (int) $wp_course[0]['id'] : 0;
+		$wp_course = reset( $wp_course );
 
         // Set product meta data.
         $product->update_meta_data( '_course_startdate', $course[ 'startdate' ] );
         $product->update_meta_data( '_course_enddate', $course[ 'enddate' ] );
         $product->update_meta_data( 'moodle_course_id', $course[ 'id' ] );
-        $product->update_meta_data( 'linked_course_id', $wp_course_id );
+        $product->update_meta_data( 'linked_course_id', $wp_course['id']);
 		$product->set_status( 'publish' );
 		$product->save();
 
@@ -250,8 +246,9 @@ class Product {
 			delete_post_meta( $product_id, 'moodle_course_id' );
 
 			$course = MooWoodle()->course->get_course([ 'product_id' => $product_id ]);
-			if ( ! empty( $course[0]['id'] ) ) {
-				MooWoodle()->course->update_course( $course[0]['moodle_course_id'], [ 'product_id' => 0 ] );
+			$course = reset( $course );
+			if ( ! empty( $course['id'] ) ) {
+				MooWoodle()->course->update_course( $course['moodle_course_id'], [ 'product_id' => 0 ] );
 			}
 		}
 
@@ -260,10 +257,10 @@ class Product {
 			update_post_meta( $product_id, 'linked_course_id', $link_item );
 
 			$course = MooWoodle()->course->get_course([ 'id' => $link_item ]);
-
-			if ( ! empty( $course[0]['moodle_course_id'] ) ) {
-				update_post_meta( $product_id, 'moodle_course_id', (int) $course[0]['moodle_course_id'] );
-				MooWoodle()->course->update_course( (int) $course[0]['moodle_course_id'], [ 'product_id' => $product_id ] );
+            $course = reset ( $course );
+			if ( ! empty( $course['moodle_course_id'] ) ) {
+				update_post_meta( $product_id, 'moodle_course_id', (int) $course['moodle_course_id'] );
+				MooWoodle()->course->update_course( (int) $course['moodle_course_id'], [ 'product_id' => $product_id ] );
 			}
 		}
 

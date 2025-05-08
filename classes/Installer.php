@@ -141,15 +141,8 @@ class Installer {
 				'parent_id'          => (int) $term['parent_id'],
 			];
 		
-			$existing = \MooWoodle\Core\Category::get_filtered_categories([
-				'moodle_category_id' => $args['moodle_category_id']
-			]);
-		
-			if ( $existing ) {
-				\MooWoodle\Core\Category::edit_category( $args['moodle_category_id'], $args );
-			} else {
-				\MooWoodle\Core\Category::set_category( $args );
-			}
+			\MooWoodle\Core\Category::set_category( $args );
+
 		}
 		
 	}
@@ -183,15 +176,7 @@ class Installer {
 				'enddate'          => $all_meta['_course_enddate'][0]       ?? 0,
 			];
 			
-	
-			$existing = reset( \MooWoodle\Core\Course::get_course( [ 'moodle_course_id' => $course_data['moodle_course_id'] ] ) );
-			if ( $existing ) {
-				\MooWoodle\Core\Course::update_course( $course_data['moodle_course_id'], $course_data );
-				$new_course_id = $existing['id'];
-			} else {
-				$course_data['created'] = time();
-				$new_course_id = \MooWoodle\Core\Course::set_course( $course_data );
-			}
+			$new_course_id = \MooWoodle\Core\Course::set_course( $course_data );
 	
 			if ( ! empty( $course_data['product_id'] ) && $new_course_id ) {
 				update_post_meta( $course_data['product_id'], 'linked_course_id', $new_course_id );
@@ -227,59 +212,44 @@ class Installer {
 		}
 	}
 
-     /**
-	 * Migrate all enrollment from an order.
-	 *
-	 * @param mixed $order
-	 * @return void
-	 */
 	public static function migrate_enrollment( $order ) {
 		$unenrolled_courses = $order->get_meta( '_course_unenroled', true );
 		$unenrolled_courses = $unenrolled_courses ? explode( ',', $unenrolled_courses ) : [];
-
+	
+		$customer = $order->get_user();
+		if ( ! $customer ) return;
+	
+		$enrollment_date = $order->get_meta( 'moodle_user_enrolment_date', true );
+		if ( is_numeric( $enrollment_date ) ) {
+			$enrollment_date = date( "Y-m-d H:i:s", $enrollment_date );
+		}
+	
 		foreach ( $order->get_items() as $item ) {
-			$customer = $order->get_user();
-			if ( ! $customer ) continue;
-
 			$product = $item->get_product();
 			if ( ! $product ) continue;
-
+	
 			$moodle_course_id = $product->get_meta( 'moodle_course_id', true );
 			$linked_course_id = $product->get_meta( 'linked_course_id', true );
+	
 			$course = \MooWoodle\Core\Course::get_course( [ 'moodle_course_id' => $moodle_course_id ] );
-
-			if ( empty( $course ) || empty( $course[0]['id'] ) ) continue;
-
-			$enrollment_date = $order->get_meta( 'moodle_user_enrolment_date', true );
-			if ( is_numeric( $enrollment_date ) ) {
-				$enrollment_date = date( "Y-m-d H:i:s", $enrollment_date );
-			}
-
+			$course = reset( $course );
+			if ( empty( $course ) ) continue;
+	
 			$enrollment_data = [
 				'user_id'    => $customer->ID,
 				'user_email' => $customer->user_email,
-				'course_id'  => (int) $course[0]['id'],
+				'course_id'  => (int) $course['id'],
 				'order_id'   => $order->get_id(),
 				'item_id'    => $item->get_id(),
 				'status'     => in_array( $linked_course_id, $unenrolled_courses ) ? 'unenrolled' : 'enrolled',
 				'date'       => $enrollment_date,
 			];
+	
+			\MooWoodle\Enrollment::add_enrollment( $enrollment_data );
 
-			$existing = \MooWoodle\Enrollment::get_enrollments([
-				'user_email' => $customer->user_email,
-				'course_id'  => (int) $course[0]['id'],
-			]);
-
-			if ( $existing ) {
-				\MooWoodle\Enrollment::update_enrollment( $existing[0]['id'], $enrollment_data );
-			} else {
-				\MooWoodle\Enrollment::add_enrollment( $enrollment_data );
-			}
 		}
 	}
 	
-
-
 
     /**
      * Set default moowoodle admin settings.

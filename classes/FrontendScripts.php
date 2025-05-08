@@ -129,6 +129,7 @@ class FrontendScripts {
 			'synchronize-course',
 			'synchronize-user',
 			'classroom',
+			'synchronize-cohort'
 		];
 
 		foreach( $tabs_names as $tab_name ) {

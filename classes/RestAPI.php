@@ -196,7 +196,7 @@ class RestAPI {
             do_action( 'moowoodle_sync_all_users', $request );
         } elseif ($parameter == 'cohort') {
             // Pro feature: Sync all cohorts in MooWoodle
-            do_action( 'moowoodle_sync_all_cohorts' );
+            do_action( 'moowoodle_sync_all_cohorts', $request );
         } else {
             do_action( 'moowoodle_sync' );
         }
@@ -259,13 +259,13 @@ class RestAPI {
         MooWoodle()->course->update_courses( $courses );
         
         MooWoodle()->product->update_products( $courses );
-
-        delete_transient( 'course_sync_running' );
-
+        
         /**
          * Action hook after moowoodle course sync.
          */
         do_action( 'moowoodle_after_sync_course' );
+
+        delete_transient( 'course_sync_running' );
 
         return rest_ensure_response( true );
     }
@@ -293,14 +293,11 @@ class RestAPI {
                 'status'  => Util::get_sync_status( 'course' ),
                 'running' => get_transient( 'course_sync_running' ),
             ];
+        }else {
+            $response = apply_filters( 'moowoodle_sync_status', $request );
         }
-
-        if ($status == 'user') {
-            $response = apply_filters( 'moowoodle_sync_user_status', $response );
-
-        }
-
-        return rest_ensure_response($response);
+ 
+        return rest_ensure_response( $response );
     }
 
     /**

@@ -118,8 +118,6 @@ export default {
             interval: 2500,
             apilink: 'sync',
             parameter: 'user',
-            // apilink: 'realtime-sync-users',
-            // statusApiLink: 'sync-status-user',
             label: "Sync profiles of existing users ",
             value: "Synchronize users now!! ",
             desc: __("This will trigger immediate synchronization of all existing user accounts between WordPress and Moodle based on the configured data synchronization flow.<br><br><span class='highlighted-part'>User uniqueness will be checked based on email. If the user exists in the other system, their profile information will be synchronized; otherwise, a new user will be created.<br>Synchronizing user information fails if the same username is found in another instance but linked to a different email address.</span>", 'moowoodle'),

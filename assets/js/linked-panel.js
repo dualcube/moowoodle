@@ -24,8 +24,16 @@ jQuery(document).ready(function ($) {
 
 					response.data.items.forEach(function (item) {
 						const isSelected = selectedId == item.id ? 'selected' : '';
-						select.append(`<option value="${item.id}" ${isSelected}>${item.fullname}</option>`);
+						const fullname = item.fullname || '';
+						const cohortName = item.cohort_name || '';
+					
+						// Join only non-empty values with ' || '
+						const label = [fullname, cohortName].filter(Boolean).join(' || ');
+					
+						select.append(`<option value="${item.id}" ${isSelected}>${label}</option>`);
 					});
+					
+					
 
 					$('#dynamic-link-select').show();
 				} else {
