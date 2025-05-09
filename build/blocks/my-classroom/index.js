@@ -2525,39 +2525,63 @@ const MyClassroom = () => {
   const [newName, setNewName] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("");
   const [loading, setLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [error, setError] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
-  const [activeTab, setActiveTab] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('classrooms');
   const itemsPerPage = 10;
-  const fetchClassrooms = async () => {
+  const fetchData = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios__WEBPACK_IMPORTED_MODULE_6__["default"].get((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("classroom"), {
+      const [classroomRes, cohortRes, groupRes] = await Promise.all([axios__WEBPACK_IMPORTED_MODULE_6__["default"].get((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("classroom"), {
         params: {
           page: currentPage,
-          rows: itemsPerPage
+          rows: itemsPerPage,
+          type: "classroom"
         },
         headers: {
           "X-WP-Nonce": appLocalizer.nonce
         }
-      });
-      if (response.data.success) {
-        setClassrooms(response.data.data.classrooms);
-        setCohorts(response.data.data.cohorts);
-        setGroups(response.data.data.groups);
-        setTotalPages(response.data.pagination?.total_pages || 1);
-      } else {
-        setClassrooms([]);
-        setTotalPages(1);
-        setError((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("No classrooms found.", "moowoodle"));
-      }
+      }), axios__WEBPACK_IMPORTED_MODULE_6__["default"].get((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("classroom"), {
+        params: {
+          page: currentPage,
+          rows: itemsPerPage,
+          type: "cohort"
+        },
+        headers: {
+          "X-WP-Nonce": appLocalizer.nonce
+        }
+      }), axios__WEBPACK_IMPORTED_MODULE_6__["default"].get((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("classroom"), {
+        params: {
+          page: currentPage,
+          rows: itemsPerPage,
+          type: "group"
+        },
+        headers: {
+          "X-WP-Nonce": appLocalizer.nonce
+        }
+      })]);
+      const classroomsWithType = (classroomRes.data?.data || []).map(item => ({
+        ...item,
+        type: "classroom"
+      }));
+      const cohortsWithType = (cohortRes.data?.data || []).map(item => ({
+        ...item,
+        type: "cohort"
+      }));
+      const groupsWithType = (groupRes.data?.data || []).map(item => ({
+        ...item,
+        type: "group"
+      }));
+      setClassrooms(classroomsWithType);
+      setCohorts(cohortsWithType);
+      setGroups(groupsWithType);
+      setTotalPages(classroomRes.data?.pagination?.total_pages || 1);
     } catch (err) {
-      console.error("Error fetching classroom data:", err);
-      setError((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Failed to load classrooms.", "moowoodle"));
+      console.error("Error fetching data:", err);
+      setError((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Failed to load data.", "moowoodle"));
     }
     setLoading(false);
   };
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    fetchClassrooms();
+    fetchData();
   }, [currentPage]);
   const handlePageChange = newPage => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -2569,18 +2593,19 @@ const MyClassroom = () => {
   };
   const handleBackToClassrooms = () => {
     setSelectedClassroom(null);
-    fetchClassrooms();
+    fetchData();
   };
   const handleEditClick = group => {
-    setEditingClassroom(group.classroom_id);
-    setNewName(group.classroom_name);
+    setEditingClassroom(group.classroom_id || group.cohort_id || group.group_id);
+    setNewName(group.classroom_name || group.cohort_name || group.group_name || "");
   };
   const handleUpdateClassroom = async group => {
     if (!newName.trim()) return;
     try {
       const response = await axios__WEBPACK_IMPORTED_MODULE_6__["default"].post((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("classroom"), {
-        classroom_id: group.classroom_id,
-        name: newName
+        id: group.classroom_id || group.item_id || group.item_id,
+        name: newName,
+        type: group.type
       }, {
         headers: {
           "X-WP-Nonce": appLocalizer.nonce
@@ -2588,20 +2613,62 @@ const MyClassroom = () => {
       });
       const [success, message] = response.data;
       if (success) {
-        setClassrooms(prevClassrooms => prevClassrooms.map(g => g.classroom_id === group.classroom_id ? {
-          ...g,
-          classroom_name: newName
-        } : g));
-        setEditingClassroom(null); // Close input field
-        setNewName(""); // Clear input
+        const updatedName = newName;
+        if (group.type === "classroom") {
+          setClassrooms(prev => prev.map(g => g.classroom_id === group.classroom_id ? {
+            ...g,
+            classroom_name: updatedName
+          } : g));
+        } else if (group.type === "cohort") {
+          setCohorts(prev => prev.map(g => g.cohort_id === group.cohort_id ? {
+            ...g,
+            cohort_name: updatedName
+          } : g));
+        } else if (group.type === "group") {
+          setGroups(prev => prev.map(g => g.group_id === group.group_id ? {
+            ...g,
+            group_name: updatedName
+          } : g));
+        }
+        setEditingClassroom(null);
+        setNewName("");
       } else {
-        alert(message || (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Failed to rename classroom.", "moowoodle"));
+        alert(message || (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Failed to rename.", "moowoodle"));
       }
     } catch (error) {
-      console.error("Error renaming classroom:", error);
-      alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("An error occurred while updating the classroom.", "moowoodle"));
+      console.error("Error updating:", error);
+      alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("An error occurred while renaming.", "moowoodle"));
     }
   };
+  const renderEditableTitle = (group, id, name) => editingClassroom === id ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+      type: "text",
+      value: newName,
+      onChange: e => setNewName(e.target.value),
+      onKeyDown: e => e.key === "Enter" && handleUpdateClassroom(group),
+      className: "edit-input"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+      className: "button-group",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
+        className: "cancel-btn",
+        onClick: () => setEditingClassroom(null),
+        children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Cancel", "moowoodle")
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
+        className: "save-btn",
+        onClick: () => handleUpdateClassroom(group),
+        children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Save", "moowoodle")
+      })]
+    })]
+  }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+    className: "heading-text",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h2", {
+      children: name
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+      className: "edit-button",
+      onClick: () => handleEditClick(group),
+      children: "\u270F\uFE0F"
+    })]
+  });
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
     className: "classroom-container",
     children: selectedClassroom ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_ViewEnroll__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -2620,59 +2687,14 @@ const MyClassroom = () => {
         children: error
       }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-          className: "tabs",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
-            className: activeTab === 'classrooms' ? 'active' : '',
-            onClick: () => setActiveTab('classrooms'),
-            children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Classrooms", "moowoodle")
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
-            className: activeTab === 'cohorts' ? 'active' : '',
-            onClick: () => setActiveTab('cohorts'),
-            children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Cohorts", "moowoodle")
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
-            className: activeTab === 'groups' ? 'active' : '',
-            onClick: () => setActiveTab('groups'),
-            children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Groups", "moowoodle")
-          })]
-        }), activeTab === 'classrooms' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
           className: "classroom-grid",
-          children: classrooms.length > 0 ? classrooms.map(group => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+          children: [classrooms.map(group => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
             className: "classroom-card",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
               className: "classroom-title",
-              children: editingClassroom === group.classroom_id ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
-                  type: "text",
-                  value: newName,
-                  onChange: e => setNewName(e.target.value),
-                  onKeyDown: e => e.key === "Enter" && handleUpdateClassroom(group),
-                  className: "edit-input"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-                  className: "button-group",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
-                    className: "cancel-btn",
-                    onClick: () => setEditingClassroom(null),
-                    children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Cancel", "moowoodle")
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
-                    className: "save-btn",
-                    onClick: () => handleUpdateClassroom(group),
-                    children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Save", "moowoodle")
-                  })]
-                })]
-              }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-                  className: "heading-text",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h2", {
-                    children: group.classroom_name
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
-                    className: "edit-button",
-                    onClick: () => handleEditClick(group),
-                    children: "\u270F\uFE0F"
-                  })]
-                })
-              })
+              children: renderEditableTitle(group, group.classroom_id, group.classroom_name)
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("ul", {
-              children: group.items && group.items.length > 0 ? group.items.map((item, index) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("li", {
+              children: group.courses?.length > 0 ? group.courses.map((item, index) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("li", {
                 children: item.course_name
               }, index)) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("li", {
                 children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("No courses available", "moowoodle")
@@ -2685,21 +2707,11 @@ const MyClassroom = () => {
                 children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("View", "moowoodle")
               })
             })]
-          }, group.classroom_id)) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
-            children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("No classrooms found.", "moowoodle")
-          })
-        }), activeTab === 'cohorts' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-          className: "classroom-grid",
-          children: cohorts.length > 0 ? cohorts.map(cohort => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+          }, group.classroom_id)), cohorts.map(cohort => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
             className: "classroom-card",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
               className: "classroom-title",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-                className: "heading-text",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h2", {
-                  children: cohort.cohort_name
-                })
-              })
+              children: renderEditableTitle(cohort, cohort.cohort_id, cohort.cohort_name)
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
               className: "view-btn-container",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
@@ -2708,21 +2720,11 @@ const MyClassroom = () => {
                 children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("View", "moowoodle")
               })
             })]
-          }, cohort.cohort_id)) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
-            children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("No cohorts found.", "moowoodle")
-          })
-        }), activeTab === 'groups' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-          className: "classroom-grid",
-          children: groups.length > 0 ? groups.map(group => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+          }, cohort.cohort_id)), groups.map(group => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
             className: "classroom-card",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
               className: "classroom-title",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-                className: "heading-text",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h2", {
-                  children: group.group_name
-                })
-              })
+              children: renderEditableTitle(group, group.group_id, `${group.course_name} (${group.group_name})`)
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
               className: "view-btn-container",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
@@ -2731,9 +2733,9 @@ const MyClassroom = () => {
                 children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("View", "moowoodle")
               })
             })]
-          }, group.group_id)) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
-            children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("No groups found.", "moowoodle")
-          })
+          }, group.group_id)), classrooms.length === 0 && cohorts.length === 0 && groups.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+            children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("No classrooms, cohorts, or groups found.", "moowoodle")
+          })]
         }), totalPages > 1 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
           className: "pagination",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
@@ -2810,8 +2812,9 @@ const ViewEnroll = ({
   const studentsPerPage = 5;
   const defaultImageUrl = "https://cus.dualcube.com/mvx2/wp-content/uploads/2025/04/beanie-2-3-416x416.jpg";
   const fetchClassroomData = async (page = 1) => {
+    console.log(classroom);
     try {
-      if (classroom?.classroom_id) {
+      if (classroom?.type == 'classroom') {
         let response = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].get((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("view-classroom"), {
           params: {
             classroom_id: classroom.classroom_id,
@@ -2842,13 +2845,13 @@ const ViewEnroll = ({
           console.error("Failed to load classroom data:", response.message);
         }
       }
-      if (classroom?.cohort_id || classroom?.group_id) {
-        const params = classroom?.cohort_id ? {
+      if (classroom?.type == 'cohort' || classroom?.type == 'group') {
+        const params = classroom?.type == 'cohort' ? {
           cohort_id: classroom.cohort_id,
-          cohort_item_id: classroom.cohort_item_id
+          cohort_item_id: classroom.item_id
         } : {
           group_id: classroom.group_id,
-          group_item_id: classroom.group_item_id
+          group_item_id: classroom.item_id
         };
         let response = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].get((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("view-cohort"), {
           params: {
@@ -2880,8 +2883,8 @@ const ViewEnroll = ({
   }, [currentPage]);
   const courseOptions = availableCourses.map(item => ({
     value: item.course_id,
-    label: item.name,
-    group_item_id: item.group_item_id
+    label: item.course_name,
+    group_item_id: item.item_id
   }));
   const handleInputChange = e => {
     setNewStudent({
@@ -3170,7 +3173,7 @@ const ViewEnroll = ({
           className: "course",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("img", {
             src: course.image_url || defaultImageUrl,
-            alt: course.name
+            alt: course.course_name
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
             className: "course-name",
             children: [course.name, " (", course.total_quantity - course.available_quantity, "/", course.total_quantity, ")"]

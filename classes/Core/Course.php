@@ -248,6 +248,4 @@ class Course {
 		return $results;
 	}
 	
-	
-
 }

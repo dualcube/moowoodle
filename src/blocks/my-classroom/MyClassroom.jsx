@@ -16,39 +16,55 @@ const MyClassroom = () => {
   const [newName, setNewName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState('classrooms');
   const itemsPerPage = 10;
 
-  const fetchClassrooms = async () => {
+  const fetchData = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await axios.get(getApiLink("classroom"), {
-        params: { page: currentPage, rows: itemsPerPage },
-        headers: { "X-WP-Nonce": appLocalizer.nonce },
-      });
+      const [classroomRes, cohortRes, groupRes] = await Promise.all([
+        axios.get(getApiLink("classroom"), {
+          params: { page: currentPage, rows: itemsPerPage, type: "classroom" },
+          headers: { "X-WP-Nonce": appLocalizer.nonce },
+        }),
+        axios.get(getApiLink("classroom"), {
+          params: { page: currentPage, rows: itemsPerPage, type: "cohort" },
+          headers: { "X-WP-Nonce": appLocalizer.nonce },
+        }),
+        axios.get(getApiLink("classroom"), {
+          params: { page: currentPage, rows: itemsPerPage, type: "group" },
+          headers: { "X-WP-Nonce": appLocalizer.nonce },
+        }),
+      ]);
 
-      if (response.data.success) {
-        setClassrooms(response.data.data.classrooms);
-        setCohorts(response.data.data.cohorts);
-        setGroups(response.data.data.groups);
-        setTotalPages(response.data.pagination?.total_pages || 1);
-      } else {
-        setClassrooms([]);
-        setTotalPages(1);
-        setError(__("No classrooms found.", "moowoodle"));
-      }
+      const classroomsWithType = (classroomRes.data?.data || []).map((item) => ({
+        ...item,
+        type: "classroom",
+      }));
+      const cohortsWithType = (cohortRes.data?.data || []).map((item) => ({
+        ...item,
+        type: "cohort",
+      }));
+      const groupsWithType = (groupRes.data?.data || []).map((item) => ({
+        ...item,
+        type: "group",
+      }));
+
+      setClassrooms(classroomsWithType);
+      setCohorts(cohortsWithType);
+      setGroups(groupsWithType);
+      setTotalPages(classroomRes.data?.pagination?.total_pages || 1);
     } catch (err) {
-      console.error("Error fetching classroom data:", err);
-      setError(__("Failed to load classrooms.", "moowoodle"));
+      console.error("Error fetching data:", err);
+      setError(__("Failed to load data.", "moowoodle"));
     }
 
     setLoading(false);
   };
 
   useEffect(() => {
-    fetchClassrooms();
+    fetchData();
   }, [currentPage]);
 
   const handlePageChange = (newPage) => {
@@ -63,12 +79,14 @@ const MyClassroom = () => {
 
   const handleBackToClassrooms = () => {
     setSelectedClassroom(null);
-    fetchClassrooms();
+    fetchData();
   };
 
   const handleEditClick = (group) => {
-    setEditingClassroom(group.classroom_id);
-    setNewName(group.classroom_name);
+    setEditingClassroom(group.classroom_id || group.cohort_id || group.group_id);
+    setNewName(
+      group.classroom_name || group.cohort_name || group.group_name || ""
+    );
   };
 
   const handleUpdateClassroom = async (group) => {
@@ -77,28 +95,84 @@ const MyClassroom = () => {
     try {
       const response = await axios.post(
         getApiLink("classroom"),
-        { classroom_id: group.classroom_id, name: newName },
+        {
+          id: group.classroom_id || group.item_id || group.item_id,
+          name: newName,
+          type: group.type,
+        },
         { headers: { "X-WP-Nonce": appLocalizer.nonce } }
       );
 
       const [success, message] = response.data;
 
       if (success) {
-        setClassrooms((prevClassrooms) =>
-          prevClassrooms.map((g) =>
-            g.classroom_id === group.classroom_id ? { ...g, classroom_name: newName } : g
-          )
-        );
-        setEditingClassroom(null); // Close input field
-        setNewName(""); // Clear input
+        const updatedName = newName;
+
+        if (group.type === "classroom") {
+          setClassrooms((prev) =>
+            prev.map((g) =>
+              g.classroom_id === group.classroom_id
+                ? { ...g, classroom_name: updatedName }
+                : g
+            )
+          );
+        } else if (group.type === "cohort") {
+          setCohorts((prev) =>
+            prev.map((g) =>
+              g.cohort_id === group.cohort_id
+                ? { ...g, cohort_name: updatedName }
+                : g
+            )
+          );
+        } else if (group.type === "group") {
+          setGroups((prev) =>
+            prev.map((g) =>
+              g.group_id === group.group_id
+                ? { ...g, group_name: updatedName }
+                : g
+            )
+          );
+        }
+
+        setEditingClassroom(null);
+        setNewName("");
       } else {
-        alert(message || __("Failed to rename classroom.", "moowoodle"));
+        alert(message || __("Failed to rename.", "moowoodle"));
       }
     } catch (error) {
-      console.error("Error renaming classroom:", error);
-      alert(__("An error occurred while updating the classroom.", "moowoodle"));
+      console.error("Error updating:", error);
+      alert(__("An error occurred while renaming.", "moowoodle"));
     }
   };
+
+  const renderEditableTitle = (group, id, name) => (
+    editingClassroom === id ? (
+      <>
+        <input
+          type="text"
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleUpdateClassroom(group)}
+          className="edit-input"
+        />
+        <div className="button-group">
+          <a className="cancel-btn" onClick={() => setEditingClassroom(null)}>
+            {__("Cancel", "moowoodle")}
+          </a>
+          <a className="save-btn" onClick={() => handleUpdateClassroom(group)}>
+            {__("Save", "moowoodle")}
+          </a>
+        </div>
+      </>
+    ) : (
+      <div className="heading-text">
+        <h2>{name}</h2>
+        <span className="edit-button" onClick={() => handleEditClick(group)}>
+          ✏️
+        </span>
+      </div>
+    )
+  );
 
   return (
     <div className="classroom-container">
@@ -119,154 +193,68 @@ const MyClassroom = () => {
             <p className="error-message">{error}</p>
           ) : (
             <>
-              {/* Tab Buttons */}
-              <div className="tabs">
-                <button
-                  className={activeTab === 'classrooms' ? 'active' : ''}
-                  onClick={() => setActiveTab('classrooms')}
-                >
-                  {__("Classrooms", "moowoodle")}
-                </button>
-                <button
-                  className={activeTab === 'cohorts' ? 'active' : ''}
-                  onClick={() => setActiveTab('cohorts')}
-                >
-                  {__("Cohorts", "moowoodle")}
-                </button>
-                <button
-                  className={activeTab === 'groups' ? 'active' : ''}
-                  onClick={() => setActiveTab('groups')}
-                >
-                  {__("Groups", "moowoodle")}
-                </button>
+              <div className="classroom-grid">
+                {classrooms.map((group) => (
+                  <div key={group.classroom_id} className="classroom-card">
+                    <div className="classroom-title">
+                      {renderEditableTitle(group, group.classroom_id, group.classroom_name)}
+                    </div>
+                    <ul>
+                      {group.courses?.length > 0 ? (
+                        group.courses.map((item, index) => (
+                          <li key={index}>{item.course_name}</li>
+                        ))
+                      ) : (
+                        <li>{__("No courses available", "moowoodle")}</li>
+                      )}
+                    </ul>
+                    <div className="view-btn-container">
+                      <button
+                        className="view-button"
+                        onClick={() => handleViewEnroll(group)}
+                      >
+                        {__("View", "moowoodle")}
+                      </button>
+                    </div>
+                  </div>
+                ))}
+
+                {cohorts.map((cohort) => (
+                  <div key={cohort.cohort_id} className="classroom-card">
+                    <div className="classroom-title">
+                      {renderEditableTitle(cohort, cohort.cohort_id, cohort.cohort_name)}
+                    </div>
+                    <div className="view-btn-container">
+                      <button
+                        className="view-button"
+                        onClick={() => handleViewEnroll(cohort)}
+                      >
+                        {__("View", "moowoodle")}
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                {groups.map((group) => (
+                  <div key={group.group_id} className="classroom-card">
+                    <div className="classroom-title">
+                      {renderEditableTitle(group, group.group_id, `${group.course_name} (${group.group_name})`)}
+                    </div>
+                    <div className="view-btn-container">
+                      <button
+                        className="view-button"
+                        onClick={() => handleViewEnroll(group)}
+                      >
+                        {__("View", "moowoodle")}
+                      </button>
+                    </div>
+                  </div>
+                ))}
+
+                {classrooms.length === 0 && cohorts.length === 0 && groups.length === 0 && (
+                  <p>{__("No classrooms, cohorts, or groups found.", "moowoodle")}</p>
+                )}
               </div>
 
-              {/* Tab Content */}
-              {activeTab === 'classrooms' && (
-                <div className="classroom-grid">
-                  {classrooms.length > 0 ? (
-                    classrooms.map((group) => (
-                      <div key={group.classroom_id} className="classroom-card">
-                        <div className="classroom-title">
-                          {editingClassroom === group.classroom_id ? (
-                            <>
-                              <input
-                                type="text"
-                                value={newName}
-                                onChange={(e) => setNewName(e.target.value)}
-                                onKeyDown={(e) =>
-                                  e.key === "Enter" && handleUpdateClassroom(group)
-                                }
-                                className="edit-input"
-                              />
-                              <div className="button-group">
-                                <a
-                                  className="cancel-btn"
-                                  onClick={() => setEditingClassroom(null)}
-                                >
-                                  {__("Cancel", "moowoodle")}
-                                </a>
-                                <a
-                                  className="save-btn"
-                                  onClick={() => handleUpdateClassroom(group)}
-                                >
-                                  {__("Save", "moowoodle")}
-                                </a>
-                              </div>
-                            </>
-                          ) : (
-                            <>
-                              <div className="heading-text">
-                                <h2>{group.classroom_name}</h2>
-                                <span
-                                  className="edit-button"
-                                  onClick={() => handleEditClick(group)}
-                                >
-                                  ✏️
-                                </span>
-                              </div>
-                            </>
-                          )}
-                        </div>
-
-                        <ul>
-                          {group.items && group.items.length > 0 ? (
-                            group.items.map((item, index) => (
-                              <li key={index}>{item.course_name}</li>
-                            ))
-                          ) : (
-                            <li>{__("No courses available", "moowoodle")}</li>
-                          )}
-                        </ul>
-                        <div className="view-btn-container">
-                          <button
-                            className="view-button"
-                            onClick={() => handleViewEnroll(group)}
-                          >
-                            {__("View", "moowoodle")}
-                          </button>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p>{__("No classrooms found.", "moowoodle")}</p>
-                  )}
-                </div>
-              )}
-
-              {activeTab === 'cohorts' && (
-                <div className="classroom-grid">
-                  {cohorts.length > 0 ? (
-                    cohorts.map((cohort) => (
-                      <div key={cohort.cohort_id} className="classroom-card">
-                        <div className="classroom-title">
-                          <div className="heading-text">
-                            <h2>{cohort.cohort_name}</h2>
-                          </div>
-                        </div>
-                        <div className="view-btn-container">
-                          <button
-                            className="view-button"
-                            onClick={() => handleViewEnroll(cohort)}
-                          >
-                            {__("View", "moowoodle")}
-                          </button>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p>{__("No cohorts found.", "moowoodle")}</p>
-                  )}
-                </div>
-              )}
-
-              {activeTab === 'groups' && (
-                <div className="classroom-grid">
-                  {groups.length > 0 ? (
-                    groups.map((group) => (
-                      <div key={group.group_id} className="classroom-card">
-                        <div className="classroom-title">
-                          <div className="heading-text">
-                            <h2>{group.group_name}</h2>
-                          </div>
-                        </div>
-                        <div className="view-btn-container">
-                          <button
-                            className="view-button"
-                            onClick={() => handleViewEnroll(group)}
-                          >
-                            {__("View", "moowoodle")}
-                          </button>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p>{__("No groups found.", "moowoodle")}</p>
-                  )}
-                </div>
-              )}
-
-              {/* Pagination Controls */}
               {totalPages > 1 && (
                 <div className="pagination">
                   <button
@@ -275,11 +263,9 @@ const MyClassroom = () => {
                   >
                     {__("Previous", "moowoodle")}
                   </button>
-
                   <span className="page-info">
                     {__("Page", "moowoodle")} {currentPage} {__("of", "moowoodle")} {totalPages}
                   </span>
-
                   <button
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage >= totalPages}

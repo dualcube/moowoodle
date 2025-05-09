@@ -139,6 +139,14 @@ class Enrollment {
 			return false;
 		}
 
+		if ( $enroll_data['group_item_id'] ?? false ) {
+			// Apply the filter and check result
+			if ( ! apply_filters( 'moowoodle_check_item', $enroll_data['group_item_id'] ) ) {
+				return false;
+			}		
+		}
+		
+
 		$moodle_user_id = $this->get_moodle_user_id( $enroll_data );
 		if ( empty( $moodle_user_id ) ) {
 			Util::log( "[MooWoodle] Missing Moodle user ID for purchaser {$enroll_data['purchaser_id']}." );
@@ -185,7 +193,9 @@ class Enrollment {
 		} else {
 			self::add_enrollment( $enrollment_data );
 		}
-
+		if ( $enroll_data['group_item_id'] ?? false ) {
+			do_action( 'moowoodle_seat_book', $enroll_data['group_item_id'] );
+		}
 		return true;
 	}
 
@@ -490,9 +500,18 @@ class Enrollment {
 	public static function get_enrollments( $where ) {
 		global $wpdb;
 
+		$table = $wpdb->prefix . Util::TABLES['enrollment'];
 		$query_segments = [];
 
-		// Existing filters
+		// Default SELECT clause
+		$select = '*';
+
+		// Handle custom SELECT fields
+		if ( isset( $where['select'] ) ) {
+			$select = esc_sql( $where['select'] );
+		}
+
+		// Apply filters
 		if ( isset( $where['id'] ) ) {
 			$query_segments[] = $wpdb->prepare( "id = %d", $where['id'] );
 		}
@@ -517,6 +536,10 @@ class Enrollment {
 			$query_segments[] = $wpdb->prepare( "group_id = %d", $where['group_id'] );
 		}
 
+		if ( isset( $where['group_item_id'] ) ) {
+			$query_segments[] = $wpdb->prepare( "group_item_id = %d", $where['group_item_id'] );
+		}
+
 		if ( isset( $where['status'] ) ) {
 			$query_segments[] = $wpdb->prepare( "status = %s", $where['status'] );
 		}
@@ -525,22 +548,34 @@ class Enrollment {
 			$query_segments[] = $wpdb->prepare( "date = %s", $where['date'] );
 		}
 
-		if ( isset( $where['group_item_id'] ) ) {
-			$query_segments[] = $wpdb->prepare( "group_item_id = %d", $where['group_item_id'] );
-		}
-
-		if ( isset( $where['ids'] ) ) {
+		if ( isset( $where['ids'] ) && is_array( $where['ids'] ) ) {
 			$ids = implode( ',', array_map( 'intval', $where['ids'] ) );
-			$query_segments[] = " ( id IN ($ids) ) ";
+			$query_segments[] = "id IN ($ids)";
 		}
 
-		// Build the query
-		$table = $wpdb->prefix . Util::TABLES['enrollment'];
+		if ( isset( $where['group_item_ids'] ) && is_array( $where['group_item_ids'] ) ) {
+			$ids = implode( ',', array_map( 'intval', $where['group_item_ids'] ) );
+			$query_segments[] = "group_item_id IN ($ids)";
+		}
 
-		$query = "SELECT * FROM $table";
-		
+		// Start building the query
+		$query = "SELECT $select FROM $table";
+
+		// WHERE clause
 		if ( !empty( $query_segments ) ) {
 			$query .= " WHERE " . implode( ' AND ', $query_segments );
+		}
+
+		// GROUP BY clause
+		if ( isset( $where['group_by'] ) ) {
+			$group_by = sanitize_sql_orderby( $where['group_by'] );
+			$query .= " GROUP BY $group_by";
+		}
+
+		// ORDER BY clause
+		if ( isset( $where['order_by'] ) ) {
+			$order_by = sanitize_sql_orderby( $where['order_by'] );
+			$query .= " ORDER BY $order_by";
 		}
 
 		// LIMIT and OFFSET
@@ -552,6 +587,7 @@ class Enrollment {
 
 		return $wpdb->get_results( $query, ARRAY_A );
 	}
+
 
 
 

@@ -34,8 +34,10 @@ const ViewEnroll = ({ classroom }) => {
     "https://cus.dualcube.com/mvx2/wp-content/uploads/2025/04/beanie-2-3-416x416.jpg";
 
   const fetchClassroomData = async (page = 1) => {
+    console.log(classroom);
+
     try {
-      if (classroom?.classroom_id) {
+      if (classroom?.type == 'classroom') {
 
         let response = await axios.get(getApiLink("view-classroom"), {
           params: {
@@ -69,15 +71,15 @@ const ViewEnroll = ({ classroom }) => {
           console.error("Failed to load classroom data:", response.message);
         }
 
-      } if (classroom?.cohort_id || classroom?.group_id) {
-        const params = classroom?.cohort_id
+      } if (classroom?.type == 'cohort' || classroom?.type == 'group' )  {
+        const params = classroom?.type == 'cohort'
           ? {
             cohort_id: classroom.cohort_id,
-            cohort_item_id: classroom.cohort_item_id,
+            cohort_item_id: classroom.item_id,
           }
           : {
             group_id: classroom.group_id,
-            group_item_id: classroom.group_item_id,
+            group_item_id: classroom.item_id,
           };
 
         let response = await axios.get(getApiLink("view-cohort"), {
@@ -117,8 +119,8 @@ const ViewEnroll = ({ classroom }) => {
 
   const courseOptions = availableCourses.map((item) => ({
     value: item.course_id,
-    label: item.name,
-    group_item_id: item.group_item_id,
+    label: item.course_name,
+    group_item_id: item.item_id,
   }));
 
   const handleInputChange = (e) => {
@@ -434,7 +436,7 @@ const ViewEnroll = ({ classroom }) => {
               <div className="course" key={index}>
                 <img
                   src={course.image_url || defaultImageUrl}
-                  alt={course.name}
+                  alt={course.course_name}
                 />
                 <div className="course-name">
                   {course.name} (
