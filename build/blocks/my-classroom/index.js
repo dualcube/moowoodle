@@ -2812,7 +2812,6 @@ const ViewEnroll = ({
   const studentsPerPage = 5;
   const defaultImageUrl = "https://cus.dualcube.com/mvx2/wp-content/uploads/2025/04/beanie-2-3-416x416.jpg";
   const fetchClassroomData = async (page = 1) => {
-    console.log(classroom);
     try {
       if (classroom?.type == 'classroom') {
         let response = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].get((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("view-classroom"), {
@@ -2905,45 +2904,56 @@ const ViewEnroll = ({
   };
   const handleEnrollStudent = async e => {
     e.preventDefault();
-    if (classroom?.classroom_id) {
-      if (!newStudent.first_name || !newStudent.last_name || !newStudent.email || !Array.isArray(newStudent.courses) || !newStudent.courses.length) {
-        alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Please fill in all fields.", "moowoodle"));
-        return;
-      }
-    } else {
-      if (!newStudent.first_name || !newStudent.last_name || !newStudent.email) {
-        alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Please fill in all fields.", "moowoodle"));
-        return;
-      }
+    const {
+      first_name,
+      last_name,
+      email,
+      courses
+    } = newStudent;
+    const {
+      type,
+      classroom_id
+    } = classroom;
+    // Basic validation
+    const isEmpty = !first_name || !last_name || !email;
+    const isClassroomCourseMissing = type === "classroom" && (!Array.isArray(courses) || courses.length === 0);
+    if (isEmpty || isClassroomCourseMissing) {
+      alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Please fill in all required fields.", "moowoodle"));
+      return;
     }
     setIsLoading(true);
-    let payload = {
-      email: newStudent.email,
-      first_name: newStudent.first_name,
-      last_name: newStudent.last_name
-    };
-    if (classroom.classroom_id) {
-      payload = {
-        ...payload,
-        classroom_id: classroom.classroom_id,
-        order_id: classroom?.order_id || 0,
-        course_selections: newStudent.courses.map(course => ({
-          course_id: course.course_id,
-          classroom_item_id: course.group_item_id
+
+    // Build payload
+    const payload = {
+      type,
+      first_name,
+      last_name,
+      email,
+      ...(type === "classroom" && {
+        classroom_id,
+        order_id: classroom.order_id || 0,
+        course_selections: courses.map(({
+          course_id,
+          group_item_id
+        }) => ({
+          course_id,
+          classroom_item_id: group_item_id
         }))
-      };
-    } else if (classroom.cohort_id) {
-      payload = {
-        ...payload,
+      }),
+      ...(type === "cohort" && {
         cohort_id: classroom.cohort_id,
-        cohort_item_id: classroom.cohort_item_id
-      };
-    } else if (classroom.group_id) {
-      payload = {
-        ...payload,
+        cohort_item_id: classroom.item_id
+      }),
+      ...(type === "group" && {
         group_id: classroom.group_id,
-        group_item_id: classroom.group_item_id
-      };
+        group_item_id: classroom.item_id
+      })
+    };
+    // Fallback if type is unexpected
+    if (!["classroom", "cohort", "group"].includes(type)) {
+      alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Invalid enrollment type.", "moowoodle"));
+      setIsLoading(false);
+      return;
     }
     try {
       const response = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].post((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("enroll"), payload, {
@@ -2959,13 +2969,13 @@ const ViewEnroll = ({
           email: "",
           courses: []
         });
-        await fetchClassroomData(1); // Reset to page 1 after enrollment
+        await fetchClassroomData(1);
         alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Enrollment successful! The classroom data has been updated.", "moowoodle"));
       } else {
         alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Enrollment failed: ", "moowoodle") + (response.data.message || (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Unknown error", "moowoodle")));
       }
     } catch (error) {
-      console.error((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Error enrolling student:", "moowoodle"), error);
+      console.error("Enrollment error:", error);
       alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Error enrolling student. Please try again.", "moowoodle"));
     }
     setIsLoading(false);
