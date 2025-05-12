@@ -111,15 +111,20 @@ class Util {
      * @return void
      */
     public static function get_template( $template_name, $args = [] ) {
-
-        if ( $args && is_array( $args ) )
-            extract( $args );
-
-        $located = MooWoodle()->plugin_path.'templates/'.$template_name;
         
-        load_template( $located, TRUE, $args );
+        if ( $args && is_array( $args ) ) {
+            extract( $args );
+        }
+    
+        // Check if the template exists in the theme
+        $theme_template = get_stylesheet_directory() . '/woocommerce-catalog-enquiry/' . $template_name;
+    
+        // Use the theme template if it exists, otherwise use the plugin template
+        $located = file_exists( $theme_template ) ? $theme_template : MooWoodle()->plugin_path . 'templates/' . $template_name;
+    
+        // Load the template
+        load_template( $located, false, $args );
     }
-
 	/**
 	 * Check is MooWoodle Pro is active or not.
 	 * @return bool

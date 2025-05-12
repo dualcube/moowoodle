@@ -259,7 +259,5 @@ class Category {
 			$args
 		);
 	}
-	
-
 
 }

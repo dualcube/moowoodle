@@ -1,68 +1,85 @@
 <?php
 /**
- * New enrollment email (plain)
+ * New enrollment email (Plain Text)
  */
 
 defined( 'ABSPATH' ) || exit();
 
-$user_details         = get_user_by( 'email', $user_email );
-$user_id              = $user_details->ID ?? 0;
-$username             = $user_details->user_login ?? '';
-$first_name           = $user_details->first_name ?? '';
-$moodle_user_id       = get_user_meta( $user_id, 'moowoodle_moodle_user_id', true );
-$wp_user_created      = get_user_meta( $user_id, 'moowoodle_wordpress_new_user_created', true );
-$moodle_user_created  = get_user_meta( $user_id, 'moowoodle_moodle_new_user_created', true );
-$passwordWordpress    = get_user_meta( $user_id, 'moowoodle_wordpress_user_pwd', true );
-$passwordMoowoodle    = get_user_meta( $user_id, 'moowoodle_moodle_user_pwd', true );
+$user = get_user_by( 'email', $args['user_email'] );
 
-$site_name = get_bloginfo( 'name' );
-$site_url  = home_url();
-$my_courses_link = wc_get_page_permalink( 'myaccount' ) . 'my-courses/';
+echo "Hi " . ( $user->first_name ?? '' ) . ",\n\n";
 
-echo "Hi {$first_name},\n\n";
-echo "Welcome to {$site_name}! We’re excited to have you onboard.\n\n";
+echo "Welcome to " . get_bloginfo( 'name' ) . "! We’re excited to have you onboard.\n\n";
 echo "An account has been created for you on our learning platform so you can begin your journey with us.\n";
 echo "Below are your login details:\n\n";
 
-echo "Website: {$site_url}\n";
-echo "Username: {$username}\n";
+echo "=== Your Account Information ===\n";
+echo "Website: " . home_url() . "\n";
+echo "Username: " . ( $user->user_login ?? '' ) . "\n";
 
-if ( $wp_user_created && $moodle_user_created && $passwordWordpress === $passwordMoowoodle ) {
-	echo "Password: {$passwordWordpress}\n";
-	echo "This password will work for both your WordPress and Moodle accounts.\n";
-	echo "You will be required to change your Moodle password after your first login.\n\n";
+$wp_pwd = get_user_meta( $user->ID ?? 0, 'moowoodle_wordpress_user_pwd', true );
+$moodle_pwd = get_user_meta( $user->ID ?? 0, 'moowoodle_moodle_user_pwd', true );
+$wp_created = get_user_meta( $user->ID ?? 0, 'moowoodle_wordpress_new_user_created', true );
+$moodle_created = get_user_meta( $user->ID ?? 0, 'moowoodle_moodle_new_user_created', true );
+
+if ( $wp_created && $moodle_created && $wp_pwd === $moodle_pwd ) {
+	echo "Password: " . $wp_pwd . "\n";
+	echo "(This password will work for both your WordPress and Moodle accounts. You will be required to change your Moodle password after your first login.)\n\n";
 } else {
-	if ( $wp_user_created ) {
-		echo "WordPress Password: {$passwordWordpress}\n";
+	if ( $wp_created ) {
+		echo "WordPress Password: " . $wp_pwd . "\n";
 	}
-	if ( $moodle_user_created ) {
-		echo "Moodle Password: {$passwordMoowoodle}\n";
-		echo "Note: You will be required to change your Moodle password after your first login.\n";
+	if ( $moodle_created ) {
+		echo "Moodle Password: " . $moodle_pwd . "\n";
+		echo "(Note: You will be required to change your Moodle password after your first login.)\n";
 	}
-	echo "\n";
-}
-
-$group_name = $enrollments['group_name'] ?? '';
-if ( $group_name ) {
-	echo "Classroom: {$group_name}\n\n";
-}
-
-echo "You are enrolled in the following course(s):\n";
-foreach ( $enrollments['enrolments'] as $enrollment ) {
-	$course_title = get_the_title( $enrollment['courseid'] );
-	echo "- {$course_title}\n";
 }
 echo "\n";
 
-echo "To access your courses, please visit: {$my_courses_link}\n\n";
+echo "=== Enrollment Details ===\n";
 
-echo "If you have any questions or face any issues logging in, feel free to reach out to our support team at support@" . parse_url( $site_url, PHP_URL_HOST ) . "\n\n";
+if ( ! empty( $args['enrollments']['gift_email'] ) ) {
+	echo "This enrollment was gifted by " . $args['enrollments']['gift_email'] . "\n";
+} elseif ( ! empty( $args['enrollments']['teacher_email'] ) ) {
+	echo "You have been enrolled by " . $args['enrollments']['teacher_email'] . "\n";
+}
+
+if ( ! empty( $args['enrollments']['group_details'] ) ) {
+	echo "Group(s):\n";
+	foreach ( $args['enrollments']['group_details'] as $group ) {
+		echo "- " . $group['name'] . "\n";
+	}
+}
+
+if ( ! empty( $args['enrollments']['cohort_details'] ) ) {
+	echo "Cohort(s):\n";
+	foreach ( $args['enrollments']['cohort_details'] as $cohort ) {
+		echo "- " . $cohort['name'] . "\n";
+	}
+}
+
+if ( ! empty( $args['enrollments']['classroom_details'] ) && empty( $args['enrollments']['teacher_email'] ) ) {
+	echo "Classroom: " . $args['enrollments']['classroom_details'][0]['name'] . "\n";
+}
+
+if ( ! empty( $args['enrollments']['course_details'] ) ) {
+	echo "Course(s):\n";
+	foreach ( $args['enrollments']['course_details'] as $course ) {
+		echo "- " . $course['fullname'] . "\n";
+	}
+}
+
+echo "\n=== Access Your Courses ===\n";
+$course_url = wc_get_page_permalink( 'myaccount' ) . 'my-courses/';
+echo "To get started, visit: " . $course_url . "\n\n";
+
+$support_email = 'support@' . parse_url( home_url(), PHP_URL_HOST );
+echo "If you have questions or face issues logging in, contact us at: " . $support_email . "\n\n";
 
 echo "Wishing you a great learning experience!\n";
 
-// Cleanup
-if ( $user_id ) {
-	delete_user_meta( $user_id, 'moowoodle_wordpress_new_user_created' );
-	delete_user_meta( $user_id, 'moowoodle_moodle_new_user_created' );
+if ( $user->ID ) {
+	delete_user_meta( $user->ID, 'moowoodle_wordpress_new_user_created' );
+	delete_user_meta( $user->ID, 'moowoodle_moodle_new_user_created' );
 }
 ?>

@@ -44,29 +44,41 @@ class Emails {
 	public function send_enrollment_confirmation( $enrolments, $user_id ) {
 
 		$user = get_userdata( $user_id );
+
 		if ( ! $user || empty( $user->user_email ) ) {
 			return;
 		}
 
-		$email_data = [
-			'group_name' => '',
-			'enrolments' => [],
-		];
-		
-		foreach ( $enrolments as $course ) {
-			$course_id      = is_array( $course ) ? $course['course_id'] : $course;
-			$classroom_name = is_array( $course ) && isset( $course['classroom_name'] ) ? $course['classroom_name'] : '';
-		
-			if ( empty( $email_data['group_name'] ) && ! empty( $classroom_name ) ) {
-				$email_data['group_name'] = $classroom_name;
-			}
-		
-			$email_data['enrolments'][] = [
-				'courseid' => $course_id,
-			];
+		$email_data = [];
+
+		// Optional fields
+		if ( ! empty( $enrolments['teacher_email'] ) ) {
+			$email_data['teacher_email'] = sanitize_email( $enrolments['teacher_email'] );
 		}
-		
+
+		if ( ! empty( $enrolments['gift_email'][0] ) ) {
+			$email_data['gift_email'] = sanitize_email( $enrolments['gift_email'][0] );
+		}
+
+		// Hook for additional enrollment data (classroom, cohort, etc.)
+		$email_data = apply_filters( 'moowoodle_enrollment_email_data', $email_data, $enrolments );
+
+		// Course data
+		if ( ! empty( $enrolments['course'] ) && is_array( $enrolments['course'] ) ) {
+
+			$course_ids = array_map( 'intval', $enrolments['course'] );
+			$courses    = MooWoodle()->course->get_course( [ 'ids' => $course_ids ] );
+
+			if ( ! empty( $courses ) && is_array( $courses ) ) {
+				$email_data['course_details'] = array_map( function( $course ) {
+					return [
+						'id'   => intval( $course['id'] ?? 0 ),
+						'name' => $course['fullname'] ?? '',
+					];
+				}, $courses );
+			}
+		}
 
 		$this->send_email( 'EnrollmentEmail', $user->user_email, $email_data );
-	}
+	}	
 }

@@ -55,18 +55,10 @@ const Enrollment = () => {
 	useEffect(() => {
 		axios({
 			method: "get",
-			url: getApiLink('all-courses'),
+			url: getApiLink('all-filters'),
 			headers: { "X-WP-Nonce": appLocalizer.nonce },
 		}).then((response) => {
 			setCourses(response.data.courses)
-		});
-	}, []);
-	useEffect(() => {
-		axios({
-			method: "get",
-			url: getApiLink('all-groups'),
-			headers: { "X-WP-Nonce": appLocalizer.nonce },
-		}).then((response) => {
 			setGroups(response.data.groups)
 			setCohorts(response.data.cohorts)
 		});

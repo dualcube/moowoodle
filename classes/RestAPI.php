@@ -608,11 +608,9 @@ class RestAPI {
                     : null,
             ];
         }, $all_enrollments );
-    
-        $data = apply_filters( 'moowoodle_user_courses_data', $data, $user );
         
         return rest_ensure_response([
-            'data' => $data,
+            'data' => apply_filters( 'moowoodle_user_courses_data', $data, $user ),
             'status' => 'success',
         ]);
     }

@@ -229,7 +229,12 @@ class Course {
 		if ( isset( $where['enddate'] ) ) {
 			$query_segments[] = " ( enddate = " . esc_sql( intval( $where['enddate'] ) ) . " ) ";
 		}
-	
+
+		if ( isset( $where['ids'] ) && is_array( $where['ids'] ) ) {
+			$ids = implode( ',', array_map( 'intval', $where['ids'] ) );
+			$query_segments[] = "id IN ($ids)";
+		}
+		
 		$table = $wpdb->prefix . Util::TABLES['course'];
 		$query = "SELECT * FROM $table";
 	

@@ -17,70 +17,95 @@ class Enrollment {
 	}
 
 	public function process_order( $order_id ) {
-		$order          = new \WC_Order( $order_id );
-		$this->order    = $order;
-		$gifted         = $order->get_meta( "_wc_billing/MooWoodle/gift_someone", true );
+		$order = new \WC_Order( $order_id );
+		$this->order = $order;
 	
-		$first_name = $gifted ? trim( $order->get_meta( "_wc_billing/MooWoodle/first_name", true ) ) : $order->get_billing_first_name();
-		$last_name  = $gifted ? trim( $order->get_meta( "_wc_billing/MooWoodle/last_name", true ) ) : $order->get_billing_last_name();
+		$gifted = $order->get_meta( "_wc_billing/MooWoodle/gift_someone", true );
 		$user_email = $gifted ? trim( $order->get_meta( "_wc_billing/MooWoodle/email_address", true ) ) : $order->get_billing_email();
-		$user_id    = $gifted ? $this->create_wordpress_user( $first_name, $last_name, $user_email ) : $order->get_customer_id();
+		$user_id = $gifted
+			? $this->create_wordpress_user(
+				trim( $order->get_meta( "_wc_billing/MooWoodle/first_name", true ) ),
+				trim( $order->get_meta( "_wc_billing/MooWoodle/last_name", true ) ),
+				$user_email
+			)
+			: $order->get_customer_id();
 	
 		if ( empty( $user_id ) ) {
 			Util::log( "[MooWoodle] Order processing failed for Order #$order_id - Moodle User ID is missing." );
 			return;
 		}
 	
-		$group_purchase_enabled = MooWoodle()->setting->get_setting( 'group_purchase_enable', [] );
-		$group_purchase         = false;
-	
 		foreach ( $order->get_items() as $item ) {
-			if ( $item->get_quantity() > 1 ) {
-				$group_purchase = true;
-				break;
+			if ( $item->get_quantity() > 1 && MooWoodle()->util->is_khali_dabba() && in_array( 'group_purchase_enable', MooWoodle()->setting->get_setting( 'group_purchase_enable', [] ) ) ) {
+				do_action( 'moowoodle_process_multiple_products_purchase', $user_id, $order );
+				return;
 			}
 		}
 	
-		if ( $group_purchase && in_array( 'group_purchase_enable', $group_purchase_enabled ) && MooWoodle()->util->is_khali_dabba() ) {
-			do_action( 'moowoodle_process_multiple_products_purchase', $user_id, $first_name, $last_name, $order );
-			return;
-		}
-
-		$enroll_data = [
-			'first_name'    => $first_name,
-			'last_name'     => $last_name,
-			'purchaser_id'  => $user_id,
-			'user_email'    => $user_email,
-			'order_id'      => $order_id,
+		$enroll_data_base = [
+			'first_name'   => $gifted ? trim( $order->get_meta( "_wc_billing/MooWoodle/first_name", true ) ) : $order->get_billing_first_name(),
+			'last_name'    => $gifted ? trim( $order->get_meta( "_wc_billing/MooWoodle/last_name", true ) ) : $order->get_billing_last_name(),
+			'purchaser_id' => $user_id,
+			'user_email'   => $user_email,
+			'order_id'     => $order_id,
 		];
-
+	
+		$email_data = [];
+		
 		foreach ( $order->get_items() as $item_id => $item ) {
 			$product = $item->get_product();
-	
 			if ( ! $product ) {
 				Util::log( "[MooWoodle] Skipping item #$item_id - Invalid product." );
 				continue;
 			}
-	        
-			$enroll_data['item_id']         = $item_id;
-
+	
+			$enroll_data = $enroll_data_base + [ 'item_id' => $item_id ];
+	
 			if ( $product->is_type( 'variation' ) ) {
-				$enroll_data['group_id']         = $product->get_meta( 'linked_group_id', true );
-				$enroll_data['moodle_group_id']  = $product->get_meta( 'moodle_group_id', true );
-				$enroll_data['moodle_course_id'] = $product->get_meta( 'moodle_course_id', true );
-	
+				$enroll_data += [
+					'group_id'         => $product->get_meta( 'linked_group_id', true ),
+					'moodle_group_id'  => $product->get_meta( 'moodle_group_id', true ),
+					'moodle_course_id' => $product->get_meta( 'moodle_course_id', true ),
+				];
+			
 				do_action( 'moowoodle_handle_group_purchase', $enroll_data );
+			
+				if ( apply_filters( 'moowoodle_add_group_detail_for_email', false ) ) {
+					$email_data['group'][] = $enroll_data['group_id'];
+				}
+			
 			} elseif ( $product->get_meta( 'moodle_cohort_id', true ) ) {
-				$enroll_data['cohort_id']        = $product->get_meta( 'linked_cohort_id', true );
-				$enroll_data['moodle_cohort_id'] = $product->get_meta( 'moodle_cohort_id', true );
-	
+				$enroll_data += [
+					'cohort_id'        => $product->get_meta( 'linked_cohort_id', true ),
+					'moodle_cohort_id' => $product->get_meta( 'moodle_cohort_id', true ),
+				];
+			
 				do_action( 'moowoodle_handle_cohort_purchase', $enroll_data );
+			
+				if ( apply_filters( 'moowoodle_add_cohort_detail_for_email', false ) ) {
+					$email_data['cohort'][] = $enroll_data['cohort_id'];
+				}
+			
 			} elseif ( $product->get_meta( 'moodle_course_id', true ) ) {
-				$enroll_data['course_id']        = $product->get_meta( 'linked_course_id', true );
-				$enroll_data['moodle_course_id'] = $product->get_meta( 'moodle_course_id', true );
+				$enroll_data += [
+					'course_id'        => $product->get_meta( 'linked_course_id', true ),
+					'moodle_course_id' => $product->get_meta( 'moodle_course_id', true ),
+				];
+			
 				$this->process_enrollment( $enroll_data );
+			
+				if ( apply_filters( 'moowoodle_add_course_detail_for_email', false ) ) {
+					$email_data['course'][] = $enroll_data['course_id'];
+				}
 			}
+			
 		}
+	
+		if ( $gifted ) {
+			$email_data['gift_email'][] =  $order->get_billing_email();
+		}
+	
+		do_action( 'moowoodle_after_successful_enrollments', $email_data, $user_id );
 	}
 	
 	
@@ -115,12 +140,9 @@ class Enrollment {
 			update_user_meta( $user_id, 'moowoodle_wordpress_user_pwd', $password );
 			update_user_meta( $user_id, 'moowoodle_wordpress_new_user_created', 'created' );
 			
-
-			Util::log( "[MooWoodle] New WP user created: ID {$user_id}, Username: {$username}, Email: {$user_email}" );
 		} else {
 
 			$user_id = $user->ID;
-			Util::log( "[MooWoodle] Existing WP user found: ID {$user_id}, Email: {$user_email}" );
 		}
 	
 		return $user_id;
@@ -135,6 +157,7 @@ class Enrollment {
 	 * @return bool
 	 */
 	public function process_enrollment( $enroll_data ) {
+
 		if ( empty( $enroll_data ) ) {
 			return false;
 		}
@@ -145,7 +168,6 @@ class Enrollment {
 				return false;
 			}		
 		}
-		
 
 		$moodle_user_id = $this->get_moodle_user_id( $enroll_data );
 		if ( empty( $moodle_user_id ) ) {
@@ -196,6 +218,9 @@ class Enrollment {
 		if ( $enroll_data['group_item_id'] ?? false ) {
 			do_action( 'moowoodle_seat_book', $enroll_data['group_item_id'] );
 		}
+
+		add_filter( 'moowoodle_add_course_detail_for_email', '__return_true' );
+
 		return true;
 	}
 
@@ -566,18 +591,6 @@ class Enrollment {
 			$query .= " WHERE " . implode( ' AND ', $query_segments );
 		}
 
-		// GROUP BY clause
-		if ( isset( $where['group_by'] ) ) {
-			$group_by = sanitize_sql_orderby( $where['group_by'] );
-			$query .= " GROUP BY $group_by";
-		}
-
-		// ORDER BY clause
-		if ( isset( $where['order_by'] ) ) {
-			$order_by = sanitize_sql_orderby( $where['order_by'] );
-			$query .= " ORDER BY $order_by";
-		}
-
 		// LIMIT and OFFSET
 		if ( isset( $where['limit'] ) && isset( $where['offset'] ) ) {
 			$limit = intval( $where['limit'] );
@@ -587,8 +600,5 @@ class Enrollment {
 
 		return $wpdb->get_results( $query, ARRAY_A );
 	}
-
-
-
 
 }
