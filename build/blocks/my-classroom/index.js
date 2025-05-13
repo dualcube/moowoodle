@@ -2811,73 +2811,79 @@ const ViewEnroll = ({
   const [unenrollCourses, setUnenrollCourses] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const studentsPerPage = 5;
   const defaultImageUrl = "https://cus.dualcube.com/mvx2/wp-content/uploads/2025/04/beanie-2-3-416x416.jpg";
+  const fetchClassroomCourses = async () => {
+    try {
+      if (classroom?.type !== 'classroom') return;
+      const response = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].get((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("view-classroom"), {
+        params: {
+          type: classroom.type,
+          classroom_id: classroom.classroom_id
+        },
+        headers: {
+          "X-WP-Nonce": appLocalizer?.nonce
+        }
+      });
+      const data = response.data;
+      console.log("Classroom Courses Response:", data);
+      if (data.success) {
+        const {
+          courses = [],
+          total_courses = 0
+        } = data;
+        const totalAvailable = courses.reduce((sum, course) => sum + Number(course.available_quantity || 0), 0);
+        setAvailableCourses(courses);
+        setTotalCourses(total_courses);
+        setTotalAvailable(totalAvailable);
+      } else {
+        console.error("Failed to load classroom courses:", data.message);
+      }
+    } catch (error) {
+      console.error((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Error fetching classroom courses:", "moowoodle"), error);
+    }
+  };
   const fetchClassroomData = async (page = 1) => {
     try {
-      if (classroom?.type == 'classroom') {
-        let response = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].get((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("view-classroom"), {
-          params: {
-            classroom_id: classroom.classroom_id,
-            page,
-            per_page: studentsPerPage
-          },
-          headers: {
-            "X-WP-Nonce": appLocalizer?.nonce
-          }
-        });
-        response = response.data;
-        if (response.success) {
-          const {
-            students,
-            courses,
-            total_courses,
-            total_enrolled
-          } = response.data;
-          setEnrolledStudents(students || []);
-          setAvailableCourses(courses || []);
-          setTotalCourses(total_courses || 0);
-          setTotalEnrolled(total_enrolled || 0);
-          const totalAvailable = (courses || []).reduce((acc, course) => acc + Number(course.available_quantity || 0), 0);
-          setTotalAvailable(totalAvailable);
-          setTotalPages(response.pagination?.total_pages || 1);
-          setCurrentPage(response.pagination?.current_page || page);
-        } else {
-          console.error("Failed to load classroom data:", response.message);
-        }
-      }
-      if (classroom?.type == 'cohort' || classroom?.type == 'group') {
-        const params = classroom?.type == 'cohort' ? {
-          cohort_id: classroom.cohort_id,
-          cohort_item_id: classroom.item_id
-        } : {
-          group_id: classroom.group_id,
-          group_item_id: classroom.item_id
+      let payload = {};
+      if (classroom?.type === 'classroom') {
+        payload = {
+          classroom_type: classroom?.type,
+          classroom_id: classroom?.classroom_id
         };
-        let response = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].get((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("view-cohort"), {
-          params: {
-            ...params,
-            page,
-            per_page: studentsPerPage
-          },
-          headers: {
-            "X-WP-Nonce": appLocalizer?.nonce
-          }
-        });
-        if (response.data.success) {
-          setEnrolledStudents(response.data.data.students || []);
-          setTotalEnrolled(response.data.data.total_enrolled || 0);
-          const totalAvailable = (courses || []).reduce((acc, course) => acc + Number(course?.available_quantity || 0), 0);
-          setTotalAvailable(totalAvailable);
-          setTotalPages(response.data.pagination?.total_pages || 1);
-          setCurrentPage(response.data.pagination?.current_page || page);
-        } else {
-          console.error("Failed to load data:", response.message);
+      }
+      if (classroom?.type === 'cohort' || classroom?.type === 'group') {
+        payload = {
+          classroom_type: classroom?.type,
+          item_id: classroom?.item_id
+        };
+      }
+      console.log(payload);
+      let response = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].get((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("enrollments"), {
+        params: {
+          ...payload,
+          page,
+          per_page: studentsPerPage
+        },
+        headers: {
+          "X-WP-Nonce": appLocalizer?.nonce
         }
+      });
+      if (response.data.success) {
+        setEnrolledStudents(response.data.data.students || []);
+        setTotalEnrolled(response.data.data.total_enrolled || 0);
+        const totalAvailable = (courses || []).reduce((acc, course) => acc + Number(course?.available_quantity || 0), 0);
+        setTotalAvailable(totalAvailable);
+        setTotalPages(response.data.pagination?.total_pages || 1);
+        setCurrentPage(response.data.pagination?.current_page || page);
+      } else {
+        console.error("Failed to load data:", response.message);
       }
     } catch (error) {
       console.error((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Error fetching classroom data:", "moowoodle"), error);
     }
   };
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    console.log(classroom);
+    fetchClassroomCourses();
     fetchClassroomData(currentPage);
   }, [currentPage]);
   const courseOptions = availableCourses.map(item => ({
@@ -3186,7 +3192,7 @@ const ViewEnroll = ({
             alt: course.course_name
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
             className: "course-name",
-            children: [course.name, " (", course.total_quantity - course.available_quantity, "/", course.total_quantity, ")"]
+            children: [course.course_name, " (", course.total_quantity - course.available_quantity, "/", course.total_quantity, ")"]
           })]
         }, index))
       })]
@@ -3282,15 +3288,9 @@ const ViewEnroll = ({
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
             className: "woocommerce-orders-table__header",
             children: "Email"
-          }), classroom?.classroom_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
             className: "woocommerce-orders-table__header",
-            children: "Courses"
-          }), classroom?.cohort_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
-            className: "woocommerce-orders-table__header",
-            children: "Cohort"
-          }), classroom?.group_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
-            className: "woocommerce-orders-table__header",
-            children: "Group"
+            children: "Enrollment"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
             className: "woocommerce-orders-table__header",
             children: "Action"
@@ -3301,25 +3301,23 @@ const ViewEnroll = ({
           className: "woocommerce-orders-table__row",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
             className: "woocommerce-orders-table__cell",
-            children: student.name
+            children: student.name || "N/A"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
             className: "woocommerce-orders-table__cell",
-            children: student.email
+            children: student.email || "N/A"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
             className: "woocommerce-orders-table__cell",
-            children: classroom?.classroom_id ? student.courses?.map(course => course.course_name).join(", ") || "No courses assigned" : classroom?.cohort_id ? classroom.cohort_name || "No cohort assigned" : classroom?.group_id ? classroom.group_name || "No group assigned" : "N/A"
+            children: student.courses?.length > 0 ? student.courses.map(course => typeof course.course_name === "string" ? course.course_name : "Unknown Course").join(", ") : typeof student.group?.name === "string" ? student.group.name : typeof student.cohort?.name === "string" ? student.cohort.name : "No courses, group, or cohort assigned"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
             className: "woocommerce-orders-table__cell",
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
               className: "unenroll-button btn-red",
               onClick: () => {
-                setSelectedStudentForUnenroll(student);
-
-                // Check if it's a group or cohort and directly call unenroll function
                 if (classroom?.group_id || classroom?.cohort_id) {
-                  handleUnenrollStudentCohortAndGroup(student); // Direct unenroll for cohort or group
+                  handleUnenrollStudentCohortAndGroup(student);
                 } else if (classroom?.classroom_id) {
-                  setShowUnenrollModal(true); // Show modal for classroom-based unenroll
+                  setSelectedStudentForUnenroll(student);
+                  setShowUnenrollModal(true);
                 }
               },
               children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Unenroll", "moowoodle")
@@ -3327,7 +3325,7 @@ const ViewEnroll = ({
           })]
         }, index)) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("tr", {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
-            colSpan: "4",
+            colSpan: 4,
             children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("No students enrolled yet.", "moowoodle")
           })
         })
@@ -3348,13 +3346,15 @@ const ViewEnroll = ({
           options: selectedStudentForUnenroll.courses.map(course => ({
             value: course.course_id,
             label: course.course_name,
-            group_item_id: course.group_item_id
+            group_item_id: course.group_item_id,
+            moodle_course_id: course.moodle_course_id
           })),
           placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Select Courses", "moowoodle"),
           onChange: selectedOptions => {
             const courses = selectedOptions?.map(option => ({
               course_id: option.value,
-              group_item_id: option.group_item_id
+              group_item_id: option.group_item_id,
+              moodle_course_id: option.moodle_course_id
             })) || [];
             setUnenrollCourses(courses);
           }

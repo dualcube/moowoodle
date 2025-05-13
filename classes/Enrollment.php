@@ -157,7 +157,6 @@ class Enrollment {
 	 * @return bool
 	 */
 	public function process_enrollment( $enroll_data ) {
-
 		if ( empty( $enroll_data ) ) {
 			return false;
 		}
@@ -209,7 +208,7 @@ class Enrollment {
 		]);
         
 		$existing_enrollment = reset( $existing_enrollment );
-		
+
 		if ( $existing_enrollment ) {
 			self::update_enrollment( $existing_enrollment['id'], $enrollment_data );
 		} else {
