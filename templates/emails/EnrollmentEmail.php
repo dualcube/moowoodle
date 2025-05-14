@@ -99,11 +99,4 @@ $user = get_user_by( 'email', $args['user_email'] );
 
 <p>Wishing you a great learning experience!</p>
 
-<?php
-if ( $user->ID ) {
-	delete_user_meta( $user->ID, 'moowoodle_wordpress_new_user_created' );
-	delete_user_meta( $user->ID, 'moowoodle_moodle_new_user_created' );
-}
-?>
-
 <?php do_action( 'woocommerce_email_footer' ); ?>

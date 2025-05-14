@@ -185,7 +185,6 @@ class Enrollment {
 				'userid'   => $moodle_user_id,
 			]]
 		]);
-
 		if ( ! empty( $response['error'] ) ) {
 			Util::log( "[MooWoodle] Enrollment failed for user {$enroll_data['purchaser_id']} in course {$enroll_data['course_id']}." );
 			return false;

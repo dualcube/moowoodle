@@ -99,7 +99,7 @@ class RestAPI {
      */
     public function user_can_access_api()
     {
-        return current_user_can( 'customer' ) || current_user_can( 'manage_options' );
+        return current_user_can( 'subscriber' ) || current_user_can( 'customer' ) || current_user_can( 'manage_options' );
     }
     
     /**

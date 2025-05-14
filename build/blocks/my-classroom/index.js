@@ -2812,6 +2812,7 @@ const ViewEnroll = ({
   const studentsPerPage = 5;
   const defaultImageUrl = "https://cus.dualcube.com/mvx2/wp-content/uploads/2025/04/beanie-2-3-416x416.jpg";
   const fetchClassroomCourses = async () => {
+    console.log(classroom);
     try {
       if (classroom?.type !== 'classroom') return;
       const response = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].get((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("view-classroom"), {
@@ -2824,7 +2825,6 @@ const ViewEnroll = ({
         }
       });
       const data = response.data;
-      console.log("Classroom Courses Response:", data);
       if (data.success) {
         const {
           courses = [],
@@ -2853,10 +2853,9 @@ const ViewEnroll = ({
       if (classroom?.type === 'cohort' || classroom?.type === 'group') {
         payload = {
           classroom_type: classroom?.type,
-          item_id: classroom?.item_id
+          group_item_id: classroom?.group_item_id
         };
       }
-      console.log(payload);
       let response = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].get((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("enrollments"), {
         params: {
           ...payload,
@@ -2882,14 +2881,14 @@ const ViewEnroll = ({
     }
   };
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    console.log(classroom);
     fetchClassroomCourses();
     fetchClassroomData(currentPage);
   }, [currentPage]);
   const courseOptions = availableCourses.map(item => ({
     value: item.course_id,
     label: item.course_name,
-    group_item_id: item.item_id
+    item_id: item.item_id,
+    group_item_id: item.group_item_id
   }));
   const handleInputChange = e => {
     setNewStudent({
@@ -2900,6 +2899,7 @@ const ViewEnroll = ({
   const handleCourseChange = selectedOptions => {
     const courses = selectedOptions?.map(option => ({
       course_id: option.value,
+      item_id: option.item_id,
       group_item_id: option.group_item_id,
       course_name: option.label
     })) || [];
@@ -2940,19 +2940,25 @@ const ViewEnroll = ({
         order_id: classroom.order_id || 0,
         course_selections: courses.map(({
           course_id,
+          item_id,
           group_item_id
         }) => ({
           course_id,
+          item_id,
           classroom_item_id: group_item_id
         }))
       }),
       ...(type === "cohort" && {
         cohort_id: classroom.cohort_id,
-        cohort_item_id: classroom.item_id
+        order_id: classroom.order_id,
+        item_id: classroom.item_id,
+        cohort_item_id: classroom.group_item_id
       }),
       ...(type === "group" && {
         group_id: classroom.group_id,
-        group_item_id: classroom.item_id
+        order_id: classroom.order_id,
+        item_id: classroom.item_id,
+        group_item_id: classroom.group_item_id
       })
     };
     // Fallback if type is unexpected
@@ -2992,40 +2998,54 @@ const ViewEnroll = ({
       alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Please select a CSV file.", "moowoodle"));
       return;
     }
-    if (classroom?.classroom_id && (!Array.isArray(availableCourses) || !availableCourses.length)) {
+    const {
+      type,
+      classroom_id,
+      order_id = 0,
+      cohort_id,
+      item_id,
+      group_id,
+      group_item_id
+    } = classroom;
+    if (type === "classroom" && (!Array.isArray(availableCourses) || !availableCourses.length)) {
       alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("No courses available for classroom enrollment.", "moowoodle"));
       return;
     }
-    setIsLoading(true);
-    const formData = new FormData();
-    formData.append("file", csvFile);
-
-    // Base payload
-    formData.append("order_id", classroom?.order_id || 0);
-
-    // Enrollment type-specific payload
-    if (classroom?.classroom_id) {
-      formData.append("classroom_id", classroom.classroom_id);
-      const courseSelections = availableCourses.map(course => ({
-        course_id: String(course.course_id),
-        classroom_item_id: String(course.group_item_id || course.course_id) // Fallback to course_id if group_item_id is missing
-      }));
-      formData.append("course_selections", JSON.stringify(courseSelections));
-    } else if (classroom?.group_id) {
-      formData.append("group_id", classroom.group_id);
-      if (classroom.group_item_id) {
-        formData.append("group_item_id", classroom.group_item_id);
-      }
-    } else if (classroom?.cohort_id) {
-      formData.append("cohort_id", classroom.cohort_id);
-      if (classroom.cohort_item_id) {
-        formData.append("cohort_item_id", classroom.cohort_item_id);
-      }
-    } else {
-      setIsLoading(false);
-      alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Invalid enrollment type. Please specify classroom, group, or cohort.", "moowoodle"));
+    if (!["classroom", "cohort", "group"].includes(type)) {
+      alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Invalid enrollment type.", "moowoodle"));
       return;
     }
+    setIsLoading(true);
+    const payload = {
+      type,
+      order_id
+    };
+    if (type === "classroom") {
+      payload.classroom_id = classroom_id;
+      payload.course_selections = availableCourses.map(course => ({
+        course_id: String(course.course_id),
+        item_id: String(course.item_id),
+        group_item_id: String(course.group_item_id || 0)
+      }));
+    } else if (type === "cohort") {
+      Object.assign(payload, {
+        cohort_id,
+        item_id,
+        cohort_item_id: group_item_id
+      });
+    } else if (type === "group") {
+      Object.assign(payload, {
+        group_id,
+        item_id,
+        group_item_id
+      });
+    }
+    const formData = new FormData();
+    formData.append("file", csvFile);
+    for (const [key, value] of Object.entries(payload)) {
+      formData.append(key, typeof value === "object" ? JSON.stringify(value) : value);
+    }
+    console.log("Payload:", payload);
     try {
       const response = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].post((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("bulk-enroll"), formData, {
         headers: {
@@ -3036,16 +3056,17 @@ const ViewEnroll = ({
       if (response.data.success) {
         setCsvFile(null);
         setShowBulkModal(false);
-        await fetchClassroomData(1); // Reset to page 1 after bulk enrollment
-        alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Bulk enrollment successful! " + response.data.message, "moowoodle"));
+        await fetchClassroomData(1); // refresh
+        alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Bulk enrollment successful! ", "moowoodle") + response.data.message);
       } else {
         alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Bulk enrollment failed: ", "moowoodle") + (response.data.message || (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Unknown error", "moowoodle")));
       }
     } catch (error) {
-      console.error((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Error during bulk enrollment:", "moowoodle"), error);
+      console.error("Bulk enrollment error:", error);
       alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Error during bulk enrollment. Please try again.", "moowoodle"));
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
   const handleUnenrollStudent = async () => {
     if (!unenrollCourses.length) {
@@ -3083,28 +3104,31 @@ const ViewEnroll = ({
   const handleUnenrollStudentCohortAndGroup = async student => {
     try {
       setIsLoading(true);
+      // console.log(classroom)
       let payload = {
-        user_id: student.id,
         email: student.email
       };
-      if (classroom?.group_id) {
+      if (student?.group?.group_id) {
         payload = {
           ...payload,
           type: 'group',
-          group_id: classroom.group_id,
-          group_item_id: classroom.group_item_id
+          group_id: student.group.group_id,
+          group_item_id: student.group.group_item_id,
+          moodle_group_id: student.group.moodle_group_id
         };
-      } else if (classroom?.cohort_id) {
+      } else if (student?.cohort?.cohort_id) {
         payload = {
           ...payload,
           type: 'cohort',
-          cohort_id: classroom.cohort_id,
-          group_item_id: classroom.cohort_item_id
+          cohort_id: student.cohort.cohort_id,
+          group_item_id: student.cohort.group_item_id,
+          moodle_cohort_id: student.cohort.moodle_cohort_id
         };
       } else {
         alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("This action is only available for groups or cohorts.", "moowoodle"));
         return;
       }
+      console.log(payload);
       const response = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].post((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("unenroll"), payload, {
         headers: {
           "X-WP-Nonce": appLocalizer?.nonce
