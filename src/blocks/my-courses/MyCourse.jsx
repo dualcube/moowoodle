@@ -7,7 +7,7 @@ const MyCourse = () => {
   const [courses, setCourses] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage] = useState(10);
+  const [rowsPerPage] = useState(5);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 

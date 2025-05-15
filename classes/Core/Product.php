@@ -267,6 +267,4 @@ class Product {
 		return $product_id;
 	}
 
-
-
 }

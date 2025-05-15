@@ -29,7 +29,7 @@ const MyCourse = () => {
   const [courses, setCourses] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [totalRows, setTotalRows] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
   const [currentPage, setCurrentPage] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1);
-  const [rowsPerPage] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(10);
+  const [rowsPerPage] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(5);
   const [loading, setLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [error, setError] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("");
 

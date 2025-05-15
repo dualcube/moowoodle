@@ -228,7 +228,9 @@ class Category {
 
         return $results;
     }
-
+	/**
+     * update categories by id
+     */
 	public static function edit_category( $id, $args ) {
 		global $wpdb;
 	
@@ -244,7 +246,9 @@ class Category {
 			[ 'moodle_category_id' => $id ]
 		);
 	}
-	
+	/**
+     * inser categories
+     */
 	public static function set_category( $args ) {
 		global $wpdb;
 	

@@ -19,7 +19,7 @@ class RestAPI {
         }
 
         // If user is admin or customer
-        if ( current_user_can( 'customer' ) || current_user_can( 'manage_options' ) ) {
+        if ( current_user_can( 'subscriber' ) || current_user_can( 'customer' ) || current_user_can( 'manage_options' ) ) {
             add_action( 'rest_api_init', [ &$this, 'register_user_api' ] );
         }
     }
@@ -110,7 +110,7 @@ class RestAPI {
     public function set_settings( $request ) {
         $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'moowoodle'), array( 'status' => 403 ) );
         }
         try {
             $all_details = [];
@@ -278,7 +278,7 @@ class RestAPI {
     public function get_sync_status( $request ) {
         $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'moowoodle'), array( 'status' => 403 ) );
         }
 
         $response = [
@@ -406,8 +406,13 @@ class RestAPI {
         return rest_ensure_response( $formatted_courses );
     }
 
-    
-
+    /**
+     * Get all course and category filters for use in dropdowns or filters.
+     * Verifies the REST nonce before fetching data.
+     *
+     * @param WP_REST_Request $request REST API request object.
+     * @return WP_REST_Response|\WP_Error REST response with course and category lists or error on failure.
+     */
     public function get_all_filters( $request ) {
     
         // Verify nonce
@@ -473,7 +478,7 @@ class RestAPI {
 
         $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'moowoodle'), array( 'status' => 403 ) );
         }
 
         $log_count = $request->get_param( 'logcount' );
@@ -510,7 +515,7 @@ class RestAPI {
     function download_log($request) {
         $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'moowoodle'), array( 'status' => 403 ) );
         } 
         // Get the file parameter from the request
         $file = $request->get_param('file');
@@ -546,7 +551,7 @@ class RestAPI {
      * @return WP_REST_Response|\WP_Error JSON response containing enrolled courses and pagination details.
      */
 
-    public function get_user_courses( $request ) {
+     public function get_user_courses( $request ) {
 
         $user = wp_get_current_user();
     
@@ -556,39 +561,46 @@ class RestAPI {
                 'status' => 'error',
             ]);
         }
-        $count    = $request->get_param( 'count' );
-        
-        if( $count ) {
+    
+        $count = $request->get_param( 'count' );
+    
+        if ( $count ) {
             $all_enrollments = MooWoodle()->enrollment->get_enrollments([
                 'user_id' => $user->ID,
-                'status'  => 'enrolled'
+                'status'  => 'enrolled',
             ]);
-            return rest_ensure_response( count( $all_enrollments ));
+            return rest_ensure_response( count( $all_enrollments ) );
+        }
+    
+        $limit  = max( 1, (int) $request->get_param( 'row' ) ?: 10 );
+        $page   = max( 1, (int) $request->get_param( 'page' ) ?: 1 );
+        $offset = ( $page - 1 ) * $limit;
+    
+        $pre_data = apply_filters( 'moowoodle_user_courses_data', null, $request );
+        
+        if ( ! empty( $pre_data ) ) {
+            return $pre_data;
         }
 
-        $limit = max( 1, (int) $request->get_param( 'row' ) ?: 10 );
-        $page     = max( 1, (int) $request->get_param( 'page' ) ?: 1 );
-        $offset   = ( $page - 1 ) * $limit;
-
+        // Default enrollment logic
         $all_enrollments = MooWoodle()->enrollment->get_enrollments([
-            'user_id' => $user->ID,
-            'status'  => 'enrolled',
-            'limit'   => $limit,
-            'offset'  => $offset,
-
+            'user_id'       => $user->ID,
+            'status'        => 'enrolled',
+            'course_id_not' => 0,
+            'limit'         => $limit,
+            'offset'        => $offset,
         ]);
-
-
+    
         if ( empty( $all_enrollments ) ) {
             return rest_ensure_response([
-                'data' => [],
+                'data'   => [],
                 'status' => 'success',
             ]);
         }
     
         $data = array_map( function( $course ) use ( $user ) {
             $course_data = MooWoodle()->course->get_course([
-                'id' => $course['course_id']
+                'id' => $course['course_id'],
             ]);
             $course_data = is_array( $course_data ) ? reset( $course_data ) : $course_data;
     
@@ -608,12 +620,13 @@ class RestAPI {
                     : null,
             ];
         }, $all_enrollments );
-        
+    
         return rest_ensure_response([
-            'data' => apply_filters( 'moowoodle_user_courses_data', $data, $user ),
+            'data'   => $data,
             'status' => 'success',
         ]);
     }
+    
     
 
 }

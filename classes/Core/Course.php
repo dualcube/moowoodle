@@ -132,7 +132,13 @@ class Course {
 	}
 
 	
-
+	/**
+	 * Update or insert multiple courses based on Moodle data.
+	 * Skips courses with format 'site'.
+	 *
+	 * @param array $courses List of courses to update or insert.
+	 * @return void
+	 */
 	public function update_courses( $courses ) {
 		foreach ( $courses as $course ) {
 			// Skip site format courses
@@ -164,7 +170,13 @@ class Course {
 		}
 	}
 	
-
+	/**
+	 * Update a course record by Moodle course ID.
+	 *
+	 * @param int   $moodle_course_id Moodle course ID to identify the record.
+	 * @param array $args             Data to update (column => value).
+	 * @return int|false Number of rows updated or false on failure.
+	 */
 	public static function update_course( $moodle_course_id, $args ) {
 		global $wpdb;
 	
@@ -180,6 +192,12 @@ class Course {
 		);
 	}
 	
+	/**
+	 * Insert a course record into the database.
+	 *
+	 * @param array $args Course data, must include 'moodle_course_id'.
+	 * @return int|false Inserted record ID or false on failure.
+	 */
 	public static function set_course( $args ) {
 		global $wpdb;
 	
@@ -192,7 +210,12 @@ class Course {
 	    $wpdb->insert( $table, $args );
 		return $wpdb->insert_id;
 	}
-	
+	/**
+	 * Get course records from the database based on filters.
+	 *
+	 * @param array $where Conditions to filter courses.
+	 * @return array List of matching courses.
+	 */
 	public static function get_course( $where ) {
 		global $wpdb;
 	

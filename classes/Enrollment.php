@@ -17,7 +17,6 @@ class Enrollment {
 	}
 
 	public function process_order( $order_id ) {
-		file_put_contents( WP_CONTENT_DIR . '/mo_file_log.txt', 'response:'. var_export($order_id, true) . "\n", FILE_APPEND );
 		$order = new \WC_Order( $order_id );
 		$this->order = $order;
 	
@@ -148,8 +147,6 @@ class Enrollment {
 	
 		return $user_id;
 	}
-	
-	
 	
 	/**
 	 * Process the enrollment when the order status is complete or a user is added to a group.
@@ -551,15 +548,21 @@ class Enrollment {
 		if ( isset( $where['course_id'] ) ) {
 			$query_segments[] = $wpdb->prepare( "course_id = %d", $where['course_id'] );
 		}
-
+		if ( isset( $where['course_id_not'] ) ) {
+			$query_segments[] = $wpdb->prepare( "course_id != %d", $where['course_id_not'] );
+		}
 		if ( isset( $where['cohort_id'] ) ) {
 			$query_segments[] = $wpdb->prepare( "cohort_id = %d", $where['cohort_id'] );
 		}
-
+		if ( isset( $where['cohort_id_not'] ) ) {
+			$query_segments[] = $wpdb->prepare( "cohort_id != %d", $where['cohort_id_not'] );
+		}
 		if ( isset( $where['group_id'] ) ) {
 			$query_segments[] = $wpdb->prepare( "group_id = %d", $where['group_id'] );
 		}
-
+		if ( isset( $where['group_id_not'] ) ) {
+			$query_segments[] = $wpdb->prepare( "group_id != %d", $where['group_id_not'] );
+		}
 		if ( isset( $where['order_id'] ) ) {
 			$query_segments[] = $wpdb->prepare( "order_id = %d", $where['order_id'] );
 		}
