@@ -112,8 +112,8 @@ const SyncNow = (props) => {
 
       {/* Render sync status */}
       {
-        syncStatus.length > 0 &&
-        syncStatus.map((status) => {
+        syncStatus?.length > 0 &&
+        syncStatus?.map((status) => {
           return (
             <div className="details-status-row sync-now">
               {status.action}
