@@ -3076,7 +3076,7 @@ const ViewEnroll = ({
     try {
       setIsLoading(true);
       const response = await axios__WEBPACK_IMPORTED_MODULE_5__["default"].post((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("unenroll"), {
-        type: 'classroom',
+        type: 'course',
         user_id: selectedStudentForUnenroll.id,
         classroom_id: classroom.classroom_id,
         email: selectedStudentForUnenroll.email,

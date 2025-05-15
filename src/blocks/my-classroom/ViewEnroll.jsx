@@ -309,7 +309,7 @@ const ViewEnroll = ({ classroom }) => {
       const response = await axios.post(
         getApiLink("unenroll"),
         {
-          type: 'classroom',
+          type: 'course',
           user_id: selectedStudentForUnenroll.id,
           classroom_id: classroom.classroom_id,
           email: selectedStudentForUnenroll.email,
