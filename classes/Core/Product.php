@@ -125,7 +125,7 @@ class Product {
 		}
 
         // get category term
-        $term = MooWoodle()->category->get_category( $course[ 'categoryid' ], 'product_cat' );
+        $term = MooWoodle()->category->get_product_category( $course[ 'categoryid' ], 'product_cat' );
 
         // Set product properties
         $product->set_name( $course[ 'fullname' ] );
@@ -158,7 +158,7 @@ class Product {
 		$product->set_status( 'publish' );
 		$product->save();
 
-		MooWoodle()->course->update_course( $course['id'], [ 'product_id' => $product->get_id() ] );
+		MooWoodle()->course->edit_course( $course['id'], [ 'product_id' => $product->get_id() ] );
 
 		return $product->get_id();
 	}
@@ -248,7 +248,7 @@ class Product {
 			$course = MooWoodle()->course->get_course([ 'product_id' => $product_id ]);
 			$course = reset( $course );
 			if ( ! empty( $course['id'] ) ) {
-				MooWoodle()->course->update_course( $course['moodle_course_id'], [ 'product_id' => 0 ] );
+				MooWoodle()->course->edit_course( $course['moodle_course_id'], [ 'product_id' => 0 ] );
 			}
 		}
 
@@ -260,7 +260,7 @@ class Product {
             $course = reset ( $course );
 			if ( ! empty( $course['moodle_course_id'] ) ) {
 				update_post_meta( $product_id, 'moodle_course_id', (int) $course['moodle_course_id'] );
-				MooWoodle()->course->update_course( (int) $course['moodle_course_id'], [ 'product_id' => $product_id ] );
+				MooWoodle()->course->edit_course( (int) $course['moodle_course_id'], [ 'product_id' => $product_id ] );
 			}
 		}
 

@@ -282,7 +282,7 @@ class Installer {
                 'date'       => $enrollment_date,
             ];
 
-            \MooWoodle\Enrollment::add_enrollment( $enrollment_data );
+            \MooWoodle\Enrollment::set_enrollment( $enrollment_data );
         }
     }
 

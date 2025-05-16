@@ -4,7 +4,7 @@ namespace MooWoodle;
 class Frontend {
 	public function __construct() {
 		// Reset cart quantities after update
-		add_action( 'woocommerce_cart_updated', [ $this, 'enforce_quantity_restriction' ] );
+		add_action( 'woocommerce_cart_updated', [ $this, 'update_cart_quantity' ] );
 		// Add messages when cart/checkout is viewed
 		add_action( 'wp', [ $this, 'show_cart_limit_notice' ] );
 	}
@@ -12,7 +12,7 @@ class Frontend {
 	/**
 	 * Enforce quantity restriction based on plugin version and settings
 	 */
-	public function enforce_quantity_restriction() {
+	public function update_cart_quantity() {
 		$group_purchase_enabled = MooWoodle()->setting->get_setting( 'group_purchase_enable', [] );
 
 		if ( in_array( 'group_purchase_enable', $group_purchase_enabled ) && MooWoodle()->util->is_khali_dabba() ) {

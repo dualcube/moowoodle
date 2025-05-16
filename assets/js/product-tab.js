@@ -10,7 +10,7 @@ jQuery(document).ready(function ($) {
 			url: ajaxurl,
 			type: 'POST',
 			data: {
-				action: 'get_linked_items',
+				action: 'get_linkable_courses_or_cohorts',
 				type: type,
 				nonce: $('input[name="moowoodle_meta_nonce"]').val(),
 				post_id: $('#post_ID').val()

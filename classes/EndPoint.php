@@ -7,8 +7,8 @@ class EndPoint {
 
 	public function __construct() {
 		add_action( 'init', [ $this, 'register_endpoint' ] );
-		add_filter( 'woocommerce_account_menu_items', [ $this, 'add_my_courses_menu_item_to_account' ] );
-		add_action( 'woocommerce_account_' . $this->endpoint . '_endpoint', [ $this, 'render_account_courses_section' ] );
+		add_filter( 'woocommerce_account_menu_items', [ $this, 'register_my_courses_tab' ] );
+		add_action( 'woocommerce_account_' . $this->endpoint . '_endpoint', [ $this, 'render_my_courses_tab_content' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_assets' ] );
 	}
 
@@ -23,7 +23,7 @@ class EndPoint {
 	 * @param array $menu The existing account menu items.
 	 * @return array Modified menu items with My Courses.
 	 */
-	public function add_my_courses_menu_item_to_account( $menu ) {
+	public function register_my_courses_tab( $menu ) {
 		$position = (int) MooWoodle()->setting->get_setting( 'my_courses_priority' ) ?: 0;
 	
 		return array_merge(
@@ -41,7 +41,7 @@ class EndPoint {
 	 *
 	 * @return void
 	 */
-	public function render_account_courses_section() {
+	public function render_my_courses_tab_content() {
 		if ( is_account_page() ) {
 			echo '<div id="moowoodle-my-course"></div>';
 		}

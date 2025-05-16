@@ -7,9 +7,9 @@ use MooWoodle\Util;
 class Course {
 	public function __construct() {
 		// Add Link Moodle Course in WooCommerce edit product tab.
-		add_filter( 'woocommerce_product_data_tabs', [ &$this, 'moowoodle_linked_course_tab' ], 99, 1 );
-		add_action( 'woocommerce_product_data_panels', [ &$this, 'moowoodle_linked_course_panals' ] );
-		add_action( 'wp_ajax_get_linked_items', [ $this, 'get_moowoodle_linkable_items' ] );
+		add_filter( 'woocommerce_product_data_tabs', [ &$this, 'add_additional_product_tab' ], 99, 1 );
+		add_action( 'woocommerce_product_data_panels', [ &$this, 'add_additional_product_data_panel' ] );
+		add_action( 'wp_ajax_get_linkable_courses_or_cohorts', [ $this, 'get_linkable_courses' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_assets' ] );
 
 	}
@@ -17,9 +17,9 @@ class Course {
 	public function enqueue_admin_assets() {
 
 		\MooWoodle\FrontendScripts::admin_load_scripts();
-		\MooWoodle\FrontendScripts::enqueue_script( 'moowoodle-linked-panel-js' );
-		\MooWoodle\FrontendScripts::enqueue_style( 'moowoodle-linked-panel-css' );
-		\MooWoodle\FrontendScripts::localize_scripts( 'moowoodle-linked-panel-js' );
+		\MooWoodle\FrontendScripts::enqueue_script( 'moowoodle-product-tab-js' );
+		\MooWoodle\FrontendScripts::enqueue_style( 'moowoodle-product-tab-css' );
+		\MooWoodle\FrontendScripts::localize_scripts( 'moowoodle-product-tab-js' );
 
 	}
 	
@@ -29,7 +29,7 @@ class Course {
 	 * @param array $product_data_tabs
 	 * @return array
 	 */
-	public function moowoodle_linked_course_tab( $product_data_tabs ) {
+	public function add_additional_product_tab( $product_data_tabs ) {
 		$product_data_tabs[ 'moowoodle' ] = [
 			'label'  => __('Moodle Linked Course or Cohort', 'moowoodle'),
 			'target' => 'moowoodle_course_link_tab',
@@ -41,7 +41,7 @@ class Course {
 	 * Add meta box panel.
 	 * @return void
 	 */
-	public function moowoodle_linked_course_panals() {
+	public function add_additional_product_data_panel() {
 		global $post;
 
 		$linked_course_id = get_post_meta( $post->ID, 'linked_course_id', true );
@@ -89,11 +89,11 @@ class Course {
 	}
 	
 	/**
-	 * Handle request to fetch linkable items (courses/cohorts) for product linking.
+	 * Handle AJAX request to fetch courses available for linking to a product.
 	 *
 	 * @return void
 	 */
-	public function get_moowoodle_linkable_items() {
+	public function get_linkable_courses() {
 		// Verify nonce
 		if ( ! check_ajax_referer( 'moowoodle_meta_nonce', 'nonce', false ) ) {
 			wp_send_json_error( __( 'Invalid nonce', 'moowoodle' ) );
@@ -101,37 +101,37 @@ class Course {
 		}
 
 		// Retrieve and sanitize input
-		$type        = sanitize_text_field( filter_input( INPUT_POST, 'type' ) ?: '' );
-		$post_id     = absint( filter_input( INPUT_POST, 'post_id' ) ?: 0 );
-		$items       = [];
-		$selected_id = null;
+		$type = sanitize_text_field( filter_input( INPUT_POST, 'type' ) ?: '' );
+		$product_id = absint( filter_input( INPUT_POST, 'post_id' ) ?: 0 );
+		$linkable_courses = [];
+		$linked_course_id = null;
 
 		if ( $type === 'course' ) {
-			$selected_id = get_post_meta( $post_id, 'linked_course_id', true );
+			$linked_course_id = get_post_meta( $product_id, 'linked_course_id', true );
 
-			if ( $selected_id ) {
+			if ( $linked_course_id ) {
 				$courses = MooWoodle()->course->get_course([
-					'id' => $selected_id
+					'id' => $linked_course_id
 				]);
 
 				if ( ! empty( $courses ) ) {
-					$items[] = $courses[0];
+					$linkable_courses[] = $courses[0];
 				}
 			} else {
-				$items = MooWoodle()->course->get_course([
+				$linkable_courses = MooWoodle()->course->get_course([
 					'product_id' => 0
 				]);
 			}
+
 			wp_send_json_success( [
-				'items'       => $items,
-				'selected_id' => $selected_id,
+				'items'       => $linkable_courses,
+				'selected_id' => $linked_course_id,
 			] );
 		}
 
 		wp_send_json_error( __( 'Invalid type', 'moowoodle' ) );
 	}
 
-	
 	/**
 	 * Update or insert multiple courses based on Moodle data.
 	 * Skips courses with format 'site'.
@@ -160,7 +160,7 @@ class Course {
 			$existing = $this->get_course([ 'moodle_course_id' => $moodle_course_id ]);
 	
 			if ( $existing ) {
-				$this->update_course( $moodle_course_id, $args );
+				$this->edit_course( $moodle_course_id, $args );
 			} else {
 				$args['created'] = time();
 				$this->set_course( $args );
@@ -177,7 +177,7 @@ class Course {
 	 * @param array $args             Data to update (column => value).
 	 * @return int|false Number of rows updated or false on failure.
 	 */
-	public static function update_course( $moodle_course_id, $args ) {
+	public static function edit_course( $moodle_course_id, $args ) {
 		global $wpdb;
 	
 		if ( ! $moodle_course_id || empty( $args ) ) {

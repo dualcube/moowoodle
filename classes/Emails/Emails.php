@@ -4,7 +4,7 @@ namespace MooWoodle\Emails;
 
 class Emails {
 	public function __construct() {
-		add_action( 'moowoodle_after_successful_enrollments', [ &$this, 'send_enrollment_confirmation' ], 10, 2 );
+		add_action( 'moowoodle_after_enrol_moodle_user', [ &$this, 'send_enrollment_confirmation' ], 10, 2 );
 		add_filter( 'woocommerce_email_classes', [ &$this, 'moowoodle_emails' ] );
 	}
 

@@ -233,7 +233,7 @@ class RestAPI {
                 'current'   => 0
             ], 'course' );
 
-            MooWoodle()->category->save_categories( $categories );
+            MooWoodle()->category->update_course_categories( $categories );
             
             Util::set_sync_status( [
                 'action'    => __( 'Update Product Category', 'moowoodle' ),
@@ -241,7 +241,7 @@ class RestAPI {
                 'current'   => 0
             ], 'course' );
 
-            MooWoodle()->category->update_categories( $categories, 'product_cat' );
+            MooWoodle()->category->update_product_categories( $categories, 'product_cat' );
 
         } 
 
@@ -378,7 +378,7 @@ class RestAPI {
             $view_user_url = trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "user/index.php?id={$course['moodle_course_id']}";
 
             // Get categories
-            $categories = MooWoodle()->category->get_filtered_categories([
+            $categories = MooWoodle()->category->get_course_category([
                 'moodle_category_id' => $course['category_id']
             ]);
             $category_name = ! empty( $categories ) ? $categories[0]['name'] : __( 'Uncategorized', 'moowoodle' );
@@ -434,7 +434,7 @@ class RestAPI {
         $category_ids = array_unique( wp_list_pluck( $courses, 'category_id' ) );
     
         // Fetch categories
-        $category = MooWoodle()->category->get_filtered_categories([
+        $category = MooWoodle()->category->get_course_category([
             'category_ids' => $category_ids,
         ]);
     

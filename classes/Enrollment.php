@@ -129,7 +129,7 @@ class Enrollment {
 			$email_data['gift_email'][] = $order->get_billing_email();
 		}
 	
-		do_action( 'moowoodle_after_successful_enrollments', $email_data, $user_id );
+		do_action( 'moowoodle_after_enrol_moodle_user', $email_data, $user_id );
 	}
 	
 		
@@ -248,9 +248,9 @@ class Enrollment {
 		$existing_enrollment = reset( $existing_enrollment );
 	
 		if ( $existing_enrollment ) {
-			self::update_enrollment( $existing_enrollment['id'], $enrollment_data );
+			self::edit_enrollment( $existing_enrollment['id'], $enrollment_data );
 		} else {
-			self::add_enrollment( $enrollment_data );
+			self::set_enrollment( $enrollment_data );
 		}
 	
 		if ( $group_item_id ) {
@@ -547,7 +547,7 @@ class Enrollment {
 	 * @param array $args
 	 * @return bool|int|null
 	 */
-	public static function add_enrollment( $args ) {
+	public static function set_enrollment( $args ) {
 		global $wpdb;
 
 		if ( empty( $args ) || empty( $args['user_email'] ) ) {
@@ -573,7 +573,7 @@ class Enrollment {
 	 * @param array $args
 	 * @return bool|int
 	 */
-	public static function update_enrollment( $id, $args ) {
+	public static function edit_enrollment( $id, $args ) {
 		global $wpdb;
 
 		if ( ! $id || empty( $args ) ) {

@@ -66,8 +66,8 @@ class FrontendScripts {
 				'version' => $version,
                 'text_domain' => 'moowoodle'
             ],
-			'moowoodle-linked-panel-js' => [
-				'src'     => MooWoodle()->plugin_url . 'assets/js/linked-panel.js',
+			'moowoodle-product-tab-js' => [
+				'src'     => MooWoodle()->plugin_url . 'assets/js/product-tab.js',
 				'deps'    => [ 'jquery', 'jquery-blockui', 'wp-element', 'wp-i18n', 'react-jsx-runtime' ],
 				'version' => $version,
                 'text_domain' => 'moowoodle'
@@ -88,8 +88,8 @@ class FrontendScripts {
 				'deps'    => array(),
 				'version' => $version,
             ],	
-			'moowoodle-linked-panel-css'   => [
-				'src'     => MooWoodle()->plugin_url . 'assets/css/linked-panel.css',
+			'moowoodle-product-tab-css'   => [
+				'src'     => MooWoodle()->plugin_url . 'assets/css/product-tab.css',
 				'deps'    => array(),
 				'version' => $version,
             ],	
@@ -183,7 +183,7 @@ class FrontendScripts {
 					]
 				],
             ],
-			'moowoodle-linked-panel-js' => [
+			'moowoodle-product-tab-js' => [
 				'object_name' => 'moowoodle',
                 'data' =>           [
 					'ajaxurl'     => admin_url('admin-ajax.php'),
