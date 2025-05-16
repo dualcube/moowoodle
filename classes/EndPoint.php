@@ -7,8 +7,8 @@ class EndPoint {
 
 	public function __construct() {
 		add_action( 'init', [ $this, 'register_endpoint' ] );
-		add_filter( 'woocommerce_account_menu_items', [ $this, 'add_menu_item' ] );
-		add_action( 'woocommerce_account_' . $this->endpoint . '_endpoint', [ $this, 'render_view' ] );
+		add_filter( 'woocommerce_account_menu_items', [ $this, 'add_my_courses_menu_item_to_account' ] );
+		add_action( 'woocommerce_account_' . $this->endpoint . '_endpoint', [ $this, 'render_account_courses_section' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_assets' ] );
 	}
 
@@ -17,21 +17,36 @@ class EndPoint {
 		flush_rewrite_rules();
 	}
 
-	public function add_menu_item( $menu ) {
+	/**
+	 * Add "My Courses" menu item to WooCommerce My Account menu.
+	 *
+	 * @param array $menu The existing account menu items.
+	 * @return array Modified menu items with My Courses.
+	 */
+	public function add_my_courses_menu_item_to_account( $menu ) {
 		$position = (int) MooWoodle()->setting->get_setting( 'my_courses_priority' ) ?: 0;
-
+	
 		return array_merge(
 			array_slice( $menu, 0, $position + 1, true ),
 			[ $this->endpoint => __( 'My Courses', 'moowoodle' ) ],
 			array_slice( $menu, $position + 1, null, true )
 		);
 	}
-
-	public function render_view() {
+	
+	/**
+	 * Render the MooWoodle course section on the customer's My Account page.
+	 *
+	 * This outputs a container div which can be used by JavaScript (e.g., React)
+	 * to dynamically load and display the user's enrolled courses.
+	 *
+	 * @return void
+	 */
+	public function render_account_courses_section() {
 		if ( is_account_page() ) {
 			echo '<div id="moowoodle-my-course"></div>';
 		}
 	}
+	
 
 	public function enqueue_assets() {
 		if ( is_account_page() ) {

@@ -22,12 +22,14 @@ export default {
                     label: __('Create new products along with', 'moowoodle'),
                     hints: __('This will additionally create new products based on Moodle cohort fetched, if they do not already exist in WordPress.', 'moowoodle'),
                     value: "create",
+                    proSetting: true,
                 },
                 {
                     key: "update",
                     label: __('Update existing products along with', 'moowoodle'),
                     hints: __('Update product information based on Moodle cohort data. <br><span class="highlighted-part">Caution: This will overwrite all existing product details with those from Moodle cohort details.</span>', 'moowoodle'),
                     value: "update",
+                    proSetting: true,
                 }
             ],
         },

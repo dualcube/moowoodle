@@ -2,7 +2,7 @@
 
 namespace MooWoodle\Core;
 
-use MooWoodle\Util as util;
+use MooWoodle\Util;
 
 class Course {
 	public function __construct() {

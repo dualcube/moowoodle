@@ -1,5 +1,12 @@
 @import '/src/components/config.scss';
 
+div.cohort-img {
+  background-image: url("../../assets/images/Enrollment-pc.png") !important; // force to set image for ungrade with pro for desktop-screen
+  background-repeat: no-repeat;
+  background-position: top left;
+  background-size: contain;
+  height: 100vh;
+}
 .course-container-wrapper {
   .moowoodle-course-actions {
     display: flex;

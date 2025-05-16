@@ -10,6 +10,7 @@ import './cohorts.scss';
 import Propopup from "../PopupContent/PopupContent";
 import Dialog from "@mui/material/Dialog";
 import defaultImage from '../../assets/images/moowoodle-product-default.png';
+import Popoup from "../PopupContent/PopupContent.jsx";
 
 export default function Cohorts() {
     const { __ } = wp.i18n;
@@ -332,8 +333,10 @@ export default function Cohorts() {
     ];
 
     return (
-        openDialog ?
-            (
+
+        <>
+        {!appLocalizer.khali_dabba ? (
+            <>
                 <Dialog
                     className="admin-module-popup"
                     open={openDialog}
@@ -348,33 +351,39 @@ export default function Cohorts() {
                             setOpenDialog(false);
                         }}
                     ></span>
-                    <Propopup />
+                    <Popoup />
                 </Dialog>
-            )
-            :
-            (
-                <div className="course-container-wrapper">
-                    <div className="admin-page-title">
-                        <p>{__("Cohorts", "moowoodle")}</p>
-                    </div>
-
-                    <div className="admin-table-wrapper">
-                        {
-                            <CustomTable
-                                data={data}
-                                columns={columns}
-                                handlePagination={requestApiForData}
-                                defaultRowsParPage={10}
-                                defaultTotalRows={totalRows}
-                                perPageOption={[10, 25, 50]}
-                                selectable={true}
-                                handleSelect={handleRowSelect}
-                                realtimeFilter={realtimeFilter}
-                                autoLoading={false}
-                            />
-                        }
-                    </div>
+                <div
+                    className="cohort-img"
+                    onClick={() => {
+                        setOpenDialog(true);
+                    }}>
                 </div>
-            )
-    );
+            </>
+        ) : (
+            <div className="course-container-wrapper">
+            <div className="admin-page-title">
+                <p>{__("Cohorts", "moowoodle")}</p>
+            </div>
+
+            <div className="admin-table-wrapper">
+                {
+                    <CustomTable
+                        data={data}
+                        columns={columns}
+                        handlePagination={requestApiForData}
+                        defaultRowsParPage={10}
+                        defaultTotalRows={totalRows}
+                        perPageOption={[10, 25, 50]}
+                        selectable={true}
+                        handleSelect={handleRowSelect}
+                        realtimeFilter={realtimeFilter}
+                        autoLoading={false}
+                    />
+                }
+            </div>
+            </div>
+        )}
+    </>
+    )
 }

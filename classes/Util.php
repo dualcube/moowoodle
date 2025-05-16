@@ -180,14 +180,4 @@ class Util {
 		set_transient( 'moowoodle_sync_status_' . $key, [] );
 	}
 	
-
-	/**
-     * Get other templates ( e.g. product attributes ) passing attributes and including the file.
-     *
-     * @access public
-     * @param mixed $template_name
-     * @param array $args ( default: array() )
-     * @return void
-     */
-
 }

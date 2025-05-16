@@ -111,8 +111,8 @@ class TestConnection {
 
 		if ( ! empty( $response[ 'data' ][ 'users' ]) ) {
 
-			$user = reset( $response[ 'data' ][ 'users' ] )
-		   self::delete_users( $user[ 'id' ] );
+			$user = reset( $response[ 'data' ][ 'users' ] );
+		    self::delete_users( $user[ 'id' ] );
 		}
 		
 		$response = MooWoodle()->external_service->do_request( 'create_users', [ 'users' =>  [ [

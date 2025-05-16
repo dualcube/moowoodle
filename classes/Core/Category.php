@@ -2,7 +2,7 @@
 
 namespace MooWoodle\Core;
 
-use MooWoodle\Util as util;
+use MooWoodle\Util;
 
 class Category {
 
@@ -153,6 +153,16 @@ class Category {
 		}
 	}
 
+	/**
+	 * Save or update Moodle categories in the MooWoodle categories table.
+	 *
+	 * This function loops through an array of categories and either inserts a new
+	 * category or updates an existing one based on the Moodle category ID.
+	 * It also increments the course sync count for each successful operation.
+	 *
+	 * @param array $categories List of category data. Each item must have 'id' and 'name'.
+	 * @return void
+	 */
 	public static function save_categories( $categories ) {
 		foreach ( $categories as $category ) {
 			// Skip if essential fields are missing.
@@ -165,7 +175,7 @@ class Category {
 			$args = [
 				'moodle_category_id' => $category_id,
 				'name'               => trim( sanitize_text_field( $category['name'] ) ),
-				'parent_id'          => isset( $category['parent'] ) ? (int) $category['parent'] : 0,
+				'parent_id'          => (int) ( $category['parent'] ?? 0 ),
 			];
 	
 			$existing = self::get_filtered_categories([
@@ -181,7 +191,7 @@ class Category {
 			\MooWoodle\Util::increment_sync_count( 'course' );
 		}
 	}
-	
+
 
 	/**
      * Get all categories
@@ -247,7 +257,7 @@ class Category {
 		);
 	}
 	/**
-     * inser categories
+     * insert categories
      */
 	public static function set_category( $args ) {
 		global $wpdb;

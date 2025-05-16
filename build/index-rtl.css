@@ -3669,6 +3669,14 @@ div:has(.hhh) {
 /*!************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/Cohorts/cohorts.scss ***!
   \************************************************************************************************************************************************************************************************************************************************************/
+div.cohort-img {
+  background-image: url(images/Enrollment-pc.2377bb22.png) !important;
+  background-repeat: no-repeat;
+  background-position: top right;
+  background-size: contain;
+  height: 100vh;
+}
+
 .course-container-wrapper .moowoodle-course-actions {
   display: flex;
   align-items: center;
