@@ -68,63 +68,44 @@ class Category {
 				continue;
 			}
 	
-			$category_id = (int) $category['id'];
-	
 			$args = [
-				'moodle_category_id' => $category_id,
+				'moodle_category_id' => (int) $category['id'],
 				'name'               => trim( sanitize_text_field( $category['name'] ) ),
 				'parent_id'          => (int) ( $category['parent'] ?? 0 ),
 			];
-	
-			$existing = self::get_course_category([
-				'moodle_category_id' => $category_id
-			]);
-	
-			if ( $existing ) {
-				self::edit_category( $category_id, $args );
-			} else {
-				self::set_category( $args );
-			}
-	
+
+			self::save_course_category( $args );
+
 			\MooWoodle\Util::increment_sync_count( 'course' );
 		}
 	}
 
 	/**
-     * update categories by id
-     */
-	public static function edit_category( $id, $args ) {
+	 * Insert or update a category based on moodle_category_id.
+	 *
+	 * @param array $args {
+	 *     @type int    $moodle_category_id Required. Moodle category ID.
+	 *     @type string $name               Required. Category name.
+	 *     @type int    $parent_id          Optional. Parent category ID.
+	 * }
+	 * @return bool|int False on failure, number of rows affected on success.
+	 */
+	public static function save_course_category( $args ) {
 		global $wpdb;
-	
-		if ( ! $id || empty( $args ) ) {
+
+		if ( empty( $args['moodle_category_id'] ) ) {
 			return false;
 		}
-	
-		$table_name = $wpdb->prefix . Util::TABLES['category'];
-	
-		return $wpdb->update(
-			$table_name,
-			$args,
-			[ 'moodle_category_id' => $id ]
-		);
-	}
-	/**
-     * insert categories
-     */
-	public static function set_category( $args ) {
-		global $wpdb;
-	
-		if ( empty( $args ) || empty( $args['moodle_category_id'] ) ) {
-			return false;
+
+		$table = $wpdb->prefix . Util::TABLES['category'];
+
+		if ( self::get_course_category( [ 'moodle_category_id' => (int) $args['moodle_category_id'] ] ) ) {
+			return $wpdb->update( $table, $args, [ 'moodle_category_id' => (int) $args['moodle_category_id'] ] );
 		}
-	
-		$table_name = $wpdb->prefix . Util::TABLES['category'];
-	
-		return $wpdb->insert(
-			$table_name,
-			$args
-		);
+
+		return $wpdb->insert( $table, $args );
 	}
+
 	/**
 	 * Returns term by moodle category id
 	 * @param int $category_id

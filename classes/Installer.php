@@ -52,12 +52,14 @@ class Installer {
                 `order_id` bigint(20) NOT NULL,
                 `item_id` bigint(20) NOT NULL,
                 `status` varchar(20) NOT NULL,
-                `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                `enrolled_date` timestamp NULL DEFAULT NULL,
+                `unenrolled_date` timestamp NULL DEFAULT NULL,
+                `reason` text DEFAULT NULL,
                 `group_item_id` bigint(20) NOT NULL,
                 PRIMARY KEY (`id`)
             ) $collate;"
         );
-
+               
         $wpdb->query(
              "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}" . Util::TABLES[ 'category' ] . "` (
                 `moodle_category_id` bigint(20) NOT NULL,
@@ -145,7 +147,7 @@ class Installer {
                 'parent_id'          => (int) $term['parent_id'],
             ];
 
-            \MooWoodle\Core\Category::set_category( $args );
+            \MooWoodle\Core\Category::save_course_category( $args );
         }
     }
 
@@ -191,7 +193,7 @@ class Installer {
                 'enddate'          => $all_meta['_course_enddate'][0]       ?? 0,
             ];
 
-            $new_course_id = \MooWoodle\Core\Course::set_course( $course_data );
+            $new_course_id = \MooWoodle\Core\Course::save_course( $course_data );
 
             if ( ! empty( $course_data['product_id'] ) && $new_course_id ) {
                 update_post_meta( $course_data['product_id'], 'linked_course_id', $new_course_id );

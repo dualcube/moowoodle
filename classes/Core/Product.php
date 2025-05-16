@@ -158,8 +158,11 @@ class Product {
 		$product->set_status( 'publish' );
 		$product->save();
 
-		MooWoodle()->course->edit_course( $course['id'], [ 'product_id' => $product->get_id() ] );
-
+		MooWoodle()->course->save_course( [
+			'moodle_course_id' => (int) $course['id'],
+			'product_id'       => (int) $product->get_id(),
+		] );
+		
 		return $product->get_id();
 	}
 	
@@ -248,7 +251,11 @@ class Product {
 			$course = MooWoodle()->course->get_course([ 'product_id' => $product_id ]);
 			$course = reset( $course );
 			if ( ! empty( $course['id'] ) ) {
-				MooWoodle()->course->edit_course( $course['moodle_course_id'], [ 'product_id' => 0 ] );
+				MooWoodle()->course->save_course( $course['moodle_course_id'], [ 'product_id' => 0 ] );
+				MooWoodle()->course->save_course( [
+					'moodle_course_id' => (int) $course['moodle_course_id'],
+					'product_id'       => 0,
+				] );
 			}
 		}
 
@@ -260,7 +267,11 @@ class Product {
             $course = reset ( $course );
 			if ( ! empty( $course['moodle_course_id'] ) ) {
 				update_post_meta( $product_id, 'moodle_course_id', (int) $course['moodle_course_id'] );
-				MooWoodle()->course->edit_course( (int) $course['moodle_course_id'], [ 'product_id' => $product_id ] );
+				MooWoodle()->course->save_course( [
+					'moodle_course_id' => (int) (int) $course['moodle_course_id'],
+					'product_id'       => (int) $product_id,
+				] );
+				
 			}
 		}
 
