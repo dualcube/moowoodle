@@ -6,7 +6,7 @@ export default {
     name: __("Shop Central", 'moowoodle'),
     desc: __("Efficient course information handling for customers.", 'moowoodle'),
     icon: "adminLib-cart",
-    submitUrl: "save-moowoodle-setting",
+    submitUrl: "settings",
     modal: [
         {
             key: "start_end_date",

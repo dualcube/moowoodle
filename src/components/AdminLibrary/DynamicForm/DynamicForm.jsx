@@ -943,12 +943,13 @@ const DynamicForm = (props) => {
           input = <SyncNow
             buttonKey={inputField.key}
             apilink={inputField.apilink} // apilink 
+            parameter={inputField.parameter}
+            // status={inputField.status}
             value={inputField.value}
             description={inputField.desc}
             proSetting={isProSetting(inputField.proSetting)}
             proSettingChanged={() => proSettingChanged(inputField.proSetting)}
             interval={inputField.interval}
-            statusApiLink={inputField.statusApiLink} // api for each status of synchronization
           />
           break;
 
@@ -992,8 +993,7 @@ const DynamicForm = (props) => {
 
         case "log":
           input = <Log 
-            fetchApiLink={inputField.fetchApiLink} // api to fetch the log content
-            downloadApiLink={inputField.downloadApiLink} // download the log file
+            apiLink={inputField.apiLink} // api to fetch and download the log content
             downloadFileName={inputField.fileName}/> // log file name
           break;
 

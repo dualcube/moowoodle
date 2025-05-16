@@ -17,6 +17,11 @@ class RestAPI {
         if ( current_user_can( 'manage_options' ) ) {
             add_action( 'rest_api_init', [ &$this, 'register' ] );
         }
+
+        // If user is admin or customer
+        if ( current_user_can( 'subscriber' ) || current_user_can( 'customer' ) || current_user_can( 'manage_options' ) ) {
+            add_action( 'rest_api_init', [ &$this, 'register_user_api' ] );
+        }
     }
 
     /**
@@ -24,9 +29,9 @@ class RestAPI {
      * @return void
      */
     public function register() {
-        register_rest_route( MooWoodle()->rest_namespace, '/save-moowoodle-setting', [
+        register_rest_route( MooWoodle()->rest_namespace, '/settings', [
             'methods'             => \WP_REST_Server::ALLMETHODS,
-            'callback'            =>[ $this, 'save_moowoodle_setting' ],
+            'callback'            =>[ $this, 'set_settings' ],
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
 
@@ -36,41 +41,47 @@ class RestAPI {
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
 
-        register_rest_route( MooWoodle()->rest_namespace, '/sync-course', [
-            'methods'             => \WP_REST_Server::ALLMETHODS,
-            'callback'            =>[ $this, 'synchronize_course' ],
-            'permission_callback' =>[ $this, 'moowoodle_permission' ],
+        register_rest_route( MooWoodle()->rest_namespace, '/sync', [
+            [
+                'methods'             => 'POST',
+                'callback'            =>[ $this, 'synchronize' ],
+                'permission_callback' =>[ $this, 'moowoodle_permission' ],
+            ],
+            [
+                'methods'             => 'GET',
+                'callback'            =>[ $this, 'get_sync_status' ],
+                'permission_callback' =>[ $this, 'moowoodle_permission' ],
+            ]
+
         ]);
 
-        register_rest_route( MooWoodle()->rest_namespace, '/sync-status-course', [
-            'methods'             => \WP_REST_Server::ALLMETHODS,
-            'callback'            =>[ $this, 'get_sync_status' ],
-            'permission_callback' =>[ $this, 'moowoodle_permission' ],
-        ]);
-
-        register_rest_route( MooWoodle()->rest_namespace, '/get-courses', [
-            'methods'             => \WP_REST_Server::ALLMETHODS,
+        register_rest_route( MooWoodle()->rest_namespace, '/courses', [
+            'methods'             => 'GET',
             'callback'            =>[ $this, 'get_courses' ],
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
-
-        register_rest_route( MooWoodle()->rest_namespace, '/all-courses', [
+        register_rest_route( MooWoodle()->rest_namespace, '/all-filters', [
             'methods'             => \WP_REST_Server::ALLMETHODS,
-            'callback'            =>[ $this, 'get_all_courses' ],
+            'callback'            =>[ $this, 'get_all_filters' ],
             'permission_callback' =>[ MooWoodle()->restAPI, 'moowoodle_permission' ],
         ]);
 
-        register_rest_route( MooWoodle()->rest_namespace, '/fetch-log', [
-            'methods'             => \WP_REST_Server::ALLMETHODS,
+        register_rest_route( MooWoodle()->rest_namespace, '/logs', [
+            'methods'             => 'GET',
             'callback'            =>[ $this, 'get_log' ],
             'permission_callback' =>[ $this, 'moowoodle_permission' ],
         ]);
 
-        register_rest_route( MooWoodle()->rest_namespace, '/download-log', [
-            'methods'             => \WP_REST_Server::ALLMETHODS,
-            'callback'            =>[ $this, 'download_log' ],
-            'permission_callback' =>[ $this, 'moowoodle_permission' ],
+    }
+
+    public function register_user_api(){
+
+        register_rest_route( MooWoodle()->rest_namespace, '/my-acc-courses', [
+            'methods'             => \WP_REST_Server::READABLE,
+            'callback'            =>[ $this, 'get_user_courses' ],
+            'permission_callback' =>[ $this, 'user_can_access_api' ],
         ]);
+
     }
 
     /**
@@ -78,18 +89,28 @@ class RestAPI {
      * @return bool
      */
     public function moowoodle_permission() {
-        return current_user_can( 'manage_options' ) || true;
+        return current_user_can( 'manage_options' );
     }
 
+    /**
+     * Check if the current user has API access based on allowed roles.
+     *
+     * @return bool True if the user is an administrator or customer, otherwise false.
+     */
+    public function user_can_access_api()
+    {
+        return current_user_can( 'subscriber' ) || current_user_can( 'customer' ) || current_user_can( 'manage_options' );
+    }
+    
     /**
      * Seve the setting set in react's admin setting page.
      * @param mixed $request rest api request object
      * @return \WP_Error | \WP_REST_Response
      */
-    public function save_moowoodle_setting( $request ) {
+    public function set_settings( $request ) {
         $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'moowoodle'), array( 'status' => 403 ) );
         }
         try {
             $all_details = [];
@@ -124,7 +145,7 @@ class RestAPI {
     public function test_connection( $request ) {
         $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'moowoodle'), array( 'status' => 403 ) );
         }
         $action    = $request->get_param( 'action' );
         $user_id   = $request->get_param( 'user_id' );
@@ -166,6 +187,21 @@ class RestAPI {
         return rest_ensure_response( $response );
     }
 
+    public function synchronize( $request ) {
+        $parameter = $request->get_param('parameter');
+
+        if ($parameter == 'course') {
+            $this->synchronize_course($request);
+        } elseif ($parameter == 'user') {
+            do_action( 'moowoodle_sync_all_users', $request );
+        } elseif ($parameter == 'cohort') {
+            // Pro feature: Sync all cohorts in MooWoodle
+            do_action( 'moowoodle_sync_all_cohorts', $request );
+        } else {
+            do_action( 'moowoodle_sync' );
+        }
+    }
+
     /**
      * Seve the setting set in react's admin setting page
      * @param mixed $request rest api request object
@@ -174,13 +210,13 @@ class RestAPI {
     public function synchronize_course( $request ) {
         $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'moowoodle'), array( 'status' => 403 ) );
         }
         // Flusk course sync status before sync start.
         Util::flush_sync_status( 'course' );
 
         set_transient( 'course_sync_running', true );
-
+ 
         $sync_setting = MooWoodle()->setting->get_setting( 'sync-course-options' );
         $sync_setting = is_array( $sync_setting ) ? $sync_setting : [];
         
@@ -197,16 +233,17 @@ class RestAPI {
                 'current'   => 0
             ], 'course' );
 
-            MooWoodle()->category->update_categories( $categories, 'course_cat' );
-
+            MooWoodle()->category->update_course_categories( $categories );
+            
             Util::set_sync_status( [
                 'action'    => __( 'Update Product Category', 'moowoodle' ),
                 'total'     => count( $categories ),
                 'current'   => 0
             ], 'course' );
 
-            MooWoodle()->category->update_categories( $categories, 'product_cat' );
-        }
+            MooWoodle()->category->update_product_categories( $categories, 'product_cat' );
+
+        } 
 
 		// get all caurses from moodle.
 		$response = MooWoodle()->external_service->do_request( 'get_courses' );
@@ -221,227 +258,206 @@ class RestAPI {
 
         MooWoodle()->course->update_courses( $courses );
         
-        // Update all product
-        Util::set_sync_status( [
-            'action'    => __( 'Update Product', 'moowoodle' ),
-            'total'     => count( $courses ) - 1,
-            'current'   => 0
-        ], 'course' );
-
         MooWoodle()->product->update_products( $courses );
         
-        delete_transient( 'course_sync_running' );
-
         /**
          * Action hook after moowoodle course sync.
          */
         do_action( 'moowoodle_after_sync_course' );
+
+        delete_transient( 'course_sync_running' );
 
         return rest_ensure_response( true );
     }
 
     /**
      * Get sync status
-     * @param mixed $reques
+     * @param mixed $request
      * @return \WP_Error|\WP_REST_Response
      */
-    public function get_sync_status( $reques ) {
-        $nonce = $reques->get_header( 'X-WP-Nonce' );
+    public function get_sync_status( $request ) {
+        $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'moowoodle'), array( 'status' => 403 ) );
         }
-        return rest_ensure_response([
-            'status'  => Util::get_sync_status( 'course' ),
-            'running' => get_transient( 'course_sync_running' ),
-        ]);
+
+        $response = [
+            'status'  => [],
+            'running' => false,
+        ];
+
+        $status = $request->get_param('parameter');
+
+        if ($status == 'course') {
+            $response = [
+                'status'  => Util::get_sync_status( 'course' ),
+                'running' => get_transient( 'course_sync_running' ),
+            ];
+        }else {
+            $response = apply_filters( 'moowoodle_sync_status', $request );
+        }
+ 
+        return rest_ensure_response( $response );
     }
 
     /**
-     * Fetch all course
+     * Fetch all courses
+     * 
      * @param mixed $request
      * @return \WP_Error|\WP_REST_Response
      */
     public function get_courses( $request ) {
-        $count_courses  = $request->get_param( 'count' );
-        $par_page       = $request->get_param( 'row' );
-        $page           = $request->get_param( 'page' );
-        $product_field  = $request->get_param( 'product' );
-        $catagory_field = $request->get_param( 'catagory' );
-        $search_action  = $request->get_param( 'searchaction' );
-        $search_field   = $request->get_param( 'search');
-        $nonce          = $request->get_header( 'X-WP-Nonce' );
 
+        $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __( 'Invalid nonce', 'moowoodle' ), [ 'status' => 403 ] );
         }
 
-        // Prepare argument for database query
-        $args = [
-            'fields'         => 'ids',
-            'numberposts'    => -1,
-            'posts_per_page' => $par_page,
-            'paged'          => $page
+        $count_courses  = $request->get_param( 'count' );
+        $limit          = max( intval( $request->get_param( 'row' ) ), 10 );
+        $page           = max( intval( $request->get_param( 'page' ) ), 1 );
+        $offset         = ( $page - 1 ) * $limit;
+        $category_field = $request->get_param( 'catagory' );
+        $search_action  = $request->get_param( 'searchaction' );
+        $search_field   = $request->get_param( 'search' );
+
+        // If count_courses is requested, get the course count
+        if ( $count_courses ) {
+            $courses = MooWoodle()->course->get_course( [] );
+            return rest_ensure_response( count( $courses ) );
+        }
+
+        // Base filter array
+        $filters = [
+            'limit'       => $limit,
+            'offset'      => $offset,
         ];
 
-        // Filter by course
-        if ( $search_action == 'course' ) {
-            $args[ 's' ] = $search_field;
+        if ( ! empty( $category_field ) ) {
+            $filters['category_id'] = $category_field;
         }
-
-        // Filter by category
-        if ( ! empty( $catagory_field ) ) {
-            $args[ 'meta_query' ] = [
-                [
-                    'key'   => '_category_id',
-                    'value' => intval( $catagory_field ),
-                ]
-            ];
-        }
-
-        // Filter by product
-        if ( ! empty( $product_field ) ) {
-            $args[ 'meta_query' ] = [
-                [
-                    'key'   => 'linked_product_id',
-                    'value' => intval( $product_field ),
-                ]
-            ];
-        }
-
-        // Filter by shortname.
-        if ( $search_action == 'shortname' ) {
-            $args[ 'meta_query' ] = [
-                [
-                    'key'     => '_course_short_name',
-                    'value'   => $search_field,
-                    'compare' => 'LIKE'
-                ]
-            ];
-        }
-
-        // Get the courses
-        $course_ids = MooWoodle()->course->get_courses( $args );
         
-        // Set response as number of courses if count request is set.
-        if ( $count_courses ) {
-            return rest_ensure_response( count( $course_ids ) );
+        // Add search filter
+        if ( $search_action === 'course' ) {
+            $filters['fullname'] = $search_field;
+        } elseif ( $search_action === 'shortname' ) {
+            $filters['shortname'] = $search_field;
+        }
+
+        // Get paginated courses
+        $courses = MooWoodle()->course->get_course( $filters );
+
+        if ( empty( $courses ) ) {
+            return rest_ensure_response( [] );
         }
 
         $formatted_courses = [];
 
-		foreach ( $course_ids as $course_id ) {
-			// get course all post meta.
-			$course_meta = array_map( 'current', get_post_meta( $course_id, '', true ) );
+        foreach ( $courses as $course ) {
+            $course_id        = (int) $course['id'];
+            $product_id       = (int) ( $course['product_id'] );
+            $synced_products  = [];
+            $product_image    = '';
 
-			//get term object by course category id.
-			$term = MooWoodle()->category->get_category( $course_meta[ '_category_id' ], 'course_cat' );
-
-            $products = wc_get_products([
-                'meta_query' => [
-                    [
-                        'key'   => 'linked_course_id',
-                        'value' => $course_id,
-                    ]
-                ]
-            ]);
-
-            $synced_products = [];
-            $count_enrolment = 0;
-            $product_image   = '';
-
-			foreach ( $products as $product ) {
-				$synced_products[ $product->get_name() ] = add_query_arg( [ 'post' => $product->get_id() , 'action' => 'edit' ], admin_url( 'post.php' ) );
-                $count_enrolment += (int) $product->get_meta( 'total_sales' );
-                $product_image   = wp_get_attachment_url( $product->get_image_id() );
-			} 
-            // Prepare date
-            $course_startdate = $course_meta[ '_course_startdate' ];
-            $course_enddate   = $course_meta[ '_course_enddate' ];
-
-			if (!$course_startdate && !$course_enddate) {
-                $date = 'NA';
-            } else {
-                $date = $course_startdate ? wp_date( 'M j, Y', $course_startdate ) :  __('Not Set', 'moowoodle');
-                $date .= $course_enddate ? ' - ' . wp_date( 'M j, Y  ', $course_enddate ) :  __(' - Not Set', 'moowoodle');
+            if ( $product_id ) {
+                $product = wc_get_product( $product_id );
+                if ( $product ) {
+                    $synced_products[ $product->get_name() ] = add_query_arg(
+                        [ 'post' => $product->get_id(), 'action' => 'edit' ],
+                        admin_url( 'post.php' )
+                    );
+                    $product_image = wp_get_attachment_url( $product->get_image_id() );
+                }
             }
 
-            // Get moowoodle course id
-            $moodle_course_id = $course_meta[ 'moodle_course_id' ];
+            $start = $course['startdate'] ? wp_date( 'M j, Y', $course['startdate'] ) : __( 'Not Set', 'moowoodle' );
+            $end   = $course['enddate'] ? wp_date( 'M j, Y', $course['enddate'] ) : __( 'Not Set', 'moowoodle' );
+            $date  = ( $course['startdate'] || $course['enddate'] ) ? "$start - $end" : 'NA';
 
-            // Prepare url
-            $moodle_url    = trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . 'course/edit.php?id=' . $moodle_course_id;
-            $view_user_url = trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . 'user/index.php?id=' . $moodle_course_id;
-            $category_url  = add_query_arg( [ 'course_cat' => $term->slug, 'post_type' => 'course' ], admin_url( 'edit.php' ) );
-            /**
-             * Filter for add additional data.
-             * @var array formatted course data.
-             */
-			$formatted_courses[] = apply_filters( 'moowoodle_formatted_course', [
-				'id'                => $course_id,
-				'moodle_url'        => $moodle_url,
-				'moodle_course_id'  => $moodle_course_id,
-				'course_short_name' => $course_meta[ '_course_short_name' ],
-				'course_name'       => get_the_title( $course_id ),
-				'products'          => $synced_products,
+            $moodle_url    = trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "course/edit.php?id={$course['moodle_course_id']}";
+            $view_user_url = trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "user/index.php?id={$course['moodle_course_id']}";
+
+            // Get categories
+            $categories = MooWoodle()->category->get_course_category([
+                'moodle_category_id' => $course['category_id']
+            ]);
+            $category_name = ! empty( $categories ) ? $categories[0]['name'] : __( 'Uncategorized', 'moowoodle' );
+
+            // Get enrolled users count
+            $enroled_user = MooWoodle()->enrollment->get_enrollments([
+                'course_id' => $course['id']
+            ]);
+
+            $formatted_courses[] = apply_filters( 'moowoodle_formatted_course', [
+                'id'                => $course_id,
+                'moodle_url'        => $moodle_url,
+                'moodle_course_id'  => $course['moodle_course_id'],
+                'course_short_name' => $course['shortname'],
+                'course_name'       => $course['fullname'],
+                'products'          => $synced_products,
                 'productimage'      => $product_image,
-				'category_name'     => $term->name,
-				'category_url'      => $category_url,
-				'enroled_user'      => $count_enrolment,
+                'category_name'     => $category_name,
+                'enroled_user'      => count( $enroled_user ),
                 'view_users_url'    => $view_user_url,
-				'date'              => $date,
-			]);
-		}
+                'date'              => $date,
+            ]);
+        }
+
         return rest_ensure_response( $formatted_courses );
     }
 
     /**
-     * get all courses
-     * @param mixed $request
-     * @return \WP_Error|\WP_REST_Response
+     * Get all course and category filters for use in dropdowns or filters.
+     * Verifies the REST nonce before fetching data.
+     *
+     * @param WP_REST_Request $request REST API request object.
+     * @return WP_REST_Response|\WP_Error REST response with course and category lists or error on failure.
      */
-	public function get_all_courses($request) {
-        $nonce = $request->get_header( 'X-WP-Nonce' );
+    public function get_all_filters( $request ) {
+    
+        // Verify nonce
+        $nonce = $request->get_header('X-WP-Nonce');
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __( 'Invalid nonce', 'moowoodle' ), [ 'status' => 403 ] );
         }
-		$course_ids = MooWoodle()->course->get_courses([
-            'fields'      => 'ids',
-            'numberposts' => -1,
-        ]);
-
-		$all_courses = $all_products = $all_category = $all_short_name = [];
-		foreach ( $course_ids as $course_id ) {
-			$all_courses[$course_id] = get_the_title( $course_id );
-            $products = wc_get_products([
-                'meta_query' => [
-                    [
-                        'key'   => 'linked_course_id',
-                        'value' => $course_id,
-                    ]
-                ]
+    
+        // Fetch all courses
+        $courses = MooWoodle()->course->get_course([]);
+        if ( empty( $courses ) ) {
+            return rest_ensure_response([
+                'courses'   => [],
+                'category'  => [],
             ]);
-            foreach ( $products as $product ) {
-				$all_products[$product->get_id()] = $product->get_name();
-			}
-
-            $course_meta = get_post_meta( $course_id, '_category_id', true );
-            $term = MooWoodle()->category->get_category( $course_meta, 'course_cat' );
-			$all_category[$course_meta] = $term->name;
-
-            $course_meta = get_post_meta( $course_id, '_course_short_name', true );
-			$all_short_name[] = $course_meta;
-		}
-
-        $all_data = [
-            'courses'   => $all_courses,
-            'products'   => $all_products,
-            'category'   => $all_category,
-            'shortname'   => $all_short_name
-        ];
-		
-        return rest_ensure_response( $all_data );
-	}
-
+        }
+    
+        // Extract unique category IDs
+        $category_ids = array_unique( wp_list_pluck( $courses, 'category_id' ) );
+    
+        // Fetch categories
+        $category = MooWoodle()->category->get_course_category([
+            'category_ids' => $category_ids,
+        ]);
+    
+        // Prepare formatted course list
+        $all_courses = [];
+        foreach ( $courses as $course ) {
+            $all_courses[ $course['id'] ] = $course['fullname'] ?: "Course {$course['id']}";
+        }
+    
+        // Prepare formatted category list
+        $all_category = [];
+        foreach ( $category as $cat ) {
+            $all_category[ $cat['moodle_category_id'] ] = $cat['name'] ?: "Category {$cat['moodle_category_id']}";
+        }
+    
+        return rest_ensure_response( apply_filters( 'moowoodle_filters', [
+            'courses'  => $all_courses,
+            'category' => $all_category,
+        ] ) );
+                
+    }
+    
+       
     /**
      * Save the setting set in react's admin setting page.
      * @param mixed $request
@@ -449,6 +465,12 @@ class RestAPI {
      */
     public function get_log( $request ) {
         global $wp_filesystem;
+        $action = $request->get_param('action');
+        
+        if ($action == 'download') {
+            $this->download_log($request);
+        }
+
         if ( ! $wp_filesystem ) {
             require_once ABSPATH . '/wp-admin/includes/file.php';
             WP_Filesystem();
@@ -456,7 +478,7 @@ class RestAPI {
 
         $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'moowoodle'), array( 'status' => 403 ) );
         }
 
         $log_count = $request->get_param( 'logcount' );
@@ -493,12 +515,12 @@ class RestAPI {
     function download_log($request) {
         $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'multivendorx'), array( 'status' => 403 ) );
+            return new \WP_Error( 'invalid_nonce', __('Invalid nonce', 'moowoodle'), array( 'status' => 403 ) );
         } 
         // Get the file parameter from the request
         $file = $request->get_param('file');
         $file = basename($file);
-        $filePath = MOOWOODLE_LOGS_DIR . '/' . $file;
+        $filePath = MooWoodle()->moowoodle_logs_dir . '/' . $file;
 
         // Check if the file exists and has the right extension
         if (file_exists($filePath) && preg_match('/\.(txt|log)$/', $file)) {
@@ -520,5 +542,91 @@ class RestAPI {
             return new \WP_Error('file_not_found', 'File not found', array('status' => 404));
         }
     }
+
+    /**
+     * Fetch all enrolled courses for the current user.
+     *
+     * @param WP_REST_Request $request The REST API request.
+     * 
+     * @return WP_REST_Response|\WP_Error JSON response containing enrolled courses and pagination details.
+     */
+
+     public function get_user_courses( $request ) {
+
+        $user = wp_get_current_user();
     
+        if ( empty( $user->ID ) ) {
+            Util::log( "[MooWoodle] get_user_courses(): No logged-in user found." );
+            return rest_ensure_response([
+                'status' => 'error',
+            ]);
+        }
+    
+        $count = $request->get_param( 'count' );
+    
+        if ( $count ) {
+            $all_enrollments = MooWoodle()->enrollment->get_enrollments([
+                'user_id' => $user->ID,
+                'status'  => 'enrolled',
+            ]);
+            return rest_ensure_response( count( $all_enrollments ) );
+        }
+    
+        $limit  = max( 1, (int) $request->get_param( 'row' ) ?: 10 );
+        $page   = max( 1, (int) $request->get_param( 'page' ) ?: 1 );
+        $offset = ( $page - 1 ) * $limit;
+    
+        $pre_data = apply_filters( 'moowoodle_user_courses_data', null, $request );
+        
+        if ( ! empty( $pre_data ) ) {
+            return $pre_data;
+        }
+
+        // Default enrollment logic
+        $all_enrollments = MooWoodle()->enrollment->get_enrollments([
+            'user_id'       => $user->ID,
+            'status'        => 'enrolled',
+            'course_id_not' => 0,
+            'limit'         => $limit,
+            'offset'        => $offset,
+        ]);
+    
+        if ( empty( $all_enrollments ) ) {
+            return rest_ensure_response([
+                'data'   => [],
+                'status' => 'success',
+            ]);
+        }
+    
+        $data = array_map( function( $course ) use ( $user ) {
+            $course_data = MooWoodle()->course->get_course([
+                'id' => $course['course_id'],
+            ]);
+            $course_data = is_array( $course_data ) ? reset( $course_data ) : $course_data;
+    
+            $passwordMoowoodle = get_user_meta( $user->ID, 'moowoodle_moodle_user_pwd', true );
+    
+            return [
+                'user_name'      => $user->user_login,
+                'course_name'    => $course_data['fullname'] ?? '',
+                'enrolment_date' => date( 'M j, Y - H:i', strtotime( $course['date'] ) ),
+                'password'       => $passwordMoowoodle,
+                'moodle_url'     => ! empty( $course_data['moodle_course_id'] )
+                    ? apply_filters(
+                        'moodle_course_view_url',
+                        trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "course/view.php?id={$course_data['moodle_course_id']}",
+                        $course_data['moodle_course_id']
+                    )
+                    : null,
+            ];
+        }, $all_enrollments );
+    
+        return rest_ensure_response([
+            'data'   => $data,
+            'status' => 'success',
+        ]);
+    }
+    
+    
+
 }

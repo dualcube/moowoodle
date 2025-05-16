@@ -1,0 +1,249 @@
+.classroom-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+
+    .classroom-grid{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+
+        .classroom-card{
+            width: 31%;
+            padding: 1.5rem 0.5rem;
+            border: 0.063rem solid #c4c4c4;
+            border-radius: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap:0.75rem;
+
+            .classroom-title{
+                text-align: center;
+
+                .heading-text{
+                    display: flex;
+                    justify-content: center;
+                    gap: 0.313rem;
+
+                    .edit-button{
+                        cursor: pointer;
+                    }
+                }
+                .button-group{
+                    display: flex;
+                    justify-content: end;
+                    gap: 0.5rem;
+                    padding-top: 0.5rem;
+
+                    a{
+                        padding: 2px 5px;
+                        color: white;
+                        text-decoration: none;
+                        font-weight: 600;
+                        border-radius: 5px;
+                        cursor: pointer;
+
+                        &.save-btn{
+                            background-color: #015301b8;
+                        }
+                        &.cancel-btn{
+                            background: #ae0303eb;
+                        }
+                    }
+                }
+                
+                h2{
+                    font-size: 1.2rem;
+                }
+
+                .edit-input{
+                    width: 100%;
+                }
+            }
+            .view-btn-container{
+                text-align: center;
+            }
+            ul{
+                margin: 0;
+            }
+        }
+    }
+
+
+    .enrollment-container{
+
+        .heading{
+            font-size: 1.8rem;
+            font-weight: 500;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #c4c4c4;
+        }
+
+        .class-details{
+            display: flex;
+            gap: 1rem;
+
+            .details-box{
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 1.5rem;
+                border: 0.063rem solid #c4c4c4;
+                border-radius: 0.5rem;
+
+                .number{
+                    font-size: 2rem;
+                    font-weight: 600;
+                }
+                .text{
+                    font-size: 1.2rem;
+                }
+            }            
+        }        
+        .title{
+            font-size: 1.4rem;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            margin: 0;
+
+            .button-group{
+                display: flex;
+                gap: 1rem;
+            }
+        }
+        .course-title{
+            margin: 1.5rem 0
+        }
+        .courses{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.875rem;
+
+            .course{
+                width: 23%;
+                border: 0.063rem solid #c4c4c4;
+                border-radius: 0.5rem;
+                padding: 1rem;
+                .course-name{
+                    text-align: center;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    margin-top: 0.5rem;
+                }
+            }
+        }
+
+        .enroll-form{
+            border: 0.063rem solid #c4c4c4;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+
+            input,select{
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            .file-input{
+                border: 0.063rem solid #c4c4c4;
+                border-radius: 0.5rem;
+                padding: 1rem;
+                margin-bottom: 1rem;
+                width: 100%;
+            }
+        }
+
+        .shop_table{
+            width: 100%;
+            margin-top:1.5rem;
+        }
+
+        button{
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+
+            &.btn-green{
+                background-color: #28a746f8;           
+    
+                &:hover{
+                    background-color: #188832;
+                }
+            }
+            &.btn-red{
+                background-color: #dc3545;
+            }
+            &.unenroll-button{
+                padding: 0.5rem;
+                font-size: 0.875rem;
+            }
+        }
+        .modal-overlay{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #00000063;
+            z-index: 999;
+
+            .modal-content{
+                width: 400px;
+                background: #fff;
+                padding: 2rem;
+                border-radius: 0.5rem;
+            }
+        }
+        .enroll-form{
+            input,
+            select{
+                width: 100%;
+                padding: 0.725rem;
+            }
+        }
+        .btn-group{
+            display: flex;
+            justify-content: end;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+    }
+}
+
+// Pagination Controls
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+
+    button {
+        background: #2563eb;
+        color:  #fff;
+        border: none;
+        padding: 0.5rem 1rem;
+        margin: 0 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.3s ease-in-out;
+        &:disabled {
+            background: transparent;
+            cursor: not-allowed;
+        }
+    }
+
+    .page-info {
+        background: #f3f4f6;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+}

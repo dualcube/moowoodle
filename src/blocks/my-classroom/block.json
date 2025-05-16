@@ -1,0 +1,9 @@
+{
+	"name": "moowoodle/my-classroom",
+	"title": "My Classroom",
+	"category": "moowoodle",
+	"apiVersion": 1,
+	"editorScript": "file:./index.js",
+	"script": "file:./index.js",
+    "style": "file:./index.css"
+}
