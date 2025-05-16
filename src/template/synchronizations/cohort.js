@@ -7,6 +7,7 @@ export default {
     desc: __("Fetch Moodle cohort on demand.", 'moowoodle'),
     icon: "adminLib-book",
     submitUrl: "settings",
+    proDependent: true,
     modal: [
         {
             key: "cohort_sync_option",

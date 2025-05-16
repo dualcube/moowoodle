@@ -78,8 +78,4 @@ echo "If you have questions or face issues logging in, contact us at: " . $suppo
 
 echo "Wishing you a great learning experience!\n";
 
-if ( $user->ID ) {
-	delete_user_meta( $user->ID, 'moowoodle_wordpress_new_user_created' );
-	delete_user_meta( $user->ID, 'moowoodle_moodle_new_user_created' );
-}
 ?>
