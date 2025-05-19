@@ -256,7 +256,7 @@ class RestAPI {
             'current'   => 0
         ], 'course' );
 
-        MooWoodle()->course->update_courses( $courses );
+        MooWoodle()->course->save_courses( $courses );
         
         MooWoodle()->product->update_products( $courses );
         

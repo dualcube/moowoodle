@@ -25,14 +25,14 @@ class Enrollment {
 	 * @param int $order_id The ID of the WooCommerce order.
 	 */
 	public function process_order( $order_id ) {
-		$order = new \WC_Order( $order_id );
+		$order       = wc_get_order( $order_id );
 		$this->order = $order;
-	
-		$gifted    = $order->get_meta( '_wc_billing/MooWoodle/gift_someone', true );
+
+		$gifted     = $order->get_meta( '_wc_billing/MooWoodle/gift_someone', true );
 		$user_email = $gifted
 			? trim( $order->get_meta( '_wc_billing/MooWoodle/email_address', true ) )
 			: $order->get_billing_email();
-	
+
 		$user_id = $gifted
 			? $this->create_wordpress_user(
 				trim( $order->get_meta( '_wc_billing/MooWoodle/first_name', true ) ),
@@ -40,12 +40,12 @@ class Enrollment {
 				$user_email
 			)
 			: $order->get_customer_id();
-	
+
 		if ( empty( $user_id ) ) {
 			Util::log( "[MooWoodle] Order processing failed for Order #$order_id - Moodle User ID is missing." );
 			return;
 		}
-	
+
 		foreach ( $order->get_items() as $item ) {
 			if ( $item->get_quantity() > 1
 				&& MooWoodle()->util->is_khali_dabba()
@@ -55,7 +55,7 @@ class Enrollment {
 				return;
 			}
 		}
-	
+
 		$enroll_data_base = [
 			'first_name'   => $gifted
 				? trim( $order->get_meta( '_wc_billing/MooWoodle/first_name', true ) )
@@ -67,73 +67,49 @@ class Enrollment {
 			'user_email'   => $user_email,
 			'order_id'     => $order_id,
 		];
-	
+
 		$email_data = [];
-	
+
 		foreach ( $order->get_items() as $item_id => $item ) {
-			$product = $item->get_product();
-			if ( ! $product ) {
+			if ( ! $item->get_product() ) {
 				Util::log( "[MooWoodle] Skipping item #$item_id - Invalid product." );
 				continue;
 			}
-	
+
 			$enroll_data = array_merge( $enroll_data_base, [
 				'item_id'       => $item_id,
 				'enrolled_date' => current_time( 'timestamp' ),
 			] );
-			
-			if ( $product->is_type( 'variation' ) ) {
-				$enroll_data = array_merge(
-					$enroll_data,
-					[
-						'group_id'         => $product->get_meta( 'linked_group_id', true ),
-						'moodle_group_id'  => $product->get_meta( 'moodle_group_id', true ),
-						'moodle_course_id' => $product->get_meta( 'moodle_course_id', true ),
-					]
-				);
-	
-				do_action( 'moowoodle_handle_group_purchase', $enroll_data );
-	
-				if ( apply_filters( 'moowoodle_add_group_detail_for_email', false ) ) {
-					$email_data['group'][] = $enroll_data['group_id'];
+
+			if ( $item->get_product()->is_type( 'variation' ) || $item->get_product()->get_meta( 'moodle_cohort_id', true ) ) {
+				do_action( 'moowoodle_process_enrollment_product', $enroll_data, $item->get_product() );
+
+				if ( is_numeric( apply_filters( 'moowoodle_add_group_detail_for_email', false ) ) ) {
+					$email_data['group'][] = (int) apply_filters( 'moowoodle_add_group_detail_for_email', false );
 				}
-			} elseif ( $product->get_meta( 'moodle_cohort_id', true ) ) {
-				$enroll_data = array_merge(
-					$enroll_data,
-					[
-						'cohort_id'        => $product->get_meta( 'linked_cohort_id', true ),
-						'moodle_cohort_id' => $product->get_meta( 'moodle_cohort_id', true ),
-					]
-				);
-	
-				do_action( 'moowoodle_handle_cohort_purchase', $enroll_data );
-	
-				if ( apply_filters( 'moowoodle_add_cohort_detail_for_email', false ) ) {
-					$email_data['cohort'][] = $enroll_data['cohort_id'];
+
+				if ( is_numeric( apply_filters( 'moowoodle_add_cohort_detail_for_email', false ) ) ) {
+					$email_data['cohort'][] = (int) apply_filters( 'moowoodle_add_cohort_detail_for_email', false );
 				}
-			} elseif ( $product->get_meta( 'moodle_course_id', true ) ) {
-				$enroll_data = array_merge(
-					$enroll_data,
-					[
-						'course_id'        => $product->get_meta( 'linked_course_id', true ),
-						'moodle_course_id' => $product->get_meta( 'moodle_course_id', true ),
-					]
-				);
-	
+
+			} elseif ( $item->get_product()->get_meta( 'moodle_course_id', true ) ) {
+				$enroll_data['course_id']        = $item->get_product()->get_meta( 'linked_course_id', true );
+				$enroll_data['moodle_course_id'] = $item->get_product()->get_meta( 'moodle_course_id', true );
+
 				$this->process_enrollment( $enroll_data );
-	
+
 				if ( apply_filters( 'moowoodle_add_course_detail_for_email', false ) ) {
 					$email_data['course'][] = $enroll_data['course_id'];
 				}
 			}
 		}
-	
+
 		if ( $gifted ) {
 			$email_data['gift_email'][] = $order->get_billing_email();
 		}
-	
 		do_action( 'moowoodle_after_enrol_moodle_user', $email_data, $user_id );
 	}
+
 	
 		
 	/**
@@ -238,6 +214,7 @@ class Enrollment {
 			'item_id'       => $enroll_data['item_id'] ?? 0,
 			'status'        => 'enrolled',
 			'group_item_id' => $enroll_data['group_item_id'] ?? 0,
+			'enrolled_date'   => current_time('mysql'),
 		];
 	
 		$existing_enrollment = $this->get_enrollments(
@@ -555,10 +532,6 @@ class Enrollment {
 	public static function save_enrollment( $args ) {
 		global $wpdb;
 
-		if ( empty( $args['user_email'] ) ) {
-			return false;
-		}
-
 		$table = $wpdb->prefix . Util::TABLES['enrollment'];
 		$id    = isset( $args['id'] ) ? (int) $args['id'] : 0;
 
@@ -588,9 +561,15 @@ class Enrollment {
 		// Default SELECT clause
 		$select = '*';
 
-		// Handle custom SELECT fields
-		if ( isset( $where['select'] ) ) {
-			$select = esc_sql( $where['select'] );
+		// Override select if group_by_email is true
+		if ( ! empty( $where['group_by_email'] ) && $where['group_by_email'] ) {
+			$select = "
+				user_email,
+				user_id,
+				GROUP_CONCAT(DISTINCT group_item_id) AS group_item_ids,
+				GROUP_CONCAT(DISTINCT course_id) AS course_ids,
+				COUNT(*) as enrollment_count
+			";
 		}
 
 		// Apply filters
@@ -650,22 +629,39 @@ class Enrollment {
 			$query_segments[] = "group_item_id IN ($ids)";
 		}
 
-		// Start building the query
+		// Build query
 		$query = "SELECT $select FROM $table";
 
 		// WHERE clause
-		if ( !empty( $query_segments ) ) {
+		if ( ! empty( $query_segments ) ) {
 			$query .= " WHERE " . implode( ' AND ', $query_segments );
 		}
 
-		// LIMIT and OFFSET
+		// GROUP BY clause
+		if ( ! empty( $where['group_by_email'] ) && $where['group_by_email'] ) {
+			$query .= " GROUP BY user_email, user_id";
+		}
+
+		// LIMIT and OFFSET for pagination
 		if ( isset( $where['limit'] ) && isset( $where['offset'] ) ) {
 			$limit = intval( $where['limit'] );
 			$offset = intval( $where['offset'] );
 			$query .= $wpdb->prepare( " LIMIT %d OFFSET %d", $limit, $offset );
 		}
 
-		return $wpdb->get_results( $query, ARRAY_A );
+		// Execute the query and get results
+		$results = $wpdb->get_results( $query, ARRAY_A );
+
+		// If grouped by email, convert comma-separated strings to arrays
+		if ( ! empty( $where['group_by_email'] ) && $where['group_by_email'] ) {
+			foreach ( $results as &$row ) {
+				$row['group_item_ids'] = isset( $row['group_item_ids'] ) ? explode( ',', $row['group_item_ids'] ) : [];
+				$row['course_ids']     = isset( $row['course_ids'] ) ? explode( ',', $row['course_ids'] ) : [];
+			}
+		}
+
+		return $results;
 	}
+
 
 }

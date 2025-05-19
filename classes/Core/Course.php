@@ -141,7 +141,7 @@ class Course {
 	 * @param array $courses List of courses to update or insert.
 	 * @return void
 	 */
-	public function update_courses( $courses ) {
+	public function save_courses( $courses ) {
 		foreach ( $courses as $course ) {
 			// Skip site format courses
 			if ( $course['format'] === 'site' ) {

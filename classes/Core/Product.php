@@ -106,16 +106,16 @@ class Product {
 	 * Update moodle product data in WordPress WooCommerce.
 	 * If product not exist create new product
 	 * @param array $course (moodle course data)
-	 * @param bool $fource_create 
+	 * @param bool $force_create 
 	 * @return int course id
 	 */
-	public static function update_product( $course, $fource_create = true ) {
+	public static function update_product( $course, $force_create = true ) {
 		if ( empty( $course ) || $course[ 'format' ] == 'site' ) return 0;
 
 		$product = self::get_product_from_moodle_course( $course[ 'id' ] );
 
         // create a new product if not exist.
-        if( ! $product && $fource_create ) {
+        if( ! $product && $force_create ) {
             $product = new \WC_Product_Simple();
         } 
 		

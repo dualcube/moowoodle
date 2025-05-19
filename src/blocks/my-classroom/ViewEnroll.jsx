@@ -34,7 +34,6 @@ const ViewEnroll = ({ classroom }) => {
     "https://cus.dualcube.com/mvx2/wp-content/uploads/2025/04/beanie-2-3-416x416.jpg";
 
   const fetchClassroomCourses = async () => {
-    console.log(classroom)
     try {
       if (classroom?.type !== 'classroom') return;
 
@@ -98,12 +97,7 @@ const ViewEnroll = ({ classroom }) => {
       if (response.data.success) {
         setEnrolledStudents(response.data.data.students || []);
         setTotalEnrolled(response.data.data.total_enrolled || 0);
-        const totalAvailable = (courses || []).reduce(
-          (acc, course) => acc + Number(course?.available_quantity || 0),
-          0
-        );
         setTotalAvailable(totalAvailable);
-
         setTotalPages(response.data.pagination?.total_pages || 1);
         setCurrentPage(response.data.pagination?.current_page || page);
       } else {
@@ -202,6 +196,7 @@ const ViewEnroll = ({ classroom }) => {
         setShowForm(false);
         setNewStudent({ first_name: "", last_name: "", email: "", courses: [] });
         await fetchClassroomData(1);
+        await fetchClassroomCourses();
         alert(__("Enrollment successful! The classroom data has been updated.", "moowoodle"));
       } else {
         alert(
@@ -269,9 +264,7 @@ const ViewEnroll = ({ classroom }) => {
     for (const [key, value] of Object.entries(payload)) {
       formData.append(key, typeof value === "object" ? JSON.stringify(value) : value);
     }
-  
-    console.log("Payload:", payload);
-  
+    
     try {
       const response = await axios.post(getApiLink("bulk-enroll"), formData, {
         headers: {
@@ -284,6 +277,7 @@ const ViewEnroll = ({ classroom }) => {
         setCsvFile(null);
         setShowBulkModal(false);
         await fetchClassroomData(1); // refresh
+        await fetchClassroomCourses();
         alert(__("Bulk enrollment successful! ", "moowoodle") + response.data.message);
       } else {
         alert(__("Bulk enrollment failed: ", "moowoodle") + (response.data.message || __("Unknown error", "moowoodle")));
@@ -323,6 +317,7 @@ const ViewEnroll = ({ classroom }) => {
       if (response.data.success) {
         alert(__("Unenrollment successful.", "moowoodle"));
         await fetchClassroomData(currentPage);
+        await fetchClassroomCourses();
         setShowUnenrollModal(false);
         setUnenrollCourses([]);
       } else {
@@ -339,7 +334,6 @@ const ViewEnroll = ({ classroom }) => {
   const handleUnenrollStudentCohortAndGroup = async (student) => {
     try {
       setIsLoading(true);
-      // console.log(classroom)
       let payload = {
         email: student.email
       };
@@ -366,8 +360,6 @@ const ViewEnroll = ({ classroom }) => {
         return;
       }
 
-      console.log(payload)
-
       const response = await axios.post(
         getApiLink("unenroll"),
         payload,
@@ -379,6 +371,7 @@ const ViewEnroll = ({ classroom }) => {
       if (response.data.success) {
         alert(__("Unenrollment successful.", "moowoodle"));
         await fetchClassroomData(currentPage);
+        await fetchClassroomCourses();
         setShowUnenrollModal(false);
         setUnenrollCourses([]);
       } else {

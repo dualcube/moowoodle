@@ -81,7 +81,7 @@ $user = get_user_by( 'email', $args['user_email'] );
 	<p><strong>Course(s):</strong></p>
 	<ul>
 		<?php foreach ( $args['enrollments']['course_details'] as $course ) : ?>
-			<li><?php echo esc_html( $course['fullname'] ); ?></li>
+			<li><?php echo esc_html( $course['name'] ); ?></li>
 		<?php endforeach; ?>
 	</ul>
 <?php endif; ?>
