@@ -128,9 +128,9 @@ class Course {
 				'selected_id' => $linked_course_id,
 			] );
 		}else if( $type === 'cohort' ){
-			return apply
+			return apply_filters( 'get_linkable_cohorts', $post_id );
 		}
-
+		
 		wp_send_json_error( __( 'Invalid type', 'moowoodle' ) );
 	}
 
@@ -185,6 +185,8 @@ class Course {
 				[ 'moodle_course_id' => $args['moodle_course_id'] ]
 			);
 		}
+		
+		$args['created'] = current_time( 'mysql' );
 
 		$wpdb->insert( $table, $args );
 		return $wpdb->insert_id;

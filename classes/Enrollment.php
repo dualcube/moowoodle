@@ -77,8 +77,11 @@ class Enrollment {
 				continue;
 			}
 	
-			$enroll_data = array_merge( $enroll_data_base, [ 'item_id' => $item_id ] );
-	
+			$enroll_data = array_merge( $enroll_data_base, [
+				'item_id'       => $item_id,
+				'enrolled_date' => current_time( 'timestamp' ),
+			] );
+			
 			if ( $product->is_type( 'variation' ) ) {
 				$enroll_data = array_merge(
 					$enroll_data,
@@ -248,11 +251,12 @@ class Enrollment {
 		$existing_enrollment = reset( $existing_enrollment );
 	
 		if ( $existing_enrollment ) {
-			self::edit_enrollment( $existing_enrollment['id'], $enrollment_data );
-		} else {
-			self::set_enrollment( $enrollment_data );
+			// Add 'id' key to trigger update
+			$enrollment_data['id'] = $existing_enrollment['id'];
 		}
-	
+
+		self::save_enrollment( $enrollment_data );
+		
 		if ( $group_item_id ) {
 			do_action( 'moowoodle_seat_book', $enroll_data['group_item_id'] );
 		}
@@ -543,50 +547,32 @@ class Enrollment {
 	}
 
 	/**
-	 * Add new enrollment
-	 * @param array $args
-	 * @return bool|int|null
+	 * Insert or update an enrollment record.
+	 *
+	 * @param array $args Enrollment data. Must include 'user_email'. If 'id' is present, updates the record.
+	 * @return int|false Enrollment ID on success, false on failure.
 	 */
-	public static function set_enrollment( $args ) {
+	public static function save_enrollment( $args ) {
 		global $wpdb;
 
-		if ( empty( $args ) || empty( $args['user_email'] ) ) {
+		if ( empty( $args['user_email'] ) ) {
 			return false;
 		}
+
 		$table = $wpdb->prefix . Util::TABLES['enrollment'];
+		$id    = isset( $args['id'] ) ? (int) $args['id'] : 0;
 
-		try {
-			$inserted = $wpdb->insert(
-				$table,
-				$args
-			);
+		unset( $args['id'] );
 
-			return $inserted ? $wpdb->insert_id : false;
-
-		} catch ( \Exception $error ) {
-			return null;
+		if ( $id > 0 ) {
+			$updated = $wpdb->update( $table, $args, array( 'id' => $id ) );
+			return ( false === $updated ) ? false : $id;
 		}
-	}
-	/**
-	 * Update a particular enrollment
-	 * @param int   $id
-	 * @param array $args
-	 * @return bool|int
-	 */
-	public static function edit_enrollment( $id, $args ) {
-		global $wpdb;
 
-		if ( ! $id || empty( $args ) ) {
-			return false;
-		}
-		$table = $wpdb->prefix . Util::TABLES['enrollment'];
-
-		return $wpdb->update(
-			$table,
-			$args,
-			[ 'id' => $id ]
-		);
+		$inserted = $wpdb->insert( $table, $args );
+		return $inserted ? $wpdb->insert_id : false;
 	}
+
 	/**
 	 * Get enrollment records based on filters
 	 *

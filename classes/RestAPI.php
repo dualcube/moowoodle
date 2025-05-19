@@ -556,7 +556,7 @@ class RestAPI {
         $user = wp_get_current_user();
     
         if ( empty( $user->ID ) ) {
-            Util::log( "[MooWoodle] get_user_courses(): No logged-in user found." );
+            Util::log( "[MooWoodle] get_current_user_courses(): No logged-in user found." );
             return rest_ensure_response([
                 'status' => 'error',
             ]);
@@ -577,11 +577,11 @@ class RestAPI {
         $offset = ( $page - 1 ) * $limit;
     
         $pre_data = apply_filters( 'moowoodle_user_courses_data', null, $request );
-        
+    
         if ( ! empty( $pre_data ) ) {
             return $pre_data;
         }
-
+    
         // Default enrollment logic
         $all_enrollments = MooWoodle()->enrollment->get_enrollments([
             'user_id'       => $user->ID,
@@ -598,20 +598,20 @@ class RestAPI {
             ]);
         }
     
-        $data = array_map( function( $course ) use ( $user ) {
+        $data = array_map( function( $enrollment ) use ( $user ) {
             $course_data = MooWoodle()->course->get_course([
-                'id' => $course['course_id'],
+                'id' => $enrollment['course_id'],
             ]);
             $course_data = is_array( $course_data ) ? reset( $course_data ) : $course_data;
     
             $passwordMoowoodle = get_user_meta( $user->ID, 'moowoodle_moodle_user_pwd', true );
     
             return [
-                'user_name'      => $user->user_login,
-                'course_name'    => $course_data['fullname'] ?? '',
-                'enrolment_date' => date( 'M j, Y - H:i', strtotime( $course['date'] ) ),
-                'password'       => $passwordMoowoodle,
-                'moodle_url'     => ! empty( $course_data['moodle_course_id'] )
+                'user_name'     => $user->user_login,
+                'course_name'   => $course_data['fullname'] ?? '',
+                'enrolled_date' => date( 'M j, Y - H:i', strtotime( $enrollment['enrolled_date'] ) ),
+                'password'      => $passwordMoowoodle,
+                'moodle_url'    => ! empty( $course_data['moodle_course_id'] )
                     ? apply_filters(
                         'moodle_course_view_url',
                         trailingslashit( MooWoodle()->setting->get_setting( 'moodle_url' ) ) . "course/view.php?id={$course_data['moodle_course_id']}",
@@ -619,13 +619,14 @@ class RestAPI {
                     )
                     : null,
             ];
-        }, $all_enrollments );
+        }, $all_enrollments);
     
         return rest_ensure_response([
             'data'   => $data,
             'status' => 'success',
         ]);
     }
+    
     
     
 

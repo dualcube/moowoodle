@@ -71,20 +71,21 @@ class Installer {
         
 
         $wpdb->query(
-             "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}" . Util::TABLES[ 'course' ] . "` (
+            "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}" . Util::TABLES['course'] . "` (
                 `id` bigint(20) NOT NULL AUTO_INCREMENT,
                 `moodle_course_id` bigint(20) NOT NULL,
                 `shortname` varchar(255) NOT NULL,
                 `category_id` bigint(20) NOT NULL,
                 `fullname` text NOT NULL,
-				`product_id` bigint(20) NOT NULL,
+                `product_id` bigint(20) NOT NULL,
                 `startdate` bigint(20) DEFAULT NULL,
                 `enddate` bigint(20) DEFAULT NULL,
-                `created` bigint(20) DEFAULT NULL,
+                `created` datetime DEFAULT NULL,
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `moodle_course_id` (`moodle_course_id`)
             ) $collate;"
-        ); 
+        );
+        
     }
 
     /**
@@ -284,8 +285,7 @@ class Installer {
                 'date'       => $enrollment_date,
             ];
 
-            \MooWoodle\Enrollment::set_enrollment( $enrollment_data );
-        }
+            \MooWoodle\Enrollment::save_enrollment( $enrollment_data );        }
     }
 
         
