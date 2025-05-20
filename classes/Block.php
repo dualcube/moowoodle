@@ -27,13 +27,13 @@ class Block {
 
 
         $blocks[] = [
-            'name' => 'my-courses', // block name
+            'name' => 'moowoodle/my-courses',
             'textdomain' => 'moowoodle',
             'block_path' => MooWoodle()->plugin_url  . 'build/blocks/',
         ];
         //this path is set for load the translation   
         MooWoodle()->block_paths  += [
-            'blocks/my-courses' => 'build/blocks/my-courses/index.js',
+            'moowoodle/my-courses' => 'build/blocks/my-courses/index.js',
         ];
 
 

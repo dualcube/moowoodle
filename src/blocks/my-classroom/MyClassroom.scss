@@ -1,249 +1,904 @@
+// .classroom-container {
+//     max-width: 1200px;
+//     margin: 0 auto;
+//     padding: 2rem;
+
+//     .classroom-grid{
+//         display: flex;
+//         flex-wrap: wrap;
+//         gap: 1rem;
+
+//         .classroom-card{
+//             width: 31%;
+//             padding: 1.5rem 0.5rem;
+//             border: 0.063rem solid #c4c4c4;
+//             border-radius: 0.5rem;
+//             display: flex;
+//             flex-direction: column;
+//             align-items: center;
+//             gap:0.75rem;
+
+//             .classroom-title{
+//                 text-align: center;
+
+//                 .heading-text{
+//                     display: flex;
+//                     justify-content: center;
+//                     gap: 0.313rem;
+
+//                     .edit-button{
+//                         cursor: pointer;
+//                     }
+//                 }
+//                 .button-group{
+//                     display: flex;
+//                     justify-content: end;
+//                     gap: 0.5rem;
+//                     padding-top: 0.5rem;
+
+//                     a{
+//                         padding: 2px 5px;
+//                         color: white;
+//                         text-decoration: none;
+//                         font-weight: 600;
+//                         border-radius: 5px;
+//                         cursor: pointer;
+
+//                         &.save-btn{
+//                             background-color: #015301b8;
+//                         }
+//                         &.cancel-btn{
+//                             background: #ae0303eb;
+//                         }
+//                     }
+//                 }
+                
+//                 h2{
+//                     font-size: 1.2rem;
+//                 }
+
+//                 .edit-input{
+//                     width: 100%;
+//                 }
+//             }
+//             .view-btn-container{
+//                 text-align: center;
+//             }
+//             ul{
+//                 margin: 0;
+//             }
+//         }
+//     }
+
+
+//     .enrollment-container{
+
+//         .heading{
+//             font-size: 1.8rem;
+//             font-weight: 500;
+//             padding-bottom: 1rem;
+//             border-bottom: 2px solid #c4c4c4;
+//         }
+
+//         .class-details{
+//             display: flex;
+//             gap: 1rem;
+
+//             .details-box{
+//                 width: 100%;
+//                 display: flex;
+//                 flex-direction: column;
+//                 justify-content: center;
+//                 align-items: center;
+//                 padding: 1.5rem;
+//                 border: 0.063rem solid #c4c4c4;
+//                 border-radius: 0.5rem;
+
+//                 .number{
+//                     font-size: 2rem;
+//                     font-weight: 600;
+//                 }
+//                 .text{
+//                     font-size: 1.2rem;
+//                 }
+//             }            
+//         }        
+//         .title{
+//             font-size: 1.4rem;
+//             font-weight: 500;
+//             display: flex;
+//             justify-content: space-between;
+//             margin: 0;
+
+//             .button-group{
+//                 display: flex;
+//                 gap: 1rem;
+//             }
+//         }
+//         .course-title{
+//             margin: 1.5rem 0
+//         }
+//         .courses{
+//             display: flex;
+//             flex-wrap: wrap;
+//             gap: 0.875rem;
+
+//             .course{
+//                 width: 23%;
+//                 border: 0.063rem solid #c4c4c4;
+//                 border-radius: 0.5rem;
+//                 padding: 1rem;
+//                 .course-name{
+//                     text-align: center;
+//                     font-size: 1rem;
+//                     font-weight: 500;
+//                     margin-top: 0.5rem;
+//                 }
+//             }
+//         }
+
+//         .enroll-form{
+//             border: 0.063rem solid #c4c4c4;
+//             border-radius: 0.5rem;
+//             padding: 1.5rem;
+
+//             input,select{
+//                 width: 100%;
+//                 margin-bottom: 0.5rem;
+//             }
+//             .file-input{
+//                 border: 0.063rem solid #c4c4c4;
+//                 border-radius: 0.5rem;
+//                 padding: 1rem;
+//                 margin-bottom: 1rem;
+//                 width: 100%;
+//             }
+//         }
+
+//         .shop_table{
+//             width: 100%;
+//             margin-top:1.5rem;
+//         }
+
+//         button{
+//             color: white;
+//             padding: 10px 15px;
+//             border: none;
+//             cursor: pointer;
+//             border-radius: 5px;
+//             font-size: 16px;
+
+//             &.btn-green{
+//                 background-color: #28a746f8;           
+    
+//                 &:hover{
+//                     background-color: #188832;
+//                 }
+//             }
+//             &.btn-red{
+//                 background-color: #dc3545;
+//             }
+//             &.unenroll-button{
+//                 padding: 0.5rem;
+//                 font-size: 0.875rem;
+//             }
+//         }
+//         .modal-overlay{
+//             position: fixed;
+//             top: 0;
+//             left: 0;
+//             width: 100vw;
+//             height: 100vh;
+//             display: flex;
+//             justify-content: center;
+//             align-items: center;
+//             background: #00000063;
+//             z-index: 999;
+
+//             .modal-content{
+//                 width: 400px;
+//                 background: #fff;
+//                 padding: 2rem;
+//                 border-radius: 0.5rem;
+//             }
+//         }
+//         .enroll-form{
+//             input,
+//             select{
+//                 width: 100%;
+//                 padding: 0.725rem;
+//             }
+//         }
+//         .btn-group{
+//             display: flex;
+//             justify-content: end;
+//             gap: 0.5rem;
+//             margin-top: 1rem;
+//         }
+//     }
+// }
+
+// // Pagination Controls
+// .pagination {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     margin-top: 2rem;
+
+//     button {
+//         background: #2563eb;
+//         color:  #fff;
+//         border: none;
+//         padding: 0.5rem 1rem;
+//         margin: 0 0.5rem;
+//         border-radius: 4px;
+//         cursor: pointer;
+//         transition: background 0.3s ease-in-out;
+//         &:disabled {
+//             background: transparent;
+//             cursor: not-allowed;
+//         }
+//     }
+
+//     .page-info {
+//         background: #f3f4f6;
+//         padding: 0.5rem 1rem;
+//         border-radius: 4px;
+//         font-weight: bold;
+//     }
+// }
+
+
+
+
+
+/* MyClassroom Styles */
 .classroom-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem;
-
-    .classroom-grid{
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: transparent;
+  }
+  
+  .classroom-header {
+    text-align: center;
+    margin-bottom: 30px;
+  
+    h1 {
+      font-size: 2rem;
+      color: #1a1a1a;
+      margin: 0;
+      font-weight: 600;
+    }
+  }
+  
+  .loading-spinner {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #666;
+    animation: pulse 1.5s infinite;
+  }
+  
+  .error-message {
+    text-align: center;
+    color: #d63638;
+    font-size: 1rem;
+    margin: 20px 0;
+    padding: 12px;
+    background: #fff4f4;
+    border-radius: 4px;
+  
+    .retry-btn {
+      margin-left: 10px;
+      padding: 8px 16px;
+      background-color: #7e5e9e;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      font-size: 0.9rem;
+  
+      &:hover {
+        background-color: #6b4e8a;
+      }
+    }
+  }
+  
+  .classroom-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  
+  .classroom-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    padding: 16px;
+    transition: box-shadow 0.2s;
+  
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  
+    .classroom-title {
+      margin-bottom: 12px;
+  
+      .heading-text {
         display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-
-        .classroom-card{
-            width: 31%;
-            padding: 1.5rem 0.5rem;
-            border: 0.063rem solid #c4c4c4;
-            border-radius: 0.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap:0.75rem;
-
-            .classroom-title{
-                text-align: center;
-
-                .heading-text{
-                    display: flex;
-                    justify-content: center;
-                    gap: 0.313rem;
-
-                    .edit-button{
-                        cursor: pointer;
-                    }
-                }
-                .button-group{
-                    display: flex;
-                    justify-content: end;
-                    gap: 0.5rem;
-                    padding-top: 0.5rem;
-
-                    a{
-                        padding: 2px 5px;
-                        color: white;
-                        text-decoration: none;
-                        font-weight: 600;
-                        border-radius: 5px;
-                        cursor: pointer;
-
-                        &.save-btn{
-                            background-color: #015301b8;
-                        }
-                        &.cancel-btn{
-                            background: #ae0303eb;
-                        }
-                    }
-                }
-                
-                h2{
-                    font-size: 1.2rem;
-                }
-
-                .edit-input{
-                    width: 100%;
-                }
-            }
-            .view-btn-container{
-                text-align: center;
-            }
-            ul{
-                margin: 0;
-            }
+        align-items: center;
+        gap: 8px;
+  
+        h2 {
+          font-size: 1.3rem;
+          color: #333;
+          margin: 0;
+          flex: 1;
+          line-height: 1.4;
         }
-    }
-
-
-    .enrollment-container{
-
-        .heading{
-            font-size: 1.8rem;
-            font-weight: 500;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #c4c4c4;
+  
+        .edit-button {
+          background: none;
+          border: none;
+          font-size: 1rem;
+          cursor: pointer;
+          color: #7e5e9e;
+          padding: 4px;
+  
+          &:hover {
+            color: #6b4e8a;
+          }
         }
-
-        .class-details{
-            display: flex;
-            gap: 1rem;
-
-            .details-box{
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                padding: 1.5rem;
-                border: 0.063rem solid #c4c4c4;
-                border-radius: 0.5rem;
-
-                .number{
-                    font-size: 2rem;
-                    font-weight: 600;
-                }
-                .text{
-                    font-size: 1.2rem;
-                }
-            }            
-        }        
-        .title{
-            font-size: 1.4rem;
-            font-weight: 500;
-            display: flex;
-            justify-content: space-between;
-            margin: 0;
-
-            .button-group{
-                display: flex;
-                gap: 1rem;
-            }
+      }
+  
+      .edit-container {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+  
+        .edit-input {
+          padding: 8px;
+          border: 1px solid #dcdcdc;
+          border-radius: 4px;
+          font-size: 0.95rem;
+          width: 100%;
+          box-sizing: border-box;
+  
+          &:focus {
+            outline: none;
+            border-color: #7e5e9e;
+            box-shadow: 0 0 0 1px #7e5e9e;
+          }
         }
-        .course-title{
-            margin: 1.5rem 0
-        }
-        .courses{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.875rem;
-
-            .course{
-                width: 23%;
-                border: 0.063rem solid #c4c4c4;
-                border-radius: 0.5rem;
-                padding: 1rem;
-                .course-name{
-                    text-align: center;
-                    font-size: 1rem;
-                    font-weight: 500;
-                    margin-top: 0.5rem;
-                }
-            }
-        }
-
-        .enroll-form{
-            border: 0.063rem solid #c4c4c4;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-
-            input,select{
-                width: 100%;
-                margin-bottom: 0.5rem;
-            }
-            .file-input{
-                border: 0.063rem solid #c4c4c4;
-                border-radius: 0.5rem;
-                padding: 1rem;
-                margin-bottom: 1rem;
-                width: 100%;
-            }
-        }
-
-        .shop_table{
-            width: 100%;
-            margin-top:1.5rem;
-        }
-
-        button{
-            color: white;
-            padding: 10px 15px;
+  
+        .button-group {
+          display: flex;
+          gap: 8px;
+  
+          .cancel-btn,
+          .save-btn {
+            padding: 6px 12px;
             border: none;
+            border-radius: 4px;
             cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-
-            &.btn-green{
-                background-color: #28a746f8;           
-    
-                &:hover{
-                    background-color: #188832;
-                }
+            font-size: 0.85rem;
+            transition: background-color 0.2s;
+  
+            &.cancel-btn {
+              background-color: #f0f0f0;
+              color: #555;
+  
+              &:hover {
+                background-color: #e0e0e0;
+              }
             }
-            &.btn-red{
-                background-color: #dc3545;
+  
+            &.save-btn {
+              background-color: #7e5e9e;
+              color: #fff;
+  
+              &:hover {
+                background-color: #6b4e8a;
+              }
+  
+              &:disabled {
+                background-color: #b39ddb;
+                cursor: not-allowed;
+              }
             }
-            &.unenroll-button{
-                padding: 0.5rem;
-                font-size: 0.875rem;
-            }
+          }
         }
-        .modal-overlay{
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #00000063;
-            z-index: 999;
-
-            .modal-content{
-                width: 400px;
-                background: #fff;
-                padding: 2rem;
-                border-radius: 0.5rem;
-            }
-        }
-        .enroll-form{
-            input,
-            select{
-                width: 100%;
-                padding: 0.725rem;
-            }
-        }
-        .btn-group{
-            display: flex;
-            justify-content: end;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
+      }
     }
-}
-
-// Pagination Controls
-.pagination {
+  
+    .course-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 12px;
+  
+      li {
+        padding: 6px 0;
+        font-size: 0.95rem;
+        color: #555;
+  
+        &.no-courses {
+          color: #999;
+          font-style: italic;
+        }
+      }
+    }
+  
+    .view-btn-container {
+      text-align: center;
+  
+      .view-button {
+        padding: 8px 16px;
+        background-color: #135e96;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background-color 0.2s;
+  
+        &:hover {
+          background-color: #104c7b;
+        }
+      }
+    }
+  }
+  
+  .no-items {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #666;
+    margin: 20px 0;
+    padding: 12px;
+    background: #fafafa;
+    border-radius: 4px;
+  }
+  
+  .pagination {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 2rem;
-
+    gap: 8px;
+    margin-top: 24px;
+  
     button {
-        background: #2563eb;
-        color:  #fff;
+      padding: 8px 16px;
+      background-color: #7e5e9e;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.2s;
+  
+      &:hover:not(:disabled) {
+        background-color: #6b4e8a;
+      }
+  
+      &:disabled {
+        background-color: #b39ddb;
+        cursor: not-allowed;
+      }
+    }
+  
+    .page-info {
+      font-size: 0.95rem;
+      color: #333;
+    }
+  }
+  
+  /* ViewEnroll Styles */
+  .enroll-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: transparent;
+  }
+  
+  .enroll-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  
+    h1 {
+      font-size: 1.8rem;
+      color: #1a1a1a;
+      margin: 0;
+      font-weight: 600;
+    }
+  
+    .back-button {
+      padding: 8px 16px;
+      background-color: #7e5e9e;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.2s;
+  
+      &:hover:not(:disabled) {
+        background-color: #6b4e8a;
+      }
+  
+      &:disabled {
+        background-color: #b39ddb;
+        cursor: not-allowed;
+      }
+    }
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+  
+    .stat-box {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 6px;
+      padding: 15px;
+      text-align: center;
+  
+      .stat-number {
+        display: block;
+        font-size: 1.5rem;
+        color: #135e96;
+        font-weight: 600;
+      }
+  
+      .stat-label {
+        font-size: 0.9rem;
+        color: #555;
+      }
+    }
+  }
+  
+  .section-title {
+    font-size: 1.4rem;
+    color: #333;
+    margin: 20px 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+  
+      .action-button {
+        padding: 8px 16px;
         border: none;
-        padding: 0.5rem 1rem;
-        margin: 0 0.5rem;
         border-radius: 4px;
         cursor: pointer;
-        transition: background 0.3s ease-in-out;
-        &:disabled {
-            background: transparent;
-            cursor: not-allowed;
+        font-size: 0.9rem;
+        transition: background-color 0.2s;
+  
+        &.enroll {
+          background-color: #135e96;
+          color: #fff;
+  
+          &:hover:not(:disabled) {
+            background-color: #104c7b;
+          }
         }
+  
+        &.bulk-enroll {
+          background-color: #7e5e9e;
+          color: #fff;
+  
+          &:hover:not(:disabled) {
+            background-color: #6b4e8a;
+          }
+        }
+  
+        &.cancel {
+          background-color: #d63638;
+          color: #fff;
+  
+          &:hover:not(:disabled) {
+            background-color: #b32d2e;
+          }
+        }
+  
+        &:disabled {
+          background-color: #b39ddb;
+          cursor: not-allowed;
+        }
+      }
     }
-
-    .page-info {
-        background: #f3f4f6;
-        padding: 0.5rem 1rem;
+  }
+  
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+  
+    .course-card {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 6px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+  
+      .course-image {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
         border-radius: 4px;
-        font-weight: bold;
+      }
+  
+      .course-info {
+        flex: 1;
+  
+        h3 {
+          font-size: 1.1rem;
+          color: #333;
+          margin: 0 0 5px;
+        }
+  
+        p {
+          font-size: 0.85rem;
+          color: #555;
+          margin: 0;
+        }
+      }
     }
-}
+  }
+  
+  .no-data {
+    text-align: center;
+    color: #666;
+    font-size: 1rem;
+    padding: 15px;
+    background: #fafafa;
+    border-radius: 4px;
+  }
+  
+  .enroll-form {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: grid;
+    gap: 10px;
+  
+    input {
+      padding: 8px;
+      border: 1px solid #dcdcdc;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      width: 100%;
+      box-sizing: border-box;
+  
+      &:focus {
+        outline: none;
+        border-color: #7e5e9e;
+        box-shadow: 0 0 0 1px #7e5e9e;
+      }
+  
+      &[type="file"] {
+        padding: 5px;
+      }
+    }
+  
+    .course-select {
+      .react-select__control {
+        border: 1px solid #dcdcdc;
+        border-radius: 4px;
+        font-size: 0.95rem;
+  
+        &:focus-within {
+          border-color: #7e5e9e;
+          box-shadow: 0 0 0 1px #7e5e9e;
+        }
+      }
+    }
+  
+    .form-actions {
+      display: flex;
+      gap: 10px;
+  
+      .sample-csv-button {
+        background-color: #7e5e9e;
+        color: #fff;
+  
+        &:hover:not(:disabled) {
+          background-color: #6b4e8a;
+        }
+      }
+    }
+  
+    .submit-button {
+      padding: 8px 16px;
+      background-color: #135e96;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+  
+      &:hover:not(:disabled) {
+        background-color: #104c7b;
+      }
+  
+      &:disabled {
+        background-color: #b39ddb;
+        cursor: not-allowed;
+      }
+    }
+  }
+  
+  .enroll-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+      font-size: 0.95rem;
+      border-bottom: 1px solid #e5e5e5;
+    }
+  
+    th {
+      background: #f9f9f9;
+      color: #333;
+      font-weight: 600;
+    }
+  
+    td {
+      color: #555;
+  
+      &.loading {
+        text-align: center;
+        color: #666;
+        font-style: italic;
+      }
+    }
+  
+    .unenroll-button {
+      padding: 6px 12px;
+      background-color: #d63638;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+  
+      &:hover:not(:disabled) {
+        background-color: #b32d2e;
+      }
+  
+      &:disabled {
+        background-color: #ef9a9a;
+        cursor: not-allowed;
+      }
+    }
+  }
+  
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  
+    .modal-content {
+      background: #fff;
+      border-radius: 6px;
+      padding: 20px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  
+      h3 {
+        font-size: 1.3rem;
+        color: #333;
+        margin: 0 0 10px;
+      }
+  
+      p {
+        font-size: 0.95rem;
+        color: #555;
+        margin: 0 0 15px;
+      }
+  
+      .course-select {
+        margin-bottom: 15px;
+      }
+  
+      .modal-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+  
+        .cancel-button {
+          background-color: #f0f0f0;
+          color: #555;
+  
+          &:hover:not(:disabled) {
+            background-color: #e0e0e0;
+          }
+        }
+  
+        .submit-button {
+          background-color: #d63638;
+          color: #fff;
+  
+          &:hover:not(:disabled) {
+            background-color: #b32d2e;
+          }
+  
+          &:disabled {
+            background-color: #ef9a9a;
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
+  }
+  
+  @keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+  }
+  
+  @media (max-width: 600px) {
+    .classroom-container,
+    .enroll-container {
+      padding: 12px;
+    }
+  
+    .classroom-grid,
+    .courses-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .classroom-header h1,
+    .enroll-header h1 {
+      font-size: 1.8rem;
+    }
+  
+    .classroom-card {
+      padding: 12px;
+    }
+  
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .enroll-table {
+      font-size: 0.85rem;
+  
+      th,
+      td {
+        padding: 8px;
+      }
+    }
+  }

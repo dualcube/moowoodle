@@ -203,8 +203,6 @@ class Installer {
         }
     }
 
-	
-
     /**
      * Migrate enrollment data from order to our custom table.
      *
@@ -286,8 +284,6 @@ class Installer {
 
             \MooWoodle\Enrollment::save_enrollment( $enrollment_data );        }
     }
-
-        
 
     /**
      * Set default moowoodle admin settings.

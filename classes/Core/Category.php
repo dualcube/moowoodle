@@ -252,7 +252,4 @@ class Category {
 			}
 		}
 	}
-
-
-
 }

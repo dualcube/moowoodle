@@ -6,7 +6,7 @@ class Frontend {
 		// Reset cart quantities after update
 		add_action( 'woocommerce_cart_updated', [ $this, 'update_cart_quantity' ] );
 		// Add messages when cart/checkout is viewed
-		add_action( 'wp', [ $this, 'show_cart_limit_notice' ] );
+		add_action( 'template_redirect', [ $this, 'show_cart_limit_notice' ] );
 	}
 
 	/**
