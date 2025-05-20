@@ -69,7 +69,6 @@ class Installer {
             ) $collate;"
         );
         
-
         $wpdb->query(
             "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}" . Util::TABLES['course'] . "` (
                 `id` bigint(20) NOT NULL AUTO_INCREMENT,
