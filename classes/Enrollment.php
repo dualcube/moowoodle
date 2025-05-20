@@ -109,9 +109,7 @@ class Enrollment {
 		}
 		do_action( 'moowoodle_after_enrol_moodle_user', $email_data, $user_id );
 	}
-
 	
-		
 	/**
 	 * Create a WordPress user if not exists.
 	 *
@@ -546,122 +544,117 @@ class Enrollment {
 		return $inserted ? $wpdb->insert_id : false;
 	}
 
-	/**
-	 * Get enrollment records based on filters
-	 *
-	 * @param array $where Filters like user_id, course_id, status, etc.
-	 * @return array|null
-	 */
 	public static function get_enrollments( $where ) {
 		global $wpdb;
-
-		$table = $wpdb->prefix . Util::TABLES['enrollment'];
-		$query_segments = [];
-
-		// Default SELECT clause
+	
+		$table          = $wpdb->prefix . Util::TABLES['enrollment'];
+		$query_segments = array();
+	
+		// Default SELECT clause.
 		$select = '*';
-
-		// Override select if group_by_email is true
-		if ( ! empty( $where['group_by_email'] ) && $where['group_by_email'] ) {
+	
+		// Use grouped select if requested.
+		if ( ! empty( $where['group_by_email'] ) ) {
 			$select = "
 				user_email,
 				user_id,
-				GROUP_CONCAT(DISTINCT group_item_id) AS group_item_ids,
-				GROUP_CONCAT(DISTINCT course_id) AS course_ids,
+				GROUP_CONCAT(DISTINCT JSON_OBJECT('group_item_id', group_item_id, 'course_id', course_id)) AS enrollments,
 				COUNT(*) as enrollment_count
 			";
+		} elseif ( isset( $where['select'] ) ) {
+			$select = esc_sql( $where['select'] );
 		}
-
-		// Apply filters
+	
+		// Filters.
 		if ( isset( $where['id'] ) ) {
-			$query_segments[] = $wpdb->prepare( "id = %d", $where['id'] );
+			$query_segments[] = $wpdb->prepare( 'id = %d', $where['id'] );
 		}
-
+	
 		if ( isset( $where['user_id'] ) ) {
-			$query_segments[] = $wpdb->prepare( "user_id = %d", $where['user_id'] );
+			$query_segments[] = $wpdb->prepare( 'user_id = %d', $where['user_id'] );
 		}
-
-		if ( isset( $where['user_email'] ) ) {
-			$query_segments[] = $wpdb->prepare( "user_email = %s", $where['user_email'] );
+	
+		if ( isset( $where['user_email'] ) && $where['user_email'] !== '' ) {
+			$email            = sanitize_email( strtolower( trim( $where['user_email'] ) ) );
+			$query_segments[] = $wpdb->prepare( 'LOWER(user_email) = %s', $email );
 		}
-
+	
 		if ( isset( $where['course_id'] ) ) {
-			$query_segments[] = $wpdb->prepare( "course_id = %d", $where['course_id'] );
+			$query_segments[] = $wpdb->prepare( 'course_id = %d', $where['course_id'] );
 		}
+	
 		if ( isset( $where['course_id_not'] ) ) {
-			$query_segments[] = $wpdb->prepare( "course_id != %d", $where['course_id_not'] );
+			$query_segments[] = $wpdb->prepare( 'course_id != %d', $where['course_id_not'] );
 		}
+	
 		if ( isset( $where['cohort_id'] ) ) {
-			$query_segments[] = $wpdb->prepare( "cohort_id = %d", $where['cohort_id'] );
+			$query_segments[] = $wpdb->prepare( 'cohort_id = %d', $where['cohort_id'] );
 		}
+	
 		if ( isset( $where['cohort_id_not'] ) ) {
-			$query_segments[] = $wpdb->prepare( "cohort_id != %d", $where['cohort_id_not'] );
+			$query_segments[] = $wpdb->prepare( 'cohort_id != %d', $where['cohort_id_not'] );
 		}
+	
 		if ( isset( $where['group_id'] ) ) {
-			$query_segments[] = $wpdb->prepare( "group_id = %d", $where['group_id'] );
+			$query_segments[] = $wpdb->prepare( 'group_id = %d', $where['group_id'] );
 		}
+	
 		if ( isset( $where['group_id_not'] ) ) {
-			$query_segments[] = $wpdb->prepare( "group_id != %d", $where['group_id_not'] );
+			$query_segments[] = $wpdb->prepare( 'group_id != %d', $where['group_id_not'] );
 		}
+	
 		if ( isset( $where['order_id'] ) ) {
-			$query_segments[] = $wpdb->prepare( "order_id = %d", $where['order_id'] );
+			$query_segments[] = $wpdb->prepare( 'order_id = %d', $where['order_id'] );
 		}
-
+	
 		if ( isset( $where['group_item_id'] ) ) {
-			$query_segments[] = $wpdb->prepare( "group_item_id = %d", $where['group_item_id'] );
+			$query_segments[] = $wpdb->prepare( 'group_item_id = %d', $where['group_item_id'] );
 		}
-
-		if ( isset( $where['status'] ) ) {
-			$query_segments[] = $wpdb->prepare( "status = %s", $where['status'] );
+	
+		if ( isset( $where['status'] ) && $where['status'] !== '' ) {
+			$query_segments[] = $wpdb->prepare( 'status = %s', $where['status'] );
 		}
-
-		if ( isset( $where['date'] ) ) {
-			$query_segments[] = $wpdb->prepare( "date = %s", $where['date'] );
+	
+		if ( isset( $where['date'] ) && $where['date'] !== '' ) {
+			$query_segments[] = $wpdb->prepare( 'date = %s', $where['date'] );
 		}
-
-		if ( isset( $where['ids'] ) && is_array( $where['ids'] ) ) {
-			$ids = implode( ',', array_map( 'intval', $where['ids'] ) );
+	
+		if ( ! empty( $where['ids'] ) && is_array( $where['ids'] ) ) {
+			$ids              = implode( ',', array_map( 'intval', $where['ids'] ) );
 			$query_segments[] = "id IN ($ids)";
 		}
-
-		if ( isset( $where['group_item_ids'] ) && is_array( $where['group_item_ids'] ) ) {
-			$ids = implode( ',', array_map( 'intval', $where['group_item_ids'] ) );
+	
+		if ( ! empty( $where['group_item_ids'] ) && is_array( $where['group_item_ids'] ) ) {
+			$ids              = implode( ',', array_map( 'intval', $where['group_item_ids'] ) );
 			$query_segments[] = "group_item_id IN ($ids)";
 		}
-
-		// Build query
+	
+		// Build query.
 		$query = "SELECT $select FROM $table";
-
-		// WHERE clause
+	
 		if ( ! empty( $query_segments ) ) {
-			$query .= " WHERE " . implode( ' AND ', $query_segments );
+			$query .= ' WHERE ' . implode( ' AND ', $query_segments );
 		}
-
-		// GROUP BY clause
-		if ( ! empty( $where['group_by_email'] ) && $where['group_by_email'] ) {
-			$query .= " GROUP BY user_email, user_id";
+	
+		if ( ! empty( $where['group_by_email'] ) ) {
+			$query .= ' GROUP BY user_email, user_id';
 		}
-
-		// LIMIT and OFFSET for pagination
+	
 		if ( isset( $where['limit'] ) && isset( $where['offset'] ) ) {
-			$limit = intval( $where['limit'] );
-			$offset = intval( $where['offset'] );
-			$query .= $wpdb->prepare( " LIMIT %d OFFSET %d", $limit, $offset );
+			$query .= $wpdb->prepare( ' LIMIT %d OFFSET %d', intval( $where['limit'] ), intval( $where['offset'] ) );
 		}
-
-		// Execute the query and get results
+	
 		$results = $wpdb->get_results( $query, ARRAY_A );
-
-		// If grouped by email, convert comma-separated strings to arrays
-		if ( ! empty( $where['group_by_email'] ) && $where['group_by_email'] ) {
+	
+		// Decode JSON enrollments for grouped results.
+		if ( ! empty( $where['group_by_email'] ) ) {
 			foreach ( $results as &$row ) {
-				$row['group_item_ids'] = isset( $row['group_item_ids'] ) ? explode( ',', $row['group_item_ids'] ) : [];
-				$row['course_ids']     = isset( $row['course_ids'] ) ? explode( ',', $row['course_ids'] ) : [];
+				$row['enrollments'] = isset( $row['enrollments'] )
+					? json_decode( '[' . $row['enrollments'] . ']', true )
+					: array();
 			}
 		}
-
+	
 		return $results;
 	}
-
-
 }

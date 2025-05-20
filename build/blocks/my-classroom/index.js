@@ -2596,16 +2596,18 @@ const MyClassroom = () => {
     fetchData();
   };
   const handleEditClick = group => {
-    setEditingClassroom(group.classroom_id || group.cohort_id || group.group_id);
-    setNewName(group.classroom_name || group.cohort_name || group.group_name || "");
+    if (group.type === "classroom") {
+      setEditingClassroom(group.classroom_id);
+      setNewName(group.classroom_name || "");
+    }
   };
   const handleUpdateClassroom = async group => {
-    if (!newName.trim()) return;
+    if (!newName.trim() || group.type !== "classroom") return;
     try {
       const response = await axios__WEBPACK_IMPORTED_MODULE_6__["default"].post((0,_services_apiService__WEBPACK_IMPORTED_MODULE_2__.getApiLink)("classroom"), {
-        id: group.classroom_id || group.item_id || group.item_id,
+        id: group.classroom_id,
         name: newName,
-        type: group.type
+        type: "classroom"
       }, {
         headers: {
           "X-WP-Nonce": appLocalizer.nonce
@@ -2613,23 +2615,10 @@ const MyClassroom = () => {
       });
       const [success, message] = response.data;
       if (success) {
-        const updatedName = newName;
-        if (group.type === "classroom") {
-          setClassrooms(prev => prev.map(g => g.classroom_id === group.classroom_id ? {
-            ...g,
-            classroom_name: updatedName
-          } : g));
-        } else if (group.type === "cohort") {
-          setCohorts(prev => prev.map(g => g.cohort_id === group.cohort_id ? {
-            ...g,
-            cohort_name: updatedName
-          } : g));
-        } else if (group.type === "group") {
-          setGroups(prev => prev.map(g => g.group_id === group.group_id ? {
-            ...g,
-            group_name: updatedName
-          } : g));
-        }
+        setClassrooms(prev => prev.map(g => g.classroom_id === group.classroom_id ? {
+          ...g,
+          classroom_name: newName
+        } : g));
         setEditingClassroom(null);
         setNewName("");
       } else {
@@ -2640,35 +2629,40 @@ const MyClassroom = () => {
       alert((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("An error occurred while renaming.", "moowoodle"));
     }
   };
-  const renderEditableTitle = (group, id, name) => editingClassroom === id ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
-      type: "text",
-      value: newName,
-      onChange: e => setNewName(e.target.value),
-      onKeyDown: e => e.key === "Enter" && handleUpdateClassroom(group),
-      className: "edit-input"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-      className: "button-group",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
-        className: "cancel-btn",
-        onClick: () => setEditingClassroom(null),
-        children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Cancel", "moowoodle")
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
-        className: "save-btn",
-        onClick: () => handleUpdateClassroom(group),
-        children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Save", "moowoodle")
+  const renderEditableTitle = (group, id, name) => {
+    if (group.type === "classroom" && editingClassroom === id) {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+          type: "text",
+          value: newName,
+          onChange: e => setNewName(e.target.value),
+          onKeyDown: e => e.key === "Enter" && handleUpdateClassroom(group),
+          className: "edit-input"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+          className: "button-group",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
+            className: "cancel-btn",
+            onClick: () => setEditingClassroom(null),
+            children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Cancel", "moowoodle")
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
+            className: "save-btn",
+            onClick: () => handleUpdateClassroom(group),
+            children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Save", "moowoodle")
+          })]
+        })]
+      });
+    }
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+      className: "heading-text",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h2", {
+        children: name
+      }), group.type === "classroom" && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+        className: "edit-button",
+        onClick: () => handleEditClick(group),
+        children: "\u270F\uFE0F"
       })]
-    })]
-  }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-    className: "heading-text",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h2", {
-      children: name
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
-      className: "edit-button",
-      onClick: () => handleEditClick(group),
-      children: "\u270F\uFE0F"
-    })]
-  });
+    });
+  };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
     className: "classroom-container",
     children: selectedClassroom ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_ViewEnroll__WEBPACK_IMPORTED_MODULE_3__["default"], {

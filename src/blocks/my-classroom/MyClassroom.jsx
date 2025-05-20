@@ -83,22 +83,22 @@ const MyClassroom = () => {
   };
 
   const handleEditClick = (group) => {
-    setEditingClassroom(group.classroom_id || group.cohort_id || group.group_id);
-    setNewName(
-      group.classroom_name || group.cohort_name || group.group_name || ""
-    );
+    if (group.type === "classroom") {
+      setEditingClassroom(group.classroom_id);
+      setNewName(group.classroom_name || "");
+    }
   };
 
   const handleUpdateClassroom = async (group) => {
-    if (!newName.trim()) return;
+    if (!newName.trim() || group.type !== "classroom") return;
 
     try {
       const response = await axios.post(
         getApiLink("classroom"),
         {
-          id: group.classroom_id || group.item_id || group.item_id,
+          id: group.classroom_id,
           name: newName,
-          type: group.type,
+          type: "classroom",
         },
         { headers: { "X-WP-Nonce": appLocalizer.nonce } }
       );
@@ -106,34 +106,13 @@ const MyClassroom = () => {
       const [success, message] = response.data;
 
       if (success) {
-        const updatedName = newName;
-
-        if (group.type === "classroom") {
-          setClassrooms((prev) =>
-            prev.map((g) =>
-              g.classroom_id === group.classroom_id
-                ? { ...g, classroom_name: updatedName }
-                : g
-            )
-          );
-        } else if (group.type === "cohort") {
-          setCohorts((prev) =>
-            prev.map((g) =>
-              g.cohort_id === group.cohort_id
-                ? { ...g, cohort_name: updatedName }
-                : g
-            )
-          );
-        } else if (group.type === "group") {
-          setGroups((prev) =>
-            prev.map((g) =>
-              g.group_id === group.group_id
-                ? { ...g, group_name: updatedName }
-                : g
-            )
-          );
-        }
-
+        setClassrooms((prev) =>
+          prev.map((g) =>
+            g.classroom_id === group.classroom_id
+              ? { ...g, classroom_name: newName }
+              : g
+          )
+        );
         setEditingClassroom(null);
         setNewName("");
       } else {
@@ -145,34 +124,39 @@ const MyClassroom = () => {
     }
   };
 
-  const renderEditableTitle = (group, id, name) => (
-    editingClassroom === id ? (
-      <>
-        <input
-          type="text"
-          value={newName}
-          onChange={(e) => setNewName(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleUpdateClassroom(group)}
-          className="edit-input"
-        />
-        <div className="button-group">
-          <a className="cancel-btn" onClick={() => setEditingClassroom(null)}>
-            {__("Cancel", "moowoodle")}
-          </a>
-          <a className="save-btn" onClick={() => handleUpdateClassroom(group)}>
-            {__("Save", "moowoodle")}
-          </a>
-        </div>
-      </>
-    ) : (
+  const renderEditableTitle = (group, id, name) => {
+    if (group.type === "classroom" && editingClassroom === id) {
+      return (
+        <>
+          <input
+            type="text"
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleUpdateClassroom(group)}
+            className="edit-input"
+          />
+          <div className="button-group">
+            <a className="cancel-btn" onClick={() => setEditingClassroom(null)}>
+              {__("Cancel", "moowoodle")}
+            </a>
+            <a className="save-btn" onClick={() => handleUpdateClassroom(group)}>
+              {__("Save", "moowoodle")}
+            </a>
+          </div>
+        </>
+      );
+    }
+    return (
       <div className="heading-text">
         <h2>{name}</h2>
-        <span className="edit-button" onClick={() => handleEditClick(group)}>
-          ✏️
-        </span>
+        {group.type === "classroom" && (
+          <span className="edit-button" onClick={() => handleEditClick(group)}>
+            ✏️
+          </span>
+        )}
       </div>
-    )
-  );
+    );
+  };
 
   return (
     <div className="classroom-container">
