@@ -15,6 +15,10 @@ class Product {
 
 		// Support for woocommerce product custom metadata query
 		add_filter( 'woocommerce_product_data_store_cpt_get_products_query', [ &$this, 'handling_custom_meta_query_keys' ], 10, 3 );
+
+		add_action('wp_trash_post', [ $this, 'handle_woocommerce_product_trash' ], 10, 1);
+
+		add_action('untrash_post', [ $this, 'handle_woocommerce_product_restore' ], 10, 1);
     }
 
 	/**
@@ -276,6 +280,98 @@ class Product {
 		}
 
 		return $product_id;
+	}
+
+	/**
+	 * Handles actions when a WooCommerce product is moved to trash.
+	 *
+	 * Triggers custom actions based on whether the product is:
+	 * - a variation,
+	 * - linked to a Moodle cohort,
+	 * - or linked to a Moodle course.
+	 *
+	 * @param int $product_id The ID of the trashed product.
+	 */
+	public function handle_woocommerce_product_trash( $product_id ) {
+		$product = wc_get_product( $product_id );
+
+		if ( ! $product ) {
+			return;
+		}
+
+		// If product is a variation or linked to a Moodle cohort.
+		if (
+			$product->is_type( 'variation' ) ||
+			! empty( get_post_meta( $product_id, 'moodle_cohort_id', true ) )
+		) {
+			/**
+			 * Fires when a product variation or a product linked to a Moodle cohort is trashed.
+			 *
+			 * @param int $product_id The trashed product ID.
+			 */
+			do_action( 'moowoodle_product_variation_or_cohort_trashed', $product_id );
+			return;
+		}
+
+		// If product is linked to a Moodle course.
+		$moodle_course_id = get_post_meta( $product_id, 'moodle_course_id', true );
+
+		if ( ! empty( $moodle_course_id ) ) {
+			MooWoodle()->course->save_course(
+				array(
+					'moodle_course_id' => $moodle_course_id,
+					'product_id'       => 0,
+				)
+			);
+		}
+	}
+
+	/**
+	 * Handles actions when a WooCommerce product is restored from trash.
+	 *
+	 * Triggers custom actions based on whether the product is:
+	 * - a variable product,
+	 * - linked to a Moodle cohort,
+	 * - or linked to a Moodle course.
+	 *
+	 * @param int $product_id The ID of the restored product.
+	 */
+	public function handle_woocommerce_product_restore( $product_id ) {
+		if ( get_post_type( $product_id ) !== 'product' ) {
+			return;
+		}
+
+		$product = wc_get_product( $product_id );
+
+		if ( ! $product ) {
+			return;
+		}
+
+		// If product is a variable or linked to a Moodle cohort.
+		if (
+			$product->is_type( 'variable' ) ||
+			! empty( get_post_meta( $product_id, 'moodle_cohort_id', true ) )
+		) {
+			/**
+			 * Fires when a product variation or a product linked to a Moodle cohort is restored.
+			 *
+			 * @param int $product_id The restored product ID.
+			 */
+			do_action( 'moowoodle_product_variation_or_cohort_restore', $product_id );
+			return;
+		}
+
+		// If product is linked to a Moodle course.
+		$moodle_course_id = get_post_meta( $product_id, 'moodle_course_id', true );
+
+		if ( ! empty( $moodle_course_id ) ) {
+			MooWoodle()->course->save_course(
+				array(
+					'moodle_course_id' => $moodle_course_id,
+					'product_id'       => $product_id,
+				)
+			);
+		}
 	}
 
 }

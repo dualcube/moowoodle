@@ -63,11 +63,6 @@ class Category {
 	 */
 	public static function update_course_categories( $categories ) {
 		foreach ( $categories as $category ) {
-			// Skip if essential fields are missing.
-			if ( empty( $category['id'] ) || empty( $category['name'] ) ) {
-				continue;
-			}
-	
 			$args = [
 				'moodle_category_id' => (int) $category['id'],
 				'name'               => trim( sanitize_text_field( $category['name'] ) ),
