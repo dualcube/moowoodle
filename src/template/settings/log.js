@@ -6,14 +6,13 @@ export default {
     name: __("Log", "moowoodle"),
     desc: __("Review all system logs and errors", "moowoodle"),
     icon: 'adminLib-credit_card',
-    submitUrl: "save-moowoodle-setting",
+    submitUrl: "settings",
     modal: [
         {
             key: "moowoodle_adv_log",
             type: "log",
             classes: "log-section",
-            fetchApiLink: "fetch-log",
-            downloadApiLink: "download-log",
+            apiLink: "logs",
             fileName: "error.txt"
         },
     ]

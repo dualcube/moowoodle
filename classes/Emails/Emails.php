@@ -35,16 +35,55 @@ class Emails {
 	}
 
 	/**
-	 * Send confirmation for enrollment in moodle course
-	 * @param array $enrolments
+	 * Send confirmation for enrollment in Moodle courses.
+	 *
+	 * @param array $enrollments List of enrolled course IDs or structured data.
+	 * @param int   $user_id     WordPress user ID.
 	 * @return void
 	 */
-	public function send_enrollment_confirmation( $enrolments, $user_id ) {
-		$enrollment_datas 				= [];
-		$user 							= get_userdata($user_id);
-		$user_email 					= ($user == false) ? '' : $user->user_email;
-		$enrollment_datas['enrolments'] = $enrolments;
-		
-		$this->send_email( 'EnrollmentEmail', $user_email, $enrollment_datas );
+	public function send_enrollment_confirmation( $enrollments, $user_id ) {
+
+		$user = get_userdata( $user_id );
+
+		if ( ! $user || empty( $user->user_email ) ) {
+			return;
+		}
+
+		$email_content = [];
+
+		// Optional fields
+		if ( ! empty( $enrollments['teacher_email'] ) ) {
+			$email_content['teacher_email'] = sanitize_email( $enrollments['teacher_email'] );
+		}
+
+		if ( ! empty( $enrollments['gift_email'] ) && is_array( $enrollments['gift_email'] ) ) {
+			$gift_email_address = reset( $enrollments['gift_email'] );
+			if ( ! empty( $gift_email_address ) ) {
+				$email_content['gift_email'] = sanitize_email( $gift_email_address );
+			}
+		}
+
+		// Hook for additional enrollment data (classroom, cohort, etc.)
+		$email_content = apply_filters( 'moowoodle_enrollment_email_data', $email_content, $enrollments );
+
+		// Course data
+		if ( ! empty( $enrollments['course'] ) && is_array( $enrollments['course'] ) ) {
+
+			$enrolled_course_ids = array_map( 'intval', $enrollments['course'] );
+			$enrolled_courses    = MooWoodle()->course->get_course( [ 'ids' => $enrolled_course_ids ] );
+
+			if ( ! empty( $enrolled_courses ) && is_array( $enrolled_courses ) ) {
+				$email_content['course_details'] = array_map( function( $course ) {
+					return [
+						'id'   => intval( $course['id'] ?? 0 ),
+						'name' => $course['fullname'] ?? '',
+					];
+				}, $enrolled_courses );
+			}
+		}
+
+		$this->send_email( 'EnrollmentEmail', $user->user_email, $email_content );
 	}
+
+
 }

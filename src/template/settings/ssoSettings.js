@@ -6,7 +6,7 @@ export default {
     name: __("Single Sign On", 'moowoodle'),
     desc: __("Manage seamless login and logout synchronization ", 'moowoodle'),
     icon: "adminLib-vpn_key",
-    submitUrl: "save-moowoodle-setting",
+    submitUrl: "settings",
     proDependent: true,
     modal: [
         {

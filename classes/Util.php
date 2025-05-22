@@ -12,6 +12,17 @@ defined('ABSPATH') || exit;
  * @author 		DualCube
  */
 class Util {
+
+	/**
+     * Constent holds table name
+     * @var array
+     */
+    const TABLES = [
+        'enrollment'  => 'moowoodle_enrollment',
+        'category'    => 'moowoodle_categories',
+        'course'      => 'moowoodle_courses',
+    ];
+
 	/**
      * MooWoodle LOG function.
      * @param string $message
@@ -29,13 +40,13 @@ class Util {
 		}
 
 		// log folder create
-		if ( ! file_exists(MOOWOODLE_LOGS_DIR . '/.htaccess') ) {
-			$result = wp_mkdir_p( MOOWOODLE_LOGS_DIR );	
+		if ( ! file_exists(MooWoodle()->moowoodle_logs_dir . '/.htaccess') ) {
+			$result = wp_mkdir_p( MooWoodle()->moowoodle_logs_dir );	
 			if ( true === $result ) {
 				// Create infrastructure to prevent listing contents of the logs directory.
 				try {
-					$wp_filesystem->put_contents( MOOWOODLE_LOGS_DIR . '/.htaccess', 'deny from all' );
-					$wp_filesystem->put_contents( MOOWOODLE_LOGS_DIR . '/index.html', '' );
+					$wp_filesystem->put_contents( MooWoodle()->moowoodle_logs_dir . '/.htaccess', 'deny from all' );
+					$wp_filesystem->put_contents( MooWoodle()->moowoodle_logs_dir . '/index.html', '' );
 				} catch ( Exception $exception ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 					// Creation failed.
 				}
@@ -100,15 +111,20 @@ class Util {
      * @return void
      */
     public static function get_template( $template_name, $args = [] ) {
-
-        if ( $args && is_array( $args ) )
-            extract( $args );
-
-        $located = MooWoodle()->plugin_path.'templates/'.$template_name;
         
-        load_template( $located, TRUE, $args );
+        if ( $args && is_array( $args ) ) {
+            extract( $args );
+        }
+    
+        // Check if the template exists in the theme
+        $theme_template = get_stylesheet_directory() . '/woocommerce-catalog-enquiry/' . $template_name;
+    
+        // Use the theme template if it exists, otherwise use the plugin template
+        $located = file_exists( $theme_template ) ? $theme_template : MooWoodle()->plugin_path . 'templates/' . $template_name;
+    
+        // Load the template
+        load_template( $located, false, $args );
     }
-	
 	/**
 	 * Check is MooWoodle Pro is active or not.
 	 * @return bool
@@ -163,4 +179,5 @@ class Util {
 	public static function flush_sync_status( $key ) {
 		set_transient( 'moowoodle_sync_status_' . $key, [] );
 	}
+	
 }

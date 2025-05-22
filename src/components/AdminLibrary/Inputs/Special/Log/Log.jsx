@@ -3,18 +3,16 @@ import axios from "axios";
 import { getApiLink } from "../../../../../services/apiService";
 import "./Log.scss"; 
 const Log = (props) => {
-  const { fetchApiLink, downloadApiLink, downloadFileName } = props;
+  const { apiLink, downloadFileName } = props;
   const [logData, setLogData] = useState([]);
   const [copied, setCopied] = useState(false); 
   
   useEffect(() => {
     axios({
-      method: "post",
-      url: getApiLink(fetchApiLink),
+      method: "GET",
+      url: getApiLink(apiLink),
       headers: { "X-WP-Nonce": appLocalizer.nonce },
-      data: {
-        logcount: 100,
-      },
+      params: { logcount: 100 }
     }).then((response) => {
       setLogData(response.data);
     });
@@ -24,13 +22,12 @@ const Log = (props) => {
     event.preventDefault();
     const fileName = downloadFileName;
     axios({
-      url: getApiLink(downloadApiLink),
-      method: "POST",
-      headers: {
-        'X-WP-Nonce': appLocalizer.nonce
-      },
-      data: {
-        file: fileName
+      method: "GET",
+      url: getApiLink(apiLink),
+      headers: { "X-WP-Nonce": appLocalizer.nonce },
+      params: {
+        action: 'download',
+        file: fileName 
       },
       responseType: "blob",
     }).then((response) => {
@@ -58,10 +55,10 @@ const Log = (props) => {
   const handleClearLog = (event) => {
     event.preventDefault(); 
     axios({
-      method: "post",
-      url: getApiLink(fetchApiLink),
+      method: "GET",
+      url: getApiLink(apiLink),
       headers: { "X-WP-Nonce": appLocalizer.nonce },
-      data: {
+      params: {
         logcount: 100,
         clear: true,
       },
