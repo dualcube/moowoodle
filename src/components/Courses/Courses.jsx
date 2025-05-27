@@ -14,10 +14,7 @@ import defaultImage from '../../assets/images/moowoodle-product-default.png';
 export default function Course() {
     const { __ } = wp.i18n;
     const [data, setData] = useState(null);
-    const [courses, setCourses] = useState([]);
-    const [products, setProducts] = useState([]);
     const [category, setCategory] = useState([]);
-    const [shortName, setShortName] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
     const [totalRows, setTotalRows] = useState();
     const bulkSelectRef = useRef();
@@ -26,13 +23,10 @@ export default function Course() {
     useEffect(() => {
         axios({
             method: "get",
-            url: getApiLink('all-courses'),
+            url: getApiLink('all-filters'),
             headers: { "X-WP-Nonce": appLocalizer.nonce },
         }).then((response) => {
-            setCourses(response.data.courses);
-            setProducts(response.data.products);
             setCategory(response.data.category);
-            setShortName(response.data.shortname);
         });
     }, []);
 
@@ -52,10 +46,10 @@ export default function Course() {
     ) {
         //Fetch the data to show in the table
         axios({
-            method: "post",
-            url: getApiLink('get-courses'),
+            method: "GET",
+            url: getApiLink('courses'),
             headers: { "X-WP-Nonce": appLocalizer.nonce },
-            data: {
+            params: {
                 page: currentPage,
                 row: rowsPerPage,
                 course: courseField,
@@ -164,10 +158,10 @@ export default function Course() {
     // Get the total no of data present in database
     useEffect(() => {
         axios({
-            method: "post",
-            url: getApiLink('get-courses'),
+            method: "GET",
+            url: getApiLink('courses'),
             headers: { "X-WP-Nonce": appLocalizer.nonce },
-            data: { count: true },
+            params: { count: true },
         }).then((response) => {
             setTotalRows(response.data);
         });
@@ -188,9 +182,6 @@ export default function Course() {
                     <img src={row.productimage || defaultImage} />
                     <div className="action-section">
                         <p>{row.course_name}</p>
-                        <div className='action-btn'>
-                            <a target='_blank' href={row.moodle_url} className="">Edit course</a>
-                        </div>
                     </div>
                 </TableCell>
             ),

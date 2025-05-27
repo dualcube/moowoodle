@@ -5,6 +5,7 @@ import Settings from "./components/Settings/Settings";
 import { ModuleProvider } from './contexts/ModuleContext.jsx';
 import Synchronization from "./components/Synchronization/Synchronization";
 import Courses from "./components/Courses/Courses";
+import Cohorts from "./components/Cohorts/Cohorts";
 import Enrollment from "./components/Enrollment/Enrollment";
 
 const Route = () => {
@@ -14,6 +15,7 @@ const Route = () => {
             { currentTab.get('tab') === 'settings' && <Settings initialTab='general' /> }
             { currentTab.get('tab') === 'synchronization' && <Synchronization initialTab='connection' /> }
             { currentTab.get('tab') === 'courses' && <Courses /> }
+            { currentTab.get('tab') === 'cohorts' && <Cohorts /> }
             { currentTab.get('tab') === 'enrolments' && <Enrollment /> }
         </>
     );

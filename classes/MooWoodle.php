@@ -50,10 +50,12 @@ class MooWoodle {
 
         // store plugin info
         $this->file = $file;
-        $this->container[ 'plugin_url' ]     = trailingslashit( plugins_url( '', $file ) );
-        $this->container[ 'plugin_path' ]    = trailingslashit( dirname( $file ) );
-        $this->container[ 'version' ]        = MOOWOODLE_PLUGIN_VERSION;
-        $this->container[ 'rest_namespace' ] = MOOWOODLE_REST_NAMESPACE;
+        $this->container[ 'plugin_url' ]             = trailingslashit( plugins_url( '', $file ) );
+        $this->container[ 'plugin_path' ]            = trailingslashit( dirname( $file ) );
+        $this->container[ 'version' ]                = MOOWOODLE_PLUGIN_VERSION;
+        $this->container[ 'block_paths' ]            = [];
+        $this->container[ 'rest_namespace' ]         = 'moowoodle/v1';
+        $this->container[ 'moowoodle_logs_dir' ]     = ( trailingslashit( wp_upload_dir(null, false)['basedir'] ) . 'mw-logs' );
 
         // activation and deactivation hook
         register_activation_hook( $file, [ $this, 'activate' ] );
@@ -64,6 +66,7 @@ class MooWoodle {
         add_action( 'before_woocommerce_init', [ $this, 'declare_compatibility' ] );
         add_action( 'woocommerce_loaded', [ $this, 'load_plugin' ] );
         add_action( 'plugins_loaded', [ $this , 'is_woocommerce_loaded'] );
+        add_action( 'init', [ $this , 'migrate_from_previous_version' ] );
 	}
 
     /**
@@ -123,16 +126,19 @@ class MooWoodle {
 			$this->container[ 'admin' ] = new Admin();
 		}
 
-		$this->container[ 'util' ] = new Util();
-        $this->container[ 'setting' ] = new Setting();
-		$this->container[ 'restAPI' ] = new RestAPI();
-		$this->container[ 'emails' ] = new Emails\Emails();
-		$this->container[ 'course' ] = new Core\Course();
-		$this->container[ 'category' ] = new Core\Category();
-		$this->container[ 'product' ] = new Core\Product();
+		$this->container[ 'util' ]             = new Util();
+        $this->container[ 'setting' ]          = new Setting();
+		$this->container[ 'restAPI' ]          = new RestAPI();
+		$this->container[ 'emails' ]           = new Emails\Emails();
+		$this->container[ 'course' ]           = new Core\Course();
+		$this->container[ 'category' ]         = new Core\Category();
+		$this->container[ 'product' ]          = new Core\Product();
         $this->container[ 'external_service' ] = new ExternalService();
-		$this->container[ 'enrollment' ] = new Enrollment();
-		
+		$this->container[ 'enrollment' ]       = new Enrollment();
+		$this->container[ 'frontend' ]         = new Frontend();
+        $this->container[ 'block' ] 		   = new Block();
+        $this->container[ 'frontendscripts' ]  = new FrontendScripts();
+
         new EndPoint();
 
         $this->initialize_moowoodle_log_file();
@@ -145,6 +151,14 @@ class MooWoodle {
     public function is_woocommerce_loaded() {
         if ( ! did_action( 'woocommerce_loaded' ) && is_admin() ) {
         	add_action( 'admin_notices', [ $this , 'woocommerce_admin_notice' ] );
+        }
+    }
+
+    public function migrate_from_previous_version() {
+        $previous_version = get_option( 'moowoodle_version', '' );
+
+        if ( version_compare( $previous_version, '3.2.12', '<' ) ) {
+            new Installer();
         }
     }
 
@@ -209,7 +223,7 @@ class MooWoodle {
             update_option( 'moowoodle_log_file', $log_file_name );
         }
 
-        $this->container[ 'log_file' ] = MOOWOODLE_LOGS_DIR . '/' . $log_file_name;
+        $this->container[ 'log_file' ] = MooWoodle()->moowoodle_logs_dir . '/' . $log_file_name;
     }
 
 	/**
@@ -225,7 +239,16 @@ class MooWoodle {
 
         return new \WP_Error( sprintf('Call to unknown class %s.', $class ) );
     }
-
+    /**
+     * Magic setter function to store a reference of a class.
+     * Accepts a class name as the key and stores the instance in the container.
+     *
+     * @param string $class The class name or key to store the instance.
+     * @param object $value The instance of the class to store.
+     */
+    public function __set( $class, $value ) {
+        $this->container[ $class ] = $value;
+    }
 	/**
      * Initializes the MooWoodle class.
      * Checks for an existing instance
