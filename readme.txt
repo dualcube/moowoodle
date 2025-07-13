@@ -49,6 +49,11 @@ Take your eLearning platform to the next level with MooWoodle. Below are some of
 * 🖼️ Effortlessly sync Moodle course images to your WordPress.[PRO]
 * 🔄 Sync users in real-time between Moodle and WordPress.[PRO]
 * ✍️ Specify the user information (Username, Password, First Name, Last Name) for synchronization. [PRO]
+* 🎁 Gift Courses – Let users buy Moodle courses for friends or peers.
+* 👥 Classroom Mode – Purchase multiple seats and assign Moodle course / cohort / groups to others via WordPress.
+* 🧑‍🏫 Cohort Products – Automatically enroll users into Moodle LMS cohorts.
+* 🧩 Group by Variations – Let variation selection control Moodle group enrollment.
+* 🔄 Custom User Sync – Sync Moodle WordPress users with real-time updates.
 
 ## ✌️ MooWoodle is the smart choice for:
 *🎓 Educators and institutions already using Moodle who want to leverage WordPress to reach a broader audience.
@@ -95,7 +100,16 @@ Take your eLearning game up a notch— [MooWoodle Pro](https://dualcube.com/prod
    🔄 **Variations on Courses [PRO]**: Offering course variations with the option to sell them through your online store with the help of WooCommerce Subscription.
 
    💲 **Multiple Pricing Models [PRO]**: MooWoodle Integration supports various pricing models, including one-time payments, subscriptions, and memberships. This flexibility allows you to offer courses in a way that best suits your business model.
-   👥 **Real-Time User Synchronization [PRO]**: Seamlessly sync users, whether from Moodle to WordPress or vice versa. This feature ensures users have unified access across both Moodle WordPress platforms, eliminating the need for separate accounts.
+   
+  👥 **Real-Time User Synchronization [PRO]**: Seamlessly sync users, whether from Moodle to WordPress or vice versa. This feature ensures users have unified access across both Moodle WordPress platforms, eliminating the need for separate accounts.
+  
+   👥 Classroom Enrollment – Enables users to buy multiple seats of a Moodle course / cohort / groups and assign them to students or team members via the WordPress Learning Hub. It's ideal for organizations running classroom sessions or corporate learning programs. [PRO] [Check for more details](https://dualcube.com/docs/moowoodle-set-up-guide/#12-toc-title?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
+   
+   🧑‍🏫 Cohort Enrollment – Lets you sell access to Moodle cohorts by connecting them to WooCommerce products. Upon purchase, students or teams are enrolled into the respective Moodle cohort. You can also sell multiple seats for a cohort and assign users to it via the Learning Hub. [PRO] [Check for more details](https://dualcube.com/docs/moowoodle-set-up-guide/#20-toc-title?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
+
+   🎁 Gift a Course – Allow WooCommerce customers to purchase Moodle courses as gifts. During checkout, they can enter recipient details so the access is assigned to the gifted user. A thoughtful way to boost course sharing. [PRO] [Check for more details](https://dualcube.com/docs/moowoodle-set-up-guide/#14-toc-title?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree).
+
+   👥 Group Enrollment via Variations – Allows course variations (such as beginner, advanced, or different instructors) to be mapped to Moodle groups. When a specific variation is chosen during purchase, the student is automatically placed in the corresponding Moodle group. [PRO]
 
 👉 Learn More About [MooWoodle (PRO)](https://dualcube.com/product/moowoodle-pro/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree)
 
@@ -129,6 +143,14 @@ Unlock advanced Moodle WordPress course synchronization with MooWoodle Pro—syn
 🔄 **Update Existing Products [PRO]**: Conveniently update previously created product information using Moodle course data.
 
 🖼️ **Course Images [PRO]**: Copy course images and apply them as WooCommerce product images.
+
+
+### ➡️   [Cohort Synchronization Options ](https://dualcube.com/docs/moowoodle-set-up-guide/#20-toc-title/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree). [PRO]
+Unlock advanced Moodle WordPress cohort synchronization and tcreate corresponding product.
+
+🔄 **Create and Update Products**: Easily update existing product information using Moodle cohort data.
+
+🛒 **Create New Products [PRO]**: Automatically generate new products based on Moodle cohort data if they don't already exist in WordPress.
 
 
 ### ➡️ ### ➡️ [User Synchronization Options ](https://dualcube.com/docs/moowoodle-set-up-guide/#12-toc-title/?utm_source=wordpress.org&utm_medium=freelandingpage&utm_campaign=MooWoodleFree). [PRO]
@@ -199,16 +221,18 @@ Ans: No, it's not a requirement. You have the flexibility to install both system
 
 == Screenshots ==
 1. Enter your Moodle Site URL and Moodle Access Token, then run the test connection.
-2. Click "Sync Now" to import all courses, categories, images, and other content from your Moodle site.
+2. Click "Sync Now" to import all courses, categories, groups, images, and other content from your Moodle site.
 3. Click "Sync Now" to synchronize users between Moodle and WordPress according to their roles.
-4. View the list of courses after synchronization.
-5. See the list of all enrolled users and their corresponding courses.
-6. Configure the shop page and the display settings for the enrollment button.
-7. Set up Single Sign-On (SSO) from the WordPress side.
-8. Configure Single Sign-On (SSO) from the Moodle side.
-9. Learn how to use the tool settings.
-10. View the log file to detect any errors related to MooWoodle configuration.
-11. In "External Services," click "Add" to include your external service.
+4. Click "Sync Now" to import all cohrt, categories, images, and other content from your Moodle site.
+5. View the list of courses after synchronization.
+6. See the list of all enrolled users and their corresponding courses.
+7. Configure the shop page and the display settings for the enrollment button.
+8. Set up Single Sign-On (SSO) from the WordPress side.
+9. View the list of cohort after synchronization.
+10. Learn how to use the tool settings.
+11. View the log file to detect any errors related to MooWoodle configuration.
+12. Configure Bulk Access & Gifting to enroll multiple studnets into courses / cohorts / groups 
+13. Let user gift a course to another student
 
 == Changelog ==
 
