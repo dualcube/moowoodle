@@ -1,6 +1,6 @@
 === MooWoodle – WordPress Moodle LMS Integration || Sell Moodle Courses via WooCommerce ===
 Contributors: dualcube
-Tags: moodle, wordpress moodle, moodle wordpress, moodle woocommerce, sell moodle courses
+Tags: moodle, lms, sell course, moodle wordpress connect, LMS integration
 Donate link: https://dualcube.com/
 Requires at least: 6.0.0
 Tested up to: 6.7.2
